@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mrowisko", "Mrowisko\Mrowisko\Mrowisko.csproj", "{D43EA7FF-436D-4ABB-BC6C-704F36220A5B}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "MrowiskoContent", "Mrowisko\MrowiskoContent\MrowiskoContent.contentproj", "{7B9B4754-17E4-49C6-93F0-6EEC7ADE66EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D43EA7FF-436D-4ABB-BC6C-704F36220A5B}.Debug|x86.ActiveCfg = Debug|x86
+		{D43EA7FF-436D-4ABB-BC6C-704F36220A5B}.Debug|x86.Build.0 = Debug|x86
+		{D43EA7FF-436D-4ABB-BC6C-704F36220A5B}.Release|x86.ActiveCfg = Release|x86
+		{D43EA7FF-436D-4ABB-BC6C-704F36220A5B}.Release|x86.Build.0 = Release|x86
+		{7B9B4754-17E4-49C6-93F0-6EEC7ADE66EC}.Debug|x86.ActiveCfg = Debug|x86
+		{7B9B4754-17E4-49C6-93F0-6EEC7ADE66EC}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
