@@ -113,30 +113,8 @@ namespace Mrowisko
             }
 
         }
-        /*
-        private void SetUpTerrainVertices()
-        {
-            vertices = new VertexPositionNormalColored[terrainWidth * terrainLength];
-
-            for (int x = 0; x < terrainWidth; x++)
-            {
-                for (int y = 0; y < terrainLength; y++)
-                {
-                    vertices[x + y * terrainWidth].Position = new Vector3(x, heightData[x, y], -y);
-
-                    if (heightData[x, y] < 6)
-                        vertices[x + y * terrainWidth].Color = Color.Blue;
-                    else if (heightData[x, y] < 15)
-                        vertices[x + y * terrainWidth].Color = Color.Green;
-                    else if (heightData[x, y] < 25)
-                        vertices[x + y * terrainWidth].Color = Color.Brown;
-                    else
-                        vertices[x + y * terrainWidth].Color = Color.White;
-                }
-            }
-        }
-        */
-        private void SetUpTerrainIndices()
+    
+         private void SetUpTerrainIndices()
         {
             indices = new int[(terrainWidth - 1) * (terrainLength - 1) * 6];
             int counter = 0;

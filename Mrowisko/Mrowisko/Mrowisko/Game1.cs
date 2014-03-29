@@ -54,9 +54,9 @@ namespace WindowsGame5
             // Create a new SpriteBatch, which can be used to draw textures.
             device = GraphicsDevice;
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            viewMatrix = Matrix.CreateLookAt(new Vector3(130, 30, -50), new Vector3(0, 0, -40), new Vector3(0, 1, 0));
-            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, device.Viewport.AspectRatio, 0.3f, 1000.0f);
-            //models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(22f), GraphicsDevice));
+           // viewMatrix = Matrix.CreateLookAt(new Vector3(130, 30, -50), new Vector3(0, 0, -40), new Vector3(0, 1, 0));
+           // projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, device.Viewport.AspectRatio, 0.3f, 1000.0f);
+            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(22f), GraphicsDevice));
             terrain = new Mrowisko.MapRender(Content.Load<Texture2D>("terrain"), device, Content.Load<Texture2D>("Grass"), Content);
             camera = new FreeCamera(new Vector3(1000, 0, -2000),
                 MathHelper.ToRadians(153), // Turned around 153 degrees
@@ -101,11 +101,11 @@ namespace WindowsGame5
         protected override void Draw(GameTime gameTime)
         {
             //GraphicsDevice.Clear(Color.CornflowerBlue);
-           // foreach (LoadModel model in models)
-            //    if (camera.BoundingVolumeIsInView(model.BoundingSphere))
-            //        model.Draw(camera.View, camera.Projection);
+            foreach (LoadModel model in models)
+                if (camera.BoundingVolumeIsInView(model.BoundingSphere))
+                    model.Draw(camera.View, camera.Projection,Vector3.Zero);
 
-            terrain.DrawTerrain(viewMatrix,  projectionMatrix);
+            terrain.DrawTerrain(camera.View, camera.Projection);
             base.Draw(gameTime);
         }
         //terrain.Draw(camera.View, camera.Projection);
