@@ -103,7 +103,7 @@ namespace WindowsGame5
             //GraphicsDevice.Clear(Color.CornflowerBlue);
             foreach (LoadModel model in models)
                 if (camera.BoundingVolumeIsInView(model.BoundingSphere))
-                    model.Draw(camera.View, camera.Projection,Vector3.Zero);
+                    model.Draw(camera.View, camera.Projection);
 
             terrain.DrawTerrain(camera.View, camera.Projection);
             base.Draw(gameTime);
