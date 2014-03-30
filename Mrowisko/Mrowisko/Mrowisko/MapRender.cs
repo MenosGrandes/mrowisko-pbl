@@ -14,26 +14,25 @@ namespace Mrowisko
 {
     class MapRender
     {
-        public struct VertexPositionNormalColored
+         struct VertexMultitextured : IVertexType
         {
             public Vector3 Position;
-            public Color Color;
             public Vector3 Normal;
+            public Vector4 TextureCoordinate;
+            public Vector4 TexWeights;
+            public static int SizeInBytes = (3 + 3 + 4 + 4) * sizeof(float);
 
-            public static int SizeInBytes = 7 * 4;
-            //public static VertexElement[] VertexElements = new VertexElement[]
-            //{
-            //    new VertexElement( 0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0 ),
-            //    new VertexElement( sizeof(float) * 3, VertexElementFormat.Color, VertexElementUsage.Color, 0 ),
-            //    new VertexElement( sizeof(float) * 4, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0 ),
-            //};
-
+            VertexDeclaration IVertexType.VertexDeclaration
+            {
+                get { return VertexDeclaration; }
+            }
             public readonly static VertexDeclaration VertexDeclaration = new VertexDeclaration
-            (
-                new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
-                new VertexElement(sizeof(float) * 3, VertexElementFormat.Color, VertexElementUsage.Color, 0),
-                new VertexElement(sizeof(float) * 4, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0)
-            );
+     (
+         new VertexElement( 0,  VertexElementFormat.Vector3, VertexElementUsage.Position, 0 ),
+         new VertexElement(sizeof(float) * 3, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0),
+         new VertexElement(sizeof(float) * 6, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 0),
+         new VertexElement(sizeof(float) * 10, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 1)
+     );
         }
 
        private GraphicsDevice device;
@@ -45,24 +44,26 @@ namespace Mrowisko
        private VertexBuffer terrainVertexBuffer;
        private IndexBuffer terrainIndexBuffer;
 
-       private VertexPositionNormalTexture[] vertices;
+       private VertexMultitextured[] vertices;
        private int[] indices;
        private ContentManager Content;
        private Effect effect;
-       private Texture2D grassTexture;
+       private Texture2D grassTexture, sandTexture, rockTexture, snowTexture;
       
 
         public MapRender(Texture2D heightMap, GraphicsDevice GraphicsDevice, Texture2D grassTexture, ContentManager Content)
         {
 
-
+            sandTexture = Content.Load<Texture2D>("sand");
+            rockTexture = Content.Load<Texture2D>("rock");
+            snowTexture = Content.Load<Texture2D>("snow");
             this.device = GraphicsDevice;
             this.grassTexture = grassTexture;
             this.Content = Content;
             effect = Content.Load<Effect>("Effect"); 
 
             LoadHeightData(heightMap);
-            SetUpTerrainVertices();
+            SetUpvertices();
             SetUpTerrainIndices();
             CalculateNormals();
             CopyToTerrainBuffers();
@@ -98,9 +99,9 @@ namespace Mrowisko
         }
 
 
-        private void SetUpTerrainVertices()
+        private void SetUpvertices()
         {
-            vertices = new VertexPositionNormalTexture[terrainWidth * terrainLength];
+            vertices = new VertexMultitextured[terrainWidth * terrainLength];
 
             for (int x = 0; x < terrainWidth; x++)
             {
@@ -109,6 +110,21 @@ namespace Mrowisko
                     vertices[x + y * terrainWidth].Position = new Vector3(x, heightData[x, y], -y);
                     vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 30.0f;
                     vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 30.0f;
+
+                    vertices[x + y * terrainWidth].TexWeights.X = MathHelper.Clamp(1.0f - Math.Abs(heightData[x, y] - 0) / 8.0f, 0, 1);
+                    vertices[x + y * terrainWidth].TexWeights.Y = MathHelper.Clamp(1.0f - Math.Abs(heightData[x, y] - 12) / 6.0f, 0, 1);
+                    vertices[x + y * terrainWidth].TexWeights.Z = MathHelper.Clamp(1.0f - Math.Abs(heightData[x, y] - 20) / 6.0f, 0, 1);
+                    vertices[x + y * terrainWidth].TexWeights.W = MathHelper.Clamp(1.0f - Math.Abs(heightData[x, y] - 30) / 6.0f, 0, 1);
+
+                    float total = vertices[x + y * terrainWidth].TexWeights.X;
+                    total += vertices[x + y * terrainWidth].TexWeights.Y;
+                    total += vertices[x + y * terrainWidth].TexWeights.Z;
+                    total += vertices[x + y * terrainWidth].TexWeights.W;
+
+                    vertices[x + y * terrainWidth].TexWeights.X /= total;
+                    vertices[x + y * terrainWidth].TexWeights.Y /= total;
+                    vertices[x + y * terrainWidth].TexWeights.Z /= total;
+                    vertices[x + y * terrainWidth].TexWeights.W /= total;
                 }
             }
 
@@ -167,10 +183,13 @@ namespace Mrowisko
 
         private void CopyToTerrainBuffers()
         {
-            terrainVertexBuffer = new VertexBuffer(device, VertexPositionNormalTexture.VertexDeclaration, vertices.Length,
+            terrainVertexBuffer = new VertexBuffer(device, VertexMultitextured.VertexDeclaration, vertices.Length,
                 BufferUsage.WriteOnly);
-            terrainVertexBuffer.SetData(vertices);
 
+
+            terrainVertexBuffer.SetData<VertexMultitextured>(vertices);
+
+           
             terrainIndexBuffer = new IndexBuffer(device, typeof(int), indices.Length, BufferUsage.WriteOnly);
             terrainIndexBuffer.SetData(indices);
         }
@@ -179,7 +198,11 @@ namespace Mrowisko
 
         public void DrawTerrain(Matrix currentViewMatrix, Matrix projectionMatrix)
         {
-            effect.CurrentTechnique = effect.Techniques["Colored"];
+            effect.CurrentTechnique = effect.Techniques["MultiTextured"];
+            effect.Parameters["xTexture0"].SetValue(sandTexture);
+            effect.Parameters["xTexture1"].SetValue(grassTexture);
+            effect.Parameters["xTexture2"].SetValue(rockTexture);
+            effect.Parameters["xTexture3"].SetValue(snowTexture);
             Matrix worldMatrix = Matrix.Identity;
             effect.Parameters["xWorld"].SetValue(worldMatrix);
             effect.Parameters["xView"].SetValue(currentViewMatrix);
@@ -187,16 +210,14 @@ namespace Mrowisko
             effect.Parameters["xEnableLighting"].SetValue(true);
             effect.Parameters["xAmbient"].SetValue(0.4f);
             effect.Parameters["xLightDirection"].SetValue(new Vector3(-0.5f, -1, -0.5f));
-            effect.CurrentTechnique = effect.Techniques["Textured"];
-            effect.Parameters["xTexture"].SetValue(grassTexture);
-            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+             foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
 
                 device.Indices = terrainIndexBuffer;
                 device.SetVertexBuffer(terrainVertexBuffer);
 
-                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertices.Length, 0, indices.Length / 3);
+                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 3, 3, vertices.Length, 0, indices.Length / 3);
 
             }
         }
