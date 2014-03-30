@@ -51,19 +51,20 @@ namespace Mrowisko
        private Texture2D grassTexture, sandTexture, rockTexture, snowTexture;
       
 
-        public MapRender(Texture2D heightMap, GraphicsDevice GraphicsDevice, Texture2D grassTexture, ContentManager Content)
+        public MapRender( GraphicsDevice GraphicsDevice, List<Texture2D>texture, ContentManager Content,int Scale)
         {
 
-            sandTexture = Content.Load<Texture2D>("sand");
-            rockTexture = Content.Load<Texture2D>("rock");
-            snowTexture = Content.Load<Texture2D>("snow");
-            this.device = GraphicsDevice;
-            this.grassTexture = grassTexture;
-            this.Content = Content;
-            effect = Content.Load<Effect>("Effect"); 
 
-            LoadHeightData(heightMap);
-            SetUpvertices();
+            this.device = GraphicsDevice;
+            this.grassTexture = texture[0];
+            this.sandTexture = texture[1]; //Content.Load<Texture2D>("sand");
+            this.rockTexture = texture[2]; //Content.Load<Texture2D>("rock");
+            this.snowTexture = texture[3];//Content.Load<Texture2D>("snow");
+            this.Content = Content;
+            effect = Content.Load<Effect>("Effect");
+
+            LoadHeightData(texture[4]);
+            SetUpvertices(Scale);
             SetUpTerrainIndices();
             CalculateNormals();
             CopyToTerrainBuffers();
@@ -99,7 +100,7 @@ namespace Mrowisko
         }
 
 
-        private void SetUpvertices()
+        private void SetUpvertices(int Scale)
         {
             vertices = new VertexMultitextured[terrainWidth * terrainLength];
 
@@ -107,7 +108,7 @@ namespace Mrowisko
             {
                 for (int y = 0; y < terrainLength; y++)
                 {
-                    vertices[x + y * terrainWidth].Position = new Vector3(x, heightData[x, y], -y);
+                    vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, -y * Scale);
                     vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 30.0f;
                     vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 30.0f;
 
@@ -132,7 +133,7 @@ namespace Mrowisko
     
          private void SetUpTerrainIndices()
         {
-            indices = new int[(terrainWidth - 1) * (terrainLength - 1) * 6];
+            indices = new int[(terrainWidth - 1) * (terrainLength - 1) *6];
             int counter = 0;
             for (int y = 0; y < terrainLength - 1; y++)
             {
@@ -207,7 +208,7 @@ namespace Mrowisko
             effect.Parameters["xWorld"].SetValue(worldMatrix);
             effect.Parameters["xView"].SetValue(currentViewMatrix);
             effect.Parameters["xProjection"].SetValue(projectionMatrix);
-            effect.Parameters["xEnableLighting"].SetValue(true);
+           effect.Parameters["xEnableLighting"].SetValue(true);
             effect.Parameters["xAmbient"].SetValue(0.4f);
             effect.Parameters["xLightDirection"].SetValue(new Vector3(-0.5f, -1, -0.5f));
              foreach (EffectPass pass in effect.CurrentTechnique.Passes)

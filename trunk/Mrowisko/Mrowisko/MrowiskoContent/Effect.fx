@@ -1,9 +1,9 @@
 //----------------------------------------------------
-//--                                                --
-//--             www.riemers.net                 --
-//--         Series 4: Advanced terrain             --
-//--                 Shader code                    --
-//--                                                --
+//-- --
+//-- www.riemers.net --
+//-- Series 4: Advanced terrain --
+//-- Shader code --
+//-- --
 //----------------------------------------------------
 
 //------- Constants --------
@@ -88,12 +88,15 @@ technique Textured
 //------- Technique: Multitextured --------
 struct MTVertexToPixel
 {
-    float4 Position         : POSITION;    
+    float4 Position         : POSITION;
     float4 Color            : COLOR0;
     float3 Normal            : TEXCOORD0;
     float2 TextureCoords    : TEXCOORD1;
     float4 LightDirection    : TEXCOORD2;
     float4 TextureWeights    : TEXCOORD3;
+
+     float Depth                : TEXCOORD4;
+
 };
 
 struct MTPixelToFrame
@@ -106,15 +109,18 @@ MTVertexToPixel MultiTexturedVS( float4 inPos : POSITION, float3 inNormal: NORMA
     MTVertexToPixel Output = (MTVertexToPixel)0;
     float4x4 preViewProjection = mul (xView, xProjection);
     float4x4 preWorldViewProjection = mul (xWorld, preViewProjection);
-    
+
     Output.Position = mul(inPos, preWorldViewProjection);
     Output.Normal = mul(normalize(inNormal), xWorld);
     Output.TextureCoords = inTexCoords;
     Output.LightDirection.xyz = -xLightDirection;
     Output.LightDirection.w = 1;    
     Output.TextureWeights = inTexWeights;
-    
-    return Output;    
+
+     Output.Depth = Output.Position.z/Output.Position.w;
+
+
+    return Output;
 }
 
 MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
@@ -124,13 +130,28 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
     float lightingFactor = 1;
     if (xEnableLighting)
         lightingFactor = saturate(saturate(dot(PSIn.Normal, PSIn.LightDirection)) + xAmbient);
-        
-    Output.Color = tex2D(TextureSampler0, PSIn.TextureCoords)*PSIn.TextureWeights.x;
-    Output.Color += tex2D(TextureSampler1, PSIn.TextureCoords)*PSIn.TextureWeights.y;
-    Output.Color += tex2D(TextureSampler2, PSIn.TextureCoords)*PSIn.TextureWeights.z;
-    Output.Color += tex2D(TextureSampler3, PSIn.TextureCoords)*PSIn.TextureWeights.w;    
-        
-    Output.Color *= lightingFactor;
+
+         
+     float blendDistance = 0.99f;
+     float blendWidth = 0.005f;
+     float blendFactor = clamp((PSIn.Depth-blendDistance)/blendWidth, 0, 1);
+         
+     float4 farColor;
+     farColor = tex2D(TextureSampler0, PSIn.TextureCoords)*PSIn.TextureWeights.x;
+     farColor += tex2D(TextureSampler1, PSIn.TextureCoords)*PSIn.TextureWeights.y;
+     farColor += tex2D(TextureSampler2, PSIn.TextureCoords)*PSIn.TextureWeights.z;
+     farColor += tex2D(TextureSampler3, PSIn.TextureCoords)*PSIn.TextureWeights.w;
+     
+     float4 nearColor;
+     float2 nearTextureCoords = PSIn.TextureCoords*3;
+     nearColor = tex2D(TextureSampler0, nearTextureCoords)*PSIn.TextureWeights.x;
+     nearColor += tex2D(TextureSampler1, nearTextureCoords)*PSIn.TextureWeights.y;
+     nearColor += tex2D(TextureSampler2, nearTextureCoords)*PSIn.TextureWeights.z;
+     nearColor += tex2D(TextureSampler3, nearTextureCoords)*PSIn.TextureWeights.w;
+ 
+     Output.Color = lerp(nearColor, farColor, blendFactor);
+     Output.Color *= lightingFactor;
+
     
     return Output;
 }
@@ -139,8 +160,7 @@ technique MultiTextured
 {
     pass Pass0
     {
-        VertexShader = compile  vs_2_0 MultiTexturedVS();
+        VertexShader = compile vs_2_0 MultiTexturedVS();
         PixelShader = compile ps_2_0 MultiTexturedPS();
     }
 }
-
