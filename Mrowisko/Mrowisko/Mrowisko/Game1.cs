@@ -50,16 +50,23 @@ namespace WindowsGame5
         /// </summary>
         protected override void LoadContent()
         {
+            List<Texture2D> texture = new List<Texture2D>();
+            texture.Add(Content.Load<Texture2D>("grass"));
+            texture.Add(Content.Load<Texture2D>("sand"));
+            texture.Add(Content.Load<Texture2D>("rock"));
+            texture.Add(Content.Load<Texture2D>("snow"));
+            texture.Add(Content.Load<Texture2D>("terrain"));
+
+
             // Create a new SpriteBatch, which can be used to draw textures.
             device = GraphicsDevice;
             spriteBatch = new SpriteBatch(GraphicsDevice);
-           // viewMatrix = Matrix.CreateLookAt(new Vector3(130, 30, -50), new Vector3(0, 0, -40), new Vector3(0, 1, 0));
-           // projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, device.Viewport.AspectRatio, 0.3f, 1000.0f);
+
             models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(1.0f), GraphicsDevice));
-            terrain = new Mrowisko.MapRender(Content.Load<Texture2D>("terrain"), device, Content.Load<Texture2D>("Grass"), Content);
-            camera = new FreeCamera(new Vector3(1000, 0, -2000),
-                MathHelper.ToRadians(15), // Turned around 153 degrees
-                MathHelper.ToRadians(90), // Pitched up 13 degrees
+            terrain = new Mrowisko.MapRender( device,texture,  Content,20);
+            camera = new FreeCamera(new Vector3(2000, 0, -2000),
+                MathHelper.ToRadians(120), // Turned around 153 degrees
+                MathHelper.ToRadians(360), // Pitched up 13 degrees
             GraphicsDevice);
 
             lastMouseState = Mouse.GetState();
@@ -99,10 +106,10 @@ namespace WindowsGame5
         // Called when the game should draw itself
         protected override void Draw(GameTime gameTime)
         {
-            RasterizerState rasterizerState = new RasterizerState();
-            rasterizerState.FillMode = FillMode.WireFrame;
-            GraphicsDevice.RasterizerState = rasterizerState;   
-            //GraphicsDevice.Clear(Color.CornflowerBlue);
+           // RasterizerState rasterizerState = new RasterizerState();
+            //rasterizerState.FillMode = FillMode.WireFrame;
+            //GraphicsDevice.RasterizerState = rasterizerState;   
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             foreach (LoadModel model in models)
                 if (camera.BoundingVolumeIsInView(model.BoundingSphere))
                     model.Draw(camera.View, camera.Projection);
