@@ -23,8 +23,7 @@ namespace WindowsGame5
         Camera camera;
         MouseState lastMouseState;
         Mrowisko.MapRender terrain;
-        Matrix viewMatrix;
-        Matrix projectionMatrix;
+
 
         public Game1()
         {
@@ -56,18 +55,18 @@ namespace WindowsGame5
             spriteBatch = new SpriteBatch(GraphicsDevice);
            // viewMatrix = Matrix.CreateLookAt(new Vector3(130, 30, -50), new Vector3(0, 0, -40), new Vector3(0, 1, 0));
            // projectionMatrix = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, device.Viewport.AspectRatio, 0.3f, 1000.0f);
-            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(22f), GraphicsDevice));
+            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(1.0f), GraphicsDevice));
             terrain = new Mrowisko.MapRender(Content.Load<Texture2D>("terrain"), device, Content.Load<Texture2D>("Grass"), Content);
             camera = new FreeCamera(new Vector3(1000, 0, -2000),
-                MathHelper.ToRadians(153), // Turned around 153 degrees
-                MathHelper.ToRadians(5), // Pitched up 13 degrees
+                MathHelper.ToRadians(15), // Turned around 153 degrees
+                MathHelper.ToRadians(90), // Pitched up 13 degrees
             GraphicsDevice);
 
             lastMouseState = Mouse.GetState();
 
         }
 
-        /// <summary>
+        /// <summary>w
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
         /// </summary>
@@ -100,6 +99,9 @@ namespace WindowsGame5
         // Called when the game should draw itself
         protected override void Draw(GameTime gameTime)
         {
+            RasterizerState rasterizerState = new RasterizerState();
+            rasterizerState.FillMode = FillMode.WireFrame;
+            GraphicsDevice.RasterizerState = rasterizerState;   
             //GraphicsDevice.Clear(Color.CornflowerBlue);
             foreach (LoadModel model in models)
                 if (camera.BoundingVolumeIsInView(model.BoundingSphere))
@@ -117,8 +119,11 @@ namespace WindowsGame5
             // Determine how much the camera should turn
             float deltaX = (float)lastMouseState.X - (float)mouseState.X;
             float deltaY = (float)lastMouseState.Y - (float)mouseState.Y;
-            // Rotate the camera
-            ((FreeCamera)camera).Rotate(deltaX * .01f, deltaY * .01f);
+
+                ((FreeCamera)camera).Rotate(deltaX * .01f, -deltaY * .01f);
+
+            
+           
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             if (keyState.IsKeyDown(Keys.W)) translation += Vector3.Forward;
             if (keyState.IsKeyDown(Keys.S)) translation += Vector3.Backward;
