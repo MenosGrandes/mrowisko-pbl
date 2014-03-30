@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-
+using KlasyZAnimacja;
 namespace WindowsGame5
 {
     /// <summary>
@@ -23,7 +23,7 @@ namespace WindowsGame5
         Camera camera;
         MouseState lastMouseState;
         Mrowisko.MapRender terrain;
-
+        LoadModel anim;
 
         public Game1()
         {
@@ -62,13 +62,17 @@ namespace WindowsGame5
             device = GraphicsDevice;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(1.0f), GraphicsDevice));
+           // models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(1.0f), GraphicsDevice));
             terrain = new Mrowisko.MapRender( device,texture,  Content,20);
             camera = new FreeCamera(new Vector3(2000, 0, -2000),
                 MathHelper.ToRadians(120), // Turned around 153 degrees
                 MathHelper.ToRadians(360), // Pitched up 13 degrees
             GraphicsDevice);
-
+            anim = new LoadModel(Content.Load<Model>("anim"),
+                Vector3.Zero,new Vector3(0,MathHelper.Pi,0),
+                new Vector3(10), GraphicsDevice, Content);
+           // models.Add(anim);
+            anim.Player.StartClip("Take 001",true);//take 001 to domyœlna nazwa sekwencji filmowej
             lastMouseState = Mouse.GetState();
 
         }
@@ -145,6 +149,7 @@ namespace WindowsGame5
             camera.Update();
             // Update the mouse state
             lastMouseState = mouseState;
+            anim.Update(gameTime);
         }
     }
 }
