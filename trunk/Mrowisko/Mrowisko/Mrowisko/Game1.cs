@@ -24,7 +24,9 @@ namespace WindowsGame5
         MouseState lastMouseState;
         Mrowisko.MapRender terrain;
         LoadModel anim;
-
+        /*
+         * sugerujê aby zrobiæ drug¹ tablicê (z animowanymi modelami)
+         */
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -62,17 +64,16 @@ namespace WindowsGame5
             device = GraphicsDevice;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-           // models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(1.0f), GraphicsDevice));
+          //  models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(1.0f), GraphicsDevice));
             terrain = new Mrowisko.MapRender( device,texture,  Content,20);
             camera = new FreeCamera(new Vector3(2000, 0, -2000),
                 MathHelper.ToRadians(120), // Turned around 153 degrees
                 MathHelper.ToRadians(360), // Pitched up 13 degrees
             GraphicsDevice);
             anim = new LoadModel(Content.Load<Model>("anim"),
-                Vector3.Zero,new Vector3(0,MathHelper.Pi,0),
-                new Vector3(10), GraphicsDevice, Content);
-           // models.Add(anim);
-            anim.Player.StartClip("Take 001",true);//take 001 to domyœlna nazwa sekwencji filmowej
+              Vector3.Zero,new Vector3(0,MathHelper.Pi,0),
+               new Vector3(10), GraphicsDevice, Content);
+           anim.Player.StartClip("anim", true);//take 001 to domyœlna nazwa sekwencji filmowej lub nazwa pliku :D
             lastMouseState = Mouse.GetState();
 
         }
@@ -119,9 +120,10 @@ namespace WindowsGame5
                     model.Draw(camera.View, camera.Projection);
 
             terrain.DrawTerrain(camera.View, camera.Projection);
+           
+            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
             base.Draw(gameTime);
         }
-        //terrain.Draw(camera.View, camera.Projection);
         void updateCamera(GameTime gameTime)
         {
             // Get the new keyboard and mouse state
@@ -149,7 +151,7 @@ namespace WindowsGame5
             camera.Update();
             // Update the mouse state
             lastMouseState = mouseState;
-            anim.Update(gameTime);
+           anim.Update(gameTime); // update the animation
         }
     }
 }
