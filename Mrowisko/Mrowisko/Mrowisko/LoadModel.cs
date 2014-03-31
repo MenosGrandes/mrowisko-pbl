@@ -18,9 +18,9 @@ namespace WindowsGame5
         public Vector3 Rotation { get; set; }
         public Vector3 Scale { get; set; }
         public Model Model { get; private set; }
-        public AnimationPlayer Player;
-        SkinningData skinningData;
         ContentManager content;
+        SkinningData skinningData;
+        public AnimationPlayer Player;
         private Matrix[] modelTransforms;
         private GraphicsDevice graphicsDevice;
         public BoundingSphere boundingSphere;
@@ -36,21 +36,7 @@ transformed = transformed.Transform(worldTransform);
 return transformed;
 }
 }
-       public LoadModel(Model Model, Vector3 Position, Vector3 Rotation,
-Vector3 Scale, GraphicsDevice GraphicsDevice,
-ContentManager Content)
-     {
-         this.Model = Model;
-         this.graphicsDevice = GraphicsDevice;
-         this.content = Content;
-         this.Position = Position;
-         this.Rotation = Rotation;
-         this.Scale = Scale;
-        
-         this.skinningData = Model.Tag as SkinningData;
-         Player = new AnimationPlayer(skinningData);
-         //setNewEffect();
-     }
+
         public LoadModel(Model Model, Vector3 Position, Vector3 Rotation,
 Vector3 Scale, GraphicsDevice graphicsDevice)
         {
@@ -64,9 +50,42 @@ Vector3 Scale, GraphicsDevice graphicsDevice)
             this.Rotation = Rotation;
             this.Scale = Scale;
             this.graphicsDevice = graphicsDevice;
-        // setNewEffect(); - macie coś alternatywnego
         }
+        //Animated model constructor
+        public LoadModel(Model Model, Vector3 Position, Vector3 Rotation,
+Vector3 Scale, GraphicsDevice GraphicsDevice,
+ContentManager Content)
+     {
+         this.Model = Model;
+         this.graphicsDevice = GraphicsDevice;
+         this.content = Content;
+         this.Position = Position;
+         this.Rotation = Rotation;
+         this.Scale = Scale;
+        //animation data
+         this.skinningData = Model.Tag as SkinningData;
+         Player = new AnimationPlayer(skinningData);
+         setNewEffect();
+     }
+     void setNewEffect()
+     {
+     //Like in tutorial, in the future probably made by shaders
+         foreach(ModelMesh mesh in Model.Meshes)
+         {
+             foreach(ModelMeshPart part in mesh.MeshParts)
+             {
+                 SkinnedEffect newEffect = new SkinnedEffect(graphicsDevice);
+                 BasicEffect oldEffect = ((BasicEffect)part.Effect);
+                 newEffect.EnableDefaultLighting();
+                 newEffect.SpecularColor = oldEffect.SpecularColor;
 
+                 newEffect.AmbientLightColor = oldEffect.AmbientLightColor;
+                 newEffect.DiffuseColor = oldEffect.DiffuseColor;
+                 newEffect.Texture = oldEffect.Texture;
+                 part.Effect = newEffect;
+             }
+         }
+     }
         private void buildBoundingSphere()
         {
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
@@ -78,25 +97,6 @@ Vector3 Scale, GraphicsDevice graphicsDevice)
             }
              this.boundingSphere=sphere;
         }
-        void setNewEffect()
-     {
-     //wiem że będziecie to robić na shaderach :D ale tak jest w tutorialu
-         foreach(ModelMesh mesh in Model.Meshes)
-         {
-             foreach(ModelMeshPart part in mesh.MeshParts)
-             {
-                 SkinnedEffect newEffect = new SkinnedEffect(graphicsDevice);
-                 BasicEffect oldEffect = ((BasicEffect)part.Effect);
-                 newEffect.EnableDefaultLighting();
-                 newEffect.SpecularColor = Color.Black.ToVector3();
-
-                 newEffect.AmbientLightColor = oldEffect.AmbientLightColor;
-                 newEffect.DiffuseColor = oldEffect.DiffuseColor;
-                 newEffect.Texture = oldEffect.Texture;
-                 part.Effect = newEffect;
-             }
-         }
-     }
         public void Draw(Matrix View, Matrix Projection)
         {
             // Calculate the base transformation by combining
@@ -116,17 +116,34 @@ Vector3 Scale, GraphicsDevice graphicsDevice)
                     effect.View = View;
                     effect.Projection = Projection;
                     //effect.EnableDefaultLighting();
+                }
 
+                mesh.Draw();
+            }
+
+        }
+        //metoda draw do rysowania animowanego modelu
+        public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
+        {
+            foreach (ModelMesh mesh in Model.Meshes)
+            {
+                foreach (SkinnedEffect effect in mesh.Effects)
+                {
+                    effect.SetBoneTransforms(Player.SkinTransforms);
+                    effect.View = View;
+                    effect.Projection = Projection;
                 }
                 mesh.Draw();
             }
         }
-        public void Update (GameTime gameTime)
-     {
-         Matrix world = Matrix.CreateScale(Scale) *
-Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
-Matrix.CreateTranslation(Position);
-         Player.Update(gameTime.ElapsedGameTime, world);
-     }
+        public void Update(GameTime gameTime)
+        {
+            // update world
+            Matrix world = Matrix.CreateScale(Scale) *
+   Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
+   Matrix.CreateTranslation(Position);
+            Player.Update(gameTime.ElapsedGameTime, world);//update player
+        }
+
     }
 }
