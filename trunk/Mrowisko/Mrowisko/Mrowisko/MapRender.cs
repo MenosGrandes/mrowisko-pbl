@@ -109,8 +109,8 @@ namespace Mrowisko
                 for (int y = 0; y < terrainLength; y++)
                 {
                     vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, -y * Scale);
-                    vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 30.0f;
-                    vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 30.0f;
+                    vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 10.0f;
+                    vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 10.0f;
 
                     vertices[x + y * terrainWidth].TexWeights.X = MathHelper.Clamp(1.0f - Math.Abs(heightData[x, y] - 0) / 8.0f, 0, 1);
                     vertices[x + y * terrainWidth].TexWeights.Y = MathHelper.Clamp(1.0f - Math.Abs(heightData[x, y] - 12) / 6.0f, 0, 1);
@@ -185,12 +185,11 @@ namespace Mrowisko
         private void CopyToTerrainBuffers()
         {
             terrainVertexBuffer = new VertexBuffer(device, VertexMultitextured.VertexDeclaration, vertices.Length,
-                BufferUsage.WriteOnly);
+                BufferUsage.None);
 
 
             terrainVertexBuffer.SetData<VertexMultitextured>(vertices);
 
-           
             terrainIndexBuffer = new IndexBuffer(device, typeof(int), indices.Length, BufferUsage.WriteOnly);
             terrainIndexBuffer.SetData(indices);
         }
@@ -199,6 +198,9 @@ namespace Mrowisko
 
         public void DrawTerrain(Matrix currentViewMatrix, Matrix projectionMatrix)
         {
+
+
+
             effect.CurrentTechnique = effect.Techniques["MultiTextured"];
             effect.Parameters["xTexture0"].SetValue(sandTexture);
             effect.Parameters["xTexture1"].SetValue(grassTexture);
@@ -209,8 +211,8 @@ namespace Mrowisko
             effect.Parameters["xView"].SetValue(currentViewMatrix);
             effect.Parameters["xProjection"].SetValue(projectionMatrix);
            effect.Parameters["xEnableLighting"].SetValue(true);
-            effect.Parameters["xAmbient"].SetValue(0.4f);
-            effect.Parameters["xLightDirection"].SetValue(new Vector3(-0.5f, -1, -0.5f));
+            effect.Parameters["xAmbient"].SetValue(2.4f);
+            effect.Parameters["xLightDirection"].SetValue(new Vector3(0.5f, 1, 0.5f));
              foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
@@ -218,7 +220,7 @@ namespace Mrowisko
                 device.Indices = terrainIndexBuffer;
                 device.SetVertexBuffer(terrainVertexBuffer);
 
-                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 3, 3, vertices.Length, 0, indices.Length / 3);
+                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertices.Length, 0, indices.Length / 3);
 
             }
         }

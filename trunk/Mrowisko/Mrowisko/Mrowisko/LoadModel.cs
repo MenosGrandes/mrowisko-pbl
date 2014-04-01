@@ -115,7 +115,7 @@ ContentManager Content)
                     effect.World = localWorld;
                     effect.View = View;
                     effect.Projection = Projection;
-                    //effect.EnableDefaultLighting();
+                    effect.EnableDefaultLighting();
                 }
 
                 mesh.Draw();
