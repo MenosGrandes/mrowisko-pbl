@@ -64,8 +64,8 @@ namespace WindowsGame5
             device = GraphicsDevice;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-          //  models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(1.0f), GraphicsDevice));
-            terrain = new Mrowisko.MapRender( device,texture,  Content,20);
+          // models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(1.0f), GraphicsDevice));
+            terrain = new Mrowisko.MapRender( device,texture,  Content,200);
             camera = new FreeCamera(new Vector3(2000, 0, -2000),
                 MathHelper.ToRadians(120), // Turned around 153 degrees
                 MathHelper.ToRadians(360), // Pitched up 13 degrees
@@ -111,10 +111,9 @@ namespace WindowsGame5
         // Called when the game should draw itself
         protected override void Draw(GameTime gameTime)
         {
-           // RasterizerState rasterizerState = new RasterizerState();
-            //rasterizerState.FillMode = FillMode.WireFrame;
-            //GraphicsDevice.RasterizerState = rasterizerState;   
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            //RasterizerState rasterizerState = new RasterizerState();
+          // rasterizerState.FillMode = FillMode.WireFrame;
+           //GraphicsDevice.RasterizerState = rasterizerState;   
             foreach (LoadModel model in models)
                 if (camera.BoundingVolumeIsInView(model.BoundingSphere))
                     model.Draw(camera.View, camera.Projection);
@@ -151,7 +150,7 @@ namespace WindowsGame5
             camera.Update();
             // Update the mouse state
             lastMouseState = mouseState;
-           anim.Update(gameTime); // update the animation
+           //anim.Update(gameTime); // update the animation
         }
     }
 }
