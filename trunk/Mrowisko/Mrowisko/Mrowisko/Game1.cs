@@ -65,17 +65,20 @@ namespace WindowsGame5
             device = GraphicsDevice;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-          // models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(1.0f), GraphicsDevice));
-            terrain = new Mrowisko.MapRender( device,texture,  Content,10, Content.Load<Texture2D>("treeMap"));
-            camera = new FreeCamera(new Vector3(2000, 0, -2000),
-                MathHelper.ToRadians(120), // Turned around 153 degrees
-                MathHelper.ToRadians(360), // Pitched up 13 degrees
+
+            terrain = new Mrowisko.MapRender( device,texture,  Content,1, Content.Load<Texture2D>("treeMap"));
+            camera = new FreeCamera(new Vector3(0,50,0),
+                MathHelper.ToRadians(-45), // Turned around 153 degrees
+                MathHelper.ToRadians(-15), // Pitched up 13 degrees
             GraphicsDevice);
             anim = new LoadModel(Content.Load<Model>("anim"),
               Vector3.Zero,new Vector3(0,MathHelper.Pi,0),
                new Vector3(10), GraphicsDevice, Content);
            anim.Player.StartClip("anim", true);//take 001 to domyœlna nazwa sekwencji filmowej lub nazwa pliku :D
             lastMouseState = Mouse.GetState();
+
+            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Up, Vector3.Up, new Vector3(.03f), GraphicsDevice));
+
 
         }
 
@@ -98,9 +101,8 @@ namespace WindowsGame5
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
             // TODO: Add your update logic here
-
+            updateAnt(gameTime);
             updateCamera(gameTime);
             base.Update(gameTime);
         }
@@ -113,7 +115,7 @@ namespace WindowsGame5
         protected override void Draw(GameTime gameTime)
         {
             //RasterizerState rasterizerState = new RasterizerState();
-          // rasterizerState.FillMode = FillMode.WireFrame;
+           //rasterizerState.FillMode = FillMode.WireFrame;
            //GraphicsDevice.RasterizerState = rasterizerState;   
             foreach (LoadModel model in models)
                 if (camera.BoundingVolumeIsInView(model.BoundingSphere))
@@ -143,7 +145,7 @@ namespace WindowsGame5
             if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left;
             if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right;
             // Move 3 units per millisecond, independent of frame rate
-            translation *= 1 * (float)gameTime.ElapsedGameTime.
+            translation *= 0.5f * (float)gameTime.ElapsedGameTime.
             TotalMilliseconds;
             // Move the camera
             ((FreeCamera)camera).Move(translation);
@@ -152,6 +154,24 @@ namespace WindowsGame5
             // Update the mouse state
             lastMouseState = mouseState;
            //anim.Update(gameTime); // update the animation
+        }
+        void updateAnt(GameTime gameTime)
+        {            KeyboardState keyState = Keyboard.GetState();
+
+
+       // models[0].Position += Vector3.Forward;
+
+            if (keyState.IsKeyDown(Keys.Up) ) models[0].Position+= Vector3.Forward;
+            if (keyState.IsKeyDown(Keys.Down)) models[0].Position+= Vector3.Backward;
+            if (keyState.IsKeyDown(Keys.Left)) models[0].Position+= Vector3.Left;
+            if (keyState.IsKeyDown(Keys.Right)) models[0].Position+= Vector3.Right;
+            
+            
+            
+            
+            double th=terrain.heightData[Math.Abs((int)models[0].Position.X), Math.Abs((int)models[0].Position.Z)];
+            models[0].Position = new Vector3(models[0].Position.X, (float)th,models[0].Position.Z );
+           
         }
     }
 }

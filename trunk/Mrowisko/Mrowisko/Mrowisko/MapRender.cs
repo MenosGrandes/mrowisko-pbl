@@ -54,7 +54,7 @@ namespace Mrowisko
            get { return terrainLength; }
            set { terrainLength = value; }
        }
-       private float[,] heightData;
+       public float[,] heightData;
 
        private VertexBuffer terrainVertexBuffer;
        private IndexBuffer terrainIndexBuffer;
