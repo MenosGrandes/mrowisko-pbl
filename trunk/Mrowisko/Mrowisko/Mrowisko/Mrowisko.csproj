@@ -75,6 +75,7 @@
     <Compile Include="ArcBallCamera.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="FreeCamera.cs" />
+    <Compile Include="Layer.cs" />
     <Compile Include="LoadModel.cs" />
     <Compile Include="MapRender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
