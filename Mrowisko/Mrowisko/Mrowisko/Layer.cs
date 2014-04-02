@@ -51,7 +51,8 @@ namespace Mrowisko
                     noiseData[x, y] = treeMapColors[y + x * treeMap.Height].R;
 
 
-            this.treeList = new List<Vector3>(); Random random = new Random();
+            this.treeList = new List<Vector3>();
+            Random random = new Random();
 
             for (int x = 0; x < terrainWidth; x++)
             {
@@ -64,6 +65,7 @@ namespace Mrowisko
                         float minFlatness = (float)Math.Cos(MathHelper.ToRadians(15));
                         if (flatness > minFlatness)
                         {
+
                             float relx = (float)x / (float)terrainWidth;
                             float rely = (float)y / (float)terrainLength;
 
@@ -101,20 +103,24 @@ namespace Mrowisko
             int i = 0;
             foreach (Vector3 currentV3 in treeList)
             {
+
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 0));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 0));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 1));
 
+
+
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 0));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 1));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 1));
+
             }
 
             VertexDeclaration vertexDeclaration = VertexPositionTexture.VertexDeclaration;
 
             treeVertexBuffer = new VertexBuffer(device, vertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
             treeVertexBuffer.SetData(billboardVertices);
-            treeVertexDeclaration = vertexDeclaration;
+           // treeVertexDeclaration = vertexDeclaration;
         }
 
         public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position)
@@ -134,6 +140,7 @@ namespace Mrowisko
             {
                 pass.Apply();
                 device.DrawPrimitives(PrimitiveType.TriangleList, 0, treeVertexBuffer.VertexCount / 3);
+
             }
         }
 
