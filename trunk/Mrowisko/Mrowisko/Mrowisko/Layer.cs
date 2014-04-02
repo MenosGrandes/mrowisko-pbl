@@ -101,13 +101,13 @@ namespace Mrowisko
             int i = 0;
             foreach (Vector3 currentV3 in treeList)
             {
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 * scale, 0 * scale));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 * scale, 0 * scale));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 * scale, 1 * scale));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 0));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 0));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 1));
 
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 * scale, 0 * scale));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 * scale, 1 * scale));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 * scale, 1 * scale));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 0));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 1));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 1));
             }
 
             VertexDeclaration vertexDeclaration = VertexPositionTexture.VertexDeclaration;
@@ -125,18 +125,16 @@ namespace Mrowisko
             bbEffect.Parameters["xProjection"].SetValue(projectionMatrix);
             bbEffect.Parameters["xCamPos"].SetValue(position);
             bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
+            bbEffect.Parameters["scale"].SetValue(this.scale);
             bbEffect.Parameters["xBillboardTexture"].SetValue(treeTexture);
 
-            device.BlendState = BlendState.AlphaBlend;
+            device.SetVertexBuffer(treeVertexBuffer);
+
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                device.SetVertexBuffer(treeVertexBuffer);
-                int noVertices = treeVertexBuffer.VertexCount;
-                int noTriangles = noVertices / 3;
-                device.DrawPrimitives(PrimitiveType.TriangleList, 0, noTriangles);
+                device.DrawPrimitives(PrimitiveType.TriangleList, 0, treeVertexBuffer.VertexCount / 3);
             }
-            device.BlendState = BlendState.Opaque;
         }
 
 
