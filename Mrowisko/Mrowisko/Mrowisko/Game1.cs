@@ -58,6 +58,7 @@ namespace WindowsGame5
             texture.Add(Content.Load<Texture2D>("rock"));
             texture.Add(Content.Load<Texture2D>("snow"));
             texture.Add(Content.Load<Texture2D>("terrain"));
+            texture.Add(Content.Load<Texture2D>("tree"));
 
 
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -65,7 +66,7 @@ namespace WindowsGame5
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
           // models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(1.0f), GraphicsDevice));
-            terrain = new Mrowisko.MapRender( device,texture,  Content,200);
+            terrain = new Mrowisko.MapRender( device,texture,  Content,10, Content.Load<Texture2D>("treeMap"));
             camera = new FreeCamera(new Vector3(2000, 0, -2000),
                 MathHelper.ToRadians(120), // Turned around 153 degrees
                 MathHelper.ToRadians(360), // Pitched up 13 degrees
@@ -118,7 +119,7 @@ namespace WindowsGame5
                 if (camera.BoundingVolumeIsInView(model.BoundingSphere))
                     model.Draw(camera.View, camera.Projection);
 
-            terrain.DrawTerrain(camera.View, camera.Projection);
+            terrain.DrawTerrain(camera.View, camera.Projection, ((FreeCamera)camera).Position);
            
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
             base.Draw(gameTime);
@@ -142,7 +143,7 @@ namespace WindowsGame5
             if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left;
             if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right;
             // Move 3 units per millisecond, independent of frame rate
-            translation *= 3 * (float)gameTime.ElapsedGameTime.
+            translation *= 1 * (float)gameTime.ElapsedGameTime.
             TotalMilliseconds;
             // Move the camera
             ((FreeCamera)camera).Move(translation);

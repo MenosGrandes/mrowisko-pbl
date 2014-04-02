@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WindowsGame5;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -12,46 +13,70 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Mrowisko
 {
+
+    struct VertexMultitextured : IVertexType
+    {
+        public Vector3 Position;
+        public Vector3 Normal;
+        public Vector4 TextureCoordinate;
+        public Vector4 TexWeights;
+        public static int SizeInBytes = (3 + 3 + 4 + 4) * sizeof(float);
+
+        VertexDeclaration IVertexType.VertexDeclaration
+        {
+            get { return VertexDeclaration; }
+        }
+        public readonly static VertexDeclaration VertexDeclaration = new VertexDeclaration
+ (
+     new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
+     new VertexElement(sizeof(float) * 3, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0),
+     new VertexElement(sizeof(float) * 6, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 0),
+     new VertexElement(sizeof(float) * 10, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 1)
+ );
+    }
     class MapRender
     {
-         struct VertexMultitextured : IVertexType
-        {
-            public Vector3 Position;
-            public Vector3 Normal;
-            public Vector4 TextureCoordinate;
-            public Vector4 TexWeights;
-            public static int SizeInBytes = (3 + 3 + 4 + 4) * sizeof(float);
-
-            VertexDeclaration IVertexType.VertexDeclaration
-            {
-                get { return VertexDeclaration; }
-            }
-            public readonly static VertexDeclaration VertexDeclaration = new VertexDeclaration
-     (
-         new VertexElement( 0,  VertexElementFormat.Vector3, VertexElementUsage.Position, 0 ),
-         new VertexElement(sizeof(float) * 3, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0),
-         new VertexElement(sizeof(float) * 6, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 0),
-         new VertexElement(sizeof(float) * 10, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 1)
-     );
-        }
+         
 
        private GraphicsDevice device;
 
        private int terrainWidth;
+
+       public int TerrainWidth
+       {
+           get { return terrainWidth; }
+           set { terrainWidth = value; }
+       }
        private int terrainLength;
+
+       public int TerrainLength
+       {
+           get { return terrainLength; }
+           set { terrainLength = value; }
+       }
        private float[,] heightData;
 
        private VertexBuffer terrainVertexBuffer;
        private IndexBuffer terrainIndexBuffer;
 
        private VertexMultitextured[] vertices;
+
+       private VertexMultitextured[] Vertices
+       {
+           get { return vertices; }
+           set { vertices = value; }
+       }
+
        private int[] indices;
        private ContentManager Content;
        private Effect effect;
-       private Texture2D grassTexture, sandTexture, rockTexture, snowTexture;
+       private Texture2D grassTexture, sandTexture, rockTexture, snowTexture, treeTexture;
+
+       private Layer trees;
+
       
 
-        public MapRender( GraphicsDevice GraphicsDevice, List<Texture2D>texture, ContentManager Content,int Scale)
+        public MapRender( GraphicsDevice GraphicsDevice, List<Texture2D>texture, ContentManager Content,int Scale, Texture2D treeMap)
         {
 
 
@@ -60,6 +85,7 @@ namespace Mrowisko
             this.sandTexture = texture[1]; //Content.Load<Texture2D>("sand");
             this.rockTexture = texture[2]; //Content.Load<Texture2D>("rock");
             this.snowTexture = texture[3];//Content.Load<Texture2D>("snow");
+            this.treeTexture = texture[5];
             this.Content = Content;
             effect = Content.Load<Effect>("Effect");
 
@@ -68,7 +94,9 @@ namespace Mrowisko
             SetUpTerrainIndices();
             CalculateNormals();
             CopyToTerrainBuffers();
-
+            this.trees = new Layer(this.treeTexture, device, Content, Scale);
+            trees.GenerateTreePositions(treeMap,this.vertices, this.terrainWidth, this.terrainLength, this.heightData);
+            trees.CreateBillboardVerticesFromList(trees.TreeList);
            
         }
 
@@ -196,7 +224,7 @@ namespace Mrowisko
 
 
 
-        public void DrawTerrain(Matrix currentViewMatrix, Matrix projectionMatrix)
+        public void DrawTerrain(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position)
         {
 
 
@@ -223,6 +251,8 @@ namespace Mrowisko
                 device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertices.Length, 0, indices.Length / 3);
 
             }
+             trees.DrawBillboards(currentViewMatrix, projectionMatrix, position);
+            
         }
     }
 
