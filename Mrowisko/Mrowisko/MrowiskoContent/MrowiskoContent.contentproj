@@ -88,15 +88,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="tree.bmp">
-      <Name>tree</Name>
+    <Compile Include="treeMap.bmp">
+      <Name>treeMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="treeMap.bmp">
-      <Name>treeMap</Name>
+    <Compile Include="tree.png">
+      <Name>tree</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

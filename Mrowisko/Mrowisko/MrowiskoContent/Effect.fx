@@ -13,6 +13,7 @@ float4x4 xWorld;
 float3 xLightDirection;
 float3 xCamPos;
 float3 xAllowedRotDir;
+int scale;
 float xAmbient;
 bool xEnableLighting;
 
@@ -190,15 +191,15 @@ BBVertexToPixel CylBillboardVS(float3 inPos: POSITION0, float2 inTexCoord : TEXC
 
 	float3 center = mul(inPos, xWorld);
 		float3 eyeVector = center - xCamPos;
-
+		int scaling = scale;
 		float3 upVector = xAllowedRotDir;
 		upVector = normalize(upVector);
 	float3 sideVector = cross(eyeVector, upVector);
 		sideVector = normalize(sideVector);
 
 	float3 finalPosition = center;
-		finalPosition += (inTexCoord.x - 0.5f)*sideVector;
-	finalPosition += (1.5f - inTexCoord.y*1.5f)*upVector;
+		finalPosition += (inTexCoord.x - 0.5f)*sideVector*scale;
+	finalPosition += (1.5f - inTexCoord.y*1.5f)*upVector*scale;
 
 	float4 finalPosition4 = float4(finalPosition, 1);
 
@@ -214,6 +215,8 @@ BBPixelToFrame BillboardPS(BBVertexToPixel PSIn) : COLOR0
 {
 	BBPixelToFrame Output = (BBPixelToFrame)0;
 	Output.Color = tex2D(textureSampler, PSIn.TexCoord);
+
+	clip(Output.Color.w - 0.7843f);
 
 	return Output;
 }
