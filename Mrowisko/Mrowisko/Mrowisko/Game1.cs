@@ -1,6 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using KlasyZAnimacja;
+using KlasyZKamera;
+using KlasyZMapa;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -8,16 +8,16 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using KlasyZKamera;
-using KlasyZAnimacja;
-using KlasyZMapa;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 namespace WindowsGame5
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
-    {
+    {   
         GraphicsDeviceManager graphics;
         GraphicsDevice device;
         SpriteBatch spriteBatch;
@@ -26,9 +26,9 @@ namespace WindowsGame5
         MouseState lastMouseState;
         KlasyZMapa.MapRender terrain;
         LoadModel anim;
-        /*
-         * sugerujê aby zrobiæ drug¹ tablicê (z animowanymi modelami)
-         */
+        BoundingFrustum frustum;
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -70,19 +70,24 @@ namespace WindowsGame5
 
 
             terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
-            camera = new FreeCamera(new Vector3(0,50,0),
+
+            camera = new FreeCamera(
+                new Vector3(0,50,0),
                 MathHelper.ToRadians(-45), // Turned around 153 degrees
                 MathHelper.ToRadians(-15), // Pitched up 13 degrees
-            GraphicsDevice);
-            anim = new LoadModel(Content.Load<Model>("anim"),
-              Vector3.Zero,new Vector3(0,MathHelper.Pi,0),
+                GraphicsDevice);
+
+            anim = new LoadModel(
+               Content.Load<Model>("anim"),
+               Vector3.Zero,new Vector3(0,MathHelper.Pi,0),
                new Vector3(10), GraphicsDevice, Content);
+
            anim.Player.StartClip("anim", true);//take 001 to domyœlna nazwa sekwencji filmowej lub nazwa pliku :D
-            lastMouseState = Mouse.GetState();
+           lastMouseState = Mouse.GetState();
 
-            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Up, Vector3.Up, new Vector3(.03f), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Up, Vector3.Up, new Vector3(.05f), GraphicsDevice));
 
-
+           frustum = new BoundingFrustum(camera.View * camera.Projection);
         }
 
         /// <summary>w
@@ -101,6 +106,7 @@ namespace WindowsGame5
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            frustum.Matrix = camera.View * camera.Projection;
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -110,20 +116,21 @@ namespace WindowsGame5
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        // Called when the game should draw itself
+
         protected override void Draw(GameTime gameTime)
         {
             //RasterizerState rasterizerState = new RasterizerState();
            //rasterizerState.FillMode = FillMode.WireFrame;
            //GraphicsDevice.RasterizerState = rasterizerState;   
             foreach (LoadModel model in models)
-                if (camera.BoundingVolumeIsInView(model.BoundingSphere))
+            {   
+                if (frustum.Contains(model.BoundingSphere) != ContainmentType.Disjoint)
+                {
                     model.Draw(camera.View, camera.Projection);
+                }
 
+            }
+            
             terrain.DrawTerrain(camera.View, camera.Projection, ((FreeCamera)camera).Position, camera);
            
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
@@ -139,9 +146,7 @@ namespace WindowsGame5
             float deltaY = (float)lastMouseState.Y - (float)mouseState.Y;
 
                 ((FreeCamera)camera).Rotate(deltaX * .01f, -deltaY * .01f);
-
-            
-           
+      
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             if (keyState.IsKeyDown(Keys.W)) translation += Vector3.Forward;
             if (keyState.IsKeyDown(Keys.S)) translation += Vector3.Backward;
