@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WindowsGame5;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -10,18 +10,23 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using WindowsGame5;
+using KlasyZKamera;
 
-namespace Mrowisko
+namespace KlasyZMapa
 {
-    class Layer
+    public class Layer
     {
         private VertexBuffer treeVertexBuffer;
         private VertexDeclaration treeVertexDeclaration;
         private Effect bbEffect;
         private Texture2D treeTexture;
+        private Model tree;
         private GraphicsDevice device;
         private List<Vector3> treeList;
+        List<LoadModel> models;
         private int scale;
+        private Vector3 scaleM;
 
         public List<Vector3> TreeList
         {
@@ -36,6 +41,18 @@ namespace Mrowisko
             this.bbEffect = Content.Load<Effect>("Effect");
              
             
+
+
+        }
+
+        public Layer(Model tree, GraphicsDevice device, ContentManager Content, Vector3 scale)
+        {
+            this.tree = tree;
+            this.device = device;
+            this.scaleM = scale;
+            this.bbEffect = Content.Load<Effect>("Effect");
+
+
 
 
         }
@@ -96,6 +113,19 @@ namespace Mrowisko
             
         }
 
+        public void CreateModelFromList(List<Vector3> treeList)
+        {
+            models = new List<LoadModel>();
+            Random random = new Random();
+            foreach (Vector3 currentV3 in treeList)
+            {
+                float rand1 = (float)random.Next(1000) / 1000.0f;
+                models.Add(new LoadModel(tree, currentV3, new Vector3(rand1,0,0),this.scaleM,this.device));
+                //models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Up, Vector3.Up, new Vector3(.03f), GraphicsDevice));
+
+            }
+        }
+
 
         public void CreateBillboardVerticesFromList(List<Vector3> treeList)
         {
@@ -142,6 +172,13 @@ namespace Mrowisko
                 device.DrawPrimitives(PrimitiveType.TriangleList, 0, treeVertexBuffer.VertexCount / 3);
 
             }
+        }
+
+        public void DrawModels(Matrix currentViewMatrix, Matrix projectionMatrix, Camera camera)
+        {
+            foreach (LoadModel model in models)
+                if (camera.BoundingVolumeIsInView(model.BoundingSphere))
+                    model.Draw(camera.View, camera.Projection);
         }
 
 

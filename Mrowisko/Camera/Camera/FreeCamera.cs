@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WindowsGame5
+namespace KlasyZKamera
 {
-    class FreeCamera : Camera
+    public class FreeCamera : Camera
     {
 
         public float Yaw { get; set; }

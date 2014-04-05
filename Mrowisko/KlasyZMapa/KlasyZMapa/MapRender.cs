@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WindowsGame5;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -10,11 +9,12 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using KlasyZKamera;
 
-namespace Mrowisko
+namespace KlasyZMapa
 {
 
-    struct VertexMultitextured : IVertexType
+    public struct VertexMultitextured : IVertexType
     {
         public Vector3 Position;
         public Vector3 Normal;
@@ -34,7 +34,7 @@ namespace Mrowisko
      new VertexElement(sizeof(float) * 10, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 1)
  );
     }
-    class MapRender
+    public class MapRender
     {
          
 
@@ -72,11 +72,11 @@ namespace Mrowisko
        private Effect effect;
        private Texture2D grassTexture, sandTexture, rockTexture, snowTexture, treeTexture;
 
-       private Layer trees;
+       private Layer trees, ants;
 
       
 
-        public MapRender( GraphicsDevice GraphicsDevice, List<Texture2D>texture, ContentManager Content,int Scale, Texture2D treeMap)
+        public MapRender( GraphicsDevice GraphicsDevice, List<Texture2D>texture, ContentManager Content,int Scale, Model model)
         {
 
 
@@ -95,7 +95,10 @@ namespace Mrowisko
             CalculateNormals();
             CopyToTerrainBuffers();
             this.trees = new Layer(this.treeTexture, device, Content, Scale);
-            trees.GenerateTreePositions(treeMap,this.vertices, this.terrainWidth, this.terrainLength, this.heightData);
+            this.ants = new Layer(model, device, Content, new Vector3(.03f));
+            trees.GenerateTreePositions(texture[6],this.vertices, this.terrainWidth, this.terrainLength, this.heightData);
+            ants.GenerateTreePositions(texture[6], this.vertices, this.terrainWidth, this.terrainLength, this.heightData);
+            ants.CreateModelFromList(trees.TreeList);
             trees.CreateBillboardVerticesFromList(trees.TreeList);
            
         }
@@ -224,7 +227,7 @@ namespace Mrowisko
 
 
 
-        public void DrawTerrain(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position)
+        public void DrawTerrain(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position, Camera camera)
         {
 
 
@@ -252,6 +255,7 @@ namespace Mrowisko
 
             }
              trees.DrawBillboards(currentViewMatrix, projectionMatrix, position);
+             ants.DrawModels(currentViewMatrix, projectionMatrix, camera);
             
         }
     }
