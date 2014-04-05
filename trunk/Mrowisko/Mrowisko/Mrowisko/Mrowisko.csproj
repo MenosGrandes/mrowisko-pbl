@@ -18,6 +18,7 @@
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -30,7 +31,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -84,6 +84,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AnimacjaPipelineExtension\AnimacjaPipelineExtension.csproj">
+      <Project>{5e77809b-e3a3-472f-a1c9-226157c759aa}</Project>
+      <Name>AnimacjaPipelineExtension</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Camera\Camera\KlasyZKamera.csproj">
       <Project>{6cf85617-ff97-4e13-bd6b-11df8733dec7}</Project>
       <Name>KlasyZKamera</Name>
