@@ -8,7 +8,9 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using KlasyZKamera;
 using KlasyZAnimacja;
+using KlasyZMapa;
 namespace WindowsGame5
 {
     /// <summary>
@@ -22,7 +24,7 @@ namespace WindowsGame5
         List<LoadModel> models = new List<LoadModel>();
         Camera camera;
         MouseState lastMouseState;
-        Mrowisko.MapRender terrain;
+        KlasyZMapa.MapRender terrain;
         LoadModel anim;
         /*
          * sugerujê aby zrobiæ drug¹ tablicê (z animowanymi modelami)
@@ -59,6 +61,7 @@ namespace WindowsGame5
             texture.Add(Content.Load<Texture2D>("snow"));
             texture.Add(Content.Load<Texture2D>("terrain"));
             texture.Add(Content.Load<Texture2D>("tree"));
+            texture.Add(Content.Load<Texture2D>("treeMap"));
 
 
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -66,7 +69,7 @@ namespace WindowsGame5
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-            terrain = new Mrowisko.MapRender( device,texture,  Content,1, Content.Load<Texture2D>("treeMap"));
+            terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
             camera = new FreeCamera(new Vector3(0,50,0),
                 MathHelper.ToRadians(-45), // Turned around 153 degrees
                 MathHelper.ToRadians(-15), // Pitched up 13 degrees
@@ -121,7 +124,7 @@ namespace WindowsGame5
                 if (camera.BoundingVolumeIsInView(model.BoundingSphere))
                     model.Draw(camera.View, camera.Projection);
 
-            terrain.DrawTerrain(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+            terrain.DrawTerrain(camera.View, camera.Projection, ((FreeCamera)camera).Position, camera);
            
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
             base.Draw(gameTime);
