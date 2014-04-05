@@ -119,8 +119,8 @@ namespace KlasyZMapa
             Random random = new Random();
             foreach (Vector3 currentV3 in treeList)
             {
-                float rand1 = (float)random.Next(1000) / 1000.0f;
-                models.Add(new LoadModel(tree, currentV3, new Vector3(rand1,0,0),this.scaleM,this.device));
+                float rand1 = (float)random.Next(36000) / 100.0f;
+                models.Add(new LoadModel(tree, currentV3, new Vector3(0,rand1,0),this.scaleM,this.device));
                 //models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Up, Vector3.Up, new Vector3(.03f), GraphicsDevice));
 
             }
