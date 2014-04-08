@@ -144,7 +144,7 @@ namespace WindowsGame5
            
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
              * */
-            quadTree.Draw( camera.View, camera.Projection, ((FreeCamera)camera).Position);
+            quadTree.Draw( (FreeCamera)camera);
             base.Draw(gameTime);
         }
         void updateCamera(GameTime gameTime)

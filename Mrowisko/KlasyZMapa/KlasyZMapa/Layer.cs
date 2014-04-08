@@ -99,8 +99,8 @@ namespace KlasyZMapa
 
                             for (int currDetail = 0; currDetail < treeDensity; currDetail++)
                             {
-                                float rand1 = (float)random.Next(1000) / 1000.0f;
-                                float rand2 = (float)random.Next(1000) / 1000.0f;
+                                float rand1 = (float)random.Next(10000) / 10000.0f;
+                                float rand2 = (float)random.Next(10000) / 10000.0f;
                                 Vector3 treePos = new Vector3((float)x - rand1, 0, -(float)y - rand2);
                                 treePos.Y = heightData[x, y];
                                 treeList.Add(treePos*scale);
@@ -119,7 +119,7 @@ namespace KlasyZMapa
             Random random = new Random();
             foreach (Vector3 currentV3 in treeList)
             {
-                float rand1 = (float)random.Next(36000) / 100.0f;
+                float rand1 = (float)random.Next(360000) / 100.0f;
                 models.Add(new LoadModel(tree, currentV3, new Vector3(0,rand1,0),this.scaleM,this.device));
                 //models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Up, Vector3.Up, new Vector3(.03f), GraphicsDevice));
 
@@ -174,7 +174,7 @@ namespace KlasyZMapa
             }
         }
 
-        public void DrawModels(Matrix currentViewMatrix, Matrix projectionMatrix, Camera camera)
+        public void DrawModels(FreeCamera camera )
         {
             foreach (LoadModel model in models)
                 if (camera.BoundingVolumeIsInView(model.BoundingSphere))

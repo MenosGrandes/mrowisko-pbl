@@ -54,7 +54,11 @@ namespace KlasyZMapa
            get { return terrainLength; }
            set { terrainLength = value; }
        }
-       public float[,] heightData;
+       public float[,] heightData
+       {
+           get;
+           set;
+       }
 
        private VertexBuffer terrainVertexBuffer;
        private IndexBuffer terrainIndexBuffer;
