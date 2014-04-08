@@ -61,25 +61,31 @@ namespace KlasyZMapa
 
        private VertexMultitextured[] vertices;
 
-       private VertexMultitextured[] Vertices
+       public VertexMultitextured[] Vertices
        {
            get { return vertices; }
            set { vertices = value; }
        }
+       public VertexMultitextured this[int index]
+       {
+           get { return Vertices[index]; }
+           set { Vertices[index] = value; }
+       }
 
-       private int[] indices;
+       public int[] indices;
        private ContentManager Content;
        private Effect effect;
        private Texture2D grassTexture, sandTexture, rockTexture, snowTexture, treeTexture;
 
        private Layer trees, ants;
 
-      
-
-        public MapRender( GraphicsDevice GraphicsDevice, List<Texture2D>texture, ContentManager Content,int Scale, Model model)
-        {
 
 
+       // public MapRender( GraphicsDevice GraphicsDevice, List<Texture2D>texture, currentViewMatrix Content,int Scale, Model model)
+    public MapRender (Texture2D texture,int Scale)    
+    {
+
+            /*
             this.device = GraphicsDevice;
             this.grassTexture = texture[0];
             this.sandTexture = texture[1]; //Content.Load<Texture2D>("sand");
@@ -100,7 +106,16 @@ namespace KlasyZMapa
             ants.GenerateTreePositions(texture[6], this.vertices, this.terrainWidth, this.terrainLength, this.heightData);
             ants.CreateModelFromList(trees.TreeList);
             trees.CreateBillboardVerticesFromList(trees.TreeList);
-           
+             * */
+
+            LoadHeightData(texture);
+            SetUpvertices(Scale);
+            SetUpTerrainIndices();
+            CalculateNormals();
+
+            
+
+
         }
 
         
@@ -185,7 +200,7 @@ namespace KlasyZMapa
                 }
             }
         }
-
+    
         private void CalculateNormals()
         {
             for (int i = 0; i < vertices.Length; i++)
@@ -200,7 +215,7 @@ namespace KlasyZMapa
                 Vector3 side1 = vertices[index1].Position - vertices[index3].Position;
                 Vector3 side2 = vertices[index1].Position - vertices[index2].Position;
                 Vector3 normal = Vector3.Cross(side1, side2);
-
+                normal.Normalize();
                 vertices[index1].Normal += normal;
                 vertices[index2].Normal += normal;
                 vertices[index3].Normal += normal;
@@ -211,8 +226,8 @@ namespace KlasyZMapa
         }
 
 
-      
 
+        /*
         private void CopyToTerrainBuffers()
         {
             terrainVertexBuffer = new VertexBuffer(device, VertexMultitextured.VertexDeclaration, vertices.Length,
@@ -258,9 +273,10 @@ namespace KlasyZMapa
              ants.DrawModels(currentViewMatrix, projectionMatrix, camera);
             
         }
+    */
     }
 
-
+        
     }
 
     

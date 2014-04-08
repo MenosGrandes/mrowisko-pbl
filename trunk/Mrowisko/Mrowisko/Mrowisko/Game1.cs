@@ -24,10 +24,10 @@ namespace WindowsGame5
         List<LoadModel> models = new List<LoadModel>();
         Camera camera;
         MouseState lastMouseState;
-        KlasyZMapa.MapRender terrain;
+        //KlasyZMapa.MapRender terrain;
         LoadModel anim;
-        BoundingFrustum frustum;
-
+        //BoundingFrustum frustum;
+         QuadTree quadTree;
 
         public Game1()
         {
@@ -44,7 +44,7 @@ namespace WindowsGame5
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            this.IsFixedTimeStep = false;
             base.Initialize();
         }
 
@@ -63,20 +63,23 @@ namespace WindowsGame5
             texture.Add(Content.Load<Texture2D>("tree"));
             texture.Add(Content.Load<Texture2D>("treeMap"));
 
-
+            
             // Create a new SpriteBatch, which can be used to draw textures.
             device = GraphicsDevice;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-            terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
+           // terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
 
             camera = new FreeCamera(
                 new Vector3(0,50,0),
                 MathHelper.ToRadians(-45), // Turned around 153 degrees
                 MathHelper.ToRadians(-15), // Pitched up 13 degrees
                 GraphicsDevice);
+            quadTree = new QuadTree(Vector3.Zero,texture,device,1,Content);
 
+            
+            /*
             anim = new LoadModel(
                Content.Load<Model>("anim"),
                Vector3.Zero,new Vector3(0,MathHelper.Pi,0),
@@ -88,6 +91,7 @@ namespace WindowsGame5
            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Up, Vector3.Up, new Vector3(.05f), GraphicsDevice));
 
            frustum = new BoundingFrustum(camera.View * camera.Projection);
+             */
         }
 
         /// <summary>w
@@ -106,13 +110,18 @@ namespace WindowsGame5
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            frustum.Matrix = camera.View * camera.Projection;
+            //frustum.Matrix = camera.View * camera.Projection;
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             // TODO: Add your update logic here
-            updateAnt(gameTime);
+            //updateAnt(gameTime);
             updateCamera(gameTime);
+            quadTree.View =camera.View;
+           quadTree.Projection = camera.Projection;
+           quadTree.CameraPosition = ((FreeCamera)camera).Position;
+            quadTree.Update(gameTime);
+            
             base.Update(gameTime);
         }
 
@@ -122,7 +131,7 @@ namespace WindowsGame5
             //RasterizerState rasterizerState = new RasterizerState();
            //rasterizerState.FillMode = FillMode.WireFrame;
            //GraphicsDevice.RasterizerState = rasterizerState;   
-            foreach (LoadModel model in models)
+            /*foreach (LoadModel model in models)
             {   
                 if (frustum.Contains(model.BoundingSphere) != ContainmentType.Disjoint)
                 {
@@ -134,6 +143,8 @@ namespace WindowsGame5
             terrain.DrawTerrain(camera.View, camera.Projection, ((FreeCamera)camera).Position, camera);
            
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+             * */
+            quadTree.Draw( camera.View, camera.Projection, ((FreeCamera)camera).Position);
             base.Draw(gameTime);
         }
         void updateCamera(GameTime gameTime)
@@ -167,7 +178,7 @@ namespace WindowsGame5
         {            KeyboardState keyState = Keyboard.GetState();
 
 
-       // models[0].Position += Vector3.Forward;
+       /*
 
             if (keyState.IsKeyDown(Keys.Up) ) models[0].Position+= Vector3.Forward;
             if (keyState.IsKeyDown(Keys.Down)) models[0].Position+= Vector3.Backward;
@@ -179,7 +190,7 @@ namespace WindowsGame5
             
             double th=terrain.heightData[Math.Abs((int)models[0].Position.X), Math.Abs((int)models[0].Position.Z)];
             models[0].Position = new Vector3(models[0].Position.X, (float)th,models[0].Position.Z );
-           
+         */  
         }
     }
 }
