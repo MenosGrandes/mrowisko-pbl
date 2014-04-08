@@ -41,9 +41,13 @@ namespace KlasyZMapa
         internal BoundingFrustum ViewFrustrum { get; set; }
         Effect effect;
         List<Texture2D> textures;
+        private Layer trees;
+        private Layer ants;
         public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale,ContentManager Content)
         {
 
+
+            Model model = Content.Load<Model>("mrowka_01");
             this.textures = textures;
             effect = Content.Load<Effect>("Effect");
             Device = device;
@@ -58,6 +62,13 @@ namespace KlasyZMapa
             //Construct an array large enough to hold all of the indices we'll need.
             Indices = _vertices.indices;
 
+
+            this.trees = new Layer(textures[5], device, Content, scale);
+            //this.ants = new Layer(model, device, Content, new Vector3(.03f));
+            trees.GenerateTreePositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
+            //ants.GenerateTreePositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
+           // ants.CreateModelFromList(trees.TreeList);
+            trees.CreateBillboardVerticesFromList(trees.TreeList);
            
         }
         public void Update(GameTime gameTime)
@@ -77,7 +88,7 @@ namespace KlasyZMapa
             _buffers.UpdateIndexBuffer(Indices, IndexCount);
             _buffers.SwapBuffer();
         }
-        public void Draw(Matrix currentViewMatrix, Matrix projectionMatrix,Vector3 position)
+        public void Draw(KlasyZKamera.FreeCamera camera)
         {
 
             //RasterizerState rasterizerState = new RasterizerState();
@@ -85,7 +96,7 @@ namespace KlasyZMapa
             //Device.RasterizerState = rasterizerState;
 
 
-            ViewFrustrum = new BoundingFrustum(currentViewMatrix * projectionMatrix);
+            ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
 
             this.Device.SetVertexBuffer(_buffers.VertexBuffer);
             this.Device.Indices = _buffers.IndexBuffer;
@@ -98,8 +109,8 @@ namespace KlasyZMapa
             effect.Parameters["xTexture3"].SetValue(textures[3]);
             Matrix worldMatrix = Matrix.Identity;
             effect.Parameters["xWorld"].SetValue(worldMatrix);
-            effect.Parameters["xView"].SetValue(currentViewMatrix);
-            effect.Parameters["xProjection"].SetValue(projectionMatrix);
+            effect.Parameters["xView"].SetValue(camera.View);
+            effect.Parameters["xProjection"].SetValue(camera.Projection);
            effect.Parameters["xEnableLighting"].SetValue(true);
             effect.Parameters["xAmbient"].SetValue(2.4f);
             effect.Parameters["xLightDirection"].SetValue(new Vector3(0.5f, 1, 0.5f));
@@ -109,8 +120,9 @@ namespace KlasyZMapa
 
                 Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
 
-            }        
-        
+            }
+             trees.DrawBillboards(camera.View, camera.Projection, camera.Position);
+            // ants.DrawModels(camera);
     
     
 
