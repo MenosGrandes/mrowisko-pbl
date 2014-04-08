@@ -76,7 +76,7 @@ namespace WindowsGame5
                 MathHelper.ToRadians(-45), // Turned around 153 degrees
                 MathHelper.ToRadians(-15), // Pitched up 13 degrees
                 GraphicsDevice);
-            quadTree = new QuadTree(Vector3.Zero,texture,device,1,Content);
+            quadTree = new QuadTree(Vector3.Zero,texture,device,10,Content);
 
             
             /*
