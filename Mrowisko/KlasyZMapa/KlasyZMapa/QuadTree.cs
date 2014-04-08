@@ -121,7 +121,7 @@ namespace KlasyZMapa
                 Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
 
             }
-            // trees.DrawBillboards(camera.View, camera.Projection, camera.Position);
+             trees.DrawBillboards(camera.View, camera.Projection, camera.Position);
              ants.DrawModels(camera);
     
     
