@@ -64,11 +64,11 @@ namespace KlasyZMapa
 
 
             this.trees = new Layer(textures[5], device, Content, scale);
-            //this.ants = new Layer(model, device, Content, new Vector3(.03f));
+            this.ants = new Layer(model, device, Content, new Vector3(.03f));
             trees.GenerateTreePositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
-            //ants.GenerateTreePositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
-           // ants.CreateModelFromList(trees.TreeList);
-            trees.CreateBillboardVerticesFromList(trees.TreeList);
+           ants.GenerateTreePositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
+            ants.CreateModelFromList(trees.TreeList);
+            trees.CreateBillboardVerticesFromList();
            
         }
         public void Update(GameTime gameTime)
@@ -121,8 +121,8 @@ namespace KlasyZMapa
                 Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
 
             }
-             trees.DrawBillboards(camera.View, camera.Projection, camera.Position);
-            // ants.DrawModels(camera);
+            // trees.DrawBillboards(camera.View, camera.Projection, camera.Position);
+             ants.DrawModels(camera);
     
     
 
