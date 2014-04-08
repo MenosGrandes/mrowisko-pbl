@@ -27,6 +27,7 @@ namespace KlasyZMapa
         List<LoadModel> models;
         private int scale;
         private Vector3 scaleM;
+        private ContentManager content;
 
         public List<Vector3> TreeList
         {
@@ -39,7 +40,7 @@ namespace KlasyZMapa
             this.device = device;
             this.scale = scale;
             this.bbEffect = Content.Load<Effect>("Effect");
-             
+            this.content = Content;
             
 
 
@@ -109,6 +110,7 @@ namespace KlasyZMapa
                     }
                 }
             }
+            
 
             
         }
@@ -117,40 +119,41 @@ namespace KlasyZMapa
         {
             models = new List<LoadModel>();
             Random random = new Random();
-            foreach (Vector3 currentV3 in treeList)
+           // foreach (Vector3 currentV3 in treeList)
             {
                 float rand1 = (float)random.Next(360000) / 100.0f;
-                models.Add(new LoadModel(tree, currentV3, new Vector3(0,rand1,0),this.scaleM,this.device));
-                //models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Up, Vector3.Up, new Vector3(.03f), GraphicsDevice));
+                models.Add(new LoadModel(tree, new Vector3(30,40,30), new Vector3(0, 200, 180), this.scaleM, this.device));
+               
 
             }
         }
 
 
-        public void CreateBillboardVerticesFromList(List<Vector3> treeList)
+        public void CreateBillboardVerticesFromList()
         {
             VertexPositionTexture[] billboardVertices = new VertexPositionTexture[treeList.Count * 6];
             int i = 0;
             foreach (Vector3 currentV3 in treeList)
             {
 
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 0));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 0));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 1));
-
+               
 
 
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 0));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 1));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 1));
 
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 0));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 0));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 1));
+
+
             }
+            
+           
 
-            VertexDeclaration vertexDeclaration = VertexPositionTexture.VertexDeclaration;
-
-            treeVertexBuffer = new VertexBuffer(device, vertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
+            treeVertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.None);
             treeVertexBuffer.SetData(billboardVertices);
-           // treeVertexDeclaration = vertexDeclaration;
         }
 
         public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position)
@@ -160,7 +163,7 @@ namespace KlasyZMapa
             bbEffect.Parameters["xView"].SetValue(currentViewMatrix);
             bbEffect.Parameters["xProjection"].SetValue(projectionMatrix);
             bbEffect.Parameters["xCamPos"].SetValue(position);
-            bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
+            bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, -1, 0));
             bbEffect.Parameters["scale"].SetValue(this.scale);
             bbEffect.Parameters["xBillboardTexture"].SetValue(treeTexture);
 
