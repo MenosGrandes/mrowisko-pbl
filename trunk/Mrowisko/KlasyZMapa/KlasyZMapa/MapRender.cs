@@ -165,7 +165,7 @@ namespace KlasyZMapa
             {
                 for (int y = 0; y < terrainLength; y++)
                 {
-                    vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, -y * Scale);
+                    vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, y * Scale);
                     vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 10.0f;
                     vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 10.0f;
 

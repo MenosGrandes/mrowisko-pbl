@@ -72,7 +72,7 @@ namespace WindowsGame5
            // terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
 
             camera = new FreeCamera(
-                new Vector3(0,50,0),
+                new Vector3(0,-50,0),
                 MathHelper.ToRadians(-45), // Turned around 153 degrees
                 MathHelper.ToRadians(-15), // Pitched up 13 degrees
                 GraphicsDevice);
@@ -88,7 +88,7 @@ namespace WindowsGame5
            anim.Player.StartClip("anim", true);//take 001 to domyœlna nazwa sekwencji filmowej lub nazwa pliku :D
            lastMouseState = Mouse.GetState();
 
-           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.05f), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice));
 
              
         }

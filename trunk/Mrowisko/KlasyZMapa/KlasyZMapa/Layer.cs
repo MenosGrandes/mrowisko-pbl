@@ -152,8 +152,8 @@ namespace KlasyZMapa
             
            
 
-            treeVertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
-            treeVertexBuffer.SetData(billboardVertices);
+           // treeVertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
+          //  treeVertexBuffer.SetData(billboardVertices);
         }
 
         public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position)
@@ -172,7 +172,7 @@ namespace KlasyZMapa
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                device.DrawPrimitives(PrimitiveType.TriangleList, 0, treeVertexBuffer.VertexCount / 3);
+               // device.DrawPrimitives(PrimitiveType.TriangleList, 0, treeVertexBuffer.VertexCount / 3);
 
             }
         }

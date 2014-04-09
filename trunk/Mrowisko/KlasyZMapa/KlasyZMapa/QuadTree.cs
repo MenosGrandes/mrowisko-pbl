@@ -10,7 +10,7 @@ namespace KlasyZMapa
 {
     public class QuadTree
     {
-        public int MinimumDepth = 6;
+        public int MinimumDepth = 7;
         public int IndexCount { get; set; }
         public BasicEffect Effect;
         private QuadNode _rootNode;
