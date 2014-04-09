@@ -59,6 +59,11 @@ namespace KlasyZMapa
            get;
            set;
        }
+       public decimal[,] getHeight
+       {
+           get;
+           set;
+       }
 
        private VertexBuffer terrainVertexBuffer;
        private IndexBuffer terrainIndexBuffer;
@@ -137,28 +142,30 @@ namespace KlasyZMapa
 
             heightData = new float[terrainWidth, terrainLength];
             for (int x = 0; x < terrainWidth; x++)
-                for (int y = 0; y < terrainLength; y++)
+                for (int y = 0; y < terrainLength ; y++)
                 {
-                    heightData[x, y] = heightMapColors[x + y * terrainWidth].R;
+                    heightData[x, y] = heightMapColors[x + y * terrainWidth].R ;
                     if (heightData[x, y] < minimumHeight) minimumHeight = heightData[x, y];
                     if (heightData[x, y] > maximumHeight) maximumHeight = heightData[x, y];
                 }
 
             for (int x = 0; x < terrainWidth; x++)
                 for (int y = 0; y < terrainLength; y++)
+                {
                     heightData[x, y] = (heightData[x, y] - minimumHeight) / (maximumHeight - minimumHeight) * 30.0f;
+                    
+                }
         }
 
 
         private void SetUpvertices(int Scale)
         {
             vertices = new VertexMultitextured[terrainWidth * terrainLength];
-
             for (int x = 0; x < terrainWidth; x++)
             {
                 for (int y = 0; y < terrainLength; y++)
                 {
-                    vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale*5, -y * Scale);
+                    vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, -y * Scale);
                     vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 10.0f;
                     vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 10.0f;
 
@@ -219,7 +226,7 @@ namespace KlasyZMapa
                 Vector3 side1 = vertices[index1].Position - vertices[index3].Position;
                 Vector3 side2 = vertices[index1].Position - vertices[index2].Position;
                 Vector3 normal = Vector3.Cross(side1, side2);
-                normal.Normalize();
+               
                 vertices[index1].Normal += normal;
                 vertices[index2].Normal += normal;
                 vertices[index3].Normal += normal;
@@ -230,54 +237,6 @@ namespace KlasyZMapa
         }
 
 
-
-        /*
-        private void CopyToTerrainBuffers()
-        {
-            terrainVertexBuffer = new VertexBuffer(device, VertexMultitextured.VertexDeclaration, vertices.Length,
-                BufferUsage.None);
-
-
-            terrainVertexBuffer.SetData<VertexMultitextured>(vertices);
-
-            terrainIndexBuffer = new IndexBuffer(device, typeof(int), indices.Length, BufferUsage.WriteOnly);
-            terrainIndexBuffer.SetData(indices);
-        }
-
-
-
-        public void DrawTerrain(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position, Camera camera)
-        {
-
-
-
-            effect.CurrentTechnique = effect.Techniques["MultiTextured"];
-            effect.Parameters["xTexture0"].SetValue(sandTexture);
-            effect.Parameters["xTexture1"].SetValue(grassTexture);
-            effect.Parameters["xTexture2"].SetValue(rockTexture);
-            effect.Parameters["xTexture3"].SetValue(snowTexture);
-            Matrix worldMatrix = Matrix.Identity;
-            effect.Parameters["xWorld"].SetValue(worldMatrix);
-            effect.Parameters["xView"].SetValue(currentViewMatrix);
-            effect.Parameters["xProjection"].SetValue(projectionMatrix);
-           effect.Parameters["xEnableLighting"].SetValue(true);
-            effect.Parameters["xAmbient"].SetValue(2.4f);
-            effect.Parameters["xLightDirection"].SetValue(new Vector3(0.5f, 1, 0.5f));
-             foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-
-                device.Indices = terrainIndexBuffer;
-                device.SetVertexBuffer(terrainVertexBuffer);
-
-                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertices.Length, 0, indices.Length / 3);
-
-            }
-             trees.DrawBillboards(currentViewMatrix, projectionMatrix, position);
-             ants.DrawModels(currentViewMatrix, projectionMatrix, camera);
-            
-        }
-    */
     }
 
         

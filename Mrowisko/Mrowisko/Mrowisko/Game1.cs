@@ -76,10 +76,10 @@ namespace WindowsGame5
                 MathHelper.ToRadians(-45), // Turned around 153 degrees
                 MathHelper.ToRadians(-15), // Pitched up 13 degrees
                 GraphicsDevice);
-            quadTree = new QuadTree(Vector3.Zero,texture,device,10,Content);
+            quadTree = new QuadTree(Vector3.Zero,texture,device,1,Content,(FreeCamera)camera);
 
             
-            /*
+            
             anim = new LoadModel(
                Content.Load<Model>("anim"),
                Vector3.Zero,new Vector3(0,MathHelper.Pi,0),
@@ -88,10 +88,9 @@ namespace WindowsGame5
            anim.Player.StartClip("anim", true);//take 001 to domyœlna nazwa sekwencji filmowej lub nazwa pliku :D
            lastMouseState = Mouse.GetState();
 
-           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Up, Vector3.Up, new Vector3(.05f), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.05f), GraphicsDevice));
 
-           frustum = new BoundingFrustum(camera.View * camera.Projection);
-             */
+             
         }
 
         /// <summary>w
@@ -110,12 +109,10 @@ namespace WindowsGame5
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            //frustum.Matrix = camera.View * camera.Projection;
-            // Allows the game to exit
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            // TODO: Add your update logic here
-            //updateAnt(gameTime);
+            updateAnt(gameTime);
             updateCamera(gameTime);
             quadTree.View =camera.View;
            quadTree.Projection = camera.Projection;
@@ -128,22 +125,21 @@ namespace WindowsGame5
 
         protected override void Draw(GameTime gameTime)
         {
-            //RasterizerState rasterizerState = new RasterizerState();
-           //rasterizerState.FillMode = FillMode.WireFrame;
-           //GraphicsDevice.RasterizerState = rasterizerState;   
-            /*foreach (LoadModel model in models)
+           // RasterizerState rasterizerState = new RasterizerState();
+          // rasterizerState.FillMode = FillMode.WireFrame;
+          // GraphicsDevice.RasterizerState = rasterizerState;   
+            foreach (LoadModel model in models)
             {   
-                if (frustum.Contains(model.BoundingSphere) != ContainmentType.Disjoint)
+                if (quadTree.ViewFrustrum.Contains(model.BoundingSphere) != ContainmentType.Disjoint)
                 {
                     model.Draw(camera.View, camera.Projection);
                 }
 
             }
             
-            terrain.DrawTerrain(camera.View, camera.Projection, ((FreeCamera)camera).Position, camera);
            
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-             * */
+             
             quadTree.Draw( (FreeCamera)camera);
             base.Draw(gameTime);
         }
@@ -159,10 +155,10 @@ namespace WindowsGame5
                 ((FreeCamera)camera).Rotate(deltaX * .01f, -deltaY * .01f);
       
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
-            if (keyState.IsKeyDown(Keys.W)) translation += Vector3.Forward;
-            if (keyState.IsKeyDown(Keys.S)) translation += Vector3.Backward;
-            if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left;
-            if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right;
+            if (keyState.IsKeyDown(Keys.W)) translation += Vector3.Forward*1;
+            if (keyState.IsKeyDown(Keys.S)) translation += Vector3.Backward * 1;
+            if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * 1;
+            if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * 1;
             // Move 3 units per millisecond, independent of frame rate
             translation *= 0.5f * (float)gameTime.ElapsedGameTime.
             TotalMilliseconds;
@@ -178,19 +174,16 @@ namespace WindowsGame5
         {            KeyboardState keyState = Keyboard.GetState();
 
 
-       /*
+      
 
-            if (keyState.IsKeyDown(Keys.Up) ) models[0].Position+= Vector3.Forward;
-            if (keyState.IsKeyDown(Keys.Down)) models[0].Position+= Vector3.Backward;
-            if (keyState.IsKeyDown(Keys.Left)) models[0].Position+= Vector3.Left;
-            if (keyState.IsKeyDown(Keys.Right)) models[0].Position+= Vector3.Right;
-            
-            
-            
-            
-            double th=terrain.heightData[Math.Abs((int)models[0].Position.X), Math.Abs((int)models[0].Position.Z)];
-            models[0].Position = new Vector3(models[0].Position.X, (float)th,models[0].Position.Z );
-         */  
+            if (keyState.IsKeyDown(Keys.Up) ) models[0].Position+= Vector3.Forward*100;
+            if (keyState.IsKeyDown(Keys.Down)) models[0].Position += Vector3.Backward * 100;
+            if (keyState.IsKeyDown(Keys.Left)) models[0].Position += Vector3.Left * 100;
+            if (keyState.IsKeyDown(Keys.Right)) models[0].Position += Vector3.Right * 100;
+           // double th =
+            //double th=quadTree.Vertices.heightData[Math.Abs((int)models[0].Position.X), Math.Abs((int)models[0].Position.Z)];
+           // models[0].Position =  quadTree.Vertices.Vertices[10].Position;//new Vector3(models[0].Position.X, (float)th,models[0].Position.Z );
+           // models[0].Position.Y = quadTree.Vertices.Vertices[10].Position.Y *-1;
         }
     }
 }

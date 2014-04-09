@@ -38,15 +38,15 @@ namespace KlasyZMapa
             set { _cameraPosition = value; }
         }
 
-        internal BoundingFrustum ViewFrustrum { get; set; }
+        public BoundingFrustum ViewFrustrum { get; set; }
         Effect effect;
         List<Texture2D> textures;
         private Layer trees;
         private Layer ants;
-        public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale,ContentManager Content)
+        public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale,ContentManager Content,KlasyZKamera.FreeCamera camera)
         {
 
-
+            ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
             Model model = Content.Load<Model>("mrowka_01");
             this.textures = textures;
             effect = Content.Load<Effect>("Effect");
@@ -64,25 +64,19 @@ namespace KlasyZMapa
 
 
             this.trees = new Layer(textures[5], device, Content, scale);
-            this.ants = new Layer(model, device, Content, new Vector3(.03f));
+          //  this.ants = new Layer(model, device, Content, new Vector3(.03f));
             trees.GenerateTreePositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
-           ants.GenerateTreePositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
-            ants.CreateModelFromList(trees.TreeList);
+          //  ants.GenerateTreePositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
+           // ants.CreateModelFromList(trees.TreeList);
             trees.CreateBillboardVerticesFromList();
            
         }
         public void Update(GameTime gameTime)
         {
             //Only update if the camera position has changed
-            if (_cameraPosition == _lastCameraPosition)
-                return;
-
-
-            _lastCameraPosition = _cameraPosition;
             IndexCount = 0;
 
             _rootNode.EnforceMinimumDepth();
-            _rootNode.SetActiveVertices();
             _rootNode.SetActiveVertices();
 
             _buffers.UpdateIndexBuffer(Indices, IndexCount);
@@ -122,7 +116,7 @@ namespace KlasyZMapa
 
             }
              trees.DrawBillboards(camera.View, camera.Projection, camera.Position);
-             ants.DrawModels(camera);
+            // ants.DrawModels(camera);
     
     
 
