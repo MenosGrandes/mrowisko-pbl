@@ -79,30 +79,31 @@ namespace KlasyZMapa
                     float terrainHeight = heightData[x, y];
                     if ((terrainHeight > 5) && (terrainHeight < 20))
                     {
-                        float flatness = Vector3.Dot(terrainVertices[x + y * terrainWidth].Normal, new Vector3(0, 1, 0));
+                       
+                        float flatness = Vector3.Dot(terrainVertices[x + y * terrainWidth].Normal, new Vector3(0, -1, 0));
                         float minFlatness = (float)Math.Cos(MathHelper.ToRadians(15));
                         if (flatness > minFlatness)
                         {
-
+                           
                             float relx = (float)x / (float)terrainWidth;
                             float rely = (float)y / (float)terrainLength;
 
                             float noiseValueAtCurrentPosition = noiseData[(int)(relx * treeMap.Width), (int)(rely * treeMap.Height)];
                             float treeDensity;
                             if (noiseValueAtCurrentPosition > 200)
-                                treeDensity = 5;
-                            else if (noiseValueAtCurrentPosition > 150)
-                                treeDensity = 4;
-                            else if (noiseValueAtCurrentPosition > 100)
                                 treeDensity = 3;
+                            else if (noiseValueAtCurrentPosition > 150)
+                                treeDensity = 2;
+                            else if (noiseValueAtCurrentPosition > 100)
+                                treeDensity = 1;
                             else
                                 treeDensity = 0;
 
                             for (int currDetail = 0; currDetail < treeDensity; currDetail++)
                             {
-                                float rand1 = (float)random.Next(10) / 10.0f;
-                                float rand2 = (float)random.Next(10) / 10.0f;
-                                Vector3 treePos = new Vector3((float)x - rand1, 0, -(float)y - rand2);
+                                float rand1 = (float)random.Next(1000000) / 100000000.0f;
+                                float rand2 = (float)random.Next(1000000) / 10000000.0f;
+                                Vector3 treePos = new Vector3((float)x - rand1, 0, (float)y - rand2);
                                 treePos.Y = heightData[x, y];
                                 treeList.Add(treePos*scale);
                             }
@@ -110,8 +111,8 @@ namespace KlasyZMapa
                     }
                 }
             }
-            
 
+           
             
         }
 
@@ -122,15 +123,17 @@ namespace KlasyZMapa
             foreach (Vector3 currentV3 in treeList)
             {
                 float rand1 = (float)random.Next(360000) / 100.0f;
-                models.Add(new LoadModel(tree, currentV3, new Vector3(0, 200, 180), this.scaleM, this.device));
+                models.Add(new LoadModel(tree, currentV3, new Vector3(0, 200, 180), new Vector3(3.0f), this.device));
                
 
             }
+            Console.WriteLine(models.Count);
         }
 
 
         public void CreateBillboardVerticesFromList()
         {
+            
             VertexPositionTexture[] billboardVertices = new VertexPositionTexture[treeList.Count * 6];
             int i = 0;
             foreach (Vector3 currentV3 in treeList)
@@ -149,11 +152,11 @@ namespace KlasyZMapa
 
 
             }
-            
-           
 
-           // treeVertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
-          //  treeVertexBuffer.SetData(billboardVertices);
+
+           
+            treeVertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
+            treeVertexBuffer.SetData(billboardVertices);
         }
 
         public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position)
@@ -163,7 +166,7 @@ namespace KlasyZMapa
             bbEffect.Parameters["xView"].SetValue(currentViewMatrix);
             bbEffect.Parameters["xProjection"].SetValue(projectionMatrix);
             bbEffect.Parameters["xCamPos"].SetValue(position);
-            bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, -1, 0));
+            bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
             bbEffect.Parameters["scale"].SetValue(this.scale);
             bbEffect.Parameters["xBillboardTexture"].SetValue(treeTexture);
 
