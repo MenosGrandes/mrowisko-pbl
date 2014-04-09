@@ -72,11 +72,11 @@ namespace WindowsGame5
            // terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
 
             camera = new FreeCamera(
-                new Vector3(0,-50,0),
+                new Vector3(0,5000,0),
                 MathHelper.ToRadians(-45), // Turned around 153 degrees
                 MathHelper.ToRadians(-15), // Pitched up 13 degrees
                 GraphicsDevice);
-            quadTree = new QuadTree(Vector3.Zero,texture,device,1,Content,(FreeCamera)camera);
+            quadTree = new QuadTree(Vector3.Zero,texture,device,100,Content,(FreeCamera)camera);
 
             
             
@@ -88,7 +88,7 @@ namespace WindowsGame5
            anim.Player.StartClip("anim", true);//take 001 to domyœlna nazwa sekwencji filmowej lub nazwa pliku :D
            lastMouseState = Mouse.GetState();
 
-           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(2.05f), GraphicsDevice));
 
              
         }
@@ -155,10 +155,10 @@ namespace WindowsGame5
                 ((FreeCamera)camera).Rotate(deltaX * .01f, -deltaY * .01f);
       
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
-            if (keyState.IsKeyDown(Keys.W)) translation += Vector3.Forward*1;
-            if (keyState.IsKeyDown(Keys.S)) translation += Vector3.Backward * 1;
-            if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * 1;
-            if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * 1;
+            if (keyState.IsKeyDown(Keys.W)) translation += Vector3.Forward*111;
+            if (keyState.IsKeyDown(Keys.S)) translation += Vector3.Backward * 111;
+            if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * 111;
+            if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * 111;
             // Move 3 units per millisecond, independent of frame rate
             translation *= 0.5f * (float)gameTime.ElapsedGameTime.
             TotalMilliseconds;
