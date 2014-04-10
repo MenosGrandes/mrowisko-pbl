@@ -281,6 +281,8 @@ namespace KlasyZMapa
         }
         internal void SetActiveVertices()
         {
+            if (_parentTree.Cull && !IsInView)
+                return;
             if (_isSplit && this.HasChildren)
             {
                 ChildTopLeft.SetActiveVertices();
@@ -380,6 +382,15 @@ namespace KlasyZMapa
                 _isSplit = false;
             }
         }
+        public bool Contains(BoundingFrustum boundingFrustrum)
+        {
+            return Bounds.Intersects(boundingFrustrum);
+        }
+        public bool IsInView
+        {
+            get { return Contains(_parentTree.ViewFrustrum); }
+        }
+
 
     }
 }

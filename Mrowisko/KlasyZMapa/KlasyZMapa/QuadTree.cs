@@ -10,8 +10,9 @@ namespace KlasyZMapa
 {
     public class QuadTree
     {
+       
         public int MinimumDepth = 7;
-        public int IndexCount { get; set; }
+        public int IndexCount { get; private set; }
         public BasicEffect Effect;
         private QuadNode _rootNode;
         private MapRender _vertices;
@@ -38,11 +39,12 @@ namespace KlasyZMapa
             set { _cameraPosition = value; }
         }
 
-        public BoundingFrustum ViewFrustrum { get; set; }
+        public BoundingFrustum ViewFrustrum { get; private set; }
         Effect effect;
         List<Texture2D> textures;
         private Layer trees;
         private Layer ants;
+        public bool Cull { get; set; }
         public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale,ContentManager Content,KlasyZKamera.FreeCamera camera)
         {
 
@@ -90,7 +92,7 @@ namespace KlasyZMapa
             //Device.RasterizerState = rasterizerState;
 
 
-            ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
+            ViewFrustrum.Matrix = camera.View * camera.Projection;
 
             this.Device.SetVertexBuffer(_buffers.VertexBuffer);
             this.Device.Indices = _buffers.IndexBuffer;
