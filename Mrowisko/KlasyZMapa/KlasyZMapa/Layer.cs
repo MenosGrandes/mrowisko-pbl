@@ -92,9 +92,9 @@ namespace KlasyZMapa
                             float treeDensity;
                             if (noiseValueAtCurrentPosition > 200)
                                 treeDensity = 3;
-                            else if (noiseValueAtCurrentPosition > 150)
-                                treeDensity = 2;
                             else if (noiseValueAtCurrentPosition > 100)
+                                treeDensity = 2;
+                            else if (noiseValueAtCurrentPosition > 1)
                                 treeDensity = 1;
                             else
                                 treeDensity = 0;
