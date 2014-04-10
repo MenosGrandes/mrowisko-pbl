@@ -77,7 +77,7 @@ namespace WindowsGame5
                 MathHelper.ToRadians(-15), // Pitched up 13 degrees
                 GraphicsDevice);
             quadTree = new QuadTree(Vector3.Zero,texture,device,100,Content,(FreeCamera)camera);
-
+            quadTree.Cull = true;
             
             
             anim = new LoadModel(
@@ -148,6 +148,10 @@ namespace WindowsGame5
             // Get the new keyboard and mouse state
             MouseState mouseState = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
+
+
+
+
             // Determine how much the camera should turn
             float deltaX = (float)lastMouseState.X - (float)mouseState.X;
             float deltaY = (float)lastMouseState.Y - (float)mouseState.Y;

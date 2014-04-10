@@ -123,7 +123,7 @@ namespace KlasyZMapa
             foreach (Vector3 currentV3 in treeList)
             {
                 float rand1 = (float)random.Next(360000) / 100.0f;
-                models.Add(new LoadModel(tree, currentV3, new Vector3(0, 200, 180), new Vector3(3.0f), this.device));
+                models.Add(new LoadModel(tree, currentV3, new Vector3(0, 0, 0), new Vector3(3.0f), this.device));
                
 
             }
