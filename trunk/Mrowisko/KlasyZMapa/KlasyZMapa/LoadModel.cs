@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using Animations;
 namespace Map
 {
-    class LoadModel
+   public class LoadModel
     {
         public Vector3 Position { get; set; }
         public Vector3 Rotation { get; set; }

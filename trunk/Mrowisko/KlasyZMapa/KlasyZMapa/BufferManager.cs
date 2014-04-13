@@ -36,9 +36,12 @@ namespace Map
 
         internal void UpdateIndexBuffer(int[] indices, int indexCount)
         {
-            int inactive = _active == 0 ? 1 : 0;
+            if (indices.Length > 0)
+            {
+                int inactive = _active == 0 ? 1 : 0;
 
-            _IndexBuffers[inactive].SetData(indices, 0, indexCount);
+                _IndexBuffers[inactive].SetData(indices, 0, indexCount);
+            }
 
         }
 

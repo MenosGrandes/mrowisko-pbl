@@ -7,11 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-<<<<<<< .mine
 using Animations;
-=======
-using AnimationManager;
->>>>>>> .r33
+
 ///
 ///przestrzeń nazw z projektu Content Pipeline Extension
 ///musi być tak bo inaczej nie widać includów związanych z Pipeline

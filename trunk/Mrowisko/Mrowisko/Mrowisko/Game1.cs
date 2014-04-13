@@ -21,12 +21,12 @@ namespace AntHill
         GraphicsDeviceManager graphics;
         GraphicsDevice device;
         SpriteBatch spriteBatch;
-        List<LoadModel> models = new List<LoadModel>();
+        List<Map.LoadModel> models = new List<Map.LoadModel>();
         Camera camera;
         MouseState lastMouseState;
-        //KlasyZMapa.MapRender terrain;
+        
         LoadModel anim;
-        //BoundingFrustum frustum;
+        
          QuadTree quadTree;
 
         public Game1()
@@ -81,11 +81,11 @@ namespace AntHill
             
             
             anim = new LoadModel(
-               Content.Load<Model>("anim"),
-               Vector3.Zero,new Vector3(0,MathHelper.Pi,0),
-               new Vector3(10), GraphicsDevice, Content);
+               Content.Load<Model>("mrowka_animowana1"),
+               Vector3.Zero,Vector3.Up,
+               new Vector3(100), GraphicsDevice, Content);
 
-           anim.Player.StartClip("anim", true);//take 001 to domyœlna nazwa sekwencji filmowej lub nazwa pliku :D
+            anim.Player.StartClip("mrowka_animowana1", true);//take 001 to domyœlna nazwa sekwencji filmowej lub nazwa pliku :D
            lastMouseState = Mouse.GetState();
 
            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(2.05f), GraphicsDevice));
@@ -118,7 +118,8 @@ namespace AntHill
            quadTree.Projection = camera.Projection;
            quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
-            
+
+            anim.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -132,7 +133,7 @@ namespace AntHill
             {   
                 if (quadTree.ViewFrustrum.Contains(model.BoundingSphere) != ContainmentType.Disjoint)
                 {
-                    model.Draw(camera.View, camera.Projection);
+                    //model.Draw(camera.View, camera.Projection);
                 }
 
             }
@@ -140,7 +141,7 @@ namespace AntHill
            
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
              
-            quadTree.Draw( (FreeCamera)camera);
+           // quadTree.Draw( (FreeCamera)camera);
             base.Draw(gameTime);
         }
         void updateCamera(GameTime gameTime)
