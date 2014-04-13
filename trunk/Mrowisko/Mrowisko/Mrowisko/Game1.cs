@@ -1,6 +1,6 @@
-using AnimationManager;
-using CameraManager;
-using MapManager;
+using Animations;
+using GameCamera;
+using Map;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -11,8 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnitManager;
-namespace WindowsGame5
+namespace AntHill
 {
     /// <summary>
     /// This is the main type for your game
@@ -22,10 +21,10 @@ namespace WindowsGame5
         GraphicsDeviceManager graphics;
         GraphicsDevice device;
         SpriteBatch spriteBatch;
-        List<BasicUnit> units = new List<BasicUnit>();
+        List<LoadModel> models = new List<LoadModel>();
         Camera camera;
         MouseState lastMouseState;
-        //MapManager.MapRender terrain;
+        //KlasyZMapa.MapRender terrain;
         LoadModel anim;
         //BoundingFrustum frustum;
          QuadTree quadTree;
@@ -70,7 +69,7 @@ namespace WindowsGame5
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-          
+           // terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
 
             camera = new FreeCamera(
                 new Vector3(0,5000,0),
@@ -83,12 +82,13 @@ namespace WindowsGame5
             
             anim = new LoadModel(
                Content.Load<Model>("anim"),
-               Vector3.Zero,Vector3.Up,
+               Vector3.Zero,new Vector3(0,MathHelper.Pi,0),
                new Vector3(10), GraphicsDevice, Content);
 
            anim.Player.StartClip("anim", true);//take 001 to domyœlna nazwa sekwencji filmowej lub nazwa pliku :D
            lastMouseState = Mouse.GetState();
-           units.Add(new BasicUnit(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(2.05f), GraphicsDevice)));                     
+
+           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(2.05f), GraphicsDevice));
 
              
         }
@@ -128,11 +128,11 @@ namespace WindowsGame5
            // RasterizerState rasterizerState = new RasterizerState();
           // rasterizerState.FillMode = FillMode.WireFrame;
           // GraphicsDevice.RasterizerState = rasterizerState;   
-            foreach (BasicUnit model in units)
+            foreach (LoadModel model in models)
             {   
-                if (quadTree.ViewFrustrum.Contains(model.unitModel.BoundingSphere) != ContainmentType.Disjoint)
+                if (quadTree.ViewFrustrum.Contains(model.BoundingSphere) != ContainmentType.Disjoint)
                 {
-                    model.unitModel.Draw(camera.View, camera.Projection);
+                    model.Draw(camera.View, camera.Projection);
                 }
 
             }
@@ -180,10 +180,10 @@ namespace WindowsGame5
 
       
 
-            //if (keyState.IsKeyDown(Keys.Up) ) models[0].Position+= Vector3.Forward*100;
-           // if (keyState.IsKeyDown(Keys.Down)) models[0].Position += Vector3.Backward * 100;
-            //if (keyState.IsKeyDown(Keys.Left)) models[0].Position += Vector3.Left * 100;
-            //if (keyState.IsKeyDown(Keys.Right)) models[0].Position += Vector3.Right * 100;
+            if (keyState.IsKeyDown(Keys.Up) ) models[0].Position+= Vector3.Forward*100;
+            if (keyState.IsKeyDown(Keys.Down)) models[0].Position += Vector3.Backward * 100;
+            if (keyState.IsKeyDown(Keys.Left)) models[0].Position += Vector3.Left * 100;
+            if (keyState.IsKeyDown(Keys.Right)) models[0].Position += Vector3.Right * 100;
            // double th =
             //double th=quadTree.Vertices.heightData[Math.Abs((int)models[0].Position.X), Math.Abs((int)models[0].Position.Z)];
            // models[0].Position =  quadTree.Vertices.Vertices[10].Position;//new Vector3(models[0].Position.X, (float)th,models[0].Position.Z );

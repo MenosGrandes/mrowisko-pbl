@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{5D6DD9F1-C70A-4438-AF94-7D8E4C86CE33}</ProjectGuid>
+    <ProjectGuid>{90A784EE-A8EA-4134-B16E-3FAA14614731}</ProjectGuid>
     <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitManager</RootNamespace>
-    <AssemblyName>UnitManager</AssemblyName>
+    <RootNamespace>Animations</RootNamespace>
+    <AssemblyName>Animations</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
     <XnaProfile>Reach</XnaProfile>
-    <XnaCrossPlatformGroupID>b7020d99-8d6f-4a2f-9268-3691de8f53f8</XnaCrossPlatformGroupID>
+    <XnaCrossPlatformGroupID>5acd3ff3-5fa9-4e1c-ab45-dfeccbb40ea7</XnaCrossPlatformGroupID>
     <XnaOutputType>Library</XnaOutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -59,15 +59,11 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasicUnit.cs" />
-    <Compile Include="IUnit.cs" />
+    <Compile Include="AnimationClip.cs" />
+    <Compile Include="AnimationPlayer.cs" />
+    <Compile Include="Keyframe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\KlasyZMapa\KlasyZMapa\MapManager.csproj">
-      <Project>{3ca21884-420f-46fd-84a1-a98bb1177b66}</Project>
-      <Name>MapManager</Name>
-    </ProjectReference>
+    <Compile Include="SkinningData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

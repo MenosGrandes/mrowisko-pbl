@@ -1,6 +1,6 @@
 using System;
 
-namespace WindowsGame5
+namespace AntHill
 {
 #if WINDOWS || XBOX
     static class Program

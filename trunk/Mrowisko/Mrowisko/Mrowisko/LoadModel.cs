@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Animations;
-namespace Map
+namespace AntHill
 {
     class LoadModel
     {
@@ -137,13 +137,14 @@ ContentManager Content)
             }
         }
         public void Update(GameTime gameTime)
-        {
+        {   
             // update world
             Matrix world = Matrix.CreateScale(Scale) *
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
             Player.Update(gameTime.ElapsedGameTime, world);//update player
-        }
 
+        }
+    
     }
 }

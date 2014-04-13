@@ -10,19 +10,20 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using CameraManager;
 
-namespace MapManager
+using GameCamera;
+
+namespace Map
 {
     public class Layer
     {
         private VertexBuffer treeVertexBuffer;
-        private VertexDeclaration treeVertexDeclaration;
+        //private VertexDeclaration treeVertexDeclaration;
         private Effect bbEffect;
-        private Texture2D treeTexture;
-        private Model tree;
+        private Texture2D envBilbTexture;
+        private Model envModel;
         private GraphicsDevice device;
-        private List<Vector3> treeList;
+        private List<Vector3> envBilbList;
         List<LoadModel> models;
         private int scale;
         private Vector3 scaleM;
@@ -30,12 +31,12 @@ namespace MapManager
 
         public List<Vector3> TreeList
         {
-            get { return treeList; }
-            set { treeList = value; }
+            get { return envBilbList; }
+            set { envBilbList = value; }
         }
         public Layer(Texture2D tree, GraphicsDevice device, ContentManager Content, int scale)
         {
-            treeTexture = tree;
+            envBilbTexture = tree;
             this.device = device;
             this.scale = scale;
             this.bbEffect = Content.Load<Effect>("Effect");
@@ -45,9 +46,9 @@ namespace MapManager
 
         }
 
-        public Layer(Model tree, GraphicsDevice device, ContentManager Content, Vector3 scale)
+        public Layer(Model envModel, GraphicsDevice device, ContentManager Content, Vector3 scale)
         {
-            this.tree = tree;
+            this.envModel = envModel;
             this.device = device;
             this.scaleM = scale;
             this.bbEffect = Content.Load<Effect>("Effect");
@@ -57,18 +58,18 @@ namespace MapManager
 
         }
 
-        public void GenerateTreePositions(Texture2D treeMap, VertexMultitextured[] terrainVertices, int terrainWidth, int terrainLength, float[,] heightData)
+        public void GenerateObjPositions(Texture2D objMap, VertexMultitextured[] terrainVertices, int terrainWidth, int terrainLength, float[,] heightData)
         {
-            Color[] treeMapColors = new Color[treeMap.Width * treeMap.Height];
-            treeMap.GetData(treeMapColors);
+            Color[] objMapColors = new Color[objMap.Width * objMap.Height];
+            objMap.GetData(objMapColors);
 
-            int[,] noiseData = new int[treeMap.Width, treeMap.Height];
-            for (int x = 0; x < treeMap.Width; x++)
-                for (int y = 0; y < treeMap.Height; y++)
-                    noiseData[x, y] = treeMapColors[y + x * treeMap.Height].R;
+            int[,] noiseData = new int[objMap.Width, objMap.Height];
+            for (int x = 0; x < objMap.Width; x++)
+                for (int y = 0; y < objMap.Height; y++)
+                    noiseData[x, y] = objMapColors[y + x * objMap.Height].R;
 
 
-            this.treeList = new List<Vector3>();
+            this.envBilbList = new List<Vector3>();
             Random random = new Random();
 
             for (int x = 0; x < terrainWidth; x++)
@@ -87,7 +88,7 @@ namespace MapManager
                             float relx = (float)x / (float)terrainWidth;
                             float rely = (float)y / (float)terrainLength;
 
-                            float noiseValueAtCurrentPosition = noiseData[(int)(relx * treeMap.Width), (int)(rely * treeMap.Height)];
+                            float noiseValueAtCurrentPosition = noiseData[(int)(relx * objMap.Width), (int)(rely * objMap.Height)];
                             float treeDensity;
                             if (noiseValueAtCurrentPosition > 200)
                                 treeDensity = 3;
@@ -104,7 +105,7 @@ namespace MapManager
                                 float rand2 = (float)random.Next(1000000) / 10000000.0f;
                                 Vector3 treePos = new Vector3((float)x - rand1, 0, (float)y - rand2);
                                 treePos.Y = heightData[x, y];
-                                treeList.Add(treePos*scale);
+                                envBilbList.Add(treePos * scale);
                             }
                         }
                     }
@@ -122,20 +123,20 @@ namespace MapManager
             foreach (Vector3 currentV3 in treeList)
             {
                 float rand1 = (float)random.Next(360000) / 100.0f;
-                models.Add(new LoadModel(tree, currentV3, new Vector3(0, 0, 0), new Vector3(3.0f), this.device));
+                models.Add(new LoadModel(envModel, currentV3, new Vector3(0, rand1, 0), new Vector3(2.0f), this.device));
                
 
             }
-            Console.WriteLine(models.Count);
+           // Console.WriteLine(models.Count);
         }
 
 
         public void CreateBillboardVerticesFromList()
         {
-            
-            VertexPositionTexture[] billboardVertices = new VertexPositionTexture[treeList.Count * 6];
+
+            VertexPositionTexture[] billboardVertices = new VertexPositionTexture[envBilbList.Count * 6];
             int i = 0;
-            foreach (Vector3 currentV3 in treeList)
+            foreach (Vector3 currentV3 in envBilbList)
             {
 
                
@@ -167,7 +168,7 @@ namespace MapManager
             bbEffect.Parameters["xCamPos"].SetValue(position);
             bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
             bbEffect.Parameters["scale"].SetValue(this.scale);
-            bbEffect.Parameters["xBillboardTexture"].SetValue(treeTexture);
+            bbEffect.Parameters["xBillboardTexture"].SetValue(envBilbTexture);
 
             device.SetVertexBuffer(treeVertexBuffer);
 

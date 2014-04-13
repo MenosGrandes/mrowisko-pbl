@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Map
+namespace Skills
 {
-    public struct QuadNodeVertex
+    class Skill
     {
-        public int Index;
-        public bool Activated;
     }
 }

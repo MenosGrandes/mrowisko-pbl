@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MapManager
+namespace Map
 {
     public class QuadTree
     {
@@ -45,7 +45,7 @@ namespace MapManager
         private Layer trees;
         private Layer ants;
         public bool Cull { get; set; }
-        public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale,ContentManager Content,CameraManager.FreeCamera camera)
+        public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale,ContentManager Content,GameCamera.FreeCamera camera)
         {
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
@@ -67,8 +67,8 @@ namespace MapManager
 
             this.trees = new Layer(textures[5], device, Content, scale);
             this.ants = new Layer(model, device, Content, new Vector3(.03f));
-            trees.GenerateTreePositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
-            ants.GenerateTreePositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
+            trees.GenerateObjPositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
+            ants.GenerateObjPositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
             ants.CreateModelFromList(trees.TreeList);
             trees.CreateBillboardVerticesFromList();
            
@@ -84,7 +84,7 @@ namespace MapManager
             _buffers.UpdateIndexBuffer(Indices, IndexCount);
             _buffers.SwapBuffer();
         }
-        public void Draw(CameraManager.FreeCamera camera)
+        public void Draw(GameCamera.FreeCamera camera)
         {
 
             //RasterizerState rasterizerState = new RasterizerState();
