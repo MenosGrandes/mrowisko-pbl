@@ -55,9 +55,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KlasyZAnimacja\KlasyZAnimacja.csproj">
+    <ProjectReference Include="..\KlasyZAnimacja\AnimationManager.csproj">
       <Project>{90a784ee-a8ea-4134-b16e-3faa14614731}</Project>
-      <Name>KlasyZAnimacja</Name>
+      <Name>AnimationManager</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

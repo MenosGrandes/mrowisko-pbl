@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace KlasyZAnimacja
+namespace AnimationManager
 {
     //do osób które nie są grafikami:
     //skinning - proces w wyniku którego model łączy się z "kośćmi" czyli można go animować

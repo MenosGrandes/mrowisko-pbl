@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Media;
 ///nie może być w głównej przestrzeni gry bo albo występuje wzajemne includowanie przestrzeni,
 ///albo nie widać bibliotek
 ///
-namespace KlasyZAnimacja
+namespace AnimationManager
 {
    
     /// <summary>

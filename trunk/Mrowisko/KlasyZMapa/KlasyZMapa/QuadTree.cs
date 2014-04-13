@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KlasyZMapa
+namespace MapManager
 {
     public class QuadTree
     {
@@ -45,7 +45,7 @@ namespace KlasyZMapa
         private Layer trees;
         private Layer ants;
         public bool Cull { get; set; }
-        public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale,ContentManager Content,KlasyZKamera.FreeCamera camera)
+        public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale,ContentManager Content,CameraManager.FreeCamera camera)
         {
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
@@ -84,7 +84,7 @@ namespace KlasyZMapa
             _buffers.UpdateIndexBuffer(Indices, IndexCount);
             _buffers.SwapBuffer();
         }
-        public void Draw(KlasyZKamera.FreeCamera camera)
+        public void Draw(CameraManager.FreeCamera camera)
         {
 
             //RasterizerState rasterizerState = new RasterizerState();
