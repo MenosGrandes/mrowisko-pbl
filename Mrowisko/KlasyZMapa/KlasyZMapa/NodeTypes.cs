@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KlasyZMapa
+namespace MapManager
 {
     public enum NodeType
     {

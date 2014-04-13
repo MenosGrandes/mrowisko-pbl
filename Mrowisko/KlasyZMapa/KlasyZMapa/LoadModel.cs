@@ -9,10 +9,10 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using KlasyZAnimacja;
-namespace WindowsGame5
+using AnimationManager;
+namespace MapManager
 {
-    class LoadModel
+    public class LoadModel
     {
         public Vector3 Position { get; set; }
         public Vector3 Rotation { get; set; }
@@ -137,13 +137,14 @@ ContentManager Content)
             }
         }
         public void Update(GameTime gameTime)
-        {
+        {   
             // update world
             Matrix world = Matrix.CreateScale(Scale) *
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
             Player.Update(gameTime.ElapsedGameTime, world);//update player
-        }
 
+        }
+    
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using KlasyZAnimacja;
+using AnimationManager;
 ///
 ///przestrzeń nazw z projektu Content Pipeline Extension
 ///musi być tak bo inaczej nie widać includów związanych z Pipeline

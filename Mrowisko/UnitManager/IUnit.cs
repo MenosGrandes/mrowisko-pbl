@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MapManager
+namespace UnitManager
 {
-    public struct QuadNodeVertex
+    interface IUnit
     {
-        public int Index;
-        public bool Activated;
+        void Move(float x, float y, float z);
     }
 }
