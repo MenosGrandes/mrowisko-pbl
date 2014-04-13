@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("KlasyZMapa")]
-[assembly: AssemblyProduct("KlasyZMapa")]
+[assembly: AssemblyTitle("KlasyZSkillami")]
+[assembly: AssemblyProduct("KlasyZSkillami")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 // On Windows, the following GUID is for the ID of the typelib if this
 // project is exposed to COM. On other platforms, it unique identifies the
 // title storage container when deploying this assembly to the device.
-[assembly: Guid("2d0466d5-2d8d-4422-bdb8-53f830862ad5")]
+[assembly: Guid("a5c54f54-fb10-40f6-8bb5-e23887ed2941")]
 
 // Version information for an assembly consists of the following four values:
 //

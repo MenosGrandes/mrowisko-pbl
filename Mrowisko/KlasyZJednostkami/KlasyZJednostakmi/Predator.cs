@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UnitManager
+namespace Logic
 {
-    interface IUnit
+    class Predator:Unit
     {
-        void Move(float x, float y, float z);
     }
 }

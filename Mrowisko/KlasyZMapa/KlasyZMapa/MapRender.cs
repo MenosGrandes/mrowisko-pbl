@@ -9,9 +9,9 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using CameraManager;
+using GameCamera;
 
-namespace MapManager
+namespace Map
 {
 
     public struct VertexMultitextured : IVertexType
@@ -38,7 +38,7 @@ namespace MapManager
     {
          
 
-       private GraphicsDevice device;
+      // private GraphicsDevice device;
 
        private int terrainWidth;
 
@@ -65,8 +65,8 @@ namespace MapManager
            set;
        }
 
-       private VertexBuffer terrainVertexBuffer;
-       private IndexBuffer terrainIndexBuffer;
+       //private VertexBuffer terrainVertexBuffer;
+       //private IndexBuffer terrainIndexBuffer;
 
        private VertexMultitextured[] vertices;
 
@@ -82,11 +82,11 @@ namespace MapManager
        }
 
        public int[] indices;
-       private ContentManager Content;
-       private Effect effect;
-       private Texture2D grassTexture, sandTexture, rockTexture, snowTexture, treeTexture;
+       //private ContentManager Content;
+       //private Effect effect;
+       //private Texture2D grassTexture, sandTexture, rockTexture, snowTexture, treeTexture;
 
-       private Layer trees, ants;
+      // private Layer trees, ants;
 
 
 
