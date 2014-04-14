@@ -6,8 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+///<summary>
+/// Namespace of all context related with Map creation
+/// </summary>
 namespace Map
 {
+    /// <summary>
+    /// Create QuadTree for terrain. It not use LevelOfDetail. It's only for FrustrumCulling.
+    /// </summary>
     public class QuadTree
     {
        
@@ -45,6 +51,15 @@ namespace Map
         private Layer trees;
         private Layer ants;
         public bool Cull { get; set; }
+        /// <summary>
+        /// Create terrain at <paramref name="position"/>
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="textures"></param>
+        /// <param name="device"></param>
+        /// <param name="scale"></param>
+        /// <param name="Content"></param>
+        /// <param name="camera"></param>
         public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale,ContentManager Content,GameCamera.FreeCamera camera)
         {
 
@@ -75,7 +90,7 @@ namespace Map
         }
         public void Update(GameTime gameTime)
         {
-            //Only update if the camera position has changed
+           
             IndexCount = 0;
 
             _rootNode.EnforceMinimumDepth();
@@ -123,7 +138,7 @@ namespace Map
     
 
         }
-        internal void UpdateBuffer(int vIndex)
+        internal void   UpdateBuffer(int vIndex)
         {
             Indices[IndexCount] = vIndex;
             IndexCount++;

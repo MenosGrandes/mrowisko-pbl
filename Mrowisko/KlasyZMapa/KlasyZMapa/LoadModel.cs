@@ -12,6 +12,9 @@ using Microsoft.Xna.Framework.Media;
 using Animations;
 namespace Map
 {
+/// <summary>
+/// Class responsible of loding and positioning model at the terrain.
+/// </summary>
    public class LoadModel
     {
         public Vector3 Position { get; set; }
@@ -24,19 +27,27 @@ namespace Map
         private Matrix[] modelTransforms;
         private GraphicsDevice graphicsDevice;
         public BoundingSphere boundingSphere;
-       public BoundingSphere BoundingSphere
-{
-get
-{
-// No need for rotation, as this is a sphere
-Matrix worldTransform = Matrix.CreateScale(Scale)
-* Matrix.CreateTranslation(Position);
-BoundingSphere transformed = boundingSphere;
-transformed = transformed.Transform(worldTransform);
-return transformed;
-}
-}
-
+        public BoundingSphere BoundingSphere
+        {
+            get
+            {
+            // No need for rotation, as this is a sphere
+            Matrix worldTransform = Matrix.CreateScale(Scale)
+            * Matrix.CreateTranslation(Position);
+            BoundingSphere transformed = boundingSphere;
+            transformed = transformed.Transform(worldTransform);
+            return transformed;
+            }
+        }
+                /// <summary>
+                /// Constructor of LoadModel class.
+                /// Create <paramref name="Model"/> at <paramref name="Position"/ >  with <paramref name="Scale"/> and <paramref name="Rotation"/>
+                /// </summary>
+                /// <param name="Model"></param>
+                /// <param name="Position"></param>
+                /// <param name="Rotation"></param>
+                /// <param name="Scale"></param>
+                /// <param name="graphicsDevice"></param>
         public LoadModel(Model Model, Vector3 Position, Vector3 Rotation,
 Vector3 Scale, GraphicsDevice graphicsDevice)
         {
@@ -86,6 +97,10 @@ ContentManager Content)
              }
          }
      }
+       /// <summary>
+       /// Method to create BoudingSphere at the model.
+       /// This metod gather all Mesh from model creates bounding sphere for each of theme, then combine all and create one big. 
+       /// </summary>
         private void buildBoundingSphere()
         {
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
@@ -97,10 +112,14 @@ ContentManager Content)
             }
              this.boundingSphere=sphere;
         }
+       /// <summary>
+        /// Method to Draw model 
+       /// </summary>
+       /// <param name="View"></param>
+       /// <param name="Projection"></param>
         public void Draw(Matrix View, Matrix Projection)
         {
-            // Calculate the base transformation by combining
-            // translation, rotation, and scaling
+
             Matrix baseWorld = Matrix.CreateScale(Scale)
             * Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)
@@ -122,7 +141,12 @@ ContentManager Content)
             }
 
         }
-        //metoda draw do rysowania animowanego modelu
+     /// <summary>
+     /// Method to Draw AnimatedModel
+     /// </summary>
+     /// <param name="View"></param>
+     /// <param name="Projection"></param>
+     /// <param name="CameraPosition"></param>
         public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
         {
             foreach (ModelMesh mesh in Model.Meshes)
@@ -135,7 +159,11 @@ ContentManager Content)
                 }
                 mesh.Draw();
             }
-        }
+        }    
+       /// <summary>
+       /// Update metod for Animations
+       /// </summary>
+       /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
             // update world

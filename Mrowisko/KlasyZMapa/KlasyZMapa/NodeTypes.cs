@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 
 namespace Map
-{
+{                    
+    /// <summary>
+    /// Enum which tell us what kind of node we use.
+    /// </summary>
     public enum NodeType
     {
         FullNode = 0,
