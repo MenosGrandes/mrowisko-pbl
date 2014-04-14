@@ -101,7 +101,7 @@ namespace Map
                 for (int y = 0; y < terrainLength; y++)
                 {
                     float terrainHeight = heightData[x, y];
-                    if ((terrainHeight > 5) && (terrainHeight < 20))
+                    if ((terrainHeight > 7) && (terrainHeight < 14))
                     {
                        
                         float flatness = Vector3.Dot(terrainVertices[x + y * terrainWidth].Normal, new Vector3(0, -1, 0));

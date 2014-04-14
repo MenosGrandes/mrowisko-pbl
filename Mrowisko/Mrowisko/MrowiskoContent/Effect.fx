@@ -198,8 +198,8 @@ BBVertexToPixel CylBillboardVS(float3 inPos: POSITION0, float2 inTexCoord : TEXC
 		sideVector = normalize(sideVector);
 
 	float3 finalPosition = center;
-		finalPosition += (inTexCoord.x - 0.5f)*sideVector*scale;
-	finalPosition += (1.5f - inTexCoord.y*1.5f)*upVector*scale;
+		finalPosition += ((inTexCoord.x - 0.5f)*(scale/30))*sideVector*scale;
+	finalPosition += ((1.5f - inTexCoord.y*1.5f)*(scale/30))*upVector*scale;
 
 	float4 finalPosition4 = float4(finalPosition, 1);
 
