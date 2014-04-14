@@ -9,141 +9,193 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-///
-/// dodałem 2 przestrzenie nazw, bo tak było w tutorialu, inaczej nie działa, 
-///jedna z przestrzeni to jest biblioteka klas XNA, a druga Content Pipeline Extension
-///nie może być w głównej przestrzeni gry bo albo występuje wzajemne includowanie przestrzeni,
-///albo nie widać bibliotek
-///
+
 namespace Animations
 {
-   
+
     /// <summary>
-    /// All animations, are included can be played by this class
-    /// to play animation in main game class look on Method Update :)
+    /// The animation player is in charge of decoding bone position
+    /// matrices from an animation clip.
     /// </summary>
     public class AnimationPlayer
     {
-        SkinningData skinningData;
+        //Information about the currently playing animation clip
+        AnimationClip currentClipValue;
+        TimeSpan currentTimeValue;
+        int currentKeyframe;
 
-        //the currently playing clip, if there is one
+        // Current animation transform matrices.
+        Matrix[] boneTransforms;
+        Matrix[] worldTransforms;
+        Matrix[] skinTransforms;
 
-        public AnimationClip CurrentClip { get; private set; }
+        // Backlink to the bind pose and skeleton hierarchy data.
+        SkinningData skinningDataValue;
 
-        //whether the current animation has finished
-
-        public bool Done { get; private set; }
-
-        TimeSpan startTime, endTime, currentTime;
-
-        bool loop;
-
-        int currentKeyFrame;
-
-        //transforms
-        public Matrix[] BoneTransforms { get; private set; }
-        public Matrix[] WorldTransforms { get; private set; }
-        public Matrix[] SkinTransforms { get; private set; }
+        /// <summary>
+        /// Constructs a new animation player.
+        /// </summary>
         public AnimationPlayer(SkinningData skinningData)
         {
-            this.skinningData = skinningData;
-            BoneTransforms = new Matrix[skinningData.BindPose.Count];
-            WorldTransforms = new Matrix[skinningData.BindPose.Count];
-            SkinTransforms = new Matrix[skinningData.BindPose.Count];
-        }
-        //starts playing the entirety of the given clip
-        public void StartClip(string clip, bool loop)
-        {
-            AnimationClip clipVal = skinningData.AnimationClips[clip];
+            if (skinningData == null)
+                throw new ArgumentNullException("skinningData");
 
-            StartClip(clip, TimeSpan.FromSeconds(0), clipVal.Duration, loop);
-        }
-        //plays a specyfic position of the given clip from one frame
-        //index to another
+            skinningDataValue = skinningData;
 
-        public void StartClip(string clip, int startFrame, int endFrame, bool loop)
-        {
-            AnimationClip clipVal = skinningData.AnimationClips[clip];
-            StartClip(clip, clipVal.Keyframes[startFrame].Time,
-                clipVal.Keyframes[endFrame].Time, loop);
+            boneTransforms = new Matrix[skinningData.BindPose.Count];
+            worldTransforms = new Matrix[skinningData.BindPose.Count];
+            skinTransforms = new Matrix[skinningData.BindPose.Count];
         }
-        public void StartClip(string clip, TimeSpan StartTime,
-            TimeSpan EndTime, bool loop)
-        {
-            CurrentClip = skinningData.AnimationClips[clip];
-            currentTime = TimeSpan.FromSeconds(0);
-            currentKeyFrame = 0;
-            Done = false;
-            this.startTime = StartTime;
-            this.endTime = EndTime;
-            this.loop = loop;
 
-            //copy the bind pose to bone transforms array to reset the animatio
-            skinningData.BindPose.CopyTo(BoneTransforms, 0);
-        }
-        public void Update(TimeSpan time, Matrix rootTransform)
+        /// <summary>
+        /// Starts decoding the specified animation clip.
+        /// </summary>
+        public void StartClip(AnimationClip clip)
         {
-            if (CurrentClip == null || Done) return;
-            currentTime += time;
-            updateBoneTransforms();
-            updateWorldTransforms(rootTransform);
-            updateSkinTransforms();
+            if (clip == null)
+                throw new ArgumentNullException("clip");
+
+            currentClipValue = clip;
+            currentTimeValue = TimeSpan.Zero;
+            currentKeyframe = 0;
+
+            // Initialize bone transforms to the bind pose.
+            skinningDataValue.BindPose.CopyTo(boneTransforms, 0);
         }
-        //helper used by the update method to refresh the BoneTransforms data
-        void updateBoneTransforms()
+
+        /// <summary>
+        /// Advances the current animation position.
+        /// </summary>
+        public void Update(TimeSpan time, bool relativeToCurrentTime,
+                           Matrix rootTransform)
         {
-            while (currentTime >= (endTime - startTime))
+            UpdateBoneTransforms(time, relativeToCurrentTime);
+            UpdateWorldTransforms(rootTransform);
+            UpdateSkinTransforms();
+        }
+
+        /// <summary>
+        /// Helper used by the Update method to refresh the BoneTransforms data.
+        /// </summary>
+        public void UpdateBoneTransforms(TimeSpan time, bool relativeToCurrentTime)
+        {
+            if (currentClipValue == null)
+                throw new InvalidOperationException(
+                            "AnimationPlayer.Update was called before StartClip");
+            // Update the animation position.
+            if (relativeToCurrentTime)
             {
-                //if we are looping, reduce the time until we are
-                // back in the animation's time frame
-                if (loop)
-                {
-                    currentTime -= (endTime - startTime);
-                    currentKeyFrame = 0;
-                    skinningData.BindPose.CopyTo(BoneTransforms, 0);
-                }
-                else
-                {
-                    Done = true;
-                    currentTime = endTime;
+                time += currentTimeValue;
+
+                // If we reached the end, loop back to the start.
+                while (time >= currentClipValue.Duration)
+                    time -= currentClipValue.Duration;
+            }
+
+            if ((time < TimeSpan.Zero) || (time >= currentClipValue.Duration))
+                throw new ArgumentOutOfRangeException("time");
+
+            // If the position moved backwards, reset the keyframe index.
+            if (time < currentTimeValue)
+            {
+                currentKeyframe = 0;
+                skinningDataValue.BindPose.CopyTo(boneTransforms, 0);
+            }
+
+            currentTimeValue = time;
+
+            // Read keyframe matrices.
+            IList<Keyframe> keyframes = currentClipValue.Keyframes;
+
+            while (currentKeyframe < keyframes.Count)
+            {
+                Keyframe keyframe = keyframes[currentKeyframe];
+
+                // Stop when we've read up to the current time position.
+                if (keyframe.Time > currentTimeValue)
                     break;
-                }
-            }
-            IList<Keyframe> keyframes = CurrentClip.Keyframes;
 
-            //read keyframes until we have found the lastes frame before
-            //the current time
-            while (currentKeyFrame < keyframes.Count)
-            {
-                Keyframe keyframe = keyframes[currentKeyFrame];
-                //stop when we've read up to the current time position
-                if (keyframe.Time > currentTime + startTime) break;
+                // Use this keyframe.
+                boneTransforms[keyframe.Bone] = keyframe.Transform;
 
-                BoneTransforms[keyframe.Bone] = keyframe.Transform;
-                currentKeyFrame++;
-            }
-
-        }
-        // Helper used by the Update method to refresh the WorldTransforms data
-        void updateWorldTransforms(Matrix rootTransform)
-        {
-            WorldTransforms[0] = BoneTransforms[0] * rootTransform;
-
-            //for each child bone
-            for (int bone = 1; bone < WorldTransforms.Length; bone++)
-            {
-                int parentBone = skinningData.SkeletonHierarchy[bone];
-                WorldTransforms[bone] = BoneTransforms[bone] * WorldTransforms[parentBone];
+                currentKeyframe++;
             }
         }
-        //Helper used by the Update method to refresh the SkinTransforms data
-        void updateSkinTransforms()
+
+        /// <summary>
+        /// Helper used by the Update method to refresh the WorldTransforms data.
+        /// </summary>
+        public void UpdateWorldTransforms(Matrix rootTransform)
         {
-            for (int bone = 0; bone < SkinTransforms.Length; bone++)
+            // Root bone.
+            worldTransforms[0] = boneTransforms[0] * rootTransform;
+
+            // Child bones.
+            for (int bone = 1; bone < worldTransforms.Length; bone++)
             {
-                SkinTransforms[bone] = skinningData.InverseBindPose[bone]
-                    * WorldTransforms[bone];
+                int parentBone = skinningDataValue.SkeletonHierarchy[bone];
+
+                worldTransforms[bone] = boneTransforms[bone] *
+                                             worldTransforms[parentBone];
             }
+        }
+
+        /// <summary>
+        /// Helper used by the Update method to refresh the SkinTransforms data.
+        /// </summary>
+        public void UpdateSkinTransforms()
+        {
+            for (int bone = 0; bone < skinTransforms.Length; bone++)
+            {
+                skinTransforms[bone] = skinningDataValue.InverseBindPose[bone] *
+                                            worldTransforms[bone];
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the current bone transform matrices, relative to their parent bones.
+        /// </summary>
+        public Matrix[] GetBoneTransforms()
+        {
+            return boneTransforms;
+        }
+
+
+        /// <summary>
+        /// Gets the current bone transform matrices, in absolute format.
+        /// </summary>
+        public Matrix[] GetWorldTransforms()
+        {
+            return worldTransforms;
+        }
+
+
+        /// <summary>
+        /// Gets the current bone transform matrices,
+        /// relative to the skinning bind pose.
+        /// </summary>
+        public Matrix[] GetSkinTransforms()
+        {
+            return skinTransforms;
+        }
+
+
+        /// <summary>
+        /// Gets the clip currently being decoded.
+        /// </summary>
+        public AnimationClip CurrentClip
+        {
+            get { return currentClipValue; }
+        }
+
+
+        /// <summary>
+        /// Gets the current play position.
+        /// </summary>
+        public TimeSpan CurrentTime
+        {
+            get { return currentTimeValue; }
         }
     }
 }

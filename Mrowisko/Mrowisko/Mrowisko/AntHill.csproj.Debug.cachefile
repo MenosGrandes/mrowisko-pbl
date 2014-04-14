@@ -1,8 +1,8 @@
 Content\Effect.xnb
 Content\mrowka_01.xnb
 Content\anim.xnb
-Content\mrowka_animowana1.xnb
 Content\temp.xnb
+Content\mrowka_animowana1.xnb
 Content\rock.xnb
 Content\sand.xnb
 Content\snow.xnb
@@ -10,3 +10,4 @@ Content\grass.xnb
 Content\treeMap.xnb
 Content\tree.xnb
 Content\terrain.xnb
+Content\fire_0.xnb
