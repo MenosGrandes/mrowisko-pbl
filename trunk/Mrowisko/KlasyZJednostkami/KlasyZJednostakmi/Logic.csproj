@@ -115,10 +115,6 @@
       <Project>{7ee17f61-5d07-4409-aab4-ebb33b041653}</Project>
       <Name>Skills</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Mrowisko\Mrowisko\AntHill.csproj">
-      <Project>{b1cd90c8-21d5-40f6-8941-2beb8934544b}</Project>
-      <Name>AntHill</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
