@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Map
 {
+    /// <summary>
+    /// Class represent QuadTreeNode. Every node has NEIGHBORS and CHILDREN
+    /// </summary>
     public class QuadNode
     {
         bool _isSplit;
@@ -67,7 +70,7 @@ namespace Map
             Bounds.Max.Y = 950f;
 
             if (nodeSize >= 4)
-                AddChildren();
+               AddChildren();
 
             //Make call to UpdateNeighbors from the parent node.
             //This will update all neighbors recursively for the

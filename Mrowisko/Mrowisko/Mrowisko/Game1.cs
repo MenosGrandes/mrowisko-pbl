@@ -127,12 +127,11 @@ namespace AntHill
         protected override void Draw(GameTime gameTime)
         {
            // RasterizerState rasterizerState = new RasterizerState();
-          // rasterizerState.FillMode = FillMode.WireFrame;
+          //rasterizerState.FillMode = FillMode.WireFrame;
           // GraphicsDevice.RasterizerState = rasterizerState;   
             foreach (LoadModel model in models)
             {   
-                if (quadTree.ViewFrustrum.Contains(model.BoundingSphere) != ContainmentType.Disjoint)
-                {
+        if(camera.BoundingVolumeIsInView(model.BoundingSphere))  {
                     model.Draw(camera.View, camera.Projection);
                 }
 
@@ -157,7 +156,7 @@ namespace AntHill
             float deltaX = (float)lastMouseState.X - (float)mouseState.X;
             float deltaY = (float)lastMouseState.Y - (float)mouseState.Y;
 
-               ((FreeCamera)camera).Rotate(deltaX * .001f, -deltaY * .001f);
+               ((FreeCamera)camera).Rotate(deltaX * .01f, -deltaY * .01f);
       
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             if (keyState.IsKeyDown(Keys.W)) translation += Vector3.Forward*111;

@@ -11,7 +11,7 @@ namespace GameCamera
     {
 
         protected GraphicsDevice GraphicsDevice { get; set; }
-        public BoundingFrustum Frustum { get; private set; }
+        public BoundingFrustum Frustrum { get; private set; }
         Matrix view;
         Matrix projection;
         public Matrix Projection
@@ -51,15 +51,15 @@ namespace GameCamera
         private void generateFrustum()
         {
             Matrix viewProjection = View * Projection;
-            Frustum = new BoundingFrustum(viewProjection);
+            Frustrum = new BoundingFrustum(viewProjection);
         }
         public bool BoundingVolumeIsInView(BoundingSphere sphere)
         {
-            return (Frustum.Contains(sphere) != ContainmentType.Disjoint);
+            return (Frustrum.Contains(sphere) != ContainmentType.Disjoint);
         }
         public bool BoundingVolumeIsInView(BoundingBox box)
         {
-            return (Frustum.Contains(box) != ContainmentType.Disjoint);
+            return (Frustrum.Contains(box) != ContainmentType.Disjoint);
         }
     }
 }

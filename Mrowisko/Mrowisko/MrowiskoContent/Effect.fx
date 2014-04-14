@@ -31,7 +31,7 @@ sampler TextureSampler2 = sampler_state { texture = <xTexture2> ; magfilter = LI
 
 sampler TextureSampler3 = sampler_state { texture = <xTexture3> ; magfilter = LINEAR; minfilter = LINEAR; mipfilter=LINEAR; AddressU = mirror; AddressV = mirror;};
 
-sampler textureSampler = sampler_state { texture = <xBillboardTexture>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
+sampler textureSampler = sampler_state { texture = <xBillboardTexture>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = mirror; AddressV = mirror; };
 
 //------- Technique: Textured --------
 struct TVertexToPixel
@@ -198,8 +198,10 @@ BBVertexToPixel CylBillboardVS(float3 inPos: POSITION0, float2 inTexCoord : TEXC
 		sideVector = normalize(sideVector);
 
 	float3 finalPosition = center;
+
 		finalPosition += ((inTexCoord.x - 0.5f)*(scale/30))*sideVector*scale;
 	finalPosition += ((1.5f - inTexCoord.y*1.5f)*(scale/30))*upVector*scale;
+
 
 	float4 finalPosition4 = float4(finalPosition, 1);
 
