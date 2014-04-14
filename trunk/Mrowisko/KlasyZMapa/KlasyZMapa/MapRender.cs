@@ -13,7 +13,9 @@ using GameCamera;
 
 namespace Map
 {
-
+                /// <summary>
+                /// Struct which implementing new VertexType for Multitexturing.
+                /// </summary>
     public struct VertexMultitextured : IVertexType
     {
         public Vector3 Position;
@@ -34,6 +36,9 @@ namespace Map
      new VertexElement(sizeof(float) * 10, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 1)
  );
     }
+    /// <summary>
+    /// Class for creating vertices and indices of terrain.
+    /// </summary>
     public class MapRender
     {
          
@@ -91,6 +96,11 @@ namespace Map
 
 
        // public MapRender( GraphicsDevice GraphicsDevice, List<Texture2D>texture, currentViewMatrix Content,int Scale, Model model)
+        /// <summary>
+        /// Constructor to create vertices and indices from HeighMap.
+        /// </summary>
+        /// <param name="texture"> Heigh Map image of terrain</param>
+        /// <param name="Scale">It's scale.</param>
     public MapRender (Texture2D texture,int Scale)    
     {
 
@@ -128,7 +138,10 @@ namespace Map
         }
 
         
-
+                                        /// <summary>
+                                        ///             Loading informations about heigh from texture.
+                                        /// </summary>
+                                        /// <param name="heightMap">Heigh Map image</param>
         private void LoadHeightData(Texture2D heightMap)
         {
             float minimumHeight = float.MaxValue;
@@ -157,7 +170,11 @@ namespace Map
                 }
         }
 
-
+  /// <summary>
+  /// Create vertices from heighData and Scale.
+  /// Create positions of all points,and gets informations about texture coordinations and weights.
+  /// </summary>
+  /// <param name="Scale"></param>
         private void SetUpvertices(int Scale)
         {
             vertices = new VertexMultitextured[terrainWidth * terrainLength];
@@ -187,6 +204,9 @@ namespace Map
             }
 
         }
+/// <summary>
+///                    Create indices of terrain.
+/// </summary>
     
          private void SetUpTerrainIndices()
         {
@@ -211,7 +231,10 @@ namespace Map
                 }
             }
         }
-    
+ /// <summary>
+ /// Callculate normals for all of Vertices.
+ /// </summary>
+   
         private void CalculateNormals()
         {
             for (int i = 0; i < vertices.Length; i++)

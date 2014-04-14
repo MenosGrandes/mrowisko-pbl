@@ -8,7 +8,6 @@ namespace Map
 {
     public class QuadNode
     {
-        bool _isActive;
         bool _isSplit;
         QuadNode _parent;
         QuadTree _parentTree;
@@ -351,7 +350,6 @@ namespace Map
             VertexBottomLeft.Activated = true;
             VertexBottomRight.Activated = true;
 
-            _isActive = true;
         }
         public void EnforceMinimumDepth()
         {
@@ -359,7 +357,6 @@ namespace Map
             {
                 if (this.HasChildren)
                 {
-                    _isActive = false;
                     _isSplit = true;
 
                     ChildTopLeft.EnforceMinimumDepth();

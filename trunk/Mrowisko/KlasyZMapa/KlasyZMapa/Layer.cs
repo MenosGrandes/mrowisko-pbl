@@ -14,11 +14,13 @@ using Microsoft.Xna.Framework.Media;
 using GameCamera;
 
 namespace Map
-{
+{             
+                 /// <summary>
+                 /// Class responsible for creating a layer of objects at the terrain
+                 /// </summary>
     public class Layer
     {
         private VertexBuffer treeVertexBuffer;
-        //private VertexDeclaration treeVertexDeclaration;
         private Effect bbEffect;
         private Texture2D envBilbTexture;
         private Model envModel;
@@ -28,12 +30,21 @@ namespace Map
         private int scale;
         private Vector3 scaleM;
         private ContentManager content;
-
+         /// <summary>
+         /// 
+         /// </summary>
         public List<Vector3> TreeList
         {
             get { return envBilbList; }
             set { envBilbList = value; }
-        }
+        } 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tree"></param>
+        /// <param name="device"></param>
+        /// <param name="Content"></param>
+        /// <param name="scale"></param>
         public Layer(Texture2D tree, GraphicsDevice device, ContentManager Content, int scale)
         {
             envBilbTexture = tree;
@@ -45,7 +56,13 @@ namespace Map
 
 
         }
-
+   /// <summary>
+   /// 
+   /// </summary>
+   /// <param name="envModel"></param>
+   /// <param name="device"></param>
+   /// <param name="Content"></param>
+   /// <param name="scale"></param>
         public Layer(Model envModel, GraphicsDevice device, ContentManager Content, Vector3 scale)
         {
             this.envModel = envModel;
@@ -57,7 +74,14 @@ namespace Map
 
 
         }
-
+   /// <summary>
+   /// 
+   /// </summary>
+   /// <param name="objMap"></param>
+   /// <param name="terrainVertices"></param>
+   /// <param name="terrainWidth"></param>
+   /// <param name="terrainLength"></param>
+   /// <param name="heightData"></param>
         public void GenerateObjPositions(Texture2D objMap, VertexMultitextured[] terrainVertices, int terrainWidth, int terrainLength, float[,] heightData)
         {
             Color[] objMapColors = new Color[objMap.Width * objMap.Height];
@@ -115,7 +139,10 @@ namespace Map
            
             
         }
-
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="treeList"></param>
         public void CreateModelFromList(List<Vector3> treeList)
         {
             models = new List<LoadModel>();
@@ -130,7 +157,9 @@ namespace Map
            // Console.WriteLine(models.Count);
         }
 
-
+/// <summary>
+/// 
+/// </summary>
         public void CreateBillboardVerticesFromList()
         {
 
@@ -158,7 +187,12 @@ namespace Map
             treeVertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
             treeVertexBuffer.SetData(billboardVertices);
         }
-
+                                                                      /// <summary>
+                                                                      /// 
+                                                                      /// </summary>
+                                                                      /// <param name="currentViewMatrix"></param>
+                                                                      /// <param name="projectionMatrix"></param>
+                                                                      /// <param name="position"></param>
         public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position)
         {
             bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
@@ -175,11 +209,14 @@ namespace Map
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-               // device.DrawPrimitives(PrimitiveType.TriangleList, 0, treeVertexBuffer.VertexCount / 3);
+                device.DrawPrimitives(PrimitiveType.TriangleList, 0, treeVertexBuffer.VertexCount / 3);
 
             }
         }
-
+ /// <summary>
+ /// 
+ /// </summary>
+ /// <param name="camera"></param>
         public void DrawModels(FreeCamera camera )
         {
             foreach (LoadModel model in models)

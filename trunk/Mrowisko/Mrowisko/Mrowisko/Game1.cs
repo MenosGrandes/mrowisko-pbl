@@ -72,9 +72,9 @@ namespace AntHill
            // terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
 
             camera = new FreeCamera(
-                new Vector3(0,5000,0),
-                MathHelper.ToRadians(-45), // Turned around 153 degrees
-                MathHelper.ToRadians(-15), // Pitched up 13 degrees
+                new Vector3(25650,9000,25650),
+                MathHelper.ToRadians(0), // Turned around 153 degrees
+                MathHelper.ToRadians(-45), // Pitched up 13 degrees
                 GraphicsDevice);
             quadTree = new QuadTree(Vector3.Zero,texture,device,100,Content,(FreeCamera)camera);
             quadTree.Cull = true;
@@ -118,7 +118,7 @@ namespace AntHill
            quadTree.Projection = camera.Projection;
            quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
-
+            
             //anim.Update(gameTime);
             base.Update(gameTime);
         }
@@ -157,7 +157,7 @@ namespace AntHill
             float deltaX = (float)lastMouseState.X - (float)mouseState.X;
             float deltaY = (float)lastMouseState.Y - (float)mouseState.Y;
 
-                ((FreeCamera)camera).Rotate(deltaX * .01f, -deltaY * .01f);
+               ((FreeCamera)camera).Rotate(deltaX * .001f, -deltaY * .001f);
       
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             if (keyState.IsKeyDown(Keys.W)) translation += Vector3.Forward*111;
