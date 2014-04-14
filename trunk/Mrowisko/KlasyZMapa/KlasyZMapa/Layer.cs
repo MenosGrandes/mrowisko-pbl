@@ -129,7 +129,7 @@ namespace Map
                                 float rand2 = (float)random.Next(1000000) / 10000000.0f;
                                 Vector3 treePos = new Vector3((float)x - rand1, 0, (float)y - rand2);
                                 treePos.Y = heightData[x, y];
-                                envBilbList.Add(treePos * scale);
+                                envBilbList.Add(treePos*scale);
                             }
                         }
                     }
@@ -150,7 +150,7 @@ namespace Map
             foreach (Vector3 currentV3 in treeList)
             {
                 float rand1 = (float)random.Next(360000) / 100.0f;
-                models.Add(new LoadModel(envModel, currentV3, new Vector3(0, rand1, 0), new Vector3(2.0f), this.device));
+                models.Add(new LoadModel(envModel, currentV3, new Vector3(0, rand1, 0), scaleM, this.device));
                
 
             }
@@ -173,7 +173,7 @@ namespace Map
 
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 0));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 1));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 1));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 1));
 
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 0));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 0));
