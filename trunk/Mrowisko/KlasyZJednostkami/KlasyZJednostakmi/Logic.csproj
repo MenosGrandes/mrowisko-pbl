@@ -107,6 +107,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\KlasyZMapa\KlasyZMapa\Map.csproj">
+      <Project>{3ca21884-420f-46fd-84a1-a98bb1177b66}</Project>
+      <Name>Map</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\KlasyZSkillami\KlasyZSkillami\Skills.csproj">
       <Project>{7ee17f61-5d07-4409-aab4-ebb33b041653}</Project>
       <Name>Skills</Name>

@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using AntHill;
 using Skills;
+using Map;
 
 namespace Logic
 {
