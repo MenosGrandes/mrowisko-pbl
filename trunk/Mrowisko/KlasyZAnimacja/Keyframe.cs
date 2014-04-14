@@ -26,6 +26,9 @@ namespace Animations
         /// Bone transform for this keyframe
         [ContentSerializer]
         public Matrix Transform { get; private set; }
+        /// <summary>
+        /// Constructs a new keyframe object.
+        /// </summary>
         public Keyframe(int Bone, TimeSpan Time, Matrix Transform)
         {
             this.Bone = Bone;

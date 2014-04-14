@@ -81,11 +81,11 @@ namespace AntHill
             
               
             anim = new LoadModel(
-               Content.Load<Model>("temp"),
+               Content.Load<Model>("mrowka_animowana1"),
                Vector3.Zero,Vector3.Up,
-               new Vector3(100), GraphicsDevice, Content);
-                   
-            anim.Player.StartClip("Take 001", true);//take 001 to domyœlna nazwa sekwencji filmowej lub nazwa pliku :D
+               new Vector3(1000), GraphicsDevice, Content);
+           AnimationClip clip = anim.skinningData.AnimationClips["idle1"];//inne animacje to idle2 i run
+            anim.Player.StartClip(clip);
            lastMouseState = Mouse.GetState();
 
            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(2.05f), GraphicsDevice));
@@ -119,7 +119,7 @@ namespace AntHill
            quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
             
-            //anim.Update(gameTime);
+            anim.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -132,13 +132,13 @@ namespace AntHill
             foreach (LoadModel model in models)
             {   
         if(camera.BoundingVolumeIsInView(model.BoundingSphere))  {
-                    model.Draw(camera.View, camera.Projection);
+                   // model.Draw(camera.View, camera.Projection);
                 }
 
             }
             
            
-           // anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+           anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
              
             quadTree.Draw( (FreeCamera)camera);
             base.Draw(gameTime);

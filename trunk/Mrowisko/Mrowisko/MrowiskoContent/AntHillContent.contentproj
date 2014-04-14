@@ -102,15 +102,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="mrowka_animowana1.FBX">
-      <Name>mrowka_animowana1</Name>
+    <Compile Include="temp.FBX">
+      <Name>temp</Name>
       <Importer>FbxImporter</Importer>
       <Processor>AnimatedModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="temp.FBX">
-      <Name>temp</Name>
+    <Compile Include="mrowka_animowana1.FBX">
+      <Name>mrowka_animowana1</Name>
       <Importer>FbxImporter</Importer>
       <Processor>AnimatedModelProcessor</Processor>
     </Compile>

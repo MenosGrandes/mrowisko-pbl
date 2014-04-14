@@ -21,12 +21,15 @@ namespace Map
         public Vector3 Rotation { get; set; }
         public Vector3 Scale { get; set; }
         public Model Model { get; private set; }
-        ContentManager content;
-        SkinningData skinningData;
+       public  ContentManager content;
+        public SkinningData skinningData;
         public AnimationPlayer Player;
         private Matrix[] modelTransforms;
         private GraphicsDevice graphicsDevice;
         public BoundingSphere boundingSphere;
+       float cameraArc = 0;
+        float cameraRotation = 0;
+        float cameraDistance = 100;
         public BoundingSphere BoundingSphere
         {
             get
@@ -73,30 +76,16 @@ ContentManager Content)
          this.Position = Position;
          this.Rotation = Rotation;
          this.Scale = Scale;
-        //animation data
+
+         SkinningData skinningData = Model.Tag as SkinningData;
+         if (skinningData == null)
+             throw new InvalidOperationException
+                 ("This model does not contain a SkinningData tag.");
          this.skinningData = Model.Tag as SkinningData;
          Player = new AnimationPlayer(skinningData);
-         setNewEffect();
+        
      }
-     void setNewEffect()
-     {
-     //Like in tutorial, in the future probably made by shaders
-         foreach(ModelMesh mesh in Model.Meshes)
-         {
-             foreach(ModelMeshPart part in mesh.MeshParts)
-             {
-                 SkinnedEffect newEffect = new SkinnedEffect(graphicsDevice);
-                 BasicEffect oldEffect = ((BasicEffect)part.Effect);
-                 newEffect.EnableDefaultLighting();
-                 newEffect.SpecularColor = oldEffect.SpecularColor;
 
-                 newEffect.AmbientLightColor = oldEffect.AmbientLightColor;
-                 newEffect.DiffuseColor = oldEffect.DiffuseColor;
-                 newEffect.Texture = oldEffect.Texture;
-                 part.Effect = newEffect;
-             }
-         }
-     }
        /// <summary>
        /// Method to create BoudingSphere at the model.
        /// This metod gather all Mesh from model creates bounding sphere for each of theme, then combine all and create one big. 
@@ -149,16 +138,31 @@ ContentManager Content)
      /// <param name="CameraPosition"></param>
         public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
         {
+
+            Matrix[] bones = Player.GetSkinTransforms();
+            Matrix view = Matrix.CreateTranslation(0, -40, 0) *
+                          Matrix.CreateRotationY(MathHelper.ToRadians(cameraRotation)) *
+                          Matrix.CreateRotationX(MathHelper.ToRadians(cameraArc)) *
+                          Matrix.CreateLookAt(new Vector3(0, 0, -cameraDistance),
+                                              new Vector3(0, 0, 0), Vector3.Up);
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 foreach (SkinnedEffect effect in mesh.Effects)
                 {
-                    effect.SetBoneTransforms(Player.SkinTransforms);
-                    effect.View = View;
+                    effect.SetBoneTransforms(bones);
+
+                    effect.View = view;
                     effect.Projection = Projection;
+
+                    effect.EnableDefaultLighting();
+
+                    effect.SpecularColor = new Vector3(0.25f);
+                    effect.SpecularPower = 16;
                 }
+
                 mesh.Draw();
             }
+
         }    
        /// <summary>
        /// Update metod for Animations
@@ -170,7 +174,7 @@ ContentManager Content)
             Matrix world = Matrix.CreateScale(Scale) *
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
-            Player.Update(gameTime.ElapsedGameTime, world);//update player
+            Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
         }
 
     }
