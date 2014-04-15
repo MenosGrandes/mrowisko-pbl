@@ -109,7 +109,7 @@ namespace Map
         /// <param name="Projection"></param>
         public void Draw(Matrix View, Matrix Projection)
         {
-
+            Console.WriteLine("cos");
             Matrix baseWorld = Matrix.CreateScale(Scale)
             * Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)

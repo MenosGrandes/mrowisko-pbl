@@ -44,7 +44,7 @@ namespace GameCamera
             (float)pp.BackBufferHeight; this.Projection = Matrix.CreatePerspectiveFieldOfView(
              MathHelper.ToRadians(45), aspectRatio, 0.1f, 1000000.0f);
         }
-        public virtual void Update()
+        public virtual void Update(GameTime gameTime)
         {
         }
         

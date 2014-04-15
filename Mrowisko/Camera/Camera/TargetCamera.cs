@@ -18,7 +18,7 @@ namespace GameCamera
             this.Position = Position;
             this.Target = Target;
         }
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             Vector3 forward = Target - Position;
             Vector3 side = Vector3.Cross(forward, Vector3.Up);
