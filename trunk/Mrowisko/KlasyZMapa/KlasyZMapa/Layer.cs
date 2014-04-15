@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-
+using DebugManager;
 using GameCamera;
 
 namespace Map
@@ -52,7 +52,6 @@ namespace Map
             this.scale = scale;
             this.bbEffect = Content.Load<Effect>("Effect");
             this.content = Content;
-            
 
 
         }
@@ -69,7 +68,6 @@ namespace Map
             this.device = device;
             this.scaleM = scale;
             this.bbEffect = Content.Load<Effect>("Effect");
-
 
 
 
@@ -125,7 +123,7 @@ namespace Map
 
                             for (int currDetail = 0; currDetail < treeDensity; currDetail++)
                             {
-                                float rand1 = (float)random.Next(1000000) / 100000000.0f;
+                                float rand1 = (float)random.Next(1000000) / 10000000.0f;
                                 float rand2 = (float)random.Next(1000000) / 10000000.0f;
                                 Vector3 treePos = new Vector3((float)x - rand1, 0, (float)y - rand2);
                                 treePos.Y = heightData[x, y];
@@ -150,7 +148,7 @@ namespace Map
             foreach (Vector3 currentV3 in treeList)
             {
                 float rand1 = (float)random.Next(360000) / 100.0f;
-                models.Add(new LoadModel(envModel, currentV3, new Vector3(0, rand1, 0), scaleM/10, this.device));
+                models.Add(new LoadModel(envModel, currentV3, new Vector3(0, rand1, 0), scaleM, this.device));
                
 
             }
@@ -220,8 +218,14 @@ namespace Map
         public void DrawModels(FreeCamera camera )
         {
             foreach (LoadModel model in models)
-                if (camera.BoundingVolumeIsInView(model.BoundingSphere))
+               if (camera.BoundingVolumeIsInView(model.BoundingSphere))
+                {
+                  
+                    BoundingSphereRenderer.Render(model.boundingSphere, device, camera.View, camera.Projection, Color.Pink);
                     model.Draw(camera.View, camera.Projection);
+                }
+
+                  
         }
 
 

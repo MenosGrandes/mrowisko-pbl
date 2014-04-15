@@ -58,12 +58,13 @@ namespace Map
             modelTransforms = new Matrix[Model.Bones.Count];
             Model.CopyAbsoluteBoneTransformsTo(modelTransforms);
 
-            buildBoundingSphere();
 
+           // buildBoundingSphere();
             this.Position = Position;
             this.Rotation = Rotation;
             this.Scale = Scale;
             this.graphicsDevice = graphicsDevice;
+            buildBoundingSphere();
         }
         //Animated model constructor
         public LoadModel(Model Model, Vector3 Position, Vector3 Rotation,
@@ -93,6 +94,9 @@ namespace Map
         /// </summary>
         private void buildBoundingSphere()
         {
+
+
+
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
             // Merge all the model's built in bounding spheres
             foreach (ModelMesh mesh in Model.Meshes)
@@ -100,7 +104,12 @@ namespace Map
                 BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
                 sphere = BoundingSphere.CreateMerged(sphere, transformed);
             }
+            
+           // sphere.Center = Position;
+            sphere.Radius *= Scale.X;
             this.boundingSphere = sphere;
+            
+            //Console.WriteLine(Position);
         }
         /// <summary>
         /// Method to Draw model 
@@ -109,7 +118,6 @@ namespace Map
         /// <param name="Projection"></param>
         public void Draw(Matrix View, Matrix Projection)
         {
-            Console.WriteLine("cos");
             Matrix baseWorld = Matrix.CreateScale(Scale)
             * Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)
@@ -179,7 +187,7 @@ namespace Map
             Matrix world = Matrix.CreateScale(Scale) *
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
-            Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+          Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
         }
 
     }

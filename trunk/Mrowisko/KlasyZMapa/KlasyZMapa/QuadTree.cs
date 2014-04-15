@@ -81,7 +81,7 @@ namespace Map
 
 
             this.trees = new Layer(textures[5], device, Content, scale);
-            this.ants = new Layer(model, device, Content, new Vector3(3.03f));
+            this.ants = new Layer(model, device, Content, new Vector3(scale/30));
             trees.GenerateObjPositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
             ants.GenerateObjPositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
             ants.CreateModelFromList(trees.TreeList);

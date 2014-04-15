@@ -37,7 +37,7 @@ namespace GameCamera
         }
         public override void Update(GameTime gameTime)
         {
-
+            int scale = 111;
             MouseState mouseState = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
 
@@ -51,20 +51,20 @@ namespace GameCamera
             //((FreeCamera)camera).Rotate(deltaX * .01f, -deltaY * .01f);
 
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
-            if (keyState.IsKeyDown(Keys.W)) translation += new Vector3(0, -1, 1)  * (Pitch);
-            if (keyState.IsKeyDown(Keys.S)) translation += new Vector3(0, 1, -1)  * (Pitch);
-            if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (Pitch * -1);
-            if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right *  (Pitch * -1);
-            if (keyState.IsKeyDown(Keys.Q)) Yaw +=.01f;
-            if (keyState.IsKeyDown(Keys.E)) Yaw += -.01f;
+            if (keyState.IsKeyDown(Keys.W)) translation += new Vector3(0, -1, 1) * (Pitch) * scale;
+            if (keyState.IsKeyDown(Keys.S)) translation += new Vector3(0, 1, -1) * (Pitch) * scale;
+            if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (Pitch * -1) * scale;
+            if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (Pitch * -1) * scale;
+            if (keyState.IsKeyDown(Keys.Q)) Rotate(.01f,0);
+            if (keyState.IsKeyDown(Keys.E)) Rotate(-0.01f, 0);
             if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
             {
-                translation += new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1;
+                translation += new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale/10;
                
             }
             else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)
             {
-                translation += new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1;
+                translation += new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1*scale/10;
 
             }
 
