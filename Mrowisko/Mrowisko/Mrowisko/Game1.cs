@@ -11,13 +11,15 @@ using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DebugManager;
 namespace AntHill
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
-    {   
+    {
+       
         GraphicsDeviceManager graphics;
         GraphicsDevice device;
         SpriteBatch spriteBatch;
@@ -33,6 +35,7 @@ namespace AntHill
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+           
         }
 
         /// <summary>
@@ -44,6 +47,7 @@ namespace AntHill
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            
             this.IsFixedTimeStep = false;
             base.Initialize();
         }
@@ -67,6 +71,7 @@ namespace AntHill
             // Create a new SpriteBatch, which can be used to draw textures.
             device = GraphicsDevice;
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            BoundingSphereRenderer.InitializeGraphics(device, 100);
 
 
            // terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
@@ -88,7 +93,7 @@ namespace AntHill
             anim.Player.StartClip(clip);
            lastMouseState = Mouse.GetState();
 
-           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(2.05f), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(22.05f), GraphicsDevice));
 
              
         }
@@ -126,19 +131,22 @@ namespace AntHill
 
         protected override void Draw(GameTime gameTime)
         {
+            BoundingSphereRenderer.Render(models[0].boundingSphere, device, camera.View, camera.Projection, Color.Pink);
+
            // RasterizerState rasterizerState = new RasterizerState();
           //rasterizerState.FillMode = FillMode.WireFrame;
           // GraphicsDevice.RasterizerState = rasterizerState;   
             foreach (LoadModel model in models)
             {   
         if(camera.BoundingVolumeIsInView(model.BoundingSphere))  {
-                    model.Draw(camera.View, camera.Projection);
+                         model.Draw(camera.View, camera.Projection);
+
                 }
 
             }
             
            
-           anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+           //anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
              
             quadTree.Draw( (FreeCamera)camera);
             base.Draw(gameTime);
@@ -154,10 +162,7 @@ namespace AntHill
             if (keyState.IsKeyDown(Keys.Down)) models[0].Position += Vector3.Backward * 100;
             if (keyState.IsKeyDown(Keys.Left)) models[0].Position += Vector3.Left * 100;
             if (keyState.IsKeyDown(Keys.Right)) models[0].Position += Vector3.Right * 100;
-           // double th =
-            //double th=quadTree.Vertices.heightData[Math.Abs((int)models[0].Position.X), Math.Abs((int)models[0].Position.Z)];
-           // models[0].Position =  quadTree.Vertices.Vertices[10].Position;//new Vector3(models[0].Position.X, (float)th,models[0].Position.Z );
-           // models[0].Position.Y = quadTree.Vertices.Vertices[10].Position.Y *-1;
+                                   
         }
     }
 }

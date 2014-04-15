@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "KlasyZJednostkami\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skills", "KlasyZSkillami\KlasyZSkillami\Skills.csproj", "{7EE17F61-5D07-4409-AAB4-EBB33B041653}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugManager", "DebugManager\DebugManager.csproj", "{4166B87D-5FB1-404B-8357-B9A56E563FA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -63,6 +65,10 @@ Global
 		{7EE17F61-5D07-4409-AAB4-EBB33B041653}.Debug|x86.Build.0 = Debug|x86
 		{7EE17F61-5D07-4409-AAB4-EBB33B041653}.Release|x86.ActiveCfg = Release|x86
 		{7EE17F61-5D07-4409-AAB4-EBB33B041653}.Release|x86.Build.0 = Release|x86
+		{4166B87D-5FB1-404B-8357-B9A56E563FA4}.Debug|x86.ActiveCfg = Debug|x86
+		{4166B87D-5FB1-404B-8357-B9A56E563FA4}.Debug|x86.Build.0 = Debug|x86
+		{4166B87D-5FB1-404B-8357-B9A56E563FA4}.Release|x86.ActiveCfg = Release|x86
+		{4166B87D-5FB1-404B-8357-B9A56E563FA4}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
