@@ -150,7 +150,7 @@ namespace Map
             foreach (Vector3 currentV3 in treeList)
             {
                 float rand1 = (float)random.Next(360000) / 100.0f;
-                models.Add(new LoadModel(envModel, currentV3, new Vector3(0, rand1, 0), scaleM, this.device));
+                models.Add(new LoadModel(envModel, currentV3, new Vector3(0, rand1, 0), scaleM/10, this.device));
                
 
             }

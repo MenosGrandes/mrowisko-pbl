@@ -59,7 +59,7 @@ namespace GameCamera
         {
             this.Position += PositionChange;
         }
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             // Calculate rotation matrix from rotation values
             Matrix rotation = Matrix.CreateFromYawPitchRoll(RotationX, -RotationY, 0);

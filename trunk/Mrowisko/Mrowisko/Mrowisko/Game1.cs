@@ -83,7 +83,7 @@ namespace AntHill
             anim = new LoadModel(
                Content.Load<Model>("mrowka_animowana1"),
                Vector3.Zero,Vector3.Up,
-               new Vector3(10), GraphicsDevice, Content);
+               new Vector3(100), GraphicsDevice, Content);
            AnimationClip clip = anim.skinningData.AnimationClips["idle1"];//inne animacje to idle2 i run
             anim.Player.StartClip(clip);
            lastMouseState = Mouse.GetState();
@@ -113,7 +113,7 @@ namespace AntHill
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             updateAnt(gameTime);
-            updateCamera(gameTime);
+            camera.Update(gameTime);
             quadTree.View =camera.View;
            quadTree.Projection = camera.Projection;
            quadTree.CameraPosition = ((FreeCamera)camera).Position;
@@ -132,7 +132,7 @@ namespace AntHill
             foreach (LoadModel model in models)
             {   
         if(camera.BoundingVolumeIsInView(model.BoundingSphere))  {
-                   // model.Draw(camera.View, camera.Projection);
+                    model.Draw(camera.View, camera.Projection);
                 }
 
             }
@@ -140,40 +140,10 @@ namespace AntHill
            
            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
              
-            //quadTree.Draw( (FreeCamera)camera);
+            quadTree.Draw( (FreeCamera)camera);
             base.Draw(gameTime);
         }
-        void updateCamera(GameTime gameTime)
-        {
-            // Get the new keyboard and mouse state
-            MouseState mouseState = Mouse.GetState();
-            KeyboardState keyState = Keyboard.GetState();
 
-
-
-
-            // Determine how much the camera should turn
-            float deltaX = (float)lastMouseState.X - (float)mouseState.X;
-            float deltaY = (float)lastMouseState.Y - (float)mouseState.Y;
-
-               ((FreeCamera)camera).Rotate(deltaX * .01f, -deltaY * .01f);
-      
-            Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
-            if (keyState.IsKeyDown(Keys.W)) translation += Vector3.Forward*111;
-            if (keyState.IsKeyDown(Keys.S)) translation += Vector3.Backward * 111;
-            if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * 111;
-            if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * 111;
-            // Move 3 units per millisecond, independent of frame rate
-            translation *= 0.5f * (float)gameTime.ElapsedGameTime.
-            TotalMilliseconds;
-            // Move the camera
-            ((FreeCamera)camera).Move(translation);
-            // Update the camera
-            camera.Update();
-            // Update the mouse state
-            lastMouseState = mouseState;
-           //anim.Update(gameTime); // update the animation
-        }
         void updateAnt(GameTime gameTime)
         {            KeyboardState keyState = Keyboard.GetState();
 
