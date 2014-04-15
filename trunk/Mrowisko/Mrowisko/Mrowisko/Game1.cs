@@ -83,7 +83,7 @@ namespace AntHill
             anim = new LoadModel(
                Content.Load<Model>("mrowka_animowana1"),
                Vector3.Zero,Vector3.Up,
-               new Vector3(1000), GraphicsDevice, Content);
+               new Vector3(10), GraphicsDevice, Content);
            AnimationClip clip = anim.skinningData.AnimationClips["idle1"];//inne animacje to idle2 i run
             anim.Player.StartClip(clip);
            lastMouseState = Mouse.GetState();
@@ -140,7 +140,7 @@ namespace AntHill
            
            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
              
-            quadTree.Draw( (FreeCamera)camera);
+            //quadTree.Draw( (FreeCamera)camera);
             base.Draw(gameTime);
         }
         void updateCamera(GameTime gameTime)
