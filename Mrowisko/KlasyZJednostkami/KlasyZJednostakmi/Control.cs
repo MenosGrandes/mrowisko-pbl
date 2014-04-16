@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Map;
 
 namespace Logic
 {
@@ -12,7 +20,7 @@ namespace Logic
 
         public void Move()
         {
-            MouseState MS = Mouse.getState();
+            MouseState MS = Mouse.GetState();
 
             Vector2 mouse_pos = new Vector2(MS.X, MS.Y);
             Vector2 direction = mouse_pos - position;
@@ -25,7 +33,7 @@ namespace Logic
                 direction.Normalize();
             }
 
-            if (MS.LeftButton == ButtonState.pressed)
+            if (MS.LeftButton == ButtonState.Pressed)
             {
                 if (distance < baseSpeed)
                 velocity += direction * distance;

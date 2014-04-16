@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using AntHill;
+using Map;
 using Skills;
 
 namespace Logic
@@ -18,32 +18,25 @@ namespace Logic
     {
         //tutaj sa elementy ktore kazda jednostka bedzie miec. content po to zeby w konstruktorze 
         //kazdej dziedziczacej klasy przypisac odpowiedni model na stale
-       
+    
+      
+        protected float armor;
 
-        private int hp;
-
-        protected int Hp
-        {
-            get { return hp; }
-            set { hp = value; }
-        }
-        private float armor;
-
-        protected float Armor
+        public float Armor
         {
             get { return armor; }
             set { armor = value; }
         }
-        private float strength;
+        protected float strength;
 
-        protected float Strength
+        public float Strength
         {
             get { return strength; }
             set { strength = value; }
         }
-        private List<Skill> skillsList;
+        protected List<Skill> skillsList;
 
-        protected List<Skill> SkillsList
+        public List<Skill> SkillsList
         {
             get { return skillsList; }
             set { skillsList = value; }
