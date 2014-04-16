@@ -34,6 +34,15 @@ namespace Logic
             set { model = value; }
         }
 
+
+        protected int hp;
+
+        public int Hp
+        {
+            get { return hp; }
+            set { hp = value; }
+        }
+
         public InteractiveModel(ContentManager content)
         {
             this.content = content;
