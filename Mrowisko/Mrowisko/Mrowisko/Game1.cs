@@ -50,6 +50,7 @@ namespace AntHill
             
             this.IsFixedTimeStep = false;
             base.Initialize();
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -95,6 +96,8 @@ namespace AntHill
 
            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(22.05f), GraphicsDevice));
 
+            
+
              
         }
 
@@ -126,6 +129,7 @@ namespace AntHill
             
             anim.Update(gameTime);
             base.Update(gameTime);
+            
         }
 
 
