@@ -1,0 +1,63 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Logic
+{
+    class Control
+    {
+        Vector2 position, velocity;
+        int baseSpeed;
+
+        public void Move()
+        {
+            MouseState MS = Mouse.getState();
+
+            Vector2 mouse_pos = new Vector2(MS.X, MS.Y);
+            Vector2 direction = mouse_pos - position;
+
+            velocity = Vector2.Zero;
+            float distance = calculateDistance(mouse_pos, position);
+
+            if (direction != Vector2.Zero)
+            {
+                direction.Normalize();
+            }
+
+            if (MS.LeftButton == ButtonState.pressed)
+            {
+                if (distance < baseSpeed)
+                velocity += direction * distance;
+                else
+                    velocity += direction * baseSpeed;
+            }
+
+            position += velocity;
+        }
+
+        private float calculateDistance(Vector2 A, Vector2 B)
+        {
+            //A pozycja myszy B pozycja gracza
+            A = new Vector2(Math.Abs(A.X), Math.Abs(A.Y));
+            B = new Vector2(Math.Abs(B.X), Math.Abs(B.Y));
+            float X_diff, Y_diff, distance;
+            Y_diff = A.Y - B.Y;
+            X_diff = A.X - B.X;
+
+            distance = (float)Math.Sqrt(Math.Pow(X_diff, 2.0) + Math.Pow(Y_diff, 2.0));
+            return Math.Abs(distance);
+        }
+    
+    
+    
+    
+    }
+
+
+
+
+
+
+
+}

@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Allies.cs" />
     <Compile Include="Ant.cs" />
+    <Compile Include="Control.cs" />
     <Compile Include="InteractiveModel.cs" />
     <Compile Include="Predator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
