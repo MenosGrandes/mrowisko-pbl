@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using DebugManager;
 using GameCamera;
 
 namespace Map
@@ -26,7 +25,7 @@ namespace Map
         private Model envModel;
         private GraphicsDevice device;
         private List<Vector3> envBilbList;
-        List<LoadModel> models;
+        public List<LoadModel> models;
         private int scale;
         private Vector3 scaleM;
         private ContentManager content;
@@ -146,7 +145,7 @@ namespace Map
             models = new List<LoadModel>();
             Random random = new Random();
             foreach (Vector3 currentV3 in treeList)
-            {
+           {
                 float rand1 = (float)random.Next(360000) / 100.0f;
                 models.Add(new LoadModel(envModel, currentV3, new Vector3(0, rand1, 0), scaleM, this.device));
                
@@ -220,8 +219,6 @@ namespace Map
             foreach (LoadModel model in models)
                if (camera.BoundingVolumeIsInView(model.BoundingSphere))
                 {
-                  
-                    BoundingSphereRenderer.Render(model.boundingSphere, device, camera.View, camera.Projection, Color.Pink);
                     model.Draw(camera.View, camera.Projection);
                 }
 

@@ -11,9 +11,7 @@ namespace GameCamera
     {
         public Vector3 Position { get; set; }
         public Vector3 Target { get; set; }
-        public TargetCamera(Vector3 Position, Vector3 Target,
-        GraphicsDevice graphicsDevice)
-            : base(graphicsDevice)
+        public TargetCamera(Vector3 Position, Vector3 Target, GraphicsDevice graphicsDevice): base(graphicsDevice)
         {
             this.Position = Position;
             this.Target = Target;

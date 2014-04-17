@@ -161,7 +161,7 @@ namespace DebugManager
         /// <param name="projection">The current projection matrix.</param>
         /// <param name="color">The color to use for rendering the circles.</param>
         public static void Render(
-            BoundingSphere sphere,
+            LoadModel sphere,
             GraphicsDevice graphicsDevice,
             Matrix view,
             Matrix projection,

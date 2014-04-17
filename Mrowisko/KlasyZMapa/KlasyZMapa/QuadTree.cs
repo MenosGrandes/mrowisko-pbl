@@ -17,7 +17,7 @@ namespace Map
     public class QuadTree
     {
        
-        public int MinimumDepth = 7;
+        public int MinimumDepth = 6;
         public int IndexCount { get; private set; }
         public BasicEffect Effect;
         private QuadNode _rootNode;
@@ -49,7 +49,7 @@ namespace Map
         Effect effect;
         List<Texture2D> textures;
         private Layer trees;
-        private Layer ants;
+        public   Layer ants;
         public bool Cull { get; set; }
         /// <summary>
         /// Create terrain at <paramref name="position"/>

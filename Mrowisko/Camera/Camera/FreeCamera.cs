@@ -59,12 +59,12 @@ namespace GameCamera
             if (keyState.IsKeyDown(Keys.E)) Rotate(-0.01f, 0);
             if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
             {
-                translation += new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale/10;
+                translation += new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale;
                
             }
             else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)
             {
-                translation += new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1*scale/10;
+                translation += new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1*scale;
 
             }
 
@@ -80,7 +80,7 @@ namespace GameCamera
 
             // Calculate the rotation matrix
             Matrix rotation = Matrix.CreateFromYawPitchRoll(Yaw, Pitch, 0);
-            // Offset the position and reset the translation
+            // Offset the position and reset the translation    
             translation = Vector3.Transform(translation, rotation);
             Position += translation;
             translation = Vector3.Zero;

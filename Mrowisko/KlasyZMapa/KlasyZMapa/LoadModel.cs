@@ -35,10 +35,11 @@ namespace Map
             get
             {
                 // No need for rotation, as this is a sphere
-                Matrix worldTransform = Matrix.CreateScale(Scale)
-                * Matrix.CreateTranslation(Position);
+                Matrix worldTransform = Matrix.CreateScale(Scale) *
+   Matrix.CreateTranslation(Position);
                 BoundingSphere transformed = boundingSphere;
                 transformed = transformed.Transform(worldTransform);
+
                 return transformed;
             }
         }
@@ -105,8 +106,7 @@ namespace Map
                 sphere = BoundingSphere.CreateMerged(sphere, transformed);
             }
             
-           // sphere.Center = Position;
-            sphere.Radius *= Scale.X;
+
             this.boundingSphere = sphere;
             
             //Console.WriteLine(Position);
@@ -187,8 +187,12 @@ namespace Map
             Matrix world = Matrix.CreateScale(Scale) *
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
-          Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+         // Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+
+         // buildBoundingSphere();
         }
+
+
 
     }
 }
