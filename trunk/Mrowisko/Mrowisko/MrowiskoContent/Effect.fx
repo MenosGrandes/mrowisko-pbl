@@ -61,29 +61,34 @@ struct BBPixelToFrame
 
 TVertexToPixel TexturedVS( float4 inPos : POSITION, float3 inNormal: NORMAL, float2 inTexCoords: TEXCOORD0)
 {
-    TVertexToPixel Output = (TVertexToPixel)0;
-    float4x4 preViewProjection = mul (xView, xProjection);
-    float4x4 preWorldViewProjection = mul (xWorld, preViewProjection);
+	TVertexToPixel Output = (TVertexToPixel)0;
+	float4x4 preViewProjection = mul(xView, xProjection);
+		float4x4 preWorldViewProjection = mul(xWorld, preViewProjection);
 
-    Output.Position = mul(inPos, preWorldViewProjection);
-    Output.TextureCoords = inTexCoords;
+		Output.Position = mul(inPos, preWorldViewProjection);
+	Output.TextureCoords = inTexCoords;
 
-    float3 Normal = normalize(mul(normalize(inNormal), xWorld));
-    Output.LightingFactor = 1;
-    if (xEnableLighting)
-        Output.LightingFactor = saturate(dot(Normal, -xLightDirection));
+	float3 Normal = normalize(mul(normalize(inNormal), xWorld));
+		Output.LightingFactor = 1;
+	if (xEnableLighting)
+		Output.LightingFactor = saturate(dot(Normal, -xLightDirection));
 
-    return Output;
+	//Output.clipDistances = dot(inPos, ClipPlane0); //MSS - Water Refactor added
+
+	return Output;
 }
 
 TPixelToFrame TexturedPS(TVertexToPixel PSIn)
 {
-    TPixelToFrame Output = (TPixelToFrame)0;
+	TPixelToFrame Output = (TPixelToFrame)0;
 
-    Output.Color = tex2D(TextureSampler, PSIn.TextureCoords);
-    Output.Color.rgb *= saturate(PSIn.LightingFactor + xAmbient);
+	Output.Color = tex2D(TextureSampler, PSIn.TextureCoords);
+	Output.Color.rgb *= saturate(PSIn.LightingFactor + xAmbient);
 
-    return Output;
+	// if (Clipping)  clip(PSIn.clipDistances);  //MSS - Water Refactor added
+
+
+	return Output;
 }
 
 technique Textured_2_0

@@ -11,7 +11,6 @@ using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DebugManager;
 namespace AntHill
 {
     /// <summary>
@@ -24,9 +23,10 @@ namespace AntHill
         GraphicsDevice device;
         SpriteBatch spriteBatch;
         List<Map.LoadModel> models = new List<Map.LoadModel>();
+        List<Map.LoadModel> inter = new List<Map.LoadModel>();
         Camera camera;
         MouseState lastMouseState;
-        
+        Map.SkyDome sky;
         LoadModel anim;
         
          QuadTree quadTree;
@@ -68,17 +68,16 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("tree"));
             texture.Add(Content.Load<Texture2D>("treeMap"));
 
-            
+            sky = new SkyDome(GraphicsDevice, Content,Content.Load<Effect>("Effect"));
             // Create a new SpriteBatch, which can be used to draw textures.
             device = GraphicsDevice;
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            BoundingSphereRenderer.InitializeGraphics(device, 100);
 
 
            // terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
 
             camera = new FreeCamera(
-                new Vector3(25650,9000,25650),
+                new Vector3(25600,9000,25600),
                 MathHelper.ToRadians(0), // Turned around 153 degrees
                 MathHelper.ToRadians(-45), // Pitched up 13 degrees
                 GraphicsDevice);
@@ -96,7 +95,8 @@ namespace AntHill
 
            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(22.05f), GraphicsDevice));
 
-            
+           inter = quadTree.ants.models;
+         
 
              
         }
@@ -126,7 +126,10 @@ namespace AntHill
            quadTree.Projection = camera.Projection;
            quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
-            
+
+
+
+
             anim.Update(gameTime);
             base.Update(gameTime);
             
@@ -135,17 +138,25 @@ namespace AntHill
 
         protected override void Draw(GameTime gameTime)
         {
-            BoundingSphereRenderer.Render(models[0].boundingSphere, device, camera.View, camera.Projection, Color.Pink);
+            //RasterizerState rasterizerState = new RasterizerState();
+       //   rasterizerState.FillMode = FillMode.WireFrame;
+        //  GraphicsDevice.RasterizerState = rasterizerState;
 
-           // RasterizerState rasterizerState = new RasterizerState();
-          //rasterizerState.FillMode = FillMode.WireFrame;
-          // GraphicsDevice.RasterizerState = rasterizerState;   
-            foreach (LoadModel model in models)
-            {   
-        if(camera.BoundingVolumeIsInView(model.BoundingSphere))  {
-                         model.Draw(camera.View, camera.Projection);
 
-                }
+
+
+            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+
+            sky.DrawSkyDome((FreeCamera)camera);
+           
+
+
+        if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
+            
+                         models[0].Draw(camera.View, camera.Projection);
+                         
+
+              //  }
 
             }
             
