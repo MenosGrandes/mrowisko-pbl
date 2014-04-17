@@ -30,6 +30,13 @@ namespace AntHill
         LoadModel anim;
         
          QuadTree quadTree;
+                     //FPS COUNTER
+
+         SpriteFont _spr_font;
+         int _total_frames = 0;
+         float _elapsed_time = 0.0f;
+         int _fps = 0;
+
 
         public Game1()
         {
@@ -89,7 +96,7 @@ namespace AntHill
                Content.Load<Model>("mrowka_animowana1"),
                Vector3.Zero,Vector3.Up,
                new Vector3(100), GraphicsDevice, Content);
-           AnimationClip clip = anim.skinningData.AnimationClips["idle1"];//inne animacje to idle2 i run
+           AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
             anim.Player.StartClip(clip);
            lastMouseState = Mouse.GetState();
 
@@ -97,7 +104,7 @@ namespace AntHill
 
            inter = quadTree.ants.models;
          
-
+                     _spr_font = Content.Load<SpriteFont>("FPS");// you have on your project
              
         }
 
@@ -117,6 +124,20 @@ namespace AntHill
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+
+             _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+ 
+            // 1 Second has passed
+            if (_elapsed_time >= 1000.0f)
+            {
+                _fps = _total_frames;
+                _total_frames = 0;
+                _elapsed_time = 0;
+            }
+
+
+
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -141,19 +162,22 @@ namespace AntHill
             //RasterizerState rasterizerState = new RasterizerState();
        //   rasterizerState.FillMode = FillMode.WireFrame;
         //  GraphicsDevice.RasterizerState = rasterizerState;
-
+            _total_frames++;
 
 
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
 
-            sky.DrawSkyDome((FreeCamera)camera);
-           
+
+           sky.DrawSkyDome((FreeCamera)camera);
+
+
+          
 
 
         if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
             
-                         models[0].Draw(camera.View, camera.Projection);
+                        models[0].Draw(camera.View, camera.Projection);
                          
 
               //  }
@@ -161,9 +185,14 @@ namespace AntHill
             }
             
            
-           //anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+           anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
              
             quadTree.Draw( (FreeCamera)camera);
+
+            spriteBatch.Begin();
+            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
+                new Vector2(10.0f, 20.0f), Color.Tomato);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
 

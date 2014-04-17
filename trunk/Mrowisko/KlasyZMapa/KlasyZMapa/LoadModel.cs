@@ -187,9 +187,8 @@ namespace Map
             Matrix world = Matrix.CreateScale(Scale) *
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
-         // Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+          Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
 
-         // buildBoundingSphere();
         }
 
 
