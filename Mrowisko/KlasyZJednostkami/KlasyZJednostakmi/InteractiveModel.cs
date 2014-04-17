@@ -43,9 +43,14 @@ namespace Logic
             set { hp = value; }
         }
 
-        public InteractiveModel(ContentManager content)
+
+
+        public InteractiveModel(ContentManager content, LoadModel model)
         {
             this.content = content;
+            this.model=model;
+          
+           
         }
 
         public InteractiveModel()
