@@ -66,6 +66,15 @@ namespace AntHill
         /// </summary>
         protected override void LoadContent()
         {
+            camera = new FreeCamera(
+              new Vector3(25600, 9000, 25600),
+              MathHelper.ToRadians(0), // Turned around 153 degrees
+              MathHelper.ToRadians(-45), // Pitched up 13 degrees
+              GraphicsDevice);
+            /*
+
+
+
             List<Texture2D> texture = new List<Texture2D>();
             texture.Add(Content.Load<Texture2D>("grass"));
             texture.Add(Content.Load<Texture2D>("sand"));
@@ -77,35 +86,33 @@ namespace AntHill
 
             sky = new SkyDome(GraphicsDevice, Content,Content.Load<Effect>("Effect"));
             // Create a new SpriteBatch, which can be used to draw textures.
-            device = GraphicsDevice;
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+
 
 
            // terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
 
-            camera = new FreeCamera(
-                new Vector3(25600,9000,25600),
-                MathHelper.ToRadians(0), // Turned around 153 degrees
-                MathHelper.ToRadians(-45), // Pitched up 13 degrees
-                GraphicsDevice);
+          
             quadTree = new QuadTree(Vector3.Zero,texture,device,100,Content,(FreeCamera)camera);
             quadTree.Cull = true;
             
               
-            anim = new LoadModel(
-               Content.Load<Model>("mrowka_animowana1"),
-               Vector3.Zero,Vector3.Up,
-               new Vector3(100), GraphicsDevice, Content);
-           AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
-            anim.Player.StartClip(clip);
-           lastMouseState = Mouse.GetState();
+           
 
            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(22.05f), GraphicsDevice));
 
            inter = quadTree.ants.models;
          
-                     _spr_font = Content.Load<SpriteFont>("FPS");// you have on your project
-             
+                           */
+            device = GraphicsDevice;
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spr_font = Content.Load<SpriteFont>("FPS");// you have on your project
+            anim = new LoadModel(
+Content.Load<Model>("sampleAnim/dude"),
+Vector3.Zero, Vector3.Up,
+new Vector3(100), GraphicsDevice, Content);
+            AnimationClip clip = anim.skinningData.AnimationClips["Take 001"];//inne animacje to idle2 i run
+            anim.Player.StartClip(clip);
+            lastMouseState = Mouse.GetState();
         }
 
         /// <summary>w
@@ -138,19 +145,19 @@ namespace AntHill
 
 
 
-
+            /*
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             updateAnt(gameTime);
-            camera.Update(gameTime);
+           
             quadTree.View =camera.View;
            quadTree.Projection = camera.Projection;
            quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
 
 
-
-
+             */
+            camera.Update(gameTime);
             anim.Update(gameTime);
             base.Update(gameTime);
             
@@ -159,18 +166,17 @@ namespace AntHill
 
         protected override void Draw(GameTime gameTime)
         {
-            //RasterizerState rasterizerState = new RasterizerState();
-       //   rasterizerState.FillMode = FillMode.WireFrame;
-        //  GraphicsDevice.RasterizerState = rasterizerState;
+           // RasterizerState rasterizerState = new RasterizerState();
+         //rasterizerState.FillMode = FillMode.WireFrame;
+          //GraphicsDevice.RasterizerState = rasterizerState;
             _total_frames++;
 
 
-
+              /*
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
 
 
            sky.DrawSkyDome((FreeCamera)camera);
-
 
           
 
@@ -185,9 +191,11 @@ namespace AntHill
             }
             
            
-           anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
              
             quadTree.Draw( (FreeCamera)camera);
+                        */
+
+            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
             spriteBatch.Begin();
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),

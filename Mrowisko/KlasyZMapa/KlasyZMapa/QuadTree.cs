@@ -22,7 +22,7 @@ namespace Map
         public BasicEffect Effect;
         private QuadNode _rootNode;
         private MapRender _vertices;
-        private BufferManager _buffers;
+        public BufferManager _buffers;
         private Vector3 _position;
         private int _topNodeSize;
 
