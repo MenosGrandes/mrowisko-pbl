@@ -9,11 +9,11 @@ namespace Map
     /// <summary>
     /// Class responsible form IndexBuffer managament.
     /// </summary>
-    internal class BufferManager
+    public class BufferManager
     {
         int _active = 0;
         internal VertexBuffer VertexBuffer;
-        IndexBuffer[] _IndexBuffers;
+        public IndexBuffer[] _IndexBuffers;
         GraphicsDevice _device;
         /// <summary>
         /// Constructor of BufferManager class. Create two IndexBuffers,which are swaped when we need to do operations.
@@ -40,7 +40,7 @@ namespace Map
         /// IndexBuffer represent rendering order of the vertices in VertexBuffer
         /// <returns>Active IndexBuffer</returns>
         /// </summary>
-        internal IndexBuffer IndexBuffer
+        public IndexBuffer IndexBuffer
         {
             get { return _IndexBuffers[_active]; }
         }
