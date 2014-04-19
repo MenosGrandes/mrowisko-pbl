@@ -10,7 +10,7 @@ namespace Map
 {
     public class Water
     {
-        float waterHeight=50.5f, terrainWidth, terrainLength;
+        float waterHeight=500.5f, terrainWidth, terrainLength;
         Effect effect;
         GraphicsDevice device;
         private RenderTarget2D refractionRenderTarget;
@@ -19,7 +19,7 @@ namespace Map
         private Texture2D reflectionMap;
         private Texture2D refractionMap;
         private Texture2D waterBumpMap;
-        private Vector3 windDirection = new Vector3(1, 0, 0);
+        private Vector3 windDirection = new Vector3(-1, 0, 0);
         public VertexBuffer waterVertexBuffer { get; set; }
 
         SkyDome sky;
@@ -42,12 +42,12 @@ namespace Map
             VertexPositionTexture[] waterVertices = new VertexPositionTexture[6];
 
             waterVertices[0] = new VertexPositionTexture(new Vector3(0, waterHeight, 0), new Vector2(0, 1));
-            waterVertices[2] = new VertexPositionTexture(new Vector3(terrainWidth, waterHeight, -terrainLength), new Vector2(1, 0));
-            waterVertices[1] = new VertexPositionTexture(new Vector3(0, waterHeight, -terrainLength), new Vector2(0, 0));
+            waterVertices[2] = new VertexPositionTexture(new Vector3(-terrainWidth, waterHeight, terrainLength), new Vector2(1, 0));
+            waterVertices[1] = new VertexPositionTexture(new Vector3(0, waterHeight, terrainLength), new Vector2(0, 0));
 
             waterVertices[3] = new VertexPositionTexture(new Vector3(0, waterHeight, 0), new Vector2(0, 1));
-            waterVertices[5] = new VertexPositionTexture(new Vector3(terrainWidth, waterHeight, 0), new Vector2(1, 1));
-            waterVertices[4] = new VertexPositionTexture(new Vector3(terrainWidth, waterHeight, -terrainLength), new Vector2(1, 0));
+            waterVertices[5] = new VertexPositionTexture(new Vector3(-terrainWidth, waterHeight, 0), new Vector2(1, 1));
+            waterVertices[4] = new VertexPositionTexture(new Vector3(-terrainWidth, waterHeight, terrainLength), new Vector2(1, 0));
 
             waterVertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, waterVertices.Count(), BufferUsage.WriteOnly);
 
