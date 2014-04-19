@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimationClip.cs" />
+    <Compile Include="AnimationEvent.cs" />
     <Compile Include="AnimationPlayer.cs" />
     <Compile Include="Keyframe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

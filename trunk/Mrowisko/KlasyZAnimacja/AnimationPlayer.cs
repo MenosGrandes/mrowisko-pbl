@@ -32,6 +32,15 @@ namespace Animations
         // Backlink to the bind pose and skeleton hierarchy data.
         SkinningData skinningDataValue;
 
+        // The delegate template for the event callbacks
+        public delegate void EventCallback(string Event);
+
+        // The reigstered events
+        Dictionary<string, Dictionary<string, EventCallback>> registeredEvents = new Dictionary<string, Dictionary<string, EventCallback>>();
+        public Dictionary<string, Dictionary<string, EventCallback>> RegisteredEvents
+        {
+            get { return registeredEvents; }
+        }
         /// <summary>
         /// Constructs a new animation player.
         /// </summary>
@@ -45,6 +54,11 @@ namespace Animations
             boneTransforms = new Matrix[skinningData.BindPose.Count];
             worldTransforms = new Matrix[skinningData.BindPose.Count];
             skinTransforms = new Matrix[skinningData.BindPose.Count];
+            // Construct the event dictionaries for each clip
+            foreach (string clipName in skinningData.AnimationClips.Keys)
+            {
+                registeredEvents[clipName] = new Dictionary<string, EventCallback>();
+            }
         }
 
         /// <summary>
@@ -82,22 +96,42 @@ namespace Animations
             if (currentClipValue == null)
                 throw new InvalidOperationException(
                             "AnimationPlayer.Update was called before StartClip");
+
+            // Store the previous time
+            TimeSpan lastTime = time;
+
             // Update the animation position.
             if (relativeToCurrentTime)
             {
+                lastTime = currentTimeValue;
                 time += currentTimeValue;
 
+                // Check for events
+                CheckEvents(ref time, ref lastTime);
+
                 // If we reached the end, loop back to the start.
+                bool hasLooped = false;
                 while (time >= currentClipValue.Duration)
+                {
+                    hasLooped = true;
                     time -= currentClipValue.Duration;
+                }
+
+                // If we've looped, reprocess the events
+                if (hasLooped)
+                {
+                    CheckEvents(ref time, ref lastTime);
+                }
             }
 
             if ((time < TimeSpan.Zero) || (time >= currentClipValue.Duration))
                 throw new ArgumentOutOfRangeException("time");
 
             // If the position moved backwards, reset the keyframe index.
+            bool HasResetKeyframe = false;
             if (time < currentTimeValue)
             {
+                HasResetKeyframe = true;
                 currentKeyframe = 0;
                 skinningDataValue.BindPose.CopyTo(boneTransforms, 0);
             }
@@ -112,13 +146,19 @@ namespace Animations
                 Keyframe keyframe = keyframes[currentKeyframe];
 
                 // Stop when we've read up to the current time position.
-                if (keyframe.Time > currentTimeValue)
+                if ((keyframe.Time > currentTimeValue) && (!HasResetKeyframe))
                     break;
 
                 // Use this keyframe.
                 boneTransforms[keyframe.Bone] = keyframe.Transform;
 
                 currentKeyframe++;
+
+                if (HasResetKeyframe)
+                {
+                    currentTimeValue = keyframe.Time;
+                    HasResetKeyframe = false;
+                }
             }
         }
 
@@ -196,6 +236,28 @@ namespace Animations
         public TimeSpan CurrentTime
         {
             get { return currentTimeValue; }
+        }
+
+        /// Checks to see if any events have passed
+        /// </summary>
+        private void CheckEvents(ref TimeSpan time, ref TimeSpan lastTime)
+        {
+            foreach (string eventName in registeredEvents[currentClipValue.Name].Keys)
+            {
+                // Find the event
+                foreach (AnimationEvent animEvent in currentClipValue.Events)
+                {
+                    if (animEvent.EventName == eventName)
+                    {
+                        TimeSpan eventTime = animEvent.EventTime;
+                        if ((lastTime < eventTime) && (time >= eventTime))
+                        {
+                            // Call the event
+                            registeredEvents[currentClipValue.Name][eventName](eventName);
+                        }
+                    }
+                }
+            }
         }
     }
 }
