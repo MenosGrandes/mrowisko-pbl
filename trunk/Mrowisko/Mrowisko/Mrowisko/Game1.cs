@@ -26,7 +26,7 @@ namespace AntHill
         List<Map.LoadModel> inter = new List<Map.LoadModel>();
         Camera camera;
         MouseState lastMouseState;
-        Map.SkyDome sky;
+        Map.Water water;
         LoadModel anim;
         
          QuadTree quadTree;
@@ -66,14 +66,12 @@ namespace AntHill
         /// </summary>
         protected override void LoadContent()
         {
-            camera = new FreeCamera(
-              new Vector3(25600, 9000, 25600),
-              MathHelper.ToRadians(0), // Turned around 153 degrees
-              MathHelper.ToRadians(-45), // Pitched up 13 degrees
-              GraphicsDevice);
-            /*
 
 
+
+            device = GraphicsDevice;
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spr_font = Content.Load<SpriteFont>("FPS");// you have on your project
 
             List<Texture2D> texture = new List<Texture2D>();
             texture.Add(Content.Load<Texture2D>("grass"));
@@ -84,28 +82,25 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("tree"));
             texture.Add(Content.Load<Texture2D>("treeMap"));
 
-            sky = new SkyDome(GraphicsDevice, Content,Content.Load<Effect>("Effect"));
-            // Create a new SpriteBatch, which can be used to draw textures.
-
-
-
-           // terrain = new KlasyZMapa.MapRender(device, texture, Content, 1, Content.Load<Model>("mrowka_01"));
+                    camera = new FreeCamera(
+        new Vector3(25600, 9000, 25600),
+        MathHelper.ToRadians(0), // Turned around 153 degrees
+        MathHelper.ToRadians(-45), // Pitched up 13 degrees
+        GraphicsDevice); 
 
           
             quadTree = new QuadTree(Vector3.Zero,texture,device,100,Content,(FreeCamera)camera);
             quadTree.Cull = true;
-            
-              
+
+            water = new Water(device,Content,51300.0f);
            
 
            models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(22.05f), GraphicsDevice));
 
            inter = quadTree.ants.models;
          
-                           */
-            device = GraphicsDevice;
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            _spr_font = Content.Load<SpriteFont>("FPS");// you have on your project
+                         
+            
             anim = new LoadModel(
 Content.Load<Model>("sampleAnim/dude"),
 Vector3.Zero, Vector3.Up,
@@ -145,7 +140,7 @@ new Vector3(100), GraphicsDevice, Content);
 
 
 
-            /*
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             updateAnt(gameTime);
@@ -156,7 +151,7 @@ new Vector3(100), GraphicsDevice, Content);
             quadTree.Update(gameTime);
 
 
-             */
+             
             camera.Update(gameTime);
             anim.Update(gameTime);
             base.Update(gameTime);
@@ -172,12 +167,12 @@ new Vector3(100), GraphicsDevice, Content);
             _total_frames++;
 
 
-              /*
+              
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
 
 
-           sky.DrawSkyDome((FreeCamera)camera);
-
+            water.DrawRefractionMap(camera.View);
+            water.DrawReflectionMap(camera.View,(FreeCamera)camera);
           
 
 
@@ -193,8 +188,7 @@ new Vector3(100), GraphicsDevice, Content);
            
              
             quadTree.Draw( (FreeCamera)camera);
-                        */
-
+            water.DrawWater((float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f,camera.View,camera.Projection,camera.View);   
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
             spriteBatch.Begin();
