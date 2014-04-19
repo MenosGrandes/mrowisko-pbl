@@ -88,6 +88,7 @@
     <Compile Include="QuadNodeVertex.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="SkyDome.cs" />
+    <Compile Include="Water.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
