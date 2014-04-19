@@ -34,7 +34,7 @@ namespace Map
 
         public void DrawSkyDome(FreeCamera camera)
         {
-           // device.DepthStencilState = DepthStencilState.None;
+            device.DepthStencilState = DepthStencilState.None;
             Matrix[] modelTransforms = new Matrix[skyDome.Bones.Count];
             skyDome.CopyAbsoluteBoneTransformsTo(modelTransforms);
             Matrix wMatrix = Matrix.CreateFromYawPitchRoll(camera.Yaw,camera.Pitch,0)*Matrix.CreateTranslation(0, -0.3f, 0) * Matrix.CreateScale(1000*100) * Matrix.CreateTranslation(camera.Position);
@@ -53,8 +53,8 @@ namespace Map
                 }
                 mesh.Draw();
             }
-            //device.BlendState = BlendState.Opaque;
-           //device.DepthStencilState = DepthStencilState.Default;
+            device.BlendState = BlendState.Opaque;
+           device.DepthStencilState = DepthStencilState.Default;
         }
     }
 }
