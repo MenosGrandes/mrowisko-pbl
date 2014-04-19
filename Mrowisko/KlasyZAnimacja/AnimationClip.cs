@@ -24,8 +24,16 @@ namespace Animations
         {
             Duration = duration;
             Keyframes = keyframes;
+            Events = null;
+            Name = null;
         }
-
+        public AnimationClip(TimeSpan duration, List<Keyframe> keyframes, List<AnimationEvent> events, string name)
+        {
+            Duration = duration;
+            Keyframes = keyframes;
+            Events = events;
+            Name = name;
+        }
 
         /// <summary>
         /// Private constructor for use by the XNB deserializer.
@@ -48,6 +56,17 @@ namespace Animations
         /// </summary>
         [ContentSerializer]
         public List<Keyframe> Keyframes { get; private set; }
+        /// <summary>
+        /// Callback events for the animation clips
+        /// </summary>
+        [ContentSerializer]
+        public List<AnimationEvent> Events { get; private set; }
+
+        /// <summary>
+        /// The name of the clip
+        /// </summary>
+        [ContentSerializer]
+        public string Name { get; private set; }
     }
 }
 

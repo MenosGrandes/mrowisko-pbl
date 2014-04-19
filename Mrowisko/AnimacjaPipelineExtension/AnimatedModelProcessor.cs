@@ -60,7 +60,8 @@ namespace AnimacjaPipelineExtension
 
             //convert animation data to our runtime format
             Dictionary<string, AnimationClip> animationClips;
-            animationClips = ProcessAnimations(skeleton.Animations, bones);
+            animationClips = ProcessAnimations(skeleton.Animations, bones, context, input.Identity);
+                // animationClips = ProcessAnimations(skeleton.Animations, bones);
 
             // Chain to the base ModelProcessor class so it can convert the model data.
             ModelContent model = base.Process(input, context);
@@ -68,39 +69,140 @@ namespace AnimacjaPipelineExtension
             model.Tag = new SkinningData(animationClips, bindPose, inverseBindPose, skeletonHierarchy);
             return model;
         }
-        static Dictionary<string, AnimationClip> ProcessAnimations
-            (AnimationContentDictionary animations, IList<BoneContent> bones)
+        /// <summary>
+        /// Converts an intermediate format content pipeline AnimationContentDictionary
+        /// object to our runtime AnimationClip format.
+        /// </summary>
+        static Dictionary<string, AnimationClip> ProcessAnimations(
+            AnimationContentDictionary animations, IList<BoneContent> bones,
+            ContentProcessorContext context, ContentIdentity sourceIdentity)
         {
             // Build up a table mapping bone names to indices.
             Dictionary<string, int> boneMap = new Dictionary<string, int>();
+
             for (int i = 0; i < bones.Count; i++)
             {
                 string boneName = bones[i].Name;
+
                 if (!string.IsNullOrEmpty(boneName))
                     boneMap.Add(boneName, i);
             }
-            Dictionary<string, AnimationClip> animationClips =
-            new Dictionary<string, AnimationClip>();
-            // Convert each animation
+
+            // Convert each animation in turn.
+            Dictionary<string, AnimationClip> animationClips;
+            animationClips = new Dictionary<string, AnimationClip>();
+
+            // We process the original animation first, so we can use their keyframes
             foreach (KeyValuePair<string, AnimationContent> animation in animations)
             {
-                AnimationClip processed = ProcessAnimation(animation.Value, boneMap);
+                AnimationClip processed = ProcessAnimation(animation.Value, boneMap, animation.Key);
+
                 animationClips.Add(animation.Key, processed);
             }
+
+            // Check to see if there's an animation clip definition
+            // Here, we're checking for a file with the _Anims suffix.
+            // So, if your model is named dude.fbx, we'd add dude_Anims.xml in the same folder
+            // and the pipeline will see the file and use it to override the animations in the
+            // original model file.
+            string SourceModelFile = sourceIdentity.SourceFilename;
+            string SourcePath = Path.GetDirectoryName(SourceModelFile);
+            string AnimFilename = Path.GetFileNameWithoutExtension(SourceModelFile);
+            AnimFilename += "_Anims.xml";
+            string AnimPath = Path.Combine(SourcePath, AnimFilename);
+            if (File.Exists(AnimPath))
+            {
+                // Add the filename as a dependency, so if it changes, the model is rebuilt
+                context.AddDependency(AnimPath);
+
+                // Load the animation definition from the XML file
+                AnimationDefinition AnimDef = context.BuildAndLoadAsset<XmlImporter, AnimationDefinition>(new ExternalReference<XmlImporter>(AnimPath), null);
+
+                // Break up the original animation clips into our new clips
+                // First, we check if the clips contains our clip to break up
+                if (animationClips.ContainsKey(AnimDef.OriginalClipName))
+                {
+                    // Grab the main clip that we are using
+                    AnimationClip MainClip = animationClips[AnimDef.OriginalClipName];
+
+                    // Now remove the original clip from our animations
+                    animationClips.Remove(AnimDef.OriginalClipName);
+
+                    // Process each of our new animation clip parts
+                    foreach (AnimationDefinition.ClipPart Part in AnimDef.ClipParts)
+                    {
+                        // Calculate the frame times
+                        TimeSpan StartTime = GetTimeSpanForFrame(Part.StartFrame, AnimDef.OriginalFrameCount, MainClip.Duration.Ticks);
+                        TimeSpan EndTime = GetTimeSpanForFrame(Part.EndFrame, AnimDef.OriginalFrameCount, MainClip.Duration.Ticks);
+
+                        // Get all the keyframes for the animation clip
+                        // that fall within the start and end time
+                        List<Keyframe> Keyframes = new List<Keyframe>();
+                        foreach (Keyframe AnimFrame in MainClip.Keyframes)
+                        {
+                            if ((AnimFrame.Time >= StartTime) && (AnimFrame.Time <= EndTime))
+                            {
+                                Keyframe NewFrame = new Keyframe(AnimFrame.Bone, AnimFrame.Time - StartTime, AnimFrame.Transform);
+                                Keyframes.Add(NewFrame);
+                            }
+                        }
+
+                        // Process the events
+                        List<AnimationEvent> Events = new List<AnimationEvent>();
+                        if (Part.Events != null)
+                        {
+                            // Process each event
+                            foreach (AnimationDefinition.ClipPart.Event Event in Part.Events)
+                            {
+                                // Get the event time within the animation
+                                TimeSpan EventTime = GetTimeSpanForFrame(Event.Keyframe, AnimDef.OriginalFrameCount, MainClip.Duration.Ticks);
+
+                                // Offset the event time so it is relative to the start of the animation
+                                EventTime -= StartTime;
+
+                                // Create the event
+                                AnimationEvent NewEvent = new AnimationEvent();
+                                NewEvent.EventTime = EventTime;
+                                NewEvent.EventName = Event.Name;
+                                Events.Add(NewEvent);
+                            }
+                        }
+
+                        // Create the clip
+                        AnimationClip NewClip = new AnimationClip(EndTime - StartTime, Keyframes, Events, Part.ClipName);
+                        animationClips[Part.ClipName] = NewClip;
+                    }
+                }
+            }
+
             if (animationClips.Count == 0)
             {
                 throw new InvalidContentException(
                             "Input file does not contain any animations.");
             }
+
             return animationClips;
+        }
+        /// <summary>
+        /// Gets a TimeSpan value for a frame index in an animation
+        /// </summary>
+        private static TimeSpan GetTimeSpanForFrame(int FrameIndex, int TotalFrameCount, long TotalTicks)
+        {
+            float MaxFrameIndex = (float)TotalFrameCount - 1;
+            float AmountOfAnimation = (float)FrameIndex / MaxFrameIndex;
+            float NumTicks = AmountOfAnimation * (float)TotalTicks;
+            return new TimeSpan((long)NumTicks);
         }
         /// <summary>
         /// Converts an intermediate format content pipeline AnimationContent
         /// object to our runtime AnimationClip format.
         /// </summary>
-        static AnimationClip ProcessAnimation(AnimationContent animation, Dictionary<string, int> boneMap)
+        static AnimationClip ProcessAnimation(AnimationContent animation,
+                                               Dictionary<string, int> boneMap,
+                                               string clipName)
         {
             List<Keyframe> keyframes = new List<Keyframe>();
+
             // For each input animation channel.
             foreach (KeyValuePair<string, AnimationChannel> channel in
                 animation.Channels)
@@ -122,15 +224,22 @@ namespace AnimacjaPipelineExtension
                                                keyframe.Transform));
                 }
             }
-            keyframes.Sort(CompareaKeyFrameTimes);
+
+            // Sort the merged keyframes by time.
+            keyframes.Sort(CompareKeyframeTimes);
+
             if (keyframes.Count == 0)
                 throw new InvalidContentException("Animation has no keyframes.");
 
             if (animation.Duration <= TimeSpan.Zero)
                 throw new InvalidContentException("Animation has a zero duration.");
-            return new AnimationClip(animation.Duration, keyframes);
+
+            return new AnimationClip(animation.Duration, keyframes, new List<AnimationEvent>(), clipName);
         }
-        static int CompareaKeyFrameTimes(Keyframe a, Keyframe b)
+        /// <summary>
+        /// Comparison function for sorting keyframes into ascending time order.
+        /// </summary>
+        static int CompareKeyframeTimes(Keyframe a, Keyframe b)
         {
             return a.Time.CompareTo(b.Time);
         }

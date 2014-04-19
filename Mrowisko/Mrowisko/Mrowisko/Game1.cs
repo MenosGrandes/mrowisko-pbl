@@ -102,7 +102,7 @@ namespace AntHill
                          
             
             anim = new LoadModel(
-Content.Load<Model>("sampleAnim/dude"),
+Content.Load<Model>("ludek2"),
 Vector3.Zero, Vector3.Up,
 new Vector3(100), GraphicsDevice, Content);
             AnimationClip clip = anim.skinningData.AnimationClips["Take 001"];//inne animacje to idle2 i run
@@ -187,7 +187,7 @@ new Vector3(100), GraphicsDevice, Content);
             
            
              
-            quadTree.Draw( (FreeCamera)camera);
+           // quadTree.Draw( (FreeCamera)camera);
             water.DrawWater((float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f,camera.View,camera.Projection,camera.View);   
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
