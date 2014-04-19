@@ -1,6 +1,11 @@
 Content\Effect.xnb
 Content\water.xnb
 Content\animatedModel.xnb
+Content\ClearGBuffer.xnb
+Content\CombineFinal.xnb
+Content\DirectionaLight.xnb
+Content\PointLight.xnb
+Content\RenderGBuffer.xnb
 Content\mrowka_01.xnb
 Content\anim.xnb
 Content\sampleAnim\dude.xnb

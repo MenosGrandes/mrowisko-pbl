@@ -24,10 +24,11 @@ namespace AntHill
         SpriteBatch spriteBatch;
         List<Map.LoadModel> models = new List<Map.LoadModel>();
         List<Map.LoadModel> inter = new List<Map.LoadModel>();
-        Camera camera;
+        public Camera camera;
         MouseState lastMouseState;
         Map.Water water;
         LoadModel anim;
+        Light light;
         
          QuadTree quadTree;
                      //FPS COUNTER
@@ -42,6 +43,7 @@ namespace AntHill
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            
            
         }
 
@@ -54,7 +56,11 @@ namespace AntHill
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+            camera = new FreeCamera(
+      new Vector3(25600, 9000, 25600),
+      MathHelper.ToRadians(0), // Turned around 153 degrees
+      MathHelper.ToRadians(-45), // Pitched up 13 degrees
+      GraphicsDevice);
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
@@ -82,12 +88,8 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("tree"));
             texture.Add(Content.Load<Texture2D>("treeMap"));
 
-                    camera = new FreeCamera(
-        new Vector3(25600, 9000, 25600),
-        MathHelper.ToRadians(0), // Turned around 153 degrees
-        MathHelper.ToRadians(-45), // Pitched up 13 degrees
-        GraphicsDevice); 
 
+            light = new Light(this);
           
             quadTree = new QuadTree(Vector3.Zero,texture,device,100,Content,(FreeCamera)camera);
             quadTree.Cull = true;
@@ -184,8 +186,8 @@ new Vector3(100), GraphicsDevice, Content);
               //  }
 
             }
-            
-           
+
+        //light.DrawLight(gameTime, this);
              
            // quadTree.Draw( (FreeCamera)camera);
             water.DrawWater((float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f,camera.View,camera.Projection,camera.View);   
