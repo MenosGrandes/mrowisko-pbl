@@ -56,11 +56,7 @@ namespace AntHill
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            camera = new FreeCamera(
-      new Vector3(25600, 9000, 25600),
-      MathHelper.ToRadians(0), // Turned around 153 degrees
-      MathHelper.ToRadians(-45), // Pitched up 13 degrees
-      GraphicsDevice);
+
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
@@ -88,27 +84,31 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("tree"));
             texture.Add(Content.Load<Texture2D>("treeMap"));
 
-
+            camera = new FreeCamera(
+new Vector3(texture[4].Width*50 / 2, texture[4].Width*50/10, texture[4].Width*50 / 2),
+MathHelper.ToRadians(0), // Turned around 153 degrees
+MathHelper.ToRadians(-45), // Pitched up 13 degrees
+GraphicsDevice);
             light = new Light(this);
           
-            quadTree = new QuadTree(Vector3.Zero,texture,device,100,Content,(FreeCamera)camera);
+            quadTree = new QuadTree(Vector3.Zero,texture,device,50,Content,(FreeCamera)camera);
             quadTree.Cull = true;
 
-            water = new Water(device,Content,51300.0f);
+           water = new Water(device, Content, texture[4].Width, 50);
            
 
-           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(22.05f), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice));
 
            inter = quadTree.ants.models;
          
                          
-            
+            /*
             anim = new LoadModel(
 Content.Load<Model>("ludek2"),
 Vector3.Zero, Vector3.Up,
 new Vector3(100), GraphicsDevice, Content);
             AnimationClip clip = anim.skinningData.AnimationClips["Take 001"];//inne animacje to idle2 i run
-            anim.Player.StartClip(clip);
+            anim.Player.StartClip(clip); */
             lastMouseState = Mouse.GetState();
         }
 
@@ -155,7 +155,7 @@ new Vector3(100), GraphicsDevice, Content);
 
              
             camera.Update(gameTime);
-            anim.Update(gameTime);
+            //anim.Update(gameTime);
             base.Update(gameTime);
             
         }
@@ -163,19 +163,21 @@ new Vector3(100), GraphicsDevice, Content);
 
         protected override void Draw(GameTime gameTime)
         {
-           // RasterizerState rasterizerState = new RasterizerState();
-         //rasterizerState.FillMode = FillMode.WireFrame;
-          //GraphicsDevice.RasterizerState = rasterizerState;
+            //RasterizerState rasterizerState = new RasterizerState();
+            //rasterizerState.FillMode = FillMode.WireFrame;
+            //GraphicsDevice.RasterizerState = rasterizerState;
+            float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
+
             _total_frames++;
 
 
               
-            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+            //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
 
 
             water.DrawRefractionMap(camera.View);
-            water.DrawReflectionMap(camera.View,(FreeCamera)camera);
-          
+            water.DrawReflectionMap((FreeCamera)camera);
+            water.DrawWater(time, camera.View, camera.Projection, camera.View);   
 
 
         if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
@@ -189,9 +191,9 @@ new Vector3(100), GraphicsDevice, Content);
 
         //light.DrawLight(gameTime, this);
              
-           // quadTree.Draw( (FreeCamera)camera);
-            water.DrawWater((float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f,camera.View,camera.Projection,camera.View);   
-            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+            quadTree.Draw( (FreeCamera)camera);
+           
+            //anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
             spriteBatch.Begin();
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),

@@ -183,8 +183,8 @@ namespace Map
                 for (int y = 0; y < terrainLength; y++)
                 {
                     vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, y * Scale);
-                    vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 10.0f;
-                    vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 10.0f;
+                    vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 5.0f;
+                    vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 5.0f;
                         
                     vertices[x + y * terrainWidth].TexWeights.X = MathHelper.Clamp(1.0f - Math.Abs(heightData[x, y] - 0) / 8.0f, 0, 1);
                     vertices[x + y * terrainWidth].TexWeights.Y = MathHelper.Clamp(1.0f - Math.Abs(heightData[x, y] - 12) / 6.0f, 0, 1);
