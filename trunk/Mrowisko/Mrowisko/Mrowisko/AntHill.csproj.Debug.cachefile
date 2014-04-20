@@ -1,8 +1,4 @@
 Content\Effect.xnb
-Content\ClearGBuffer.xnb
-Content\CombineFinal.xnb
-Content\DirectionaLight.xnb
-Content\PointLight.xnb
 Content\mrowka_01.xnb
 Content\anim.xnb
 Content\sand.xnb
@@ -10,10 +6,14 @@ Content\snow.xnb
 Content\treeMap.xnb
 Content\tree.xnb
 Content\terrain.xnb
+Content\grass.xnb
 Content\cloudMap.xnb
-Content\waterbump.xnb
+Content\rock.xnb
 Content\dome.xnb
 Content\FPS.xnb
 Content\cloudMap_0.xnb
-Content\rock.xnb
-Content\grass.xnb
+Content\ClearGBuffer.xnb
+Content\CombineFinal.xnb
+Content\DirectionaLight.xnb
+Content\PointLight.xnb
+Content\waterbump.xnb
