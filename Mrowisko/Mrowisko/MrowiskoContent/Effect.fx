@@ -1,10 +1,3 @@
-//----------------------------------------------------
-//-- --
-//-- www.riemers.net --
-//-- Series 4: Advanced terrain --
-//-- Shader code --
-//-- --
-//----------------------------------------------------
 
 //------- Constants --------
 float4x4 xView;
@@ -43,7 +36,7 @@ sampler TextureSampler1 = sampler_state { texture = <xTexture1> ; magfilter = LI
 
 sampler TextureSampler2 = sampler_state { texture = <xTexture2>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; }; Texture xTexture3;
 
-sampler TextureSampler3 = sampler_state { texture = <xTexture3>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
+sampler TextureSampler3 = sampler_state { texture = <xTexture3>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = clamp; AddressV = clamp; };
 
 sampler textureSampler = sampler_state { texture = <xBillboardTexture>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; }; Texture xReflectionMap;
 
@@ -60,6 +53,7 @@ float4 Position     : POSITION;
 float4 Color        : COLOR0;
 float LightingFactor: TEXCOORD0;
 float2 TextureCoords: TEXCOORD1;
+float2 clipDistances: TEXCOORD2;
 };
 //------- Technique: Bilboarding --------
 struct TPixelToFrame
@@ -93,7 +87,7 @@ TVertexToPixel TexturedVS( float4 inPos : POSITION, float3 inNormal: NORMAL, flo
 	if (xEnableLighting)
 		Output.LightingFactor = saturate(dot(Normal, -xLightDirection));
 
-	//Output.clipDistances = dot(inPos, ClipPlane0); //MSS - Water Refactor added
+	Output.clipDistances = dot(inPos, ClipPlane0); //MSS - Water Refactor added
 
 	return Output;
 }
@@ -105,7 +99,7 @@ TPixelToFrame TexturedPS(TVertexToPixel PSIn)
 	Output.Color = tex2D(TextureSampler, PSIn.TextureCoords);
 	Output.Color.rgb *= saturate(PSIn.LightingFactor + xAmbient);
 
-	// if (Clipping)  clip(PSIn.clipDistances);  //MSS - Water Refactor added
+ if (Clipping)  clip(PSIn.clipDistances);  //MSS - Water Refactor added
 
 
 	return Output;
@@ -140,6 +134,7 @@ struct MTVertexToPixel
     float4 TextureWeights    : TEXCOORD3;
 
      float Depth                : TEXCOORD4;
+	 float4 clipDistances                : TEXCOORD5;
 
 };
 
@@ -177,7 +172,7 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 
          
      float blendDistance = 0.99f;
-     float blendWidth = 0.5f;
+     float blendWidth = 0.005f;
      float blendFactor = clamp((PSIn.Depth-blendDistance)/blendWidth, 0, 1);
          
      float4 farColor;
@@ -320,18 +315,18 @@ WPixelToFrame WaterPS(WVertexToPixel PSIn)
 		float3 eyeVector = normalize(xCamPos - PSIn.Position3D);
 		float3 normalVector = (bumpColor.rbg - 0.5f)*2.0f;
 
+
 		float fresnelTerm = dot(eyeVector, normalVector);
 	float4 combinedColor = lerp(reflectiveColor, refractiveColor, fresnelTerm);
 
 		float4 dullColor = float4(0.3f, 0.3f, 0.5f, 1.0f);
 
 		Output.Color = lerp(combinedColor, dullColor, 0.2f);
-
 	float3 reflectionVector = -reflect(xLightDirection, normalVector);
 		float specular = dot(normalize(reflectionVector), normalize(eyeVector));
 	specular = pow(abs(specular), 256);
 	Output.Color.rgb += specular;
-
+	
 	return Output;
 }
 
@@ -339,57 +334,9 @@ technique Water
 {
 	pass Pass0
 	{
-		VertexShader = compile vs_1_1 WaterVS();
+		VertexShader = compile vs_2_0 WaterVS();
 		PixelShader = compile ps_2_0 WaterPS();
 	}
 }
 
 
-//------- Technique: PerlinNoise --------
-struct PNVertexToPixel
-{
-	float4 Position         : POSITION;
-	float2 TextureCoords    : TEXCOORD0;
-};
-
-struct PNPixelToFrame
-{
-	float4 Color : COLOR0;
-};
-
-PNVertexToPixel PerlinVS(float4 inPos : POSITION, float2 inTexCoords : TEXCOORD)
-{
-	PNVertexToPixel Output = (PNVertexToPixel)0;
-
-	Output.Position = inPos;
-	Output.TextureCoords = inTexCoords;
-
-	return Output;
-}
-
-PNPixelToFrame PerlinPS(PNVertexToPixel PSIn)
-{
-	PNPixelToFrame Output = (PNPixelToFrame)0;
-
-	float2 move = float2(0, 1);
-		float4 perlin = tex2D(TextureSampler, (PSIn.TextureCoords) + xTime*move) / 2;
-		perlin += tex2D(TextureSampler, (PSIn.TextureCoords) * 2 + xTime*move) / 4;
-	perlin += tex2D(TextureSampler, (PSIn.TextureCoords) * 4 + xTime*move) / 8;
-	perlin += tex2D(TextureSampler, (PSIn.TextureCoords) * 8 + xTime*move) / 16;
-	perlin += tex2D(TextureSampler, (PSIn.TextureCoords) * 16 + xTime*move) / 32;
-	perlin += tex2D(TextureSampler, (PSIn.TextureCoords) * 32 + xTime*move) / 32;
-
-	Output.Color.rgb = 1.0f - pow(abs(perlin.r), xOvercast)*2.0f;
-	Output.Color.a = 1;
-
-	return Output;
-}
-
-technique PerlinNoise
-{
-	pass Pass0
-	{
-		VertexShader = compile vs_1_1 PerlinVS();
-		PixelShader = compile ps_2_0 PerlinPS();
-	}
-}
