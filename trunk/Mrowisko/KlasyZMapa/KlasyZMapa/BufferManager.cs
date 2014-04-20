@@ -18,7 +18,9 @@ namespace Map
         /// <summary>
         /// Constructor of BufferManager class. Create two IndexBuffers,which are swaped when we need to do operations.
         /// Create also VertexBuffer ,which represent a list of 3D vertices to be streamed to the graphics device
-        /// <param name="vertices">Array where vertices from terrain are store.<see cref="Map.MapRender.VertexMultitextured"/></param>
+        /// <param name="vertices">Array where vertices from terrain are store.<see cref="Map.Map
+        /// 
+        /// .VertexMultitextured"/></param>
         /// <param name="device">GraphicsDevice</param>
         /// </summary>
         internal BufferManager(VertexMultitextured[] vertices, GraphicsDevice device)
@@ -37,7 +39,10 @@ namespace Map
         }
 
         /// <summary>
-        /// IndexBuffer represent rendering order of the vertices in VertexBuffer
+        /// IndexBuffer represent 
+        /// 
+        /// 
+        /// ing order of the vertices in VertexBuffer
         /// <returns>Active IndexBuffer</returns>
         /// </summary>
         public IndexBuffer IndexBuffer

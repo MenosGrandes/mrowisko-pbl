@@ -51,6 +51,7 @@ namespace Map
         private Layer trees;
         public   Layer ants;
         public bool Cull { get; set; }
+        private QuadNode _activeNode;
         /// <summary>
         /// Create terrain at <paramref name="position"/>
         /// </summary>
@@ -90,10 +91,24 @@ namespace Map
         }
         public void Update(GameTime gameTime)
         {
+
+            //Only update if the camera position has changed
+
+
            
+
+            _lastCameraPosition = _cameraPosition;
             IndexCount = 0;
 
             _rootNode.EnforceMinimumDepth();
+
+            _activeNode = _rootNode.DeepestNodeWithPoint(CameraPosition);
+
+            if (_activeNode != null)
+            {
+                _activeNode.Split();
+            }
+
             _rootNode.SetActiveVertices();
 
             _buffers.UpdateIndexBuffer(Indices, IndexCount);
@@ -105,8 +120,9 @@ namespace Map
             //RasterizerState rasterizerState = new RasterizerState();
             //rasterizerState.FillMode = FillMode.WireFrame;
             //Device.RasterizerState = rasterizerState;
-
-
+            this.CameraPosition = camera.Position;
+            this.View = camera.View;
+            this.Projection = camera.Projection;
             ViewFrustrum.Matrix = camera.View * camera.Projection;
 
             this.Device.SetVertexBuffer(_buffers.VertexBuffer);

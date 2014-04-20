@@ -36,7 +36,7 @@ sampler TextureSampler1 = sampler_state { texture = <xTexture1> ; magfilter = LI
 
 sampler TextureSampler2 = sampler_state { texture = <xTexture2>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; }; Texture xTexture3;
 
-sampler TextureSampler3 = sampler_state { texture = <xTexture3>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = clamp; AddressV = clamp; };
+sampler TextureSampler3 = sampler_state { texture = <xTexture3>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
 
 sampler textureSampler = sampler_state { texture = <xBillboardTexture>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; }; Texture xReflectionMap;
 
@@ -298,7 +298,7 @@ WPixelToFrame WaterPS(WVertexToPixel PSIn)
 	WPixelToFrame Output = (WPixelToFrame)0;
 
 	float4 bumpColor = tex2D(	WaterBumpMapSampler, PSIn.BumpMapSamplingPos);
-		float2 perturbation = xWaveHeight*(bumpColor.rg - 0.5f)*2.0f;
+		float2 perturbation = xWaveHeight*(bumpColor.rgb - 0.5f)*2.0f;
 
 		float2 ProjectedTexCoords;
 	ProjectedTexCoords.x = PSIn.ReflectionMapSamplingPos.x / PSIn.ReflectionMapSamplingPos.w / 2.0f + 0.5f;
@@ -319,14 +319,17 @@ WPixelToFrame WaterPS(WVertexToPixel PSIn)
 		float fresnelTerm = dot(eyeVector, normalVector);
 	float4 combinedColor = lerp(reflectiveColor, refractiveColor, fresnelTerm);
 
-		float4 dullColor = float4(0.3f, 0.3f, 0.5f, 1.0f);
+		
 
-		Output.Color = lerp(combinedColor, dullColor, 0.2f);
-	float3 reflectionVector = -reflect(xLightDirection, normalVector);
+	float4 dullColor = float4(0.3f, 0.3f, 0.5f, 1.0f);
+		Output.Color = dullColor;
+			   Output.Color = lerp(combinedColor, dullColor, 0.2f);
+
+		float3 reflectionVector = -reflect(xLightDirection, normalVector);
 		float specular = dot(normalize(reflectionVector), normalize(eyeVector));
-	specular = pow(abs(specular), 256);
+	specular = pow(abs(specular), 131);
 	Output.Color.rgb += specular;
-	
+							 
 	return Output;
 }
 
