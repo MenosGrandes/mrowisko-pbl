@@ -1,6 +1,7 @@
 using Animations;
 using GameCamera;
 using Map;
+using Logic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -29,7 +30,8 @@ namespace AntHill
         Map.Water water;
         LoadModel anim;
         Light light;
-        
+        Control control;
+
          QuadTree quadTree;
                      //FPS COUNTER
 
@@ -57,6 +59,7 @@ namespace AntHill
         {
             // TODO: Add your initialization logic here
 
+            control = new Control();
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
@@ -153,7 +156,7 @@ new Vector3(100), GraphicsDevice, Content);
             quadTree.Update(gameTime);
 
 
-             
+            control.Move(); 
             camera.Update(gameTime);
             //anim.Update(gameTime);
             base.Update(gameTime);
