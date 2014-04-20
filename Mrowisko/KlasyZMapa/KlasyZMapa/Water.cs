@@ -30,7 +30,7 @@ namespace Map
             this.waterBumpMap = Content.Load<Texture2D>("waterbump");
             this.Scale = scale;
             this.device = device;
-            this.waterHeight = scale*6 ;
+            this.waterHeight = scale*4 ;
             this.terrainLength = terrainLength*Scale;
             this.terrainWidth = this.terrainLength;
            
@@ -73,9 +73,9 @@ namespace Map
             Plane refractionPlane = CreatePlane(waterHeight + 1.5f*Scale, new Vector3(0, -1, 0), viewMatrix, false);
 
             effect.Parameters["ClipPlane0"].SetValue(new Vector4(refractionPlane.Normal, refractionPlane.D));
-            effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
+            effect.Parameters["Clipping"].SetValue(false);    // Allows the geometry to be clipped for the purpose of creating a refraction map
             device.SetRenderTarget(refractionRenderTarget);
-            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Aqua, 1.0f, 0);
+           // device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             device.SetRenderTarget(null);
             effect.Parameters["Clipping"].SetValue(false);   // Make sure you turn it back off so the whole scene doesnt keep rendering as clipped
             refractionMap = refractionRenderTarget;
@@ -84,15 +84,15 @@ namespace Map
 
         public void DrawReflectionMap( GameCamera.FreeCamera camera)
         {
-            Plane reflectionPlane = CreatePlane(waterHeight - 0.5f * Scale, new Vector3(0, -1, 0), camera.reflectionViewMatrix, true);
+            Plane reflectionPlane = CreatePlane(waterHeight - 0.5f * Scale, new Vector3(0, 1, 0), camera.reflectionViewMatrix, true);
 
             effect.Parameters["ClipPlane0"].SetValue(new Vector4(reflectionPlane.Normal, reflectionPlane.D));
 
-            effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
+            effect.Parameters["Clipping"].SetValue(false);    // Allows the geometry to be clipped for the purpose of creating a refraction map
             device.SetRenderTarget(reflectionRenderTarget);
 
 
-            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Blue, 1.0f, 0);
+          //  device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Yellow, 1.0f, 0);
             sky.DrawSkyDome(camera);
 
             effect.Parameters["Clipping"].SetValue(false);

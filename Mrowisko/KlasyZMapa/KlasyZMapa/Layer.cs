@@ -83,7 +83,7 @@ namespace Map
         {
             Color[] objMapColors = new Color[objMap.Width * objMap.Height];
             objMap.GetData(objMapColors);
-
+                                                                            
             int[,] noiseData = new int[objMap.Width, objMap.Height];
             for (int x = 0; x < objMap.Width; x++)
                 for (int y = 0; y < objMap.Height; y++)

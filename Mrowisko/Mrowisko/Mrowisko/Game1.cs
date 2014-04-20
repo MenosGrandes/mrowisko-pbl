@@ -1,7 +1,6 @@
 using Animations;
 using GameCamera;
 using Map;
-using Logic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -29,9 +28,7 @@ namespace AntHill
         MouseState lastMouseState;
         Map.Water water;
         LoadModel anim;
-        Light light;
-        Control control;
-
+        
          QuadTree quadTree;
                      //FPS COUNTER
 
@@ -58,8 +55,7 @@ namespace AntHill
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            control = new Control();
+            graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 115;
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
@@ -92,7 +88,6 @@ new Vector3(texture[4].Width*50 / 2, texture[4].Width*50/10, texture[4].Width*50
 MathHelper.ToRadians(0), // Turned around 153 degrees
 MathHelper.ToRadians(-45), // Pitched up 13 degrees
 GraphicsDevice);
-            light = new Light(this);
           
             quadTree = new QuadTree(Vector3.Zero,texture,device,50,Content,(FreeCamera)camera);
             quadTree.Cull = true;
@@ -156,7 +151,7 @@ new Vector3(100), GraphicsDevice, Content);
             quadTree.Update(gameTime);
 
 
-            control.Move(); 
+             
             camera.Update(gameTime);
             //anim.Update(gameTime);
             base.Update(gameTime);
@@ -174,10 +169,10 @@ new Vector3(100), GraphicsDevice, Content);
             _total_frames++;
 
 
-              
-            //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
 
+            device.Clear(ClearOptions.Target| ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
 
+            GraphicsDevice.BlendState = BlendState.AlphaBlend;
             water.DrawRefractionMap(camera.View);
             water.DrawReflectionMap((FreeCamera)camera);
             water.DrawWater(time, camera.View, camera.Projection, camera.View);   
@@ -202,6 +197,7 @@ new Vector3(100), GraphicsDevice, Content);
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                 new Vector2(10.0f, 20.0f), Color.Tomato);
             spriteBatch.End();
+
             base.Draw(gameTime);
         }
 
