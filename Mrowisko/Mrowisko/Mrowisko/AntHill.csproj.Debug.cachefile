@@ -1,6 +1,7 @@
 Content\Effect.xnb
 Content\mrowka_01.xnb
 Content\anim.xnb
+Content\rock.xnb
 Content\sand.xnb
 Content\snow.xnb
 Content\treeMap.xnb
@@ -11,5 +12,4 @@ Content\waterbump.xnb
 Content\dome.xnb
 Content\FPS.xnb
 Content\cloudMap_0.xnb
-Content\rock.xnb
 Content\grass.xnb
