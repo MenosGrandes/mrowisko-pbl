@@ -16,10 +16,12 @@ using Map;
 
 namespace Logic
 {
-    class Control
+    public class Control
     {
         Vector2 position, velocity;
         int baseSpeed;
+        Unit unit;
+
 
         public void Move()
         {
@@ -39,7 +41,7 @@ namespace Logic
             if (MS.LeftButton == ButtonState.Pressed)
             {
                 if (distance < baseSpeed)
-                velocity += direction * distance;
+                    velocity += direction * distance;
                 else
                     velocity += direction * baseSpeed;
             }
@@ -59,10 +61,10 @@ namespace Logic
             distance = (float)Math.Sqrt(Math.Pow(X_diff, 2.0) + Math.Pow(Y_diff, 2.0));
             return Math.Abs(distance);
         }
-    
-    
-    
-    
+
+
+
+
     }
 
 
