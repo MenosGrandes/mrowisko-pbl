@@ -3,7 +3,9 @@
 float4x4 xView;
 float4x4 xProjection;
 float4x4 xWorld;
+float3 xLightPos;
 float3 xLightDirection;
+float xLightPower;
 float3 xCamPos;
 float3 xAllowedRotDir;
 int scale;
@@ -17,6 +19,7 @@ float4x4 xReflectionView;
 float xWaveLength;
 float xWaveHeight;
 float xTime;
+float xTime2;
 float xWindForce;
 float3 xWindDirection;
 
@@ -84,8 +87,8 @@ TVertexToPixel TexturedVS( float4 inPos : POSITION, float3 inNormal: NORMAL, flo
 
 	float3 Normal = normalize(mul(normalize(inNormal), xWorld));
 		Output.LightingFactor = 1;
-	if (xEnableLighting)
-		Output.LightingFactor = saturate(dot(Normal, -xLightDirection));
+	//if (xEnableLighting)
+	//	Output.LightingFactor = saturate(dot(Normal, -xLightDirection));
 
 	Output.clipDistances = dot(inPos, ClipPlane0); //MSS - Water Refactor added
 
@@ -132,9 +135,11 @@ struct MTVertexToPixel
     float2 TextureCoords    : TEXCOORD1;
     float4 LightDirection    : TEXCOORD2;
     float4 TextureWeights    : TEXCOORD3;
+	
 
      float Depth                : TEXCOORD4;
 	 float4 clipDistances                : TEXCOORD5;
+	 float4 Position3D        : TEXCOORD6;
 
 };
 
@@ -142,6 +147,12 @@ struct MTPixelToFrame
 {
     float4 Color : COLOR0;
 };
+
+float DotProduct(float3 lightPos, float3 pos3D, float3 normal)
+{
+	float3 lightDir = normalize(pos3D - lightPos);
+    return dot(-lightDir, normal);
+}
 
 MTVertexToPixel MultiTexturedVS( float4 inPos : POSITION, float3 inNormal: NORMAL, float2 inTexCoords: TEXCOORD0, float4 inTexWeights: TEXCOORD1)
 {    
@@ -152,9 +163,10 @@ MTVertexToPixel MultiTexturedVS( float4 inPos : POSITION, float3 inNormal: NORMA
     Output.Position = mul(inPos, preWorldViewProjection);
     Output.Normal = mul(normalize(inNormal), xWorld);
     Output.TextureCoords = inTexCoords;
-    Output.LightDirection.xyz = -xLightDirection;
-    Output.LightDirection.w = 1;    
+    //Output.LightDirection.xyz = -xLightDirection;
+    //Output.LightDirection.w = 1;    
     Output.TextureWeights = inTexWeights;
+	Output.Position3D = mul(inPos, xWorld);
 
      Output.Depth = Output.Position.z/Output.Position.w;
 
@@ -166,10 +178,14 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 {
     MTPixelToFrame Output = (MTPixelToFrame)0;        
     
-    float lightingFactor = 1;
-    if (xEnableLighting)
-        lightingFactor = saturate(saturate(dot(PSIn.Normal, PSIn.LightDirection)) + xAmbient);
+	float diffuseLightingFactor;
+	if (xEnableLighting)
+	{
 
+		diffuseLightingFactor = DotProduct(xLightPos*xTime, PSIn.Position3D, PSIn.Normal);
+		diffuseLightingFactor = saturate(diffuseLightingFactor);
+		diffuseLightingFactor *= xLightPower;
+	}
          
      float blendDistance = 0.99f;
      float blendWidth = 0.005f;
@@ -188,8 +204,8 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
      nearColor += tex2D(TextureSampler2, nearTextureCoords)*PSIn.TextureWeights.z;
      nearColor += tex2D(TextureSampler3, nearTextureCoords)*PSIn.TextureWeights.w;
  
-     Output.Color = lerp(nearColor, farColor, blendFactor);
-     Output.Color *= lightingFactor;
+	 Output.Color = lerp(nearColor, farColor, blendFactor)*(diffuseLightingFactor + xAmbient);
+     //Output.Color *= lightingFactor;
 
     
     return Output;

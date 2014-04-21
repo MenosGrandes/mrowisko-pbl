@@ -47,6 +47,7 @@ namespace Map
 
         public BoundingFrustum ViewFrustrum { get; private set; }
         Effect effect;
+ 
         List<Texture2D> textures;
         private Layer trees;
         public   Layer ants;
@@ -68,6 +69,7 @@ namespace Map
             Model model = Content.Load<Model>("mrowka_01");
             this.textures = textures;
             effect = Content.Load<Effect>("Effect");
+        
             Device = device;
             _position = position;
             _topNodeSize = textures[4].Width - 1;
@@ -114,7 +116,7 @@ namespace Map
             _buffers.UpdateIndexBuffer(Indices, IndexCount);
             _buffers.SwapBuffer();
         }
-        public void Draw(GameCamera.FreeCamera camera)
+        public void Draw(GameCamera.FreeCamera camera, float time)
         {
 
             //RasterizerState rasterizerState = new RasterizerState();
@@ -138,15 +140,27 @@ namespace Map
             effect.Parameters["xWorld"].SetValue(worldMatrix);
             effect.Parameters["xView"].SetValue(camera.View);
             effect.Parameters["xProjection"].SetValue(camera.Projection);
-           effect.Parameters["xEnableLighting"].SetValue(true);
-            effect.Parameters["xAmbient"].SetValue(2.4f);
-            effect.Parameters["xLightDirection"].SetValue(new Vector3(0.5f, 1, 0.5f));
+            effect.Parameters["xEnableLighting"].SetValue(true);
+            effect.Parameters["xAmbient"].SetValue(0.2f);
+            effect.Parameters["xLightPower"].SetValue(10.0f);
+            effect.Parameters["xTime2"].SetValue(time);
+            effect.Parameters["xLightPos"].SetValue(new Vector3(0, 100, 0));
+        
              foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {
+      
                 pass.Apply();
+     
                 if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
 
+
             }
+
+             
+
+
+
+
              trees.DrawBillboards(camera.View, camera.Projection, camera.Position);
             ants.DrawModels(camera);
     

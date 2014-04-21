@@ -1,4 +1,4 @@
-using Animations;
+//using Animations;
 using GameCamera;
 using Map;
 using Microsoft.Xna.Framework;
@@ -20,7 +20,8 @@ namespace AntHill
     {
        
         GraphicsDeviceManager graphics;
-        GraphicsDevice device;
+        public GraphicsDevice device;
+        float x, y, z;
         SpriteBatch spriteBatch;
         List<Map.LoadModel> models = new List<Map.LoadModel>();
         List<Map.LoadModel> inter = new List<Map.LoadModel>();
@@ -28,7 +29,6 @@ namespace AntHill
         MouseState lastMouseState;
         Map.Water water;
         LoadModel anim;
-        
          QuadTree quadTree;
                      //FPS COUNTER
 
@@ -42,7 +42,10 @@ namespace AntHill
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            
+
+      
+         
+        
            
         }
 
@@ -59,6 +62,8 @@ namespace AntHill
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
+
+            
         }
 
         /// <summary>
@@ -95,11 +100,11 @@ GraphicsDevice);
            water = new Water(device, Content, texture[4].Width, 50);
            
 
-           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice, Content));
 
            inter = quadTree.ants.models;
+           
          
-                         
             /*
             anim = new LoadModel(
 Content.Load<Model>("ludek2"),
@@ -127,7 +132,7 @@ new Vector3(100), GraphicsDevice, Content);
         protected override void Update(GameTime gameTime)
         {
 
-
+            KeyboardState keyState = Keyboard.GetState();
              _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
  
             // 1 Second has passed
@@ -138,8 +143,12 @@ new Vector3(100), GraphicsDevice, Content);
                 _elapsed_time = 0;
             }
 
-
-
+            if (keyState.IsKeyDown(Keys.X))
+                x = x + 0.5f;
+            if (keyState.IsKeyDown(Keys.Y))
+                y = y + 0.5f;
+            if (keyState.IsKeyDown(Keys.Z))
+                z = z + 0.5f;
             
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -170,14 +179,18 @@ new Vector3(100), GraphicsDevice, Content);
 
 
 
-            device.Clear(ClearOptions.Target| ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
-
+           
+            
+           // device.Clear(ClearOptions.Target| ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
+     
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            
             water.DrawRefractionMap(camera.View);
+
             water.DrawReflectionMap((FreeCamera)camera);
-            water.DrawWater(time, camera.View, camera.Projection, camera.View);   
-
-
+         
+            water.DrawWater(time, camera.View, camera.Projection, camera.View);
+            
         if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
             
                         models[0].Draw(camera.View, camera.Projection);
@@ -187,17 +200,18 @@ new Vector3(100), GraphicsDevice, Content);
 
             }
 
-        //light.DrawLight(gameTime, this);
-             
-            quadTree.Draw( (FreeCamera)camera);
-           
+
+ 
+            quadTree.Draw( (FreeCamera)camera, time);
+            
             //anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
-            spriteBatch.Begin();
+       /*     spriteBatch.Begin();
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                 new Vector2(10.0f, 20.0f), Color.Tomato);
             spriteBatch.End();
-
+*/
+            
             base.Draw(gameTime);
         }
 
@@ -278,7 +292,10 @@ new Vector3(100), GraphicsDevice, Content);
             direction.Normalize();
             Ray pickRay = new Ray(nearPoint, direction);
             float? position = pickRay.Intersects(GroundPlane);
-            return pickRay.Position + pickRay.Direction * position.Value;
+            //if (pickRay.Position == null)
+                return Vector3.Zero;
+            //else
+               // return pickRay.Position + pickRay.Direction * position.Value;
             
         }
     

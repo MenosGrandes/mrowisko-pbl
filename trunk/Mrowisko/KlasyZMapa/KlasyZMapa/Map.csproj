@@ -117,10 +117,6 @@
       <Project>{6cf85617-ff97-4e13-bd6b-11df8733dec7}</Project>
       <Name>GameCamera</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\KlasyZAnimacja\Animations.csproj">
-      <Project>{90a784ee-a8ea-4134-b16e-3faa14614731}</Project>
-      <Name>Animations</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

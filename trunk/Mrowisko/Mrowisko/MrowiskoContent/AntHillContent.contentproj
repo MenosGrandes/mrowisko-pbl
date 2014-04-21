@@ -56,19 +56,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AnimacjaPipelineExtension\AnimacjaPipelineExtension.csproj">
-      <Project>{5e77809b-e3a3-472f-a1c9-226157c759aa}</Project>
-      <Name>AnimacjaPipelineExtension</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="anim.FBX">
-      <Name>anim</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>AnimatedModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="treeMap.bmp">
       <Name>treeMap</Name>
       <Importer>TextureImporter</Importer>
