@@ -84,17 +84,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AnimacjaPipelineExtension\AnimacjaPipelineExtension.csproj">
-      <Project>{5e77809b-e3a3-472f-a1c9-226157c759aa}</Project>
-      <Name>AnimacjaPipelineExtension</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Camera\Camera\GameCamera.csproj">
       <Project>{6cf85617-ff97-4e13-bd6b-11df8733dec7}</Project>
       <Name>GameCamera</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\KlasyZAnimacja\Animations.csproj">
-      <Project>{90a784ee-a8ea-4134-b16e-3faa14614731}</Project>
-      <Name>Animations</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\KlasyZMapa\KlasyZMapa\Map.csproj">
       <Project>{3ca21884-420f-46fd-84a1-a98bb1177b66}</Project>
