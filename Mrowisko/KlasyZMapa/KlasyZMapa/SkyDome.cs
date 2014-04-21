@@ -15,17 +15,15 @@ namespace Map
         Model skyDome;
         Effect effect;
         GraphicsDevice device;
-        private GraphicsDevice GraphicsDevice;
-        private ContentManager Content;
 
-        public SkyDome(GraphicsDevice device, ContentManager Content,Effect effect)
+        public SkyDome(GraphicsDevice device, ContentManager Content)
         {
 
             this.device = device;
-            this.effect = effect;
-            skyDome = Content.Load<Model>("dome");
+            this.effect = Content.Load<Effect>("Effects/TexturedEffect");
+            skyDome = Content.Load<Model>("Models/SkyDome/dome");
             
-            cloudMap = Content.Load<Texture2D>("cloudMap");
+            cloudMap = Content.Load<Texture2D>("Models/SkyDome/cloudMap");
             skyDome.Meshes[0].MeshParts[0].Effect = effect.Clone();
 
         }
@@ -49,7 +47,7 @@ namespace Map
                     currentEffect.Parameters["xView"].SetValue(camera.View);
                     currentEffect.Parameters["xProjection"].SetValue(camera.Projection);
                     currentEffect.Parameters["xTexture"].SetValue(cloudMap);
-                    currentEffect.Parameters["xEnableLighting"].SetValue(false);
+                  
                 }
                 mesh.Draw();
             }

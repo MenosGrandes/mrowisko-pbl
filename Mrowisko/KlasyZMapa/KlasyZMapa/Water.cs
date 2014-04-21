@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameCamera;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -26,8 +27,8 @@ namespace Map
         SkyDome sky;
         public Water(GraphicsDevice device, ContentManager Content, float terrainLength,int scale)
         {
-            this.effect = Content.Load<Effect>("Effect");
-            this.waterBumpMap = Content.Load<Texture2D>("waterbump");
+            this.effect = Content.Load<Effect>("Effects/Water");
+            this.waterBumpMap = Content.Load<Texture2D>("Textures/Water/waterbump");
             this.Scale = scale;
             this.device = device;
             this.waterHeight = scale*4 ;
@@ -40,7 +41,7 @@ namespace Map
 
             reflectionRenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, pp.BackBufferFormat, pp.DepthStencilFormat);
             SetUpWaterVertices();
-            sky = new SkyDome(device, Content, effect);
+            sky = new SkyDome(device, Content);
         }
         private void SetUpWaterVertices()
         {
@@ -73,26 +74,26 @@ namespace Map
             Plane refractionPlane = CreatePlane(waterHeight + 1.5f*Scale, new Vector3(0, -1, 0), viewMatrix, false);
 
             effect.Parameters["ClipPlane0"].SetValue(new Vector4(refractionPlane.Normal, refractionPlane.D));
-            effect.Parameters["Clipping"].SetValue(false);    // Allows the geometry to be clipped for the purpose of creating a refraction map
+            effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
             device.SetRenderTarget(refractionRenderTarget);
-           // device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             device.SetRenderTarget(null);
             effect.Parameters["Clipping"].SetValue(false);   // Make sure you turn it back off so the whole scene doesnt keep rendering as clipped
             refractionMap = refractionRenderTarget;
 
         }
 
-        public void DrawReflectionMap( GameCamera.FreeCamera camera)
+        public void DrawReflectionMap( FreeCamera camera)
         {
             Plane reflectionPlane = CreatePlane(waterHeight - 0.5f * Scale, new Vector3(0, 1, 0), camera.reflectionViewMatrix, true);
 
             effect.Parameters["ClipPlane0"].SetValue(new Vector4(reflectionPlane.Normal, reflectionPlane.D));
 
-            effect.Parameters["Clipping"].SetValue(false);    // Allows the geometry to be clipped for the purpose of creating a refraction map
+            effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
             device.SetRenderTarget(reflectionRenderTarget);
 
 
-          //  device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Yellow, 1.0f, 0);
+           device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Yellow, 0.3f, 2);
             sky.DrawSkyDome(camera);
 
             effect.Parameters["Clipping"].SetValue(false);
@@ -102,16 +103,17 @@ namespace Map
             reflectionMap = reflectionRenderTarget;
         }
 
-        public void DrawWater(float time, Matrix viewMatrix, Matrix projectionMatrix, Matrix reflectionViewMatrix)
+        public void DrawWater(float time,FreeCamera camera)
         {
             
             
             effect.CurrentTechnique = effect.Techniques["Water"];
             Matrix worldMatrix = Matrix.Identity;
             effect.Parameters["xWorld"].SetValue(worldMatrix);
-            effect.Parameters["xView"].SetValue(viewMatrix);
-            effect.Parameters["xReflectionView"].SetValue(reflectionViewMatrix);
-            effect.Parameters["xProjection"].SetValue(projectionMatrix);
+            effect.Parameters["xView"].SetValue(camera.View);
+            effect.Parameters["xReflectionView"].SetValue(camera.reflectionViewMatrix);
+            effect.Parameters["xProjection"].SetValue(camera.Projection);
+            effect.Parameters["xCamPos"].SetValue(camera.Position);
             effect.Parameters["xReflectionMap"].SetValue(reflectionMap);
             effect.Parameters["xRefractionMap"].SetValue(refractionMap);
             effect.Parameters["xWaterBumpMap"].SetValue(waterBumpMap);

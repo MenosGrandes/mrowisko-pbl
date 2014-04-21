@@ -42,11 +42,7 @@ namespace AntHill
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-      
-         
-        
-           
+ 
         }
 
         /// <summary>
@@ -77,22 +73,22 @@ namespace AntHill
 
             device = GraphicsDevice;
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            _spr_font = Content.Load<SpriteFont>("FPS");// you have on your project
+            _spr_font = Content.Load<SpriteFont>("Fonts/FPS");// you have on your project
 
             List<Texture2D> texture = new List<Texture2D>();
-            texture.Add(Content.Load<Texture2D>("grass"));
-            texture.Add(Content.Load<Texture2D>("sand"));
-            texture.Add(Content.Load<Texture2D>("rock"));
-            texture.Add(Content.Load<Texture2D>("snow"));
-            texture.Add(Content.Load<Texture2D>("terrain"));
-            texture.Add(Content.Load<Texture2D>("tree"));
-            texture.Add(Content.Load<Texture2D>("treeMap"));
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/grass"));
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/sand"));
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/rock"));
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/snow"));
+            texture.Add(Content.Load<Texture2D>("HeighMaps/terrain"));
+            texture.Add(Content.Load<Texture2D>("Textures/Bilboard/tree"));
+            texture.Add(Content.Load<Texture2D>("HeighMaps/treeMap"));
 
-            camera = new FreeCamera(
-new Vector3(texture[4].Width*50 / 2, texture[4].Width*50/10, texture[4].Width*50 / 2),
-MathHelper.ToRadians(0), // Turned around 153 degrees
-MathHelper.ToRadians(-45), // Pitched up 13 degrees
-GraphicsDevice);
+                    camera = new FreeCamera(
+        new Vector3(texture[4].Width*50 / 2, texture[4].Width*50/10, texture[4].Width*50 / 2),
+        MathHelper.ToRadians(0), // Turned around 153 degrees
+        MathHelper.ToRadians(-45), // Pitched up 13 degrees
+        GraphicsDevice);
           
             quadTree = new QuadTree(Vector3.Zero,texture,device,50,Content,(FreeCamera)camera);
             quadTree.Cull = true;
@@ -100,11 +96,12 @@ GraphicsDevice);
            water = new Water(device, Content, texture[4].Width, 50);
            
 
-           models.Add(new LoadModel(Content.Load<Model>("mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice, Content));
+           models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice, Content));
 
            inter = quadTree.ants.models;
-           
-         
+
+           GraphicsDevice.BlendState = BlendState.AlphaBlend;
+           GraphicsDevice.BlendFactor = Color.Yellow;
             /*
             anim = new LoadModel(
 Content.Load<Model>("ludek2"),
@@ -173,6 +170,10 @@ new Vector3(100), GraphicsDevice, Content);
             //RasterizerState rasterizerState = new RasterizerState();
             //rasterizerState.FillMode = FillMode.WireFrame;
             //GraphicsDevice.RasterizerState = rasterizerState;
+
+
+          
+
             float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
             _total_frames++;
@@ -181,36 +182,47 @@ new Vector3(100), GraphicsDevice, Content);
 
            
             
-           // device.Clear(ClearOptions.Target| ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
      
-            GraphicsDevice.BlendState = BlendState.AlphaBlend;
+
             
             water.DrawRefractionMap(camera.View);
 
             water.DrawReflectionMap((FreeCamera)camera);
+
+            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+
+
+
          
-            water.DrawWater(time, camera.View, camera.Projection, camera.View);
-            
+      
+
+          
+
         if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
             
                         models[0].Draw(camera.View, camera.Projection);
                          
 
-              //  }
 
             }
+
+
+             
+     
+            water.DrawWater(time, (FreeCamera)camera); 
 
 
  
             quadTree.Draw( (FreeCamera)camera, time);
             
+
             //anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
-       /*     spriteBatch.Begin();
+            spriteBatch.Begin();
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                 new Vector2(10.0f, 20.0f), Color.Tomato);
             spriteBatch.End();
-*/
+
             
             base.Draw(gameTime);
         }
@@ -221,7 +233,7 @@ new Vector3(100), GraphicsDevice, Content);
             MouseState MS = Mouse.GetState();
             Vector2 mouse_pos = new Vector2(MS.X, MS.Y);
             Vector3 mouse3d2 = CalculateMouse3DPosition();
-            float Speed = (float)0.02;
+            float Speed = (float)0.002;
             if (MS.LeftButton == ButtonState.Pressed)
             {
 
@@ -292,10 +304,12 @@ new Vector3(100), GraphicsDevice, Content);
             direction.Normalize();
             Ray pickRay = new Ray(nearPoint, direction);
             float? position = pickRay.Intersects(GroundPlane);
-            //if (pickRay.Position == null)
-                return Vector3.Zero;
-            //else
-               // return pickRay.Position + pickRay.Direction * position.Value;
+
+            if (position != null)
+                return pickRay.Position + pickRay.Direction * position.Value;
+            else
+                return new Vector3(0,0,0);
+          
             
         }
     

@@ -25,7 +25,7 @@ namespace Map
         private Model envModel;
         private GraphicsDevice device;
         private List<Vector3> envBilbList;
-        public List<LoadModel> models;
+        public List<LoadModel> models;       //powinna być LISTA<LISTA<LOADMODEL>>
         private int scale;
         private Vector3 scaleM;
         private ContentManager content;
@@ -44,12 +44,12 @@ namespace Map
         /// <param name="device"></param>
         /// <param name="Content"></param>
         /// <param name="scale"></param>
-        public Layer(Texture2D tree, GraphicsDevice device, ContentManager Content, int scale)
+        public Layer(Texture2D bilboardTexture, GraphicsDevice device, ContentManager Content, int scale)
         {
-            envBilbTexture = tree;
+            envBilbTexture = bilboardTexture;
             this.device = device;
             this.scale = scale;
-            this.bbEffect = Content.Load<Effect>("Effect");
+            this.bbEffect = Content.Load<Effect>("Effects/Bilboarding");
             this.content = Content;
 
 
@@ -66,7 +66,6 @@ namespace Map
             this.envModel = envModel;
             this.device = device;
             this.scaleM = scale;
-            this.bbEffect = Content.Load<Effect>("Effect");
 
 
 
@@ -151,7 +150,6 @@ namespace Map
                
 
             }
-           // Console.WriteLine(models.Count);
         }
 
 /// <summary>
@@ -164,10 +162,6 @@ namespace Map
             int i = 0;
             foreach (Vector3 currentV3 in envBilbList)
             {
-
-               
-
-
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 0));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 1));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 1));
@@ -176,20 +170,16 @@ namespace Map
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 0));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 1));
 
-
             }
-
-
-           
             treeVertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
             treeVertexBuffer.SetData(billboardVertices);
         }
-                                                                      /// <summary>
-                                                                      /// 
-                                                                      /// </summary>
-                                                                      /// <param name="currentViewMatrix"></param>
-                                                                      /// <param name="projectionMatrix"></param>
-                                                                      /// <param name="position"></param>
+ /// <summary>
+ /// 
+/// </summary>
+ /// <param name="currentViewMatrix"></param>
+ /// <param name="projectionMatrix"></param>
+ /// <param name="position"></param>
         public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position)
         {
             bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
@@ -198,7 +188,7 @@ namespace Map
             bbEffect.Parameters["xProjection"].SetValue(projectionMatrix);
             bbEffect.Parameters["xCamPos"].SetValue(position);
             bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
-            bbEffect.Parameters["scale"].SetValue(this.scale);
+            bbEffect.Parameters["xScale"].SetValue(this.scale);
             bbEffect.Parameters["xBillboardTexture"].SetValue(envBilbTexture);
 
             device.SetVertexBuffer(treeVertexBuffer);
