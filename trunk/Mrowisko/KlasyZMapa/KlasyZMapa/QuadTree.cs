@@ -66,9 +66,9 @@ namespace Map
         {
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
-            Model model = Content.Load<Model>("mrowka_01");
+            Model model = Content.Load<Model>("Models/mrowka_01");
             this.textures = textures;
-            effect = Content.Load<Effect>("Effect");
+            effect = Content.Load<Effect>("Effects/MultiTextured");
         
             Device = device;
             _position = position;
@@ -104,12 +104,12 @@ namespace Map
 
             _rootNode.EnforceMinimumDepth();
 
-            _activeNode = _rootNode.DeepestNodeWithPoint(CameraPosition);
+           // _activeNode = _rootNode.DeepestNodeWithPoint(CameraPosition);
 
-            if (_activeNode != null)
-            {
-                _activeNode.Split();
-            }
+           // if (_activeNode != null)
+           // {
+           //     _activeNode.Split();
+          //  }
 
             _rootNode.SetActiveVertices();
 
@@ -141,10 +141,10 @@ namespace Map
             effect.Parameters["xView"].SetValue(camera.View);
             effect.Parameters["xProjection"].SetValue(camera.Projection);
             effect.Parameters["xEnableLighting"].SetValue(true);
-            effect.Parameters["xAmbient"].SetValue(0.2f);
-            effect.Parameters["xLightPower"].SetValue(10.0f);
-            effect.Parameters["xTime2"].SetValue(time);
-            effect.Parameters["xLightPos"].SetValue(new Vector3(0, 100, 0));
+            effect.Parameters["xAmbient"].SetValue(0.51f);
+            effect.Parameters["xLightPower"].SetValue(3.0f);
+            effect.Parameters["xTime2"].SetValue(time/900);
+            effect.Parameters["xLightPos"].SetValue(new Vector3(25600, 1000, 25600));
         
              foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {

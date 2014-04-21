@@ -15,7 +15,7 @@ namespace Map
     /// <summary>
     /// Class responsible of loding and positioning model at the terrain.
     /// </summary>
-    public class LoadModel
+    public class LoadModel                                                                                      
     {
         public Vector3 Position { get; set; }
         public Vector3 Rotation { get; set; }
@@ -27,16 +27,12 @@ namespace Map
         private Matrix[] modelTransforms;
         private GraphicsDevice graphicsDevice;
         public BoundingSphere boundingSphere;
-        float cameraArc = 0;
-        float cameraRotation = 0;
-        float cameraDistance = 100;
         public BoundingSphere BoundingSphere
         {
             get
             {
                 // No need for rotation, as this is a sphere
-                Matrix worldTransform = Matrix.CreateScale(Scale) *
-   Matrix.CreateTranslation(Position);
+                Matrix worldTransform = Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position);
                 BoundingSphere transformed = boundingSphere;
                 transformed = transformed.Transform(worldTransform);
 
@@ -59,8 +55,6 @@ namespace Map
             modelTransforms = new Matrix[Model.Bones.Count];
             Model.CopyAbsoluteBoneTransformsTo(modelTransforms);
 
-
-           // buildBoundingSphere();
             this.Position = Position;
             this.Rotation = Rotation;
             this.Scale = Scale;
@@ -96,10 +90,7 @@ namespace Map
         private void buildBoundingSphere()
         {
 
-
-
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
-            // Merge all the model's built in bounding spheres
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
@@ -108,8 +99,7 @@ namespace Map
             
 
             this.boundingSphere = sphere;
-            
-            //Console.WriteLine(Position);
+               
         }
         /// <summary>
         /// Method to Draw model 
