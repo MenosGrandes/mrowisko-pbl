@@ -1,6 +1,7 @@
 //using Animations;
 using GameCamera;
 using Map;
+using Logic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
