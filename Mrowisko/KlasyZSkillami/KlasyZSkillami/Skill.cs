@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Skills
 {
-    class Skill
+    public class Skill
     {
     }
 }
