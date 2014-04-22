@@ -76,7 +76,7 @@ namespace Map
             effect.Parameters["ClipPlane0"].SetValue(new Vector4(refractionPlane.Normal, refractionPlane.D));
             effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
             device.SetRenderTarget(refractionRenderTarget);
-            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Aquamarine, 1.0f, 0);
             device.SetRenderTarget(null);
             effect.Parameters["Clipping"].SetValue(false);   // Make sure you turn it back off so the whole scene doesnt keep rendering as clipped
             refractionMap = refractionRenderTarget;
@@ -93,7 +93,7 @@ namespace Map
             device.SetRenderTarget(reflectionRenderTarget);
 
 
-           device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Yellow, 0.3f, 2);
+           device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.LightBlue, 1.0f, 0);
             sky.DrawSkyDome(camera);
 
             effect.Parameters["Clipping"].SetValue(false);
@@ -119,7 +119,7 @@ namespace Map
             effect.Parameters["xWaterBumpMap"].SetValue(waterBumpMap);
             effect.Parameters["xWaterBumpMap"].SetValue(waterBumpMap);
             effect.Parameters["xWaveLength"].SetValue(0.5f);
-            effect.Parameters["xWaveHeight"].SetValue(0.5f);
+            effect.Parameters["xWaveHeight"].SetValue(4.5f);
             effect.Parameters["xTime"].SetValue(time);
             effect.Parameters["xWindForce"].SetValue(0.002f);
             effect.Parameters["xWindDirection"].SetValue(windDirection);

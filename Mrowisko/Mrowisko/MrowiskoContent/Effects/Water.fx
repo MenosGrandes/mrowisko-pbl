@@ -116,14 +116,14 @@ WPixelToFrame WaterPS(WVertexToPixel PSIn)
 
 		
 
-	float4 dullColor = float4(0.3f, 0.3f, 0.5f, 0.4f);
-		Output.Color = dullColor;
-			   Output.Color = lerp(combinedColor, dullColor, 0.2f);
+	float4 dullColor = float4(0.3f, 0.3f, 0.6f, 0.1f);
+		Output.Color += dullColor;
+	Output.Color =lerp(combinedColor, dullColor, 0.7f);
 
 		float3 reflectionVector = -reflect(xLightDirection, normalVector);
 		float specular = dot(normalize(reflectionVector), normalize(eyeVector));
 	specular = pow(abs(specular), 256);
-	Output.Color.rgb += specular;
+	Output.Color.rgba += specular;
 	
 	
 	return Output;

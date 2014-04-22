@@ -49,15 +49,16 @@ namespace GameCamera
             float deltaX = (float)lastMouseState.X - (float)mouseState.X;
             float deltaY = (float)lastMouseState.Y - (float)mouseState.Y;
 
-            //((FreeCamera)camera).Rotate(deltaX * .01f, -deltaY * .01f);
+           //Rotate(deltaX * .01f, -deltaY * .01f);
 
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
+            float rotatate = 0;
             if (keyState.IsKeyDown(Keys.W)) translation += new Vector3(0, -1, 1) * (Pitch) * scale;
             if (keyState.IsKeyDown(Keys.S)) translation += new Vector3(0, 1, -1) * (Pitch) * scale;
             if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (Pitch * -1) * scale;
             if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (Pitch * -1) * scale;
-            if (keyState.IsKeyDown(Keys.Q)) Rotate(.01f,0);
-            if (keyState.IsKeyDown(Keys.E)) Rotate(-0.01f, 0);
+            if (keyState.IsKeyDown(Keys.Q)) rotatate += 0.001f;
+            if (keyState.IsKeyDown(Keys.E)) rotatate -= 0.001f;
             if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
             {
                 translation += new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale;
@@ -71,8 +72,10 @@ namespace GameCamera
 
             // Move 3 units per millisecond, independent of frame rate
             translation *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            rotatate *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             // Move the camera
             Move(translation);
+            Rotate(rotatate,0);
 
 
 
@@ -95,9 +98,9 @@ namespace GameCamera
 
 
             Vector3 reflCameraPosition = Position;
-            reflCameraPosition.Y = -Position.Y + 500 * 2;
+            reflCameraPosition.Y = -Position.Y + 500 * 2*1;
             Vector3 reflTargetPos = Target;
-            reflTargetPos.Y = -Target.Y + 500 * 2;
+            reflTargetPos.Y = -Target.Y + 500 * 2*1;
 
             Vector3 cameraRight = Vector3.Transform(new Vector3(1, 0, 0), rotation);
             Vector3 invUpVector = Vector3.Cross(cameraRight, reflTargetPos - reflCameraPosition);

@@ -16,7 +16,8 @@
     <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>431fd5a3-b7e5-4e73-8f21-af27fc2a77be</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
-    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -60,6 +61,9 @@
     <PlatformTarget>x86</PlatformTarget>
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>AntHill.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
@@ -87,10 +91,6 @@
     <ProjectReference Include="..\..\Camera\Camera\GameCamera.csproj">
       <Project>{6cf85617-ff97-4e13-bd6b-11df8733dec7}</Project>
       <Name>GameCamera</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\KlasyZJednostkami\KlasyZJednostakmi\Logic.csproj">
-      <Project>{b398f88c-483b-457f-aaec-a71d70280724}</Project>
-      <Name>Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\KlasyZMapa\KlasyZMapa\Map.csproj">
       <Project>{3ca21884-420f-46fd-84a1-a98bb1177b66}</Project>
