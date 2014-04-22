@@ -24,7 +24,7 @@ namespace Map
             skyDome = Content.Load<Model>("Models/SkyDome/dome");
             
             cloudMap = Content.Load<Texture2D>("Models/SkyDome/cloudMap");
-            skyDome.Meshes[0].MeshParts[0].Effect = effect.Clone();
+           skyDome.Meshes[0].MeshParts[0].Effect = effect.Clone();
 
         }
 
@@ -51,7 +51,7 @@ namespace Map
                 }
                 mesh.Draw();
             }
-            device.BlendState = BlendState.Opaque;
+            device.BlendState = BlendState.AlphaBlend;
            device.DepthStencilState = DepthStencilState.Default;
         }
     }

@@ -2,6 +2,7 @@ Content\Effects\Water.xnb
 Content\Effects\TexturedEffect.xnb
 Content\Effects\Bilboarding.xnb
 Content\Effects\MultiTextured.xnb
+Content\Effects\Ground.xnb
 Content\Models\mrowka_01.xnb
 Content\Textures\Ground\sand.xnb
 Content\Textures\Ground\snow.xnb
@@ -12,6 +13,10 @@ Content\Models\SkyDome\cloudMap.xnb
 Content\Textures\Water\waterbump.xnb
 Content\Textures\Ground\rock.xnb
 Content\Textures\Ground\grass.xnb
+Content\HeighMaps\colorHeigh.xnb
+Content\Textures\kamien.xnb
+Content\Textures\lisc.xnb
+Content\Textures\muszle.xnb
 Content\Models\SkyDome\dome.xnb
 Content\Fonts\FPS.xnb
 Content\Models\SkyDome\cloudMap_0.xnb

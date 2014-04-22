@@ -104,28 +104,7 @@ namespace Map
     public MapRender (Texture2D texture,int Scale)    
     {
 
-            /*
-            this.device = GraphicsDevice;
-            this.grassTexture = texture[0];
-            this.sandTexture = texture[1]; //Content.Load<Texture2D>("sand");
-            this.rockTexture = texture[2]; //Content.Load<Texture2D>("rock");
-            this.snowTexture = texture[3];//Content.Load<Texture2D>("snow");
-            this.treeTexture = texture[5];
-            this.Content = Content;
-            effect = Content.Load<Effect>("Effect");
 
-            LoadHeightData(texture[4]);
-            SetUpvertices(Scale);
-            SetUpTerrainIndices();
-            CalculateNormals();
-            CopyToTerrainBuffers();
-            this.trees = new Layer(this.treeTexture, device, Content, Scale);
-            this.ants = new Layer(model, device, Content, new Vector3(.03f));
-            trees.GenerateTreePositions(texture[6],this.vertices, this.terrainWidth, this.terrainLength, this.heightData);
-            ants.GenerateTreePositions(texture[6], this.vertices, this.terrainWidth, this.terrainLength, this.heightData);
-            ants.CreateModelFromList(trees.TreeList);
-            trees.CreateBillboardVerticesFromList(trees.TreeList);
-             * */
 
             LoadHeightData(texture);
             SetUpvertices(Scale);

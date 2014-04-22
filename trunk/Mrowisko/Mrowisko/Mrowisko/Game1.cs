@@ -1,7 +1,6 @@
 //using Animations;
 using GameCamera;
 using Map;
-using Logic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -12,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 namespace AntHill
 {
     /// <summary>
@@ -30,7 +30,6 @@ namespace AntHill
         MouseState lastMouseState;
         Map.Water water;
         LoadModel anim;
-        Control control;
          QuadTree quadTree;
                      //FPS COUNTER
 
@@ -60,8 +59,6 @@ namespace AntHill
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
-            control = new Control();
-
             
         }
 
@@ -86,25 +83,29 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("HeighMaps/terrain"));
             texture.Add(Content.Load<Texture2D>("Textures/Bilboard/tree"));
             texture.Add(Content.Load<Texture2D>("HeighMaps/treeMap"));
+            texture.Add(Content.Load<Texture2D>("HeighMaps/colorHeigh"));
+            texture.Add(Content.Load<Texture2D>("Textures/lisc"));
+            texture.Add(Content.Load<Texture2D>("Textures/kamien"));
+            texture.Add(Content.Load<Texture2D>("Textures/muszle"));
 
                     camera = new FreeCamera(
-        new Vector3(texture[4].Width*50 / 2, texture[4].Width*50/10, texture[4].Width*50 / 2),
+        new Vector3(texture[4].Width*150 / 2, texture[4].Width*150/10, texture[4].Width*150 / 2),
         MathHelper.ToRadians(0), // Turned around 153 degrees
         MathHelper.ToRadians(-45), // Pitched up 13 degrees
         GraphicsDevice);
           
-            quadTree = new QuadTree(Vector3.Zero,texture,device,50,Content,(FreeCamera)camera);
+            quadTree = new QuadTree(Vector3.Zero,texture,device,150,Content,(FreeCamera)camera);
             quadTree.Cull = true;
 
-           water = new Water(device, Content, texture[4].Width, 50);
+           water = new Water(device, Content, texture[4].Width, 150);
            
 
            models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice, Content));
 
            inter = quadTree.ants.models;
 
-           GraphicsDevice.BlendState = BlendState.AlphaBlend;
-           GraphicsDevice.BlendFactor = Color.Yellow;
+          // GraphicsDevice.BlendState = BlendState.AlphaBlend;
+          // GraphicsDevice.BlendFactor = Color.Yellow;
             /*
             anim = new LoadModel(
 Content.Load<Model>("ludek2"),
@@ -152,19 +153,13 @@ new Vector3(100), GraphicsDevice, Content);
             
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            
+          
            
             quadTree.View =camera.View;
            quadTree.Projection = camera.Projection;
            quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
-
-            //updateAnt(gameTime);
-            control.View = camera.View;
-            control.Projection = camera.Projection;
-            control.device = device;
-            control.models = models;
-            control.Update(gameTime);
+          
 
              
             camera.Update(gameTime);
@@ -181,26 +176,28 @@ new Vector3(100), GraphicsDevice, Content);
             //GraphicsDevice.RasterizerState = rasterizerState;
 
 
-          
-
             float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
+
+            RasterizerState rs = new RasterizerState();
+            rs.CullMode = CullMode.None;
 
             _total_frames++;
 
 
 
-           
-            
-     
 
-            
+
+
+
             water.DrawRefractionMap(camera.View);
 
             water.DrawReflectionMap((FreeCamera)camera);
-
+           
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+            quadTree.Draw((FreeCamera)camera, time);
+            water.DrawWater(time, (FreeCamera)camera);
 
-
+      
 
          
       
@@ -218,11 +215,11 @@ new Vector3(100), GraphicsDevice, Content);
 
              
      
-            water.DrawWater(time, (FreeCamera)camera); 
+            
 
 
  
-            quadTree.Draw( (FreeCamera)camera, time);
+           
             
 
             //anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
@@ -236,14 +233,13 @@ new Vector3(100), GraphicsDevice, Content);
             base.Draw(gameTime);
         }
 
-        /*
         void updateAnt(GameTime gameTime)
         {
             KeyboardState keyState = Keyboard.GetState();
             MouseState MS = Mouse.GetState();
             Vector2 mouse_pos = new Vector2(MS.X, MS.Y);
             Vector3 mouse3d2 = CalculateMouse3DPosition();
-            float Speed = (float)0.002;
+            float Speed = (float)4;
             if (MS.LeftButton == ButtonState.Pressed)
             {
 
@@ -318,11 +314,11 @@ new Vector3(100), GraphicsDevice, Content);
             if (position != null)
                 return pickRay.Position + pickRay.Direction * position.Value;
             else
-                return new Vector3(0, 0, 0);
-
-
+                return new Vector3(0,0,0);
+          
+            
         }
-    */
+    
     
     }
 }

@@ -12,7 +12,8 @@ Texture xTexture0;
 Texture xTexture1; 
 Texture xTexture2;
 Texture xTexture3;
-
+Texture xTexture4;
+Texture xTexture5;
 sampler TextureSampler = sampler_state { texture = <xTexture>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; }; 
 
 sampler TextureSampler0 = sampler_state { texture = <xTexture0>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
@@ -22,6 +23,8 @@ sampler TextureSampler1 = sampler_state { texture = <xTexture1>; magfilter = LIN
 sampler TextureSampler2 = sampler_state { texture = <xTexture2>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; }; 
 
 sampler TextureSampler3 = sampler_state { texture = <xTexture3>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
+sampler TextureSampler4 = sampler_state { texture = <xTexture4>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
+sampler TextureSampler5 = sampler_state { texture = <xTexture5>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
 
 //------- Technique: Multitextured --------
 struct MTVertexToPixel
@@ -96,7 +99,7 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 
 	float4 nearColor;
 	float2 nearTextureCoords = PSIn.TextureCoords * 3;
-		nearColor = tex2D(TextureSampler0, nearTextureCoords)*PSIn.TextureWeights.x;
+	nearColor = tex2D(TextureSampler0, nearTextureCoords)*PSIn.TextureWeights.x;
 	nearColor += tex2D(TextureSampler1, nearTextureCoords)*PSIn.TextureWeights.y;
 	nearColor += tex2D(TextureSampler2, nearTextureCoords)*PSIn.TextureWeights.z;
 	nearColor += tex2D(TextureSampler3, nearTextureCoords)*PSIn.TextureWeights.w;

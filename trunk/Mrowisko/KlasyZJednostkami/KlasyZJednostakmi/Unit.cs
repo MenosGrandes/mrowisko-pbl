@@ -18,9 +18,8 @@ namespace Logic
     {
         //tutaj sa elementy ktore kazda jednostka bedzie miec. content po to zeby w konstruktorze 
         //kazdej dziedziczacej klasy przypisac odpowiedni model na stale
-
-        public Unit() { }//potrzebne zeby Predator, Ant i Allies nie wywalal bledow
-
+    
+      
         protected float armor;
 
         public float Armor

@@ -89,7 +89,29 @@ namespace Map
             ants.GenerateObjPositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
             ants.CreateModelFromList(trees.TreeList);
             trees.CreateBillboardVerticesFromList();
-           
+
+
+          
+           effect.CurrentTechnique = effect.Techniques["MultiTextured"];
+            effect.Parameters["xTexture0"].SetValue(textures[1]);
+            effect.Parameters["xTexture1"].SetValue(textures[0]);
+            effect.Parameters["xTexture2"].SetValue(textures[2]);
+            effect.Parameters["xTexture3"].SetValue(textures[3]);
+            effect.Parameters["xTexture5"].SetValue(textures[7]);
+            Matrix worldMatrix = Matrix.Identity;
+            effect.Parameters["xWorld"].SetValue(worldMatrix);
+            effect.Parameters["xEnableLighting"].SetValue(true);
+            effect.Parameters["xAmbient"].SetValue(1.0f);
+            effect.Parameters["xLightPower"].SetValue(1.0f);
+            effect.Parameters["xLightPos"].SetValue(new Vector3(25600, 1000, 25600));   
+            /*
+
+            effect.Parameters["Ground"].SetValue(textures[7]);
+            effect.Parameters["GroundText0"].SetValue(textures[8]);
+            effect.Parameters["GroundText1"].SetValue(textures[9]);
+            effect.Parameters["GroundText2"].SetValue(textures[10]);
+                     */
+    
         }
         public void Update(GameTime gameTime)
         {
@@ -99,7 +121,7 @@ namespace Map
 
            
 
-            _lastCameraPosition = _cameraPosition;
+           // _lastCameraPosition = _cameraPosition;
             IndexCount = 0;
 
             _rootNode.EnforceMinimumDepth();
@@ -130,27 +152,22 @@ namespace Map
             this.Device.SetVertexBuffer(_buffers.VertexBuffer);
             this.Device.Indices = _buffers.IndexBuffer;
 
-           
-            effect.CurrentTechnique = effect.Techniques["MultiTextured"];
-            effect.Parameters["xTexture0"].SetValue(textures[1]);
-            effect.Parameters["xTexture1"].SetValue(textures[0]);
-            effect.Parameters["xTexture2"].SetValue(textures[2]);
-            effect.Parameters["xTexture3"].SetValue(textures[3]);
-            Matrix worldMatrix = Matrix.Identity;
-            effect.Parameters["xWorld"].SetValue(worldMatrix);
+
+
             effect.Parameters["xView"].SetValue(camera.View);
             effect.Parameters["xProjection"].SetValue(camera.Projection);
-            effect.Parameters["xEnableLighting"].SetValue(true);
-            effect.Parameters["xAmbient"].SetValue(0.51f);
-            effect.Parameters["xLightPower"].SetValue(3.0f);
-            effect.Parameters["xTime2"].SetValue(time/900);
-            effect.Parameters["xLightPos"].SetValue(new Vector3(25600, 1000, 25600));
-        
+            
+            effect.Parameters["xTime2"].SetValue(time*100);
+            /*
+            effect.CurrentTechnique = effect.Techniques["Terrain"];
+
+            effect.Parameters["View"].SetValue(camera.View);
+            effect.Parameters["Projection"].SetValue(camera.Projection);  */
              foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {
-      
+               
                 pass.Apply();
-     
+                 
                 if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
 
 
