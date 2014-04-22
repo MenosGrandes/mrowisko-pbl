@@ -84,9 +84,9 @@ VS_OUTPUT VertexShader2(VS_INPUT input)
 
 float4 PixelShader2(VS_OUTPUT input) : COLOR
 {
-	float r = tex2D(GroundText0Sampler, input.TexCoord );
-	float g = tex2D(GroundText1Sampler, input.TexCoord );
-	float b = tex2D(GroundText2Sampler, input.TexCoord );
+	float r = tex2D(GroundText0Sampler, input.TexCoord*5 );
+	float g = tex2D(GroundText1Sampler, input.TexCoord * 5);
+	float b = tex2D(GroundText2Sampler, input.TexCoord * 5);
 	float3 WEIGHT = tex2D(GroundSampler, input.TexCoord/100 );
 	float3 output = clamp(1.0 - WEIGHT.r - 1.0 - WEIGHT.g - WEIGHT.b, 0, 1);
 	output *= WEIGHT;
