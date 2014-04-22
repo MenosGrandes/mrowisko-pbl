@@ -157,7 +157,7 @@ new Vector3(100), GraphicsDevice, Content);
            
             quadTree.View =camera.View;
            quadTree.Projection = camera.Projection;
-           quadTree.CameraPosition = ((FreeCamera)camera).Position;
+            quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
           
 
@@ -171,18 +171,17 @@ new Vector3(100), GraphicsDevice, Content);
 
         protected override void Draw(GameTime gameTime)
         {
-            //RasterizerState rasterizerState = new RasterizerState();
-            //rasterizerState.FillMode = FillMode.WireFrame;
-            //GraphicsDevice.RasterizerState = rasterizerState;
+            RasterizerState rasterizerState = new RasterizerState();
+            rasterizerState.FillMode = FillMode.WireFrame;
+            GraphicsDevice.RasterizerState = rasterizerState;
 
 
             float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
-            RasterizerState rs = new RasterizerState();
-            rs.CullMode = CullMode.None;
+            //RasterizerState rs = new RasterizerState();
+            //rs.CullMode = CullMode.None;
 
             _total_frames++;
-
 
 
 
@@ -192,11 +191,15 @@ new Vector3(100), GraphicsDevice, Content);
             water.DrawRefractionMap(camera.View);
 
             water.DrawReflectionMap((FreeCamera)camera);
-           
-            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-            quadTree.Draw((FreeCamera)camera, time);
+
+
+            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
             water.DrawWater(time, (FreeCamera)camera);
 
+
+            device.DepthStencilState = DepthStencilState.Default;
+                                       quadTree.Draw((FreeCamera)camera, time);
+                                       device.DepthStencilState = DepthStencilState.None;
       
 
          

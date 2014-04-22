@@ -29,7 +29,7 @@ namespace GameCamera
         }
         public void Rotate(float YawChange, float PitchChange)
         {
-            this.Yaw += YawChange;
+            this.Yaw += YawChange;// MathHelper.Lerp((float)MathHelper.ToRadians(this.Yaw), YawChange, 0.9f);
             this.Pitch += PitchChange;
         }
         public void Move(Vector3 Translation)
@@ -53,20 +53,21 @@ namespace GameCamera
 
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             float rotatate = 0;
-            if (keyState.IsKeyDown(Keys.W)) translation += new Vector3(0, -1, 1) * (Pitch) * scale;
-            if (keyState.IsKeyDown(Keys.S)) translation += new Vector3(0, 1, -1) * (Pitch) * scale;
-            if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (Pitch * -1) * scale;
-            if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (Pitch * -1) * scale;
-            if (keyState.IsKeyDown(Keys.Q)) rotatate += 0.001f;
-            if (keyState.IsKeyDown(Keys.E)) rotatate -= 0.001f;
+       
+            if (keyState.IsKeyDown(Keys.W)) translation += new Vector3(0, -1, 1) * MathHelper.ToRadians(Pitch) * scale*20;
+            if (keyState.IsKeyDown(Keys.S)) translation += new Vector3(0, 1, -1) * MathHelper.ToRadians(Pitch) * scale * 20;
+            if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (MathHelper.ToRadians(Pitch) * -1) * scale * 20;
+            if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (MathHelper.ToRadians(Pitch) * -1) * scale * 20;
+            if (keyState.IsKeyDown(Keys.Q)) rotatate += MathHelper.ToRadians(0.2f);
+            if (keyState.IsKeyDown(Keys.E)) rotatate -=MathHelper.ToRadians(0.2f);
             if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
             {
-                translation += new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale;
+                translation+= Vector3.Lerp(translation, new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale,0.2f);
                
             }
             else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)
             {
-                translation += new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1*scale;
+                translation += Vector3.Lerp(translation, new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1 * scale, 0.2f);
 
             }
 
@@ -75,13 +76,14 @@ namespace GameCamera
             rotatate *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             // Move the camera
             Move(translation);
-            Rotate(rotatate,0);
+            Rotate( rotatate,0);
 
 
 
 
 
-
+     // Camera.Position = Target - Camera.Forward * Zoom;
+    //  Camera.View = Matrix.CreateLookAt( Camera.Position, Target, Camera.Up);
             // Calculate the rotation matrix
             Matrix rotation = Matrix.CreateFromYawPitchRoll(Yaw, Pitch, 0);
             // Offset the position and reset the translation    
@@ -98,9 +100,9 @@ namespace GameCamera
 
 
             Vector3 reflCameraPosition = Position;
-            reflCameraPosition.Y = -Position.Y + 500 * 2*1;
+            reflCameraPosition.Y = -Position.Y + 38475 ;
             Vector3 reflTargetPos = Target;
-            reflTargetPos.Y = -Target.Y + 500 * 2*1;
+            reflTargetPos.Y = -Target.Y + 38475 ;
 
             Vector3 cameraRight = Vector3.Transform(new Vector3(1, 0, 0), rotation);
             Vector3 invUpVector = Vector3.Cross(cameraRight, reflTargetPos - reflCameraPosition);
