@@ -30,6 +30,7 @@ namespace AntHill
         MouseState lastMouseState;
         Map.Water water;
         LoadModel anim;
+        Control control;
          QuadTree quadTree;
                      //FPS COUNTER
 
@@ -59,6 +60,7 @@ namespace AntHill
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
+            control = new Control();
 
             
         }
@@ -150,13 +152,19 @@ new Vector3(100), GraphicsDevice, Content);
             
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            updateAnt(gameTime);
+            
            
             quadTree.View =camera.View;
            quadTree.Projection = camera.Projection;
            quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
 
+            //updateAnt(gameTime);
+            control.View = camera.View;
+            control.Projection = camera.Projection;
+            control.device = device;
+            control.models = models;
+            control.Update(gameTime);
 
              
             camera.Update(gameTime);
@@ -228,6 +236,7 @@ new Vector3(100), GraphicsDevice, Content);
             base.Draw(gameTime);
         }
 
+        /*
         void updateAnt(GameTime gameTime)
         {
             KeyboardState keyState = Keyboard.GetState();
@@ -309,11 +318,11 @@ new Vector3(100), GraphicsDevice, Content);
             if (position != null)
                 return pickRay.Position + pickRay.Direction * position.Value;
             else
-                return new Vector3(0,0,0);
-          
-            
+                return new Vector3(0, 0, 0);
+
+
         }
-    
+    */
     
     }
 }
