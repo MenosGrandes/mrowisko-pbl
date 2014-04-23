@@ -17,7 +17,7 @@ namespace Map
     public class QuadTree
     {
        
-        public int MinimumDepth = 2;
+        public int MinimumDepth = 7;
         public int IndexCount { get; private set; }
         public BasicEffect Effect;
         private QuadNode _rootNode;
@@ -112,7 +112,7 @@ namespace Map
         effect.Parameters["GroundText1"].SetValue(textures[9]);
         effect.Parameters["GroundText2"].SetValue(textures[10]);
             */
-
+          _rootNode.EnforceMinimumDepth();
         }
         public void Update(GameTime gameTime)
         {
@@ -124,17 +124,19 @@ namespace Map
 
            // _lastCameraPosition = _cameraPosition;
             IndexCount = 0;
-
-            _rootNode.EnforceMinimumDepth();
-
-           // _activeNode = _rootNode.DeepestNodeWithPoint(CameraPosition);
-
-           // if (_activeNode != null)
-           // {
-           //     _activeNode.Split();
-          //  }
-
             _rootNode.SetActiveVertices();
+
+           // ;
+
+                              /*
+            _rootNode.Merge();
+            _activeNode = _rootNode.DeepestNodeWithPoint(CameraPosition);
+
+            if (_activeNode != null)
+            {
+                _activeNode.Split();
+            }
+              */
 
             _buffers.UpdateIndexBuffer(Indices, IndexCount);
             _buffers.SwapBuffer();
@@ -178,7 +180,7 @@ namespace Map
 
 
             ants.DrawModels(camera);
-        //    Device.BlendState = BlendState.AlphaBlend;
+            Device.BlendState = BlendState.AlphaBlend;
 
 
              trees.DrawBillboards(camera.View, camera.Projection, camera.Position);

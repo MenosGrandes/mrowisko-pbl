@@ -143,7 +143,10 @@ new Vector3(100), GraphicsDevice, Content);
                 _total_frames = 0;
                 _elapsed_time = 0;
             }
-
+            if (keyState.IsKeyDown(Keys.C) && !keyState.IsKeyDown(Keys.C))
+            {
+                quadTree.Cull = !quadTree.Cull;
+            }
             if (keyState.IsKeyDown(Keys.X))
                 x = x + 0.5f;
             if (keyState.IsKeyDown(Keys.Y))
@@ -171,15 +174,15 @@ new Vector3(100), GraphicsDevice, Content);
 
         protected override void Draw(GameTime gameTime)
         {
-            RasterizerState rasterizerState = new RasterizerState();
-            rasterizerState.FillMode = FillMode.WireFrame;
-            GraphicsDevice.RasterizerState = rasterizerState;
+            //RasterizerState rasterizerState = new RasterizerState();
+            //rasterizerState.FillMode = FillMode.WireFrame;
+            //GraphicsDevice.RasterizerState = rasterizerState;
 
 
             float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
-            //RasterizerState rs = new RasterizerState();
-            //rs.CullMode = CullMode.None;
+            RasterizerState rs = new RasterizerState();
+            rs.CullMode = CullMode.CullCounterClockwiseFace;
 
             _total_frames++;
 
