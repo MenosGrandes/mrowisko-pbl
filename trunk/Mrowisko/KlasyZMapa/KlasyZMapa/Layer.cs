@@ -51,6 +51,10 @@ namespace Map
             this.scale = scale;
             this.bbEffect = Content.Load<Effect>("Effects/Bilboarding");
             this.content = Content;
+            bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
+            bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
+            bbEffect.Parameters["xScale"].SetValue(this.scale);
+            bbEffect.Parameters["xBillboardTexture"].SetValue(envBilbTexture);
 
 
         }
@@ -182,14 +186,11 @@ namespace Map
  /// <param name="position"></param>
         public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position)
         {
-            bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
+           
             bbEffect.Parameters["xWorld"].SetValue(Matrix.Identity);
             bbEffect.Parameters["xView"].SetValue(currentViewMatrix);
             bbEffect.Parameters["xProjection"].SetValue(projectionMatrix);
             bbEffect.Parameters["xCamPos"].SetValue(position);
-            bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
-            bbEffect.Parameters["xScale"].SetValue(this.scale);
-            bbEffect.Parameters["xBillboardTexture"].SetValue(envBilbTexture);
 
             device.SetVertexBuffer(treeVertexBuffer);
 
@@ -206,11 +207,14 @@ namespace Map
  /// <param name="camera"></param>
         public void DrawModels(FreeCamera camera )
         {
+         //  int licznik = 0;
             foreach (LoadModel model in models)
                if (camera.BoundingVolumeIsInView(model.BoundingSphere))
                 {
                     model.Draw(camera.View, camera.Projection);
+                  //  licznik++;
                 }
+            //Console.WriteLine(licznik);
 
                   
         }

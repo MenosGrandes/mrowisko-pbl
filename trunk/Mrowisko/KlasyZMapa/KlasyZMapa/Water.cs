@@ -71,7 +71,7 @@ namespace Map
 
         public void DrawRefractionMap(Matrix viewMatrix)
         {
-            Plane refractionPlane = CreatePlane(waterHeight + 1.5f*Scale, new Vector3(0, -1, 0), viewMatrix, false);
+            Plane refractionPlane = CreatePlane(waterHeight + 1.5f*Scale*4, new Vector3(0, -1, 0), viewMatrix, false);
 
             effect.Parameters["ClipPlane0"].SetValue(new Vector4(refractionPlane.Normal, refractionPlane.D));
             effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
@@ -85,7 +85,7 @@ namespace Map
 
         public void DrawReflectionMap( FreeCamera camera)
         {
-            Plane reflectionPlane = CreatePlane(waterHeight - 0.5f * Scale, new Vector3(0, 1, 0), camera.reflectionViewMatrix, true);
+            Plane reflectionPlane = CreatePlane(waterHeight - 0.5f * Scale * 4, new Vector3(0, 1, 0), camera.reflectionViewMatrix, true);
 
             effect.Parameters["ClipPlane0"].SetValue(new Vector4(reflectionPlane.Normal, reflectionPlane.D));
 
