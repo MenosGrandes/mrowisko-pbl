@@ -116,7 +116,7 @@ namespace Map
           Matrix worldMatrix = Matrix.Identity;
           effect.Parameters["xWorld"].SetValue(worldMatrix);
           effect.Parameters["xEnableLighting"].SetValue(true);
-          effect.Parameters["xAmbient"].SetValue(1.0f);
+          effect.Parameters["xAmbient"].SetValue(0.5f);
           effect.Parameters["xLightPower"].SetValue(0.6f);
           effect.Parameters["xLightPos"].SetValue(new Vector3(25600, 1000, 25600));
 
@@ -174,7 +174,7 @@ namespace Map
           effect.Parameters["xView"].SetValue(camera.View);
           effect.Parameters["xProjection"].SetValue(camera.Projection);
             
-          effect.Parameters["xTime2"].SetValue(time*100);
+          effect.Parameters["xTime2"].SetValue(time);
                 /*
             effect.CurrentTechnique = effect.Techniques["Terrain"];
 
