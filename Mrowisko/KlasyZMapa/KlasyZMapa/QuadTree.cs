@@ -49,8 +49,10 @@ namespace Map
         Effect effect;
  
         List<Texture2D> textures;
-        private Layer trees;
-        public   Layer ants;
+
+        List<EnvModel> envModelList= new List<EnvModel>();
+        List<EnvBilb> envBilbList = new List<EnvBilb>();
+
         public bool Cull { get; set; }
         private QuadNode _activeNode;
         /// <summary>
@@ -84,13 +86,25 @@ namespace Map
             Indices = _vertices.indices;
 
 
-            this.trees = new Layer(textures[5], device, Content, scale);
-            this.ants = new Layer(model, device, Content, new Vector3(scale/30));
+            envBilbList.Add(new EnvBilb(textures[6], textures[5], device, Content, scale));
+            envModelList.Add(new EnvModel(textures[6], model, device, Content, scale));
+            foreach (EnvBilb pass in envBilbList)
+            {
+                pass.GenerateObjPositions(_vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
+                pass.CreateBillboardVerticesFromList();
+            }
+
+            foreach (EnvModel pass1 in envModelList)
+            {
+                pass1.GenerateObjPositions(_vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
+                pass1.CreateModelFromList();
+            }
+/*
             trees.GenerateObjPositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
             ants.GenerateObjPositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
-            ants.CreateModelFromList(trees.TreeList);
+            ants.CreateModelFromList();
             trees.CreateBillboardVerticesFromList();
-
+            */
 
             
          effect.CurrentTechnique = effect.Techniques["MultiTextured"];
@@ -178,18 +192,17 @@ namespace Map
             }
 
 
-
-            ants.DrawModels(camera);
+            foreach (EnvModel pass1 in envModelList)
+            {
+                pass1.DrawModels(camera);
+            }
             Device.BlendState = BlendState.AlphaBlend;
 
-
-             trees.DrawBillboards(camera.View, camera.Projection, camera.Position);
-             
-
+           foreach (EnvBilb pass in envBilbList)
+            {
+                pass.DrawBillboards(camera.View, camera.Projection, camera.Position);
+            }
             
-    
-    
-
         }
         internal void   UpdateBuffer(int vIndex)
         {

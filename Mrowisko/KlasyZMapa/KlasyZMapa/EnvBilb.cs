@@ -12,31 +12,30 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using GameCamera;
 
+
 namespace Map
-{             
-                 /// <summary>
-                 /// Class responsible for creating a layer of objects at the terrain
-                 /// </summary>
-    public class Layer
+{
+    class EnvBilb
     {
-        private VertexBuffer treeVertexBuffer;
+        
+        private VertexBuffer VertexBuffer;
         private Effect bbEffect;
         private Texture2D envBilbTexture;
-        private Model envModel;
         private GraphicsDevice device;
         private List<Vector3> envBilbList;
-        public List<LoadModel> models;       //powinna być LISTA<LISTA<LOADMODEL>>
+    
         private int scale;
-        private Vector3 scaleM;
         private ContentManager content;
+        private Texture2D objMap;
          /// <summary>
          /// 
          /// </summary>
-        public List<Vector3> TreeList
+        public List<Vector3> EnvBilbList
         {
             get { return envBilbList; }
             set { envBilbList = value; }
-        } 
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -44,11 +43,12 @@ namespace Map
         /// <param name="device"></param>
         /// <param name="Content"></param>
         /// <param name="scale"></param>
-        public Layer(Texture2D bilboardTexture, GraphicsDevice device, ContentManager Content, int scale)
+        public EnvBilb(Texture2D objMap, Texture2D bilboardTexture, GraphicsDevice device, ContentManager Content, int scale)
         {
             envBilbTexture = bilboardTexture;
             this.device = device;
             this.scale = scale;
+            this.objMap = objMap;
             this.bbEffect = Content.Load<Effect>("Effects/Bilboarding");
             this.content = Content;
             bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
@@ -61,28 +61,12 @@ namespace Map
    /// <summary>
    /// 
    /// </summary>
-   /// <param name="envModel"></param>
-   /// <param name="device"></param>
-   /// <param name="Content"></param>
-   /// <param name="scale"></param>
-        public Layer(Model envModel, GraphicsDevice device, ContentManager Content, Vector3 scale)
-        {
-            this.envModel = envModel;
-            this.device = device;
-            this.scaleM = scale;
-
-
-
-        }
-   /// <summary>
-   /// 
-   /// </summary>
    /// <param name="objMap"></param>
    /// <param name="terrainVertices"></param>
    /// <param name="terrainWidth"></param>
    /// <param name="terrainLength"></param>
    /// <param name="heightData"></param>
-        public void GenerateObjPositions(Texture2D objMap, VertexMultitextured[] terrainVertices, int terrainWidth, int terrainLength, float[,] heightData)
+        public void GenerateObjPositions(VertexMultitextured[] terrainVertices, int terrainWidth, int terrainLength, float[,] heightData)
         {
             Color[] objMapColors = new Color[objMap.Width * objMap.Height];
             objMap.GetData(objMapColors);
@@ -113,23 +97,23 @@ namespace Map
                             float rely = (float)y / (float)terrainLength;
 
                             float noiseValueAtCurrentPosition = noiseData[(int)(relx * objMap.Width), (int)(rely * objMap.Height)];
-                            float treeDensity;
+                            float density;
                             if (noiseValueAtCurrentPosition > 200)
-                                treeDensity = 3;
+                                density = 3;
                             else if (noiseValueAtCurrentPosition > 100)
-                                treeDensity = 2;
+                                density = 2;
                             else if (noiseValueAtCurrentPosition > 1)
-                                treeDensity = 1;
+                                density = 1;
                             else
-                                treeDensity = 0;
+                                density = 0;
 
-                            for (int currDetail = 0; currDetail < treeDensity; currDetail++)
+                            for (int currDetail = 0; currDetail < density; currDetail++)
                             {
                                 float rand1 = (float)random.Next(1000000) / 10000000.0f;
                                 float rand2 = (float)random.Next(1000000) / 10000000.0f;
-                                Vector3 treePos = new Vector3((float)x - rand1, 0, (float)y - rand2);
-                                treePos.Y = heightData[x, y];
-                                envBilbList.Add(treePos*scale);
+                                Vector3 position = new Vector3((float)x - rand1, 0, (float)y - rand2);
+                                position.Y = heightData[x, y];
+                                envBilbList.Add(position * scale);
                             }
                         }
                     }
@@ -139,23 +123,6 @@ namespace Map
            
             
         }
-  /// <summary>
-  /// 
-  /// </summary>
-  /// <param name="treeList"></param>
-        public void CreateModelFromList(List<Vector3> treeList)
-        {
-            models = new List<LoadModel>();
-            Random random = new Random();
-            foreach (Vector3 currentV3 in treeList)
-           {
-                float rand1 = (float)random.Next(360000) / 100.0f;
-                models.Add(new LoadModel(envModel, currentV3, new Vector3(0, rand1, 0), scaleM, this.device));
-               
-
-            }
-        }
-
 /// <summary>
 /// 
 /// </summary>
@@ -175,8 +142,8 @@ namespace Map
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 1));
 
             }
-            treeVertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
-            treeVertexBuffer.SetData(billboardVertices);
+            VertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
+            VertexBuffer.SetData(billboardVertices);
         }
  /// <summary>
  /// 
@@ -192,33 +159,15 @@ namespace Map
             bbEffect.Parameters["xProjection"].SetValue(projectionMatrix);
             bbEffect.Parameters["xCamPos"].SetValue(position);
 
-            device.SetVertexBuffer(treeVertexBuffer);
+            device.SetVertexBuffer(VertexBuffer);
 
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                device.DrawPrimitives(PrimitiveType.TriangleList, 0, treeVertexBuffer.VertexCount / 3);
+                device.DrawPrimitives(PrimitiveType.TriangleList, 0, VertexBuffer.VertexCount / 3);
 
             }
         }
- /// <summary>
- /// 
- /// </summary>
- /// <param name="camera"></param>
-        public void DrawModels(FreeCamera camera )
-        {
-         //  int licznik = 0;
-            foreach (LoadModel model in models)
-               if (camera.BoundingVolumeIsInView(model.BoundingSphere))
-                {
-                    model.Draw(camera.View, camera.Projection);
-                  //  licznik++;
-                }
-            //Console.WriteLine(licznik);
-
-                  
-        }
-
 
     }
 }

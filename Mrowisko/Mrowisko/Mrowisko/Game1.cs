@@ -102,7 +102,7 @@ namespace AntHill
 
            models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice, Content));
 
-           inter = quadTree.ants.models;
+           //inter = quadTree.ants.Models;
 
           // GraphicsDevice.BlendState = BlendState.AlphaBlend;
           // GraphicsDevice.BlendFactor = Color.Yellow;
