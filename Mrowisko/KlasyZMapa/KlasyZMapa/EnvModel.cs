@@ -164,14 +164,14 @@ namespace Map
         /// <param name="camera"></param>
         public void DrawModels(FreeCamera camera)
         {
-              int licznik = 0;
+              //int licznik = 0;
             foreach (LoadModel model in models)
                 if (camera.BoundingVolumeIsInView(model.BoundingSphere))
                 {
                     model.Draw(camera.View, camera.Projection);
-                      licznik++;
+              //        licznik++;
                 }
-            Console.WriteLine(licznik);
+          //  Console.WriteLine(licznik);
 
 
         }

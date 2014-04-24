@@ -82,7 +82,7 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 	if (xEnableLighting)
 	{
 
-		diffuseLightingFactor = DotProduct(xLightPos*xTime2, PSIn.Position3D, PSIn.Normal);
+		diffuseLightingFactor = DotProduct(xLightPos*sin(radians(xTime2)), PSIn.Position3D, PSIn.Normal);
 		diffuseLightingFactor = saturate(diffuseLightingFactor);
 		diffuseLightingFactor *= xLightPower;
 	}
