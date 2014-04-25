@@ -37,7 +37,12 @@ namespace AntHill
          int _total_frames = 0;
          float _elapsed_time = 0.0f;
          int _fps = 0;
-
+        
+        
+        MouseState currentMouseState;
+        MouseState LastMouseState_2;
+        int f = 0;
+        Vector3 playerTarget;
 
         public Game1()
         {
@@ -132,6 +137,38 @@ new Vector3(100), GraphicsDevice, Content);
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            float pozycja_X_lewo = models[0].Position.X - 800;
+            float pozycja_X_prawo = models[0].Position.X + 800;
+            float pozycja_Z_gora = models[0].Position.Z + 400;
+            float pozycja_Z_dol = models[0].Position.Z - 800;
+
+
+            currentMouseState = Mouse.GetState();
+           // LastMouseState_2 = Mouse.GetState();
+            Vector3 mouse3d2 = CalculateMouse3DPosition();
+            if (currentMouseState.RightButton == ButtonState.Pressed)
+            {
+                if ((mouse3d2.X > pozycja_X_lewo && mouse3d2.X < pozycja_X_prawo) && (mouse3d2.Z > pozycja_Z_dol && mouse3d2.Z < pozycja_Z_gora))
+                {
+                    f = 1;
+                }
+                else
+                {
+                    f = 0;
+                }
+
+            }
+            Console.WriteLine(f);
+            if (currentMouseState.LeftButton == ButtonState.Pressed && f==1)
+            {
+                // This will give the player a target to go to. 
+                playerTarget.X = mouse3d2.X;
+                playerTarget.Z = mouse3d2.Z;
+            }
+            updateAnt(gameTime);
+
+
+
 
             KeyboardState keyState = Keyboard.GetState();
              _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -241,7 +278,32 @@ new Vector3(100), GraphicsDevice, Content);
 
         void updateAnt(GameTime gameTime)
         {
-            KeyboardState keyState = Keyboard.GetState();
+
+            // Check if the player has reached the target, if not, move towards it. 
+
+            float Speed = (float)30;
+            if (models[0].Position.X > playerTarget.X)
+            {
+                models[0].Position += Vector3.Left * Speed;
+            }
+            if (models[0].Position.X < playerTarget.X)
+            {
+                models[0].Position += Vector3.Right * Speed;
+            }
+
+            if (models[0].Position.Z > playerTarget.Z)
+            {
+                models[0].Position += Vector3.Forward * Speed;
+            }
+            if (models[0].Position.Z < playerTarget.Z)
+            {
+                models[0].Position += Vector3.Backward * Speed;
+            }
+
+
+
+            
+            /*KeyboardState keyState = Keyboard.GetState();
             MouseState MS = Mouse.GetState();
             Vector2 mouse_pos = new Vector2(MS.X, MS.Y);
             Vector3 mouse3d2 = CalculateMouse3DPosition();
@@ -292,6 +354,8 @@ new Vector3(100), GraphicsDevice, Content);
                 if (keyState.IsKeyDown(Keys.Right)) models[0].Position += Vector3.Right * 100;
 
             }
+        
+             */ 
         }
 
 
