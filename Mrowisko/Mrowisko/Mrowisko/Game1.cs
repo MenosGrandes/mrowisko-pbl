@@ -94,15 +94,15 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("Textures/muszle"));
 
                     camera = new FreeCamera(
-        new Vector3(texture[4].Width*150 / 2, texture[4].Width*150/10, texture[4].Width*150 / 2),
+        new Vector3(texture[4].Width*50 / 2, texture[4].Width*50/10, texture[4].Width*50 / 2),
         MathHelper.ToRadians(0), // Turned around 153 degrees
         MathHelper.ToRadians(-45), // Pitched up 13 degrees
         GraphicsDevice);
           
-            quadTree = new QuadTree(Vector3.Zero,texture,device,150,Content,(FreeCamera)camera);
+            quadTree = new QuadTree(Vector3.Zero,texture,device,50,Content,(FreeCamera)camera);
             quadTree.Cull = true;
 
-           water = new Water(device, Content, texture[4].Width, 150);
+           water = new Water(device, Content, texture[4].Width, 50);
            
 
            models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice, Content));
@@ -158,7 +158,7 @@ new Vector3(100), GraphicsDevice, Content);
                 }
 
             }
-            Console.WriteLine(f);
+            //Console.WriteLine(f);
             if (currentMouseState.LeftButton == ButtonState.Pressed && f==1)
             {
                 // This will give the player a target to go to. 
@@ -228,13 +228,13 @@ new Vector3(100), GraphicsDevice, Content);
 
 
 
-            water.DrawRefractionMap(camera.View);
+           // water.DrawRefractionMap(camera.View);
 
-            water.DrawReflectionMap((FreeCamera)camera);
+          //  water.DrawReflectionMap((FreeCamera)camera);
 
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
-            water.DrawWater(time, (FreeCamera)camera);
+         //   water.DrawWater(time, (FreeCamera)camera);
 
 
             device.DepthStencilState = DepthStencilState.Default;

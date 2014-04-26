@@ -16,7 +16,7 @@ namespace Map
     /// </summary>
     public class QuadTree
     {
-       
+
         public int MinimumDepth = 7;
         public int IndexCount { get; private set; }
         public BasicEffect Effect;
@@ -47,14 +47,14 @@ namespace Map
 
         public BoundingFrustum ViewFrustrum { get; private set; }
         Effect effect;
- 
-        List<Texture2D> textures;
 
-        List<EnvModel> envModelList= new List<EnvModel>();
-        List<EnvBilb> envBilbList = new List<EnvBilb>();
+        List<Texture2D> textures;
 
         public bool Cull { get; set; }
         private QuadNode _activeNode;
+
+        List<EnvModel> envModelList = new List<EnvModel>();
+        List<EnvBilb> envBilbList = new List<EnvBilb>();
         /// <summary>
         /// Create terrain at <paramref name="position"/>
         /// </summary>
@@ -64,20 +64,20 @@ namespace Map
         /// <param name="scale"></param>
         /// <param name="Content"></param>
         /// <param name="camera"></param>
-        public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale,ContentManager Content,GameCamera.FreeCamera camera)
+        public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale, ContentManager Content, GameCamera.FreeCamera camera)
         {
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
             Model model = Content.Load<Model>("Models/mrowka_01");
             this.textures = textures;
             effect = Content.Load<Effect>("Effects/MultiTextured");
-        
+
             Device = device;
 
             _position = position;
             _topNodeSize = textures[4].Width - 1;
 
-            _vertices = new MapRender (textures[4],scale);
+            _vertices = new MapRender(textures[4], scale);
             _buffers = new BufferManager(_vertices.Vertices, device);
             _rootNode = new QuadNode(NodeType.FullNode, _topNodeSize, 1, null, this, 0);
 
@@ -99,26 +99,21 @@ namespace Map
                 pass1.GenerateObjPositions(_vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
                 pass1.CreateModelFromList();
             }
-/*
-            trees.GenerateObjPositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
-            ants.GenerateObjPositions(textures[6], _vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
-            ants.CreateModelFromList();
-            trees.CreateBillboardVerticesFromList();
-            */
 
-            
-         effect.CurrentTechnique = effect.Techniques["MultiTextured"];
-          effect.Parameters["xTexture0"].SetValue(textures[1]);
-          effect.Parameters["xTexture1"].SetValue(textures[0]);
-          effect.Parameters["xTexture2"].SetValue(textures[2]);
-          effect.Parameters["xTexture3"].SetValue(textures[3]);
-          effect.Parameters["xTexture5"].SetValue(textures[7]);
-          Matrix worldMatrix = Matrix.Identity;
-          effect.Parameters["xWorld"].SetValue(worldMatrix);
-          effect.Parameters["xEnableLighting"].SetValue(true);
-          effect.Parameters["xAmbient"].SetValue(0.5f);
-          effect.Parameters["xLightPower"].SetValue(0.6f);
-          effect.Parameters["xLightPos"].SetValue(new Vector3(51200, 1000, 51200));
+
+
+            effect.CurrentTechnique = effect.Techniques["MultiTextured"];
+            effect.Parameters["xTexture0"].SetValue(textures[1]);
+            effect.Parameters["xTexture1"].SetValue(textures[0]);
+            effect.Parameters["xTexture2"].SetValue(textures[2]);
+            effect.Parameters["xTexture3"].SetValue(textures[3]);
+            effect.Parameters["xTexture5"].SetValue(textures[7]);
+            Matrix worldMatrix = Matrix.Identity;
+            effect.Parameters["xWorld"].SetValue(worldMatrix);
+            effect.Parameters["xEnableLighting"].SetValue(true);
+            effect.Parameters["xAmbient"].SetValue(1.0f);
+            effect.Parameters["xLightPower"].SetValue(0.6f);
+            effect.Parameters["xLightPos"].SetValue(new Vector3(25600, 1000, 25600));
 
             /*     
           effect.Parameters["Ground"].SetValue(textures[7]);
@@ -126,7 +121,7 @@ namespace Map
         effect.Parameters["GroundText1"].SetValue(textures[9]);
         effect.Parameters["GroundText2"].SetValue(textures[10]);
             */
-          _rootNode.EnforceMinimumDepth();
+
         }
         public void Update(GameTime gameTime)
         {
@@ -134,23 +129,21 @@ namespace Map
             //Only update if the camera position has changed
 
 
-           
 
-           // _lastCameraPosition = _cameraPosition;
+
+            // _lastCameraPosition = _cameraPosition;
             IndexCount = 0;
+
+            _rootNode.EnforceMinimumDepth();
+
+            // _activeNode = _rootNode.DeepestNodeWithPoint(CameraPosition);
+
+            // if (_activeNode != null)
+            // {
+            //     _activeNode.Split();
+            //  }
+
             _rootNode.SetActiveVertices();
-
-           // ;
-
-                              /*
-            _rootNode.Merge();
-            _activeNode = _rootNode.DeepestNodeWithPoint(CameraPosition);
-
-            if (_activeNode != null)
-            {
-                _activeNode.Split();
-            }
-              */
 
             _buffers.UpdateIndexBuffer(Indices, IndexCount);
             _buffers.SwapBuffer();
@@ -170,48 +163,50 @@ namespace Map
             this.Device.Indices = _buffers.IndexBuffer;
 
 
-           
-          effect.Parameters["xView"].SetValue(camera.View);
-          effect.Parameters["xProjection"].SetValue(camera.Projection);
-            
-          effect.Parameters["xTime2"].SetValue(time);
-                /*
-            effect.CurrentTechnique = effect.Techniques["Terrain"];
 
-          effect.Parameters["View"].SetValue(camera.View);
-          effect.Parameters["Projection"].SetValue(camera.Projection);
-             *   */
+            effect.Parameters["xView"].SetValue(camera.View);
+            effect.Parameters["xProjection"].SetValue(camera.Projection);
+
+            effect.Parameters["xTime2"].SetValue(time );
+            /*
+        effect.CurrentTechnique = effect.Techniques["Terrain"];
+
+      effect.Parameters["View"].SetValue(camera.View);
+      effect.Parameters["Projection"].SetValue(camera.Projection);
+         *   */
             foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {
-               
+
                 pass.Apply();
-                 
+
                 if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
-                Console.WriteLine(IndexCount);
+                //Console.WriteLine(IndexCount);
 
             }
-
-
+            /*
             foreach (EnvModel pass1 in envModelList)
             {
                 pass1.DrawModels(camera);
             }
             Device.BlendState = BlendState.AlphaBlend;
 
-           foreach (EnvBilb pass in envBilbList)
+            foreach (EnvBilb pass in envBilbList)
             {
                 pass.DrawBillboards(camera.View, camera.Projection, camera.Position);
             }
-            
+
+          */
+           
+
         }
-        internal void   UpdateBuffer(int vIndex)
+        internal void UpdateBuffer(int vIndex)
         {
             Indices[IndexCount] = vIndex;
             IndexCount++;
         }
 
 
-    
+
     }
 
 

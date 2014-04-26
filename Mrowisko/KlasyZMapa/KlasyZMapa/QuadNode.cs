@@ -64,11 +64,6 @@ namespace Map
         {
             get { return _parent; }
         }
-        public bool IsActive
-        {
-            get { return _isActive; }
-            internal set { _isActive = value; }
-        }
         public QuadNode(NodeType nodeType, int nodeSize, int nodeDepth, QuadNode parent, QuadTree parentTree, int positionIndex)
         {
             NodeType = nodeType;
@@ -84,11 +79,11 @@ namespace Map
 
             Bounds = new BoundingBox(_parentTree.Vertices[VertexTopLeft.Index].Position,
                         _parentTree.Vertices[VertexBottomRight.Index].Position);
-            Bounds.Min.Y = 0;
-            Bounds.Max.Y = 0;
+            Bounds.Min.Y = -1000;
+            Bounds.Max.Y = 1000;
 
             if (nodeSize >= 4)
-               AddChildren();
+                AddChildren();
 
             //Make call to UpdateNeighbors from the parent node.
             //This will update all neighbors recursively for the
@@ -408,176 +403,6 @@ namespace Map
         {
             get { return Contains(_parentTree.ViewFrustrum); }
         }
-        public void Split()
-        {
-            //Make sure parent node is split
-            if (_parent != null && !_parent.IsSplit)
-                _parent.Split();
 
-            if (CanSplit)
-            {
-                //Set active nodes
-                if (HasChildren)
-                {
-                    ChildTopLeft.Activate();
-                    ChildTopRight.Activate();
-                    ChildBottomLeft.Activate();
-                    ChildBottomRight.Activate();
-
-                    _isActive = false;
-
-                }
-                else
-                {
-                    _isActive = true;
-                }
-
-                _isSplit = true;
-                //Set active vertices
-                VertexTop.Activated = true;
-                VertexLeft.Activated = true;
-                VertexRight.Activated = true;
-                VertexBottom.Activated = true;
-            }
-
-            //Make sure neighbor parents are split
-            EnsureNeighborParentSplit(NeighborTop);
-            EnsureNeighborParentSplit(NeighborRight);
-            EnsureNeighborParentSplit(NeighborBottom);
-            EnsureNeighborParentSplit(NeighborLeft);
-
-            //Make sure neighbor vertices are active
-            if (NeighborTop != null)
-                NeighborTop.VertexBottom.Activated = true;
-
-            if (NeighborRight != null)
-                NeighborRight.VertexLeft.Activated = true;
-
-            if (NeighborBottom != null)
-                NeighborBottom.VertexTop.Activated = true;
-
-            if (NeighborLeft != null)
-                NeighborLeft.VertexRight.Activated = true;
-        }
-
-        /// <summary>
-        /// Make sure neighbor parents are split to ensure
-        /// consistency with vertex sharing and tessellation.
-        /// </summary>
-        private static void EnsureNeighborParentSplit(QuadNode neighbor)
-        {
-            //Checking for null neighbor and null parent in case
-            //we recode for additional quad trees in the future.
-            if (neighbor != null && neighbor.Parent != null)
-                if (!neighbor.Parent.IsSplit)
-                    neighbor.Parent.Split();
-        }
-        public QuadNode DeepestNodeWithPoint(Vector3 point)
-        {
-            //If the point isn't in this node, return null
-            if (!Contains(point))
-                return null;
-
-            if (HasChildren)
-            {
-                if (ChildTopLeft.Contains(point))
-                    return ChildTopLeft.DeepestNodeWithPoint(point);
-
-                if (ChildTopRight.Contains(point))
-                    return ChildTopRight.DeepestNodeWithPoint(point);
-
-                if (ChildBottomLeft.Contains(point))
-                    return ChildBottomLeft.DeepestNodeWithPoint(point);
-
-                //It's contained in this node and not in the first 3
-                //children, so has to be in 4th child.  No need to check.
-                return ChildBottomRight.DeepestNodeWithPoint(point);
-            }
-
-            //No children, return this QuadNode
-            return this;
-        }
-        public bool Contains(Vector3 point)
-        {
-            point.Y = 0;
-            return Bounds.Contains(point) == ContainmentType.Contains;
-        }
-        public void Merge()
-{
-    //Only perform the merge if there are children
-    VertexTop.Activated = false;
-    VertexLeft.Activated = false;
-    VertexRight.Activated = false;
-    VertexBottom.Activated = false;
- 
-    if (NodeType != NodeType.FullNode)
-    {
-        VertexTopLeft.Activated = false;
-        VertexTopRight.Activated = false;
-        VertexBottomLeft.Activated = false;
-        VertexBottomRight.Activated = false;
-    }
-    _isActive = true;
-    _isSplit = false;
- 
-    if (HasChildren)
-    {
- 
-        if (ChildTopLeft.IsSplit)
-        {
-            ChildTopLeft.Merge();
-            ChildTopLeft.IsActive = false;
-        }
-        else
-        {
-            ChildTopLeft.VertexTop.Activated = false;
-            ChildTopLeft.VertexLeft.Activated = false;
-            ChildTopLeft.VertexRight.Activated = false;
-            ChildTopLeft.VertexBottom.Activated = false;
-        }
- 
-        if (ChildTopRight.IsSplit)
-        {
-            ChildTopRight.Merge();
-            ChildTopRight.IsActive = false;
-        }
-        else
-        {
-            ChildTopRight.VertexTop.Activated = false;
-            ChildTopRight.VertexLeft.Activated = false;
-            ChildTopRight.VertexRight.Activated = false;
-            ChildTopRight.VertexBottom.Activated = false;
-        }
- 
- 
-        if (ChildBottomLeft.IsSplit)
-        {
-            ChildBottomLeft.Merge();
-            ChildBottomLeft.IsActive = false;
-        }
-        else
-        {
-            ChildBottomLeft.VertexTop.Activated = false;
-            ChildBottomLeft.VertexLeft.Activated = false;
-            ChildBottomLeft.VertexRight.Activated = false;
-            ChildBottomLeft.VertexBottom.Activated = false;
-        }
- 
- 
-        if (ChildBottomRight.IsSplit)
-        {
-            ChildBottomRight.Merge();
-            ChildBottomRight.IsActive = false;
-        }
-        else
-        {
-            ChildBottomRight.VertexTop.Activated = false;
-            ChildBottomRight.VertexLeft.Activated = false;
-            ChildBottomRight.VertexRight.Activated = false;
-            ChildBottomRight.VertexBottom.Activated = false;
-        }
-    }
-}
-        public bool _isActive { get; set; }
     }
 }
