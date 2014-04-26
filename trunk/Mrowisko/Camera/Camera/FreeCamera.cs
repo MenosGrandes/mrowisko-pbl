@@ -38,7 +38,7 @@ namespace GameCamera
         }
         public override void Update(GameTime gameTime)
         {
-            int scale = 111;
+            int scale = 50;
             MouseState mouseState = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
             //Position=new Vector3();
@@ -58,8 +58,8 @@ namespace GameCamera
             if (keyState.IsKeyDown(Keys.S)) translation += new Vector3(0, 1, -1) * MathHelper.ToRadians(Pitch) * scale * 20;
             if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (MathHelper.ToRadians(Pitch) * -1) * scale * 20;
             if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (MathHelper.ToRadians(Pitch) * -1) * scale * 20;
-            if (keyState.IsKeyDown(Keys.Q)) rotatate += MathHelper.ToRadians(0.2f);
-            if (keyState.IsKeyDown(Keys.E)) rotatate -=MathHelper.ToRadians(0.2f);
+            if (keyState.IsKeyDown(Keys.Q)) rotatate += MathHelper.ToRadians(0.1f);
+            if (keyState.IsKeyDown(Keys.E)) rotatate -=MathHelper.ToRadians(0.1f);
             if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
             {
                 translation+= Vector3.Lerp(translation, new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale,0.2f);
@@ -98,7 +98,7 @@ namespace GameCamera
             // Calculate the view matrix
             View = Matrix.CreateLookAt(Position, Target, up);
 
-
+           /*
             Vector3 reflCameraPosition = Position;
             reflCameraPosition.Y = -Position.Y + 38475 ;
             Vector3 reflTargetPos = Target;
@@ -108,7 +108,7 @@ namespace GameCamera
             Vector3 invUpVector = Vector3.Cross(cameraRight, reflTargetPos - reflCameraPosition);
 
             reflectionViewMatrix = Matrix.CreateLookAt(reflCameraPosition, reflTargetPos, invUpVector);
-
+                             */
             lastMouseState = mouseState;
         }
 
