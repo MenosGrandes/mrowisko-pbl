@@ -118,7 +118,7 @@ namespace Map
           effect.Parameters["xEnableLighting"].SetValue(true);
           effect.Parameters["xAmbient"].SetValue(0.5f);
           effect.Parameters["xLightPower"].SetValue(0.6f);
-          effect.Parameters["xLightPos"].SetValue(new Vector3(25600, 1000, 25600));
+          effect.Parameters["xLightPos"].SetValue(new Vector3(51200, 1000, 51200));
 
             /*     
           effect.Parameters["Ground"].SetValue(textures[7]);

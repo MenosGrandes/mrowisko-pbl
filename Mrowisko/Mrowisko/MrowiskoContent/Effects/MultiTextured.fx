@@ -76,13 +76,14 @@ MTVertexToPixel MultiTexturedVS(float4 inPos : POSITION, float3 inNormal : NORMA
 
 MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 {
+	
 	MTPixelToFrame Output = (MTPixelToFrame)0;
 
 	float diffuseLightingFactor;
 	if (xEnableLighting)
 	{
-
-		diffuseLightingFactor = DotProduct(xLightPos*sin(radians(xTime2)), PSIn.Position3D, PSIn.Normal);
+		
+		diffuseLightingFactor = DotProduct((xLightPos.x*sin(radians(xTime2)), abs(xLightPos.y*sin(radians(xTime2))), xLightPos.z*sin(radians(xTime2))), PSIn.Position3D, PSIn.Normal);
 		diffuseLightingFactor = saturate(diffuseLightingFactor);
 		diffuseLightingFactor *= xLightPower;
 	}
