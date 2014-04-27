@@ -151,14 +151,15 @@ namespace Map
  /// <param name="currentViewMatrix"></param>
  /// <param name="projectionMatrix"></param>
  /// <param name="position"></param>
-        public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position)
+        public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position,float time)
         {
-           
+            
+
             bbEffect.Parameters["xWorld"].SetValue(Matrix.Identity);
             bbEffect.Parameters["xView"].SetValue(currentViewMatrix);
             bbEffect.Parameters["xProjection"].SetValue(projectionMatrix);
             bbEffect.Parameters["xCamPos"].SetValue(position);
-
+            bbEffect.Parameters["xTime"].SetValue(time);
             device.SetVertexBuffer(VertexBuffer);
 
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
