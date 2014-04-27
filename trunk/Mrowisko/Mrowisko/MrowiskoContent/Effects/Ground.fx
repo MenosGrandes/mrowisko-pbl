@@ -1,3 +1,5 @@
+// HLSL to simply sample from a texture
+
 // Input parameters.
 float4x4 View;
 float4x4 Projection;
@@ -9,14 +11,10 @@ sampler GroundSampler = sampler_state
 
 	MinFilter = LINEAR;
 	MagFilter = LINEAR;
-	
+	MipFilter = LINEAR;
 	AddressU = clamp;
 	AddressV = clamp;
 };
-float GroundText0Scale;
-float GroundText1Scale;
-float GroundText2Scale;
-
 texture GroundText0;
 sampler GroundText0Sampler = sampler_state
 {
@@ -57,7 +55,6 @@ struct VS_INPUT
 {
 	float4 Position : POSITION0;
 	float2 TexCoord : TEXCOORD0;
-	float3 Normal: NORMAL0;
 };
 
 // Vertex shader output structure.
@@ -65,7 +62,6 @@ struct VS_OUTPUT
 {
 	float4 Position : POSITION0;
 	float2 TexCoord : TEXCOORD0;
-	float2 Normal : TEXCOORD1;
 };
 
 // Vertex shader program.
@@ -78,20 +74,20 @@ VS_OUTPUT VertexShader2(VS_INPUT input)
 		output.Position = mul(input.Position, vp);
 
 	output.TexCoord = input.TexCoord;
-	output.Normal = input.Normal;
+
 	return output;
 }
 
 float4 PixelShader2(VS_OUTPUT input) : COLOR
 {
-	float r = tex2D(GroundText0Sampler, input.TexCoord*5 );
-	float g = tex2D(GroundText1Sampler, input.TexCoord * 5);
-	float b = tex2D(GroundText2Sampler, input.TexCoord * 5);
-	float3 WEIGHT = tex2D(GroundSampler, input.TexCoord/100 );
-	float3 output = clamp(1.0 - WEIGHT.r - 1.0 - WEIGHT.g - WEIGHT.b, 0, 1);
-	output *= WEIGHT;
-	output += WEIGHT.r*r + WEIGHT.g*g + WEIGHT.b*b;
-	return float4(output, 1);
+	float4 groundSample = tex2D(GroundSampler, input.TexCoord/100);
+
+	float4 colour = float4(0, 0, 0, 1);
+	colour += tex2D(GroundText0Sampler, input.TexCoord * 1) * groundSample.r;
+	colour += tex2D(GroundText1Sampler, input.TexCoord * 1) * groundSample.g;
+	colour += tex2D(GroundText2Sampler, input.TexCoord * 1) * groundSample.b;
+
+	return colour;
 }
 
 technique Terrain

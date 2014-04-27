@@ -4,7 +4,7 @@ float3 xCamPos;
 float3 xAllowedRotDir;
 float4x4 xView;
 int xScale;
-
+float xTime;
 Texture xBillboardTexture;
 sampler textureSampler = sampler_state { texture = <xBillboardTexture>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
 
@@ -35,11 +35,10 @@ BBVertexToPixel CylBillboardVS(float3 inPos: POSITION0, float2 inTexCoord : TEXC
 		sideVector = normalize(sideVector);
 
 	float3 finalPosition = center;
+		
 
 		finalPosition += ((inTexCoord.x - 0.5f)*(xScale / 30))*sideVector*xScale;
 	finalPosition += ((1.5f - inTexCoord.y*1.5f)*(xScale / 30))*upVector*xScale;
-
-
 	float4 finalPosition4 = float4(finalPosition, 1);
 
 		float4x4 preViewProjection = mul(xView, xProjection);

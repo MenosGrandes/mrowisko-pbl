@@ -31,12 +31,14 @@ namespace Map
             this.waterBumpMap = Content.Load<Texture2D>("Textures/Water/waterbump");
             this.Scale = scale;
             this.device = device;
-            this.waterHeight = scale*4 ;
+            this.waterHeight = scale*5 ;
             this.terrainLength = terrainLength*Scale;
             this.terrainWidth = this.terrainLength;
            
 
             PresentationParameters pp = device.PresentationParameters;
+
+
             refractionRenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, pp.BackBufferFormat, pp.DepthStencilFormat);
 
             reflectionRenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, pp.BackBufferFormat, pp.DepthStencilFormat);
@@ -65,13 +67,18 @@ namespace Map
             planeNormalDirection.Normalize();
             Vector4 planeCoeffs = new Vector4(planeNormalDirection, height);
             if (clipSide) planeCoeffs *= -1;
+            /*
+            Matrix worldViewProjection = currentViewMatrix * projectionMatrix;
+            Matrix inverseWorldViewProjection = Matrix.Invert(worldViewProjection);
+            inverseWorldViewProjection = Matrix.Transpose(inverseWorldViewProjection);
+              */
             Plane finalPlane = new Plane(planeCoeffs);
             return finalPlane;
         }
 
         public void DrawRefractionMap(Matrix viewMatrix)
         {
-            Plane refractionPlane = CreatePlane(waterHeight + 1.5f*Scale*4, new Vector3(0, -1, 0), viewMatrix, false);
+            Plane refractionPlane = CreatePlane(waterHeight + 1.5f, new Vector3(0, -1, 0), viewMatrix, false);
 
             effect.Parameters["ClipPlane0"].SetValue(new Vector4(refractionPlane.Normal, refractionPlane.D));
             effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
@@ -85,8 +92,7 @@ namespace Map
 
         public void DrawReflectionMap( FreeCamera camera)
         {
-            Plane reflectionPlane = CreatePlane(waterHeight - 0.5f * Scale * 4, new Vector3(0, 1, 0), camera.reflectionViewMatrix, true);
-
+            Plane reflectionPlane = CreatePlane(waterHeight - 0.5f , new Vector3(0, 1, 0), camera.reflectionViewMatrix, true);
             effect.Parameters["ClipPlane0"].SetValue(new Vector4(reflectionPlane.Normal, reflectionPlane.D));
 
             effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
@@ -116,7 +122,6 @@ namespace Map
             effect.Parameters["xCamPos"].SetValue(camera.Position);
             effect.Parameters["xReflectionMap"].SetValue(reflectionMap);
             effect.Parameters["xRefractionMap"].SetValue(refractionMap);
-            effect.Parameters["xWaterBumpMap"].SetValue(waterBumpMap);
             effect.Parameters["xWaterBumpMap"].SetValue(waterBumpMap);
             effect.Parameters["xWaveLength"].SetValue(0.5f);
             effect.Parameters["xWaveHeight"].SetValue(4.5f);

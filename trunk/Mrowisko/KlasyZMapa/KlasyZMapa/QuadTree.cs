@@ -101,26 +101,26 @@ namespace Map
             }
 
 
+            
+       effect.CurrentTechnique = effect.Techniques["MultiTextured"];
+       effect.Parameters["xTexture0"].SetValue(textures[1]);
+       effect.Parameters["xTexture1"].SetValue(textures[0]);
+       effect.Parameters["xTexture2"].SetValue(textures[2]);
+       effect.Parameters["xTexture3"].SetValue(textures[3]);
+       effect.Parameters["xTexture5"].SetValue(textures[7]);
+       Matrix worldMatrix = Matrix.Identity;
+       effect.Parameters["xWorld"].SetValue(worldMatrix);
+       effect.Parameters["xEnableLighting"].SetValue(true);
+       effect.Parameters["xAmbient"].SetValue(0.4f);
+       effect.Parameters["xLightPower"].SetValue(0.6f);
+       effect.Parameters["xLightPos"].SetValue(new Vector3(25600, 1000, 25600));
+          
 
-            effect.CurrentTechnique = effect.Techniques["MultiTextured"];
-            effect.Parameters["xTexture0"].SetValue(textures[1]);
-            effect.Parameters["xTexture1"].SetValue(textures[0]);
-            effect.Parameters["xTexture2"].SetValue(textures[2]);
-            effect.Parameters["xTexture3"].SetValue(textures[3]);
-            effect.Parameters["xTexture5"].SetValue(textures[7]);
-            Matrix worldMatrix = Matrix.Identity;
-            effect.Parameters["xWorld"].SetValue(worldMatrix);
-            effect.Parameters["xEnableLighting"].SetValue(true);
-            effect.Parameters["xAmbient"].SetValue(1.0f);
-            effect.Parameters["xLightPower"].SetValue(0.6f);
-            effect.Parameters["xLightPos"].SetValue(new Vector3(25600, 1000, 25600));
-
-            /*     
-          effect.Parameters["Ground"].SetValue(textures[7]);
-        effect.Parameters["GroundText0"].SetValue(textures[8]);
-        effect.Parameters["GroundText1"].SetValue(textures[9]);
-        effect.Parameters["GroundText2"].SetValue(textures[10]);
-            */
+            effect.Parameters["Ground"].SetValue(textures[7]);
+   effect.Parameters["GroundText0"].SetValue(textures[8]);
+   effect.Parameters["GroundText1"].SetValue(textures[9]);
+   effect.Parameters["GroundText2"].SetValue(textures[10]);
+       
 
         }
         public void Update(GameTime gameTime)
@@ -162,25 +162,22 @@ namespace Map
             this.Device.SetVertexBuffer(_buffers.VertexBuffer);
             this.Device.Indices = _buffers.IndexBuffer;
 
+            
 
+       effect.Parameters["xView"].SetValue(camera.View);
+       effect.Parameters["xProjection"].SetValue(camera.Projection);
 
-            effect.Parameters["xView"].SetValue(camera.View);
-            effect.Parameters["xProjection"].SetValue(camera.Projection);
-
-            effect.Parameters["xTime2"].SetValue(time );
-            /*
-        effect.CurrentTechnique = effect.Techniques["Terrain"];
-
-      effect.Parameters["View"].SetValue(camera.View);
-      effect.Parameters["Projection"].SetValue(camera.Projection);
-         *   */
+       effect.Parameters["xTime2"].SetValue(time );
+          
+         
+   
             foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {
 
                 pass.Apply();
 
                 if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
-                //Console.WriteLine(IndexCount);
+                Console.WriteLine(IndexCount);
 
             }
             /*
@@ -189,13 +186,13 @@ namespace Map
                 pass1.DrawModels(camera);
             }
             Device.BlendState = BlendState.AlphaBlend;
-
+             
+          */
             foreach (EnvBilb pass in envBilbList)
             {
-                pass.DrawBillboards(camera.View, camera.Projection, camera.Position);
+                pass.DrawBillboards(camera.View, camera.Projection, camera.Position,time/10);
             }
 
-          */
            
 
         }

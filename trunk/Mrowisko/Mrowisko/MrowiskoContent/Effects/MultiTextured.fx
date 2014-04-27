@@ -14,18 +14,112 @@ Texture xTexture2;
 Texture xTexture3;
 Texture xTexture4;
 Texture xTexture5;
-sampler TextureSampler = sampler_state { texture = <xTexture>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; }; 
+texture Ground;
 
-sampler TextureSampler0 = sampler_state { texture = <xTexture0>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
+sampler TextureSampler = sampler_state 
+{ texture = <xTexture>; 
+magfilter = LINEAR;
+minfilter = LINEAR; 
+mipfilter = LINEAR; 
+AddressU = wrap; 
+AddressV = wrap; }; 
 
-sampler TextureSampler1 = sampler_state { texture = <xTexture1>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
+sampler TextureSampler0 = sampler_state
+{ texture = <xTexture0>; 
+magfilter = LINEAR; 
+minfilter = LINEAR;
+mipfilter = LINEAR;
+AddressU = wrap;
+AddressV = wrap; };
 
-sampler TextureSampler2 = sampler_state { texture = <xTexture2>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; }; 
+sampler TextureSampler1 = sampler_state 
+{ texture = <xTexture1>; 
+magfilter = LINEAR; 
+minfilter = LINEAR; 
+mipfilter = LINEAR; 
+AddressU = wrap;
+AddressV = wrap; };
 
-sampler TextureSampler3 = sampler_state { texture = <xTexture3>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
-sampler TextureSampler4 = sampler_state { texture = <xTexture4>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
-sampler TextureSampler5 = sampler_state { texture = <xTexture5>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
+sampler TextureSampler2 = sampler_state
+{ texture = <xTexture2>; 
+magfilter = LINEAR; 
+minfilter = LINEAR;
+mipfilter = LINEAR;
+AddressU = wrap;
+AddressV = wrap; }; 
 
+sampler TextureSampler3 = sampler_state
+{ texture = <xTexture3>;
+magfilter = LINEAR;
+minfilter = LINEAR; 
+mipfilter = LINEAR;
+AddressU = wrap;
+AddressV = wrap; };
+sampler TextureSampler4 = sampler_state 
+{ texture = <xTexture4>; 
+magfilter = LINEAR; 
+minfilter = LINEAR;
+mipfilter = LINEAR; 
+AddressU = wrap; 
+AddressV = wrap; };
+sampler TextureSampler5 = sampler_state 
+{ texture = <xTexture5>;
+magfilter = LINEAR; 
+minfilter = LINEAR;
+mipfilter = LINEAR;
+AddressU = wrap;
+AddressV = wrap; };
+sampler GroundSampler = sampler_state
+{
+	Texture = (Ground);
+
+	MinFilter = LINEAR;
+	MagFilter = LINEAR;
+
+	AddressU = clamp;
+	AddressV = clamp;
+};
+
+
+float GroundText0Scale;
+float GroundText1Scale;
+float GroundText2Scale;
+
+texture GroundText0;
+sampler GroundText0Sampler = sampler_state
+{
+	Texture = (GroundText0);
+
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = Linear;
+	AddressU = wrap;
+	AddressV = wrap;
+};
+
+texture GroundText1;
+sampler GroundText1Sampler = sampler_state
+{
+	Texture = (GroundText1);
+
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = Linear;
+	AddressU = wrap;
+	AddressV = wrap;
+};
+
+texture GroundText2;
+sampler GroundText2Sampler = sampler_state
+{
+	Texture = (GroundText2);
+
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = Linear;
+	AddressU = wrap;
+	AddressV = wrap;
+};
 //------- Technique: Multitextured --------
 struct MTVertexToPixel
 {
@@ -69,6 +163,7 @@ MTVertexToPixel MultiTexturedVS(float4 inPos : POSITION, float3 inNormal : NORMA
 	Output.Position3D = mul(inPos, xWorld);
 
 	Output.Depth = Output.Position.z / Output.Position.w;
+	//Output.clipDistances = dot(inPos, ClipPlane0); //MSS - Water Refactor added
 
 
 	return Output;
@@ -79,7 +174,7 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 	
 	MTPixelToFrame Output = (MTPixelToFrame)0;
 
-	float diffuseLightingFactor;
+	float diffuseLightingFactor=0.3f;
 	if (xEnableLighting)
 	{
 		
@@ -99,14 +194,22 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 	farColor += tex2D(TextureSampler3, PSIn.TextureCoords)*PSIn.TextureWeights.w;
 
 	float4 nearColor;
-	float2 nearTextureCoords = PSIn.TextureCoords * 3;
+	float2 nearTextureCoords = PSIn.TextureCoords /3;
 	nearColor = tex2D(TextureSampler0, nearTextureCoords)*PSIn.TextureWeights.x;
 	nearColor += tex2D(TextureSampler1, nearTextureCoords)*PSIn.TextureWeights.y;
 	nearColor += tex2D(TextureSampler2, nearTextureCoords)*PSIn.TextureWeights.z;
 	nearColor += tex2D(TextureSampler3, nearTextureCoords)*PSIn.TextureWeights.w;
 
-	Output.Color = lerp(nearColor, farColor, blendFactor)*(diffuseLightingFactor + xAmbient);
+	float4 groundSample = tex2D(GroundSampler, PSIn.TextureCoords / 100);
 
+		float4 colour = float4(0, 0, 0, 0);
+	colour += tex2D(GroundText0Sampler, PSIn.TextureCoords*10) *groundSample.r;
+	colour += tex2D(GroundText1Sampler, PSIn.TextureCoords) * groundSample.g;
+	colour += tex2D(GroundText2Sampler, PSIn.TextureCoords) * groundSample.b;
+	
+	//Output.Color = ;
+	Output.Color += lerp(nearColor, farColor, blendWidth);//*(diffuseLightingFactor + xAmbient);
+	Output.Color += colour;
 
 	return Output;
 }

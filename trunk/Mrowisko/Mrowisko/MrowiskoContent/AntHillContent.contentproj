@@ -162,15 +162,17 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Textures\muszle.jpg">
-      <Name>muszle</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\lisc.png">
+      <Name>lisc</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\lisc.png">
-      <Name>lisc</Name>
+    <Compile Include="Textures\muszle.png">
+      <Name>muszle</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

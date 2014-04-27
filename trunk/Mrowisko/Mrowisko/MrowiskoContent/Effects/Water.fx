@@ -32,11 +32,11 @@ Texture xReflectionMap;
 Texture xWaterBumpMap;
 Texture xRefractionMap;
 
-sampler ReflectionSampler = sampler_state { texture = <xReflectionMap>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
+sampler ReflectionSampler = sampler_state { texture = <xReflectionMap>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = mirror; AddressV = mirror; };
 
-sampler RefractionSampler = sampler_state { texture = <xRefractionMap>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
+sampler RefractionSampler = sampler_state { texture = <xRefractionMap>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = mirror; AddressV = mirror; };
 
-sampler WaterBumpMapSampler = sampler_state { texture = <xWaterBumpMap>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
+sampler WaterBumpMapSampler = sampler_state { texture = <xWaterBumpMap>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = mirror; AddressV = mirror; };
 
 
 
@@ -93,7 +93,7 @@ WPixelToFrame WaterPS(WVertexToPixel PSIn)
 	WPixelToFrame Output = (WPixelToFrame)0;
 
 	float4 bumpColor = tex2D(	WaterBumpMapSampler, PSIn.BumpMapSamplingPos);
-		float2 perturbation = xWaveHeight*(bumpColor.rgb - 111.5f)*2.0f;
+		float2 perturbation = xWaveHeight*(bumpColor.rgb - 0.5f)*2.0f;
 
 		float2 ProjectedTexCoords;
 	ProjectedTexCoords.x = PSIn.ReflectionMapSamplingPos.x / PSIn.ReflectionMapSamplingPos.w / 2.0f + 0.5f;
