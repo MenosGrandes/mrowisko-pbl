@@ -25,7 +25,7 @@ namespace Map
         public BufferManager _buffers;
         private Vector3 _position;
         private int _topNodeSize;
-
+        LightsAndShadows.Shadow shadow;
         private Vector3 _cameraPosition;
         private Vector3 _lastCameraPosition;
 
@@ -33,7 +33,7 @@ namespace Map
 
         public Matrix View;
         public Matrix Projection;
-
+        public float x=1.0f, z=1.0f;
         public GraphicsDevice Device;
 
         public int TopNodeSize { get { return _topNodeSize; } }
@@ -47,6 +47,7 @@ namespace Map
 
         public BoundingFrustum ViewFrustrum { get; private set; }
         Effect effect;
+        Effect effect2;
 
         List<Texture2D> textures;
 
@@ -66,12 +67,13 @@ namespace Map
         /// <param name="camera"></param>
         public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale, ContentManager Content, GameCamera.FreeCamera camera)
         {
+            shadow = new LightsAndShadows.Shadow();
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
             Model model = Content.Load<Model>("Models/mrowka_01");
             this.textures = textures;
             effect = Content.Load<Effect>("Effects/MultiTextured");
-
+           // effect2 = Content.Load<Effect>("Effects/Shadows");
             Device = device;
 
             _position = position;
@@ -112,15 +114,17 @@ namespace Map
        effect.Parameters["xWorld"].SetValue(worldMatrix);
        effect.Parameters["xEnableLighting"].SetValue(true);
        effect.Parameters["xAmbient"].SetValue(0.4f);
-       effect.Parameters["xLightPower"].SetValue(0.6f);
-       effect.Parameters["xLightPos"].SetValue(new Vector3(25600, 1000, 25600));
+       effect.Parameters["xLightPower"].SetValue(1.0f);
+       
           
 
-            effect.Parameters["Ground"].SetValue(textures[7]);
-   effect.Parameters["GroundText0"].SetValue(textures[8]);
-   effect.Parameters["GroundText1"].SetValue(textures[9]);
-   effect.Parameters["GroundText2"].SetValue(textures[10]);
-       
+          //  effect.Parameters["Ground"].SetValue(textures[7]);
+   //effect.Parameters["GroundText0"].SetValue(textures[8]);
+   //effect.Parameters["GroundText1"].SetValue(textures[9]);
+   //effect.Parameters["GroundText2"].SetValue(textures[10]);
+
+
+
 
         }
         public void Update(GameTime gameTime)
@@ -150,7 +154,7 @@ namespace Map
         }
         public void Draw(GameCamera.FreeCamera camera, float time)
         {
-
+            
             //RasterizerState rasterizerState = new RasterizerState();
             //rasterizerState.FillMode = FillMode.WireFrame;
             //Device.RasterizerState = rasterizerState;
@@ -161,25 +165,30 @@ namespace Map
 
             this.Device.SetVertexBuffer(_buffers.VertexBuffer);
             this.Device.Indices = _buffers.IndexBuffer;
+            this.x+=1;
+           // this.y+=1;
+            effect.Parameters["xLightPos"].SetValue(new Vector3(1250+x, 800, 1250+x));
+            shadow.UpdateLightData(0.4f, 0.6f, new Vector3(1250+x, 800, 1250+x), camera);
 
-            
+            effect.CurrentTechnique = effect.Techniques["ShadowMap"];
+            effect.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
 
        effect.Parameters["xView"].SetValue(camera.View);
        effect.Parameters["xProjection"].SetValue(camera.Projection);
 
        effect.Parameters["xTime2"].SetValue(time );
-          
-         
-   
-            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-            {
 
-                pass.Apply();
 
-                if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
-                Console.WriteLine(IndexCount);
+           foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+           {
 
-            }
+               pass.Apply();
+              
+               if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
+               Console.WriteLine(IndexCount);
+
+           }
+
             /*
             foreach (EnvModel pass1 in envModelList)
             {
@@ -188,10 +197,10 @@ namespace Map
             Device.BlendState = BlendState.AlphaBlend;
              
           */
-            foreach (EnvBilb pass in envBilbList)
-            {
-                pass.DrawBillboards(camera.View, camera.Projection, camera.Position,time/10);
-            }
+      //      foreach (EnvBilb pass in envBilbList)
+      //      {
+       //         pass.DrawBillboards(camera.View, camera.Projection, camera.Position,time/10);
+       //     }
 
            
 
