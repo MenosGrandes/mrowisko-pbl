@@ -22,7 +22,7 @@ namespace AnimacjaPipelineExtension
 
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-            ValidateMesh(input, context, null);  
+            ValidateMesh(input, context, null);
 
             //find the skeleton
             BoneContent skeleton = MeshHelper.FindSkeleton(input);
@@ -61,7 +61,7 @@ namespace AnimacjaPipelineExtension
             //convert animation data to our runtime format
             Dictionary<string, AnimationClip> animationClips;
             animationClips = ProcessAnimations(skeleton.Animations, bones, context, input.Identity);
-                // animationClips = ProcessAnimations(skeleton.Animations, bones);
+            // animationClips = ProcessAnimations(skeleton.Animations, bones);
 
             // Chain to the base ModelProcessor class so it can convert the model data.
             ModelContent model = base.Process(input, context);

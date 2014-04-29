@@ -88,6 +88,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AnimacjaPipelineExtension\AnimacjaPipelineExtension.csproj">
+      <Project>{c48d080e-13f0-4b71-b4e2-0376eec21ba2}</Project>
+      <Name>AnimacjaPipelineExtension</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Animations\Animations.csproj">
+      <Project>{4c830e3d-6fc2-445c-80c3-45b868505280}</Project>
+      <Name>Animations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Camera\Camera\GameCamera.csproj">
       <Project>{6cf85617-ff97-4e13-bd6b-11df8733dec7}</Project>
       <Name>GameCamera</Name>
