@@ -230,13 +230,13 @@ new Vector3(100), GraphicsDevice, Content);
 
 
 
-            water.DrawRefractionMap(camera.View);
+         //   water.DrawRefractionMap(camera.View);
 
-           water.DrawReflectionMap((FreeCamera)camera);
+        //   water.DrawReflectionMap((FreeCamera)camera);
 
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
-            water.DrawWater(time, (FreeCamera)camera);
+         //   water.DrawWater(time, (FreeCamera)camera);
 
 
            device.DepthStencilState = DepthStencilState.Default;
@@ -249,13 +249,13 @@ new Vector3(100), GraphicsDevice, Content);
 
           
 
-        if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
+        //if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
             
-                        models[0].Draw(camera.View, camera.Projection);
+        //                models[0].Draw(camera.View, camera.Projection);
                          
 
 
-            }
+       //     }
 
 
              
@@ -269,10 +269,10 @@ new Vector3(100), GraphicsDevice, Content);
 
             //anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
-            spriteBatch.Begin();
-            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
-                new Vector2(10.0f, 20.0f), Color.Tomato);
-            spriteBatch.End();
+         //   spriteBatch.Begin();
+        //    spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
+         //       new Vector2(10.0f, 20.0f), Color.Tomato);
+         //   spriteBatch.End();
 
             
             base.Draw(gameTime);
