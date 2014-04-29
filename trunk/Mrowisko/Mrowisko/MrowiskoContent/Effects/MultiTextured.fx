@@ -202,14 +202,14 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 
 	float4 groundSample = tex2D(GroundSampler, PSIn.TextureCoords / 100);
 
-		float4 colour = float4(0, 0, 0, 0);
+		float4 colour = float4(0, 0, 0, 1);
 	colour += tex2D(GroundText0Sampler, PSIn.TextureCoords*10) *groundSample.r;
 	colour += tex2D(GroundText1Sampler, PSIn.TextureCoords) * groundSample.g;
 	colour += tex2D(GroundText2Sampler, PSIn.TextureCoords) * groundSample.b;
 	
 	//Output.Color = ;
-	Output.Color += lerp(nearColor, farColor, blendWidth);//*(diffuseLightingFactor + xAmbient);
-	Output.Color += colour;
+	Output.Color += lerp(nearColor, farColor, blendWidth)*(diffuseLightingFactor + xAmbient);
+	Output.Color += colour*(diffuseLightingFactor + xAmbient);
 
 	return Output;
 }
