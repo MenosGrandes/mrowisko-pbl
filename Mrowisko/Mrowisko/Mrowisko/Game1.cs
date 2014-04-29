@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Animations;
 namespace AntHill
 {
     /// <summary>
@@ -107,19 +107,23 @@ namespace AntHill
             water = new Water(device, Content, texture[4].Width, 100);
            
 
-           models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice, Content));
+           models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice));
 
            //inter = quadTree.ants.Models;
 
           // GraphicsDevice.BlendState = BlendState.AlphaBlend;
           // GraphicsDevice.BlendFactor = Color.Yellow;
-            /*
-            anim = new LoadModel(
-Content.Load<Model>("ludek2"),
+
+
+            //animacja CHYBA dzia³a (nie wiem jak zrobiæ ¿eby by³o j¹ widaæ)
+            //na starszych wersjach repozytorium dzia³a bez problemu (pliki x)
+            //plik xml jest potrzebny ¿eby dzia³a³o prze³¹czanie, nie wiem czemu ale jak jest w folderze models to nie dzia³a 
+           anim = new LoadModel(
+Content.Load<Model>("animacja"),
 Vector3.Zero, Vector3.Up,
 new Vector3(100), GraphicsDevice, Content);
-            AnimationClip clip = anim.skinningData.AnimationClips["Take 001"];//inne animacje to idle2 i run
-            anim.Player.StartClip(clip); */
+           AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
+           anim.Player.StartClip(clip);
             lastMouseState = Mouse.GetState();
         }
 
@@ -205,7 +209,7 @@ new Vector3(100), GraphicsDevice, Content);
 
              
             camera.Update(gameTime);
-            //anim.Update(gameTime);
+            anim.Update(gameTime);
             base.Update(gameTime);
             
         }
@@ -233,7 +237,7 @@ new Vector3(100), GraphicsDevice, Content);
          //   water.DrawRefractionMap(camera.View);
 
         //   water.DrawReflectionMap((FreeCamera)camera);
-
+            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
          //   water.DrawWater(time, (FreeCamera)camera);

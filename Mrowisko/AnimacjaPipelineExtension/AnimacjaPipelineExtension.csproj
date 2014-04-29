@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
-    <ProjectGuid>{5E77809B-E3A3-472F-A1C9-226157C759AA}</ProjectGuid>
+    <ProjectGuid>{C48D080E-13F0-4B71-B4E2-0376EEC21BA2}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>Library</OutputType>
@@ -11,6 +11,8 @@
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,11 +54,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimatedModelProcessor.cs" />
+    <Compile Include="AnimationDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KlasyZAnimacja\Animations.csproj">
-      <Project>{90a784ee-a8ea-4134-b16e-3faa14614731}</Project>
+    <ProjectReference Include="..\Animations\Animations.csproj">
+      <Project>{4c830e3d-6fc2-445c-80c3-45b868505280}</Project>
       <Name>Animations</Name>
     </ProjectReference>
   </ItemGroup>

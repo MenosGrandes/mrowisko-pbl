@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-//using Animations;
+using Animations;
 namespace Map
 {
     /// <summary>
@@ -22,8 +22,8 @@ namespace Map
         public Vector3 Scale { get; set; }
         public Model Model { get; private set; }
         public ContentManager content;
-       // public SkinningData skinningData;
-      //  public AnimationPlayer Player;
+        public SkinningData skinningData;
+        public AnimationPlayer Player;
         private Matrix[] modelTransforms;
         private GraphicsDevice graphicsDevice;
         public BoundingSphere boundingSphere;
@@ -74,12 +74,12 @@ namespace Map
             this.Scale = Scale;
             modelTransforms = new Matrix[Model.Bones.Count];
             Model.CopyAbsoluteBoneTransformsTo(modelTransforms);
-        //    SkinningData skinningData = Model.Tag as SkinningData;
-        //    if (skinningData == null)
-       //         throw new InvalidOperationException
-       //             ("This model does not contain a SkinningData tag.");
-      //      this.skinningData = Model.Tag as SkinningData;
-      //      Player = new AnimationPlayer(skinningData);
+            SkinningData skinningData = Model.Tag as SkinningData;
+            if (skinningData == null)
+                throw new InvalidOperationException
+                    ("This model does not contain a SkinningData tag.");
+            this.skinningData = Model.Tag as SkinningData;
+            Player = new AnimationPlayer(skinningData);
 
         }
 
@@ -135,10 +135,10 @@ namespace Map
         /// <param name="View"></param>
         /// <param name="Projection"></param>
         /// <param name="CameraPosition"></param>
-     /*   public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
+        public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
         {
 
-         //   Matrix[] bones = Player.GetSkinTransforms();
+            Matrix[] bones = Player.GetSkinTransforms();
 
             Matrix baseWorld = Matrix.CreateScale(Scale)
             * Matrix.CreateFromYawPitchRoll(
@@ -152,7 +152,7 @@ namespace Map
                * baseWorld;
                 foreach (SkinnedEffect effect in mesh.Effects)
                 {
-          //          effect.SetBoneTransforms(bones);
+                    effect.SetBoneTransforms(bones);
                     effect.World = localWorld;
                     effect.View = View;
                     effect.Projection = Projection;
@@ -165,8 +165,8 @@ namespace Map
 
                 mesh.Draw();
             }
-        
-        }*/
+
+        }
         /// <summary>
         /// Update metod for Animations
         /// </summary>
@@ -177,7 +177,7 @@ namespace Map
             Matrix world = Matrix.CreateScale(Scale) *
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
-    //      Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+         Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
 
         }
 
