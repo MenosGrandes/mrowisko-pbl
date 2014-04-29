@@ -55,7 +55,10 @@ namespace Map
             bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
             bbEffect.Parameters["xScale"].SetValue(this.scale);
             bbEffect.Parameters["xBillboardTexture"].SetValue(envBilbTexture);
-
+            bbEffect.Parameters["xEnableLighting"].SetValue(true);
+            bbEffect.Parameters["xAmbient"].SetValue(0.4f);
+            bbEffect.Parameters["xLightPower"].SetValue(0.6f);
+            bbEffect.Parameters["xLightPos"].SetValue(new Vector3(25600, 1000, 25600));
 
         }
    /// <summary>
@@ -129,20 +132,23 @@ namespace Map
         public void CreateBillboardVerticesFromList()
         {
 
-            VertexPositionTexture[] billboardVertices = new VertexPositionTexture[envBilbList.Count * 6];
+            VertexPositionNormalTexture[] billboardVertices = new VertexPositionNormalTexture[envBilbList.Count * 6];
             int i = 0;
             foreach (Vector3 currentV3 in envBilbList)
             {
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 0));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 1));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 1));
+                billboardVertices[i++] = new VertexPositionNormalTexture(currentV3,Vector3.One, new Vector2(0, 0));
+                billboardVertices[i++] = new VertexPositionNormalTexture(currentV3, Vector3.One, new Vector2(1, 1));
+                billboardVertices[i++] = new VertexPositionNormalTexture(currentV3, Vector3.One, new Vector2(0, 1));
 
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 0));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 0));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 1));
+                billboardVertices[i++] = new VertexPositionNormalTexture(currentV3, Vector3.One, new Vector2(0, 0));
+                billboardVertices[i++] = new VertexPositionNormalTexture(currentV3, Vector3.One, new Vector2(1, 0));
+                billboardVertices[i++] = new VertexPositionNormalTexture(currentV3, Vector3.One, new Vector2(1, 1));
 
             }
-            VertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
+
+
+
+            VertexBuffer = new VertexBuffer(device, VertexPositionNormalTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
             VertexBuffer.SetData(billboardVertices);
         }
  /// <summary>
