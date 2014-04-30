@@ -118,10 +118,10 @@ namespace Map
        
           
 
-          //  effect.Parameters["Ground"].SetValue(textures[7]);
-   //effect.Parameters["GroundText0"].SetValue(textures[8]);
-   //effect.Parameters["GroundText1"].SetValue(textures[9]);
-   //effect.Parameters["GroundText2"].SetValue(textures[10]);
+           effect.Parameters["Ground"].SetValue(textures[7]);
+   effect.Parameters["GroundText0"].SetValue(textures[8]);
+   effect.Parameters["GroundText1"].SetValue(textures[9]);
+   effect.Parameters["GroundText2"].SetValue(textures[10]);
 
 
 
@@ -167,11 +167,11 @@ namespace Map
             this.Device.Indices = _buffers.IndexBuffer;
             this.x+=1;
            // this.y+=1;
-            effect.Parameters["xLightPos"].SetValue(new Vector3(1250+x, 800, 1250+x));
-            shadow.UpdateLightData(0.4f, 0.6f, new Vector3(1250+x, 800, 1250+x), camera);
+         //   effect.Parameters["xLightPos"].SetValue(new Vector3(1250+x, 800, 1250+x));
+           // shadow.UpdateLightData(0.4f, 0.6f, new Vector3(1250+x, 800, 1250+x), camera);
 
-            effect.CurrentTechnique = effect.Techniques["ShadowMap"];
-            effect.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
+          //  effect.CurrentTechnique = effect.Techniques["ShadowMap"];
+          //  effect.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
 
        effect.Parameters["xView"].SetValue(camera.View);
        effect.Parameters["xProjection"].SetValue(camera.Projection);
