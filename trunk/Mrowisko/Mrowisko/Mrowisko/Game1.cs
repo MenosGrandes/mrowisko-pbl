@@ -39,11 +39,11 @@ namespace AntHill
          int _total_frames = 0;
          float _elapsed_time = 0.0f;
          int _fps = 0;
-        
-        
+
+         Control control;
         MouseState currentMouseState;
         MouseState LastMouseState_2;
-        int f = 0;
+        //Mariusz int f = 0;
         Vector3 playerTarget;
         AntGranary granary;
         int budynki=0;
@@ -66,6 +66,7 @@ namespace AntHill
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
+            control = new Control();
             
         }
 
@@ -148,16 +149,16 @@ new Vector3(100), GraphicsDevice, Content);
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {
+        {/*Mariusz
             float pozycja_X_lewo = models[0].Position.X - 800;
             float pozycja_X_prawo = models[0].Position.X + 800;
             float pozycja_Z_gora = models[0].Position.Z + 400;
             float pozycja_Z_dol = models[0].Position.Z - 800;
 
 
-            currentMouseState = Mouse.GetState();
+            //--currentMouseState = Mouse.GetState();
            // LastMouseState_2 = Mouse.GetState();
-            Vector3 mouse3d2 = CalculateMouse3DPosition();
+           //--Vector3 mouse3d2 = CalculateMouse3DPosition();
             if (currentMouseState.RightButton == ButtonState.Pressed)
             {
                 if ((mouse3d2.X > pozycja_X_lewo && mouse3d2.X < pozycja_X_prawo) && (mouse3d2.Z > pozycja_Z_dol && mouse3d2.Z < pozycja_Z_gora))
@@ -177,8 +178,8 @@ new Vector3(100), GraphicsDevice, Content);
                 playerTarget.X = mouse3d2.X;
                 playerTarget.Z = mouse3d2.Z;
             }
-            updateAnt(gameTime);
-
+            //updateAnt(gameTime);
+           */
 
 
 
@@ -211,8 +212,13 @@ new Vector3(100), GraphicsDevice, Content);
            quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
-          
 
+
+            control.View = camera.View;
+            control.Projection = camera.Projection;
+            control.models = models;
+            control.device = device;
+            control.Update(gameTime);
              
             camera.Update(gameTime);
             anim.Update(gameTime);
@@ -298,6 +304,7 @@ new Vector2(10.0f, 150.0f), Color.Yellow);
             base.Draw(gameTime);
         }
 
+  /*Mariusz
         void updateAnt(GameTime gameTime)
         {
 
@@ -377,7 +384,7 @@ new Vector2(10.0f, 150.0f), Color.Yellow);
 
             }
         
-             */ 
+             
         }
 
 
@@ -411,7 +418,8 @@ new Vector2(10.0f, 150.0f), Color.Yellow);
             
         }
     
-    
+*/    
     }
+
 }
 
