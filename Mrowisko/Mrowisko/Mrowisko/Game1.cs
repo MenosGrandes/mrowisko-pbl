@@ -243,9 +243,9 @@ new Vector3(100), GraphicsDevice, Content);
          //   water.DrawWater(time, (FreeCamera)camera);
 
 
-           device.DepthStencilState = DepthStencilState.Default;
+           //device.DepthStencilState = DepthStencilState.Default;
                                        quadTree.Draw((FreeCamera)camera, time);
-                                       device.DepthStencilState = DepthStencilState.None;
+                                     //  device.DepthStencilState = DepthStencilState.None;
       
 
          
@@ -253,13 +253,13 @@ new Vector3(100), GraphicsDevice, Content);
 
           
 
-        //if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
+        if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
             
-        //                models[0].Draw(camera.View, camera.Projection);
+                        models[0].Draw(camera.View, camera.Projection);
                          
 
 
-       //     }
+          }
 
 
              
@@ -271,7 +271,7 @@ new Vector3(100), GraphicsDevice, Content);
            
             
 
-            //anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
          //   spriteBatch.Begin();
         //    spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
