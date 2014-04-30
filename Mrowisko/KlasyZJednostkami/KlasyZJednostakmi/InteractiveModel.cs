@@ -10,8 +10,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Map;
-using Skills;
-using Map;
 
 namespace Logic
 {
@@ -19,7 +17,7 @@ namespace Logic
     {
         protected ContentManager content;
 
-        protected ContentManager Content
+        public ContentManager Content
         {
             get { return content; }
             set { content = value; }
@@ -28,7 +26,7 @@ namespace Logic
         protected LoadModel model;
 
 
-        protected LoadModel Model
+        public LoadModel Model
         {
             get { return model; }
             set { model = value; }

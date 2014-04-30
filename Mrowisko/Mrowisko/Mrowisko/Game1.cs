@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Animations;
+using Logic;
+using Logic.Building.AntBuildings.Granary;
 namespace AntHill
 {
     /// <summary>
@@ -43,7 +45,8 @@ namespace AntHill
         MouseState LastMouseState_2;
         int f = 0;
         Vector3 playerTarget;
-
+        AntGranary granary;
+        int budynki=0;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -125,6 +128,9 @@ new Vector3(100), GraphicsDevice, Content);
            AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
            anim.Player.StartClip(clip);
             lastMouseState = Mouse.GetState();
+
+
+             granary = new AntGranary(Content, new LoadModel(Content.Load<Model>("Models/domek"), new Vector3(20000,1500,20000), Vector3.Up, new Vector3(20.05f), GraphicsDevice), 10, 10, 10, 100.0f, 4);
         }
 
         /// <summary>w
@@ -234,24 +240,23 @@ new Vector3(100), GraphicsDevice, Content);
 
 
 
-         //   water.DrawRefractionMap(camera.View);
+            water.DrawRefractionMap(camera.View);
 
-        //   water.DrawReflectionMap((FreeCamera)camera);
-            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+           water.DrawReflectionMap((FreeCamera)camera);
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
-         //   water.DrawWater(time, (FreeCamera)camera);
+            water.DrawWater(time, (FreeCamera)camera);
 
 
-           //device.DepthStencilState = DepthStencilState.Default;
                                        quadTree.Draw((FreeCamera)camera, time);
-                                     //  device.DepthStencilState = DepthStencilState.None;
-      
 
-         
-      
 
-          
+
+
+
+                                       if (camera.BoundingVolumeIsInView(anim.boundingSphere)) { 
+                                       anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+                                       }
 
         if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
             
@@ -261,22 +266,33 @@ new Vector3(100), GraphicsDevice, Content);
 
           }
 
+            if(camera.BoundingVolumeIsInView(granary.Model.BoundingSphere))
+            {
+                budynki = 1;
+                granary.Model.Draw(camera.View, camera.Projection);
 
-             
-     
-            
+            }
+            else
+            { budynki = 0; }
 
 
- 
-           
-            
 
-            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
-         //   spriteBatch.Begin();
-        //    spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
-         //       new Vector2(10.0f, 20.0f), Color.Tomato);
-         //   spriteBatch.End();
+            spriteBatch.Begin();
+            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
+                new Vector2(10.0f, 20.0f), Color.Tomato);
+            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", budynki),
+    new Vector2(10.0f, 50.0f), Color.Yellow);
+            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", budynki),
+new Vector2(10.0f, 90.0f), Color.Yellow);
+            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", budynki),
+new Vector2(10.0f, 150.0f), Color.Yellow);
+            spriteBatch.End();
+
+
+
+
+
 
             
             base.Draw(gameTime);
