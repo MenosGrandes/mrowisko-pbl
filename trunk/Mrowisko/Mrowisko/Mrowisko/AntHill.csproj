@@ -100,9 +100,17 @@
       <Project>{6cf85617-ff97-4e13-bd6b-11df8733dec7}</Project>
       <Name>GameCamera</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\KlasyZJednostkami\KlasyZJednostakmi\Logic.csproj">
+      <Project>{b398f88c-483b-457f-aaec-a71d70280724}</Project>
+      <Name>Logic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\KlasyZMapa\KlasyZMapa\Map.csproj">
       <Project>{3ca21884-420f-46fd-84a1-a98bb1177b66}</Project>
       <Name>Map</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LightsAndShadows\LightsAndShadows\LightsAndShadows.csproj">
+      <Project>{1a340602-b76b-4213-9f41-a777cc928fea}</Project>
+      <Name>LightsAndShadows</Name>
     </ProjectReference>
     <ProjectReference Include="..\MrowiskoContent\AntHillContent.contentproj">
       <Name>AntHillContent</Name>

@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Map;
-using Skills;
+//using Skills;
 
 namespace Logic
 {
@@ -70,7 +70,7 @@ namespace Logic
 
 
 
-
+       /*
         protected List<Skill> skillsList;
 
         public List<Skill> SkillsList
@@ -78,11 +78,11 @@ namespace Logic
             get { return skillsList; }
             set { skillsList = value; }
         }
-
+       */
         
        
 
-         Unit(ContentManager content, int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model):base(content, model)
+         public Unit(ContentManager content, int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model):base(content, model)
         {
             
             this.hp = hp;
@@ -114,7 +114,8 @@ namespace Logic
         {
             this.model.Rotation = rotation;
         }
-
+        public Unit()
+        { }
 
 
     }

@@ -185,7 +185,6 @@ namespace Map
                pass.Apply();
               
                if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
-               Console.WriteLine(IndexCount);
 
            }
 
