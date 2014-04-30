@@ -10,7 +10,8 @@ namespace LightsAndShadows
 {
     public class Shadow
     {
-        
+        RenderTarget2D renderTarget;
+        Texture2D shadowMap;
         public Matrix lightsViewProjectionMatrix;
         public Shadow()
         {
@@ -28,6 +29,11 @@ namespace LightsAndShadows
             Matrix lightsProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver2, 1.333333f, 0.1f, 100000f);
 
             lightsViewProjectionMatrix = lightsView * lightsProjection;
+        }
+
+        public void ShadowToText()
+        {
+
         }
     }
 }

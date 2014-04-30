@@ -12,8 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Animations;
-using Logic;
-using Logic.Building.AntBuildings.Granary;
 namespace AntHill
 {
     /// <summary>
@@ -39,14 +37,13 @@ namespace AntHill
          int _total_frames = 0;
          float _elapsed_time = 0.0f;
          int _fps = 0;
-
-         Control control;
+        
+        
         MouseState currentMouseState;
         MouseState LastMouseState_2;
-        //Mariusz int f = 0;
+        int f = 0;
         Vector3 playerTarget;
-        AntGranary granary;
-        int budynki=0;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -66,7 +63,6 @@ namespace AntHill
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
-            control = new Control();
             
         }
 
@@ -129,9 +125,6 @@ new Vector3(100), GraphicsDevice, Content);
            AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
            anim.Player.StartClip(clip);
             lastMouseState = Mouse.GetState();
-
-
-             granary = new AntGranary(Content, new LoadModel(Content.Load<Model>("Models/domek"), new Vector3(20000,1500,20000), Vector3.Up, new Vector3(20.05f), GraphicsDevice), 10, 10, 10, 100.0f, 4);
         }
 
         /// <summary>w
@@ -149,16 +142,16 @@ new Vector3(100), GraphicsDevice, Content);
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {/*Mariusz
+        {
             float pozycja_X_lewo = models[0].Position.X - 800;
             float pozycja_X_prawo = models[0].Position.X + 800;
             float pozycja_Z_gora = models[0].Position.Z + 400;
             float pozycja_Z_dol = models[0].Position.Z - 800;
 
 
-            //--currentMouseState = Mouse.GetState();
+            currentMouseState = Mouse.GetState();
            // LastMouseState_2 = Mouse.GetState();
-           //--Vector3 mouse3d2 = CalculateMouse3DPosition();
+            Vector3 mouse3d2 = CalculateMouse3DPosition();
             if (currentMouseState.RightButton == ButtonState.Pressed)
             {
                 if ((mouse3d2.X > pozycja_X_lewo && mouse3d2.X < pozycja_X_prawo) && (mouse3d2.Z > pozycja_Z_dol && mouse3d2.Z < pozycja_Z_gora))
@@ -178,8 +171,8 @@ new Vector3(100), GraphicsDevice, Content);
                 playerTarget.X = mouse3d2.X;
                 playerTarget.Z = mouse3d2.Z;
             }
-            //updateAnt(gameTime);
-           */
+            updateAnt(gameTime);
+
 
 
 
@@ -212,13 +205,8 @@ new Vector3(100), GraphicsDevice, Content);
            quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
+          
 
-
-            control.View = camera.View;
-            control.Projection = camera.Projection;
-            control.models = models;
-            control.device = device;
-            control.Update(gameTime);
              
             camera.Update(gameTime);
             anim.Update(gameTime);
@@ -246,23 +234,24 @@ new Vector3(100), GraphicsDevice, Content);
 
 
 
-            water.DrawRefractionMap(camera.View);
+         //   water.DrawRefractionMap(camera.View);
 
-           water.DrawReflectionMap((FreeCamera)camera);
+        //   water.DrawReflectionMap((FreeCamera)camera);
+            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
-            water.DrawWater(time, (FreeCamera)camera);
+         //   water.DrawWater(time, (FreeCamera)camera);
 
 
+           //device.DepthStencilState = DepthStencilState.Default;
                                        quadTree.Draw((FreeCamera)camera, time);
+                                     //  device.DepthStencilState = DepthStencilState.None;
+      
 
+         
+      
 
-
-
-
-                                       if (camera.BoundingVolumeIsInView(anim.boundingSphere)) { 
-                                       anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-                                       }
+          
 
         if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
             
@@ -272,39 +261,27 @@ new Vector3(100), GraphicsDevice, Content);
 
           }
 
-            if(camera.BoundingVolumeIsInView(granary.Model.BoundingSphere))
-            {
-                budynki = 1;
-                granary.Model.Draw(camera.View, camera.Projection);
 
-            }
-            else
-            { budynki = 0; }
+             
+     
+            
 
 
+ 
+           
+            
 
+            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
-            spriteBatch.Begin();
-            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
-                new Vector2(10.0f, 20.0f), Color.Tomato);
-            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", budynki),
-    new Vector2(10.0f, 50.0f), Color.Yellow);
-            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", budynki),
-new Vector2(10.0f, 90.0f), Color.Yellow);
-            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", budynki),
-new Vector2(10.0f, 150.0f), Color.Yellow);
-            spriteBatch.End();
-
-
-
-
-
+         //   spriteBatch.Begin();
+        //    spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
+         //       new Vector2(10.0f, 20.0f), Color.Tomato);
+         //   spriteBatch.End();
 
             
             base.Draw(gameTime);
         }
 
-  /*Mariusz
         void updateAnt(GameTime gameTime)
         {
 
@@ -384,7 +361,7 @@ new Vector2(10.0f, 150.0f), Color.Yellow);
 
             }
         
-             
+             */ 
         }
 
 
@@ -418,8 +395,7 @@ new Vector2(10.0f, 150.0f), Color.Yellow);
             
         }
     
-*/    
+    
     }
-
 }
 

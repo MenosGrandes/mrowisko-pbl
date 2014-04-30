@@ -77,18 +77,13 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Building\AntBuildings\Granary\AntGranary.cs" />
-    <Compile Include="Building\AntBuildings\SeedFarm.cs" />
-    <Compile Include="Building\AntBuildings\SeedFarms\ChelidoniumFarm.cs" />
-    <Compile Include="Building\AntBuildings\SeedFarms\DicentraFarm.cs" />
-    <Compile Include="Building\AntBuildings\SeedFarms\HyacyntFarm.cs" />
-    <Compile Include="Units\Allies\Allies.cs" />
-    <Compile Include="Units\Ants\Ant.cs" />
-    <Compile Include="Building\Building.cs" />
+    <Compile Include="Allies.cs" />
+    <Compile Include="Ant.cs" />
+    <Compile Include="Building.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="Destructible.cs" />
     <Compile Include="InteractiveModel.cs" />
-    <Compile Include="Units\Predators\Predator.cs" />
+    <Compile Include="Predator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TargetCamera.cs" />
     <Compile Include="Unit.cs" />
@@ -120,9 +115,10 @@
       <Project>{3ca21884-420f-46fd-84a1-a98bb1177b66}</Project>
       <Name>Map</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Meterials\" />
+    <ProjectReference Include="..\..\KlasyZSkillami\KlasyZSkillami\Skills.csproj">
+      <Project>{7ee17f61-5d07-4409-aab4-ebb33b041653}</Project>
+      <Name>Skills</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
