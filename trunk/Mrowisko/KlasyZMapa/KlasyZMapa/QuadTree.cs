@@ -17,6 +17,8 @@ namespace Map
     public class QuadTree
     {
 
+        public LoadModel model;
+
         public int MinimumDepth = 7;
         public int IndexCount { get; private set; }
         public BasicEffect Effect;
@@ -26,6 +28,7 @@ namespace Map
         private Vector3 _position;
         private int _topNodeSize;
         LightsAndShadows.Shadow shadow;
+        LightsAndShadows.Light light;
         private Vector3 _cameraPosition;
         private Vector3 _lastCameraPosition;
 
@@ -68,12 +71,14 @@ namespace Map
         public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale, ContentManager Content, GameCamera.FreeCamera camera)
         {
             shadow = new LightsAndShadows.Shadow();
+            light = new LightsAndShadows.Light(0.6f, 0.4f, new Vector3(51300+25600, 400, 51300+25600));
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
             Model model = Content.Load<Model>("Models/mrowka_01");
+            this.model = new LoadModel(model, Vector3.One, Vector3.Up, new Vector3(100), device);
             this.textures = textures;
             effect = Content.Load<Effect>("Effects/MultiTextured");
-           // effect2 = Content.Load<Effect>("Effects/Shadows");
+            effect2 = Content.Load<Effect>("Effects/Shadows");
             Device = device;
 
             _position = position;
@@ -113,8 +118,8 @@ namespace Map
        Matrix worldMatrix = Matrix.Identity;
        effect.Parameters["xWorld"].SetValue(worldMatrix);
        effect.Parameters["xEnableLighting"].SetValue(true);
-       effect.Parameters["xAmbient"].SetValue(0.4f);
-       effect.Parameters["xLightPower"].SetValue(1.0f);
+       effect.Parameters["xAmbient"].SetValue(light.Ambient);
+       effect.Parameters["xLightPower"].SetValue(light.LightPower);
        
           
 
@@ -134,7 +139,7 @@ namespace Map
 
 
 
-
+           
             // _lastCameraPosition = _cameraPosition;
             IndexCount = 0;
 
@@ -167,27 +172,35 @@ namespace Map
             this.Device.Indices = _buffers.IndexBuffer;
             this.x+=1;
            // this.y+=1;
-         //   effect.Parameters["xLightPos"].SetValue(new Vector3(1250+x, 800, 1250+x));
-           // shadow.UpdateLightData(0.4f, 0.6f, new Vector3(1250+x, 800, 1250+x), camera);
+            this.model.Position = light.lightPosChange(time);
+            effect.Parameters["xLightPos"].SetValue(this.model.Position);
 
-          //  effect.CurrentTechnique = effect.Techniques["ShadowMap"];
-          //  effect.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
+
+           shadow.UpdateLightData(0.4f, 0.6f, this.model.Position, camera);
+            Console.WriteLine("pozycja " + this.model.Position);
+          // Console.WriteLine("pozycja mnozenie " + light.lightPosChange(time*100));
+           effect2.CurrentTechnique = effect2.Techniques["ShadowMap"];
+            effect2.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
 
        effect.Parameters["xView"].SetValue(camera.View);
        effect.Parameters["xProjection"].SetValue(camera.Projection);
 
-       effect.Parameters["xTime2"].SetValue(time );
-
+       //effect.Parameters["xTime2"].SetValue(time );
+       
 
            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
            {
-
                pass.Apply();
-              
-               if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
+               foreach (EffectPass pass2 in effect2.CurrentTechnique.Passes)
+               {
+                  
+                   pass2.Apply();
+                   if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
+                   Console.WriteLine(IndexCount);
+               }
 
            }
-
+           model.Draw(camera.View, camera.Projection);
             /*
             foreach (EnvModel pass1 in envModelList)
             {
