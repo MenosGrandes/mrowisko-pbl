@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Animations;
+using LightsAndShadows;
 namespace AntHill
 {
     /// <summary>
@@ -103,7 +104,7 @@ namespace AntHill
 
                     quadTree = new QuadTree(Vector3.Zero, texture, device, 100, Content, (FreeCamera)camera);
             quadTree.Cull = true;
-
+          //  quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24);
             water = new Water(device, Content, texture[4].Width, 100);
            
 

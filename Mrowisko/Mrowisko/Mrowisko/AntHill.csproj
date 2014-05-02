@@ -104,6 +104,10 @@
       <Project>{3ca21884-420f-46fd-84a1-a98bb1177b66}</Project>
       <Name>Map</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\LightsAndShadows\LightsAndShadows\LightsAndShadows.csproj">
+      <Project>{1a340602-b76b-4213-9f41-a777cc928fea}</Project>
+      <Name>LightsAndShadows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MrowiskoContent\AntHillContent.contentproj">
       <Name>AntHillContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
