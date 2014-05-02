@@ -11,7 +11,19 @@ namespace LightsAndShadows
     public class Shadow
     {
         RenderTarget2D renderTarget;
+
+        public RenderTarget2D RenderTarget
+        {
+            get { return renderTarget; }
+            set { renderTarget = value; }
+        }
         Texture2D shadowMap;
+
+        public Texture2D ShadowMap
+        {
+            get { return shadowMap; }
+            set { shadowMap = value; }
+        }
         public Matrix lightsViewProjectionMatrix;
         public Shadow()
         {

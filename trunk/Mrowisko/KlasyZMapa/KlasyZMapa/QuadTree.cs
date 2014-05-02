@@ -27,7 +27,7 @@ namespace Map
         public BufferManager _buffers;
         private Vector3 _position;
         private int _topNodeSize;
-        LightsAndShadows.Shadow shadow;
+        public LightsAndShadows.Shadow shadow;
         LightsAndShadows.Light light;
         private Vector3 _cameraPosition;
         private Vector3 _lastCameraPosition;
@@ -117,7 +117,7 @@ namespace Map
        effect.Parameters["xTexture5"].SetValue(textures[7]);
        Matrix worldMatrix = Matrix.Identity;
        effect.Parameters["xWorld"].SetValue(worldMatrix);
-       effect.Parameters["xEnableLighting"].SetValue(true);
+       effect.Parameters["xEnableLighting"].SetValue(false);
        effect.Parameters["xAmbient"].SetValue(light.Ambient);
        effect.Parameters["xLightPower"].SetValue(light.LightPower);
        
@@ -163,6 +163,10 @@ namespace Map
             //RasterizerState rasterizerState = new RasterizerState();
             //rasterizerState.FillMode = FillMode.WireFrame;
             //Device.RasterizerState = rasterizerState;
+
+            this.Device.SetRenderTarget(shadow.RenderTarget);
+          //  this.Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+
             this.CameraPosition = camera.Position;
             this.View = camera.View;
             this.Projection = camera.Projection;
@@ -170,37 +174,65 @@ namespace Map
 
             this.Device.SetVertexBuffer(_buffers.VertexBuffer);
             this.Device.Indices = _buffers.IndexBuffer;
-            this.x+=1;
-           // this.y+=1;
+          //  this.x+=1;
+
             this.model.Position = light.lightPosChange(time);
             effect.Parameters["xLightPos"].SetValue(this.model.Position);
 
 
            shadow.UpdateLightData(0.4f, 0.6f, this.model.Position, camera);
-            Console.WriteLine("pozycja " + this.model.Position);
+          //  Console.WriteLine("pozycja " + this.model.Position);
           // Console.WriteLine("pozycja mnozenie " + light.lightPosChange(time*100));
-           effect2.CurrentTechnique = effect2.Techniques["ShadowMap"];
-            effect2.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
+           
 
        effect.Parameters["xView"].SetValue(camera.View);
        effect.Parameters["xProjection"].SetValue(camera.Projection);
-
+             effect.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
+           effect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
+             effect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
        //effect.Parameters["xTime2"].SetValue(time );
        
 
            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
            {
                pass.Apply();
-               foreach (EffectPass pass2 in effect2.CurrentTechnique.Passes)
-               {
+             //  foreach (EffectPass pass2 in effect2.CurrentTechnique.Passes)
+             //  {
                   
-                   pass2.Apply();
+            //       pass2.Apply();
                    if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
                    Console.WriteLine(IndexCount);
-               }
+            //   }
 
            }
-           model.Draw(camera.View, camera.Projection);
+         
+
+       //    effect.CurrentTechnique = effect.Techniques["ShadowMap"];
+          
+
+        //   foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+         //  {
+        //       pass.Apply();
+        //       if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
+        //   }
+
+           this.Device.SetRenderTarget(null);
+           shadow.ShadowMap = (Texture2D)shadow.RenderTarget;
+
+
+        //   this.Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+
+       //   effect.CurrentTechnique = effect.Techniques["ShadowedScene"];
+      //     effect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
+
+       //    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+      //     {
+      //         pass.Apply();
+      //     if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
+      //     }
+
+           shadow.ShadowMap = null;
+          // model.Draw(camera.View, camera.Projection);
             /*
             foreach (EnvModel pass1 in envModelList)
             {
