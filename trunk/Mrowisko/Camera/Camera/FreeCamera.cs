@@ -38,7 +38,7 @@ namespace GameCamera
         }
         public override void Update(GameTime gameTime)
         {
-            int scale = 111;
+            int scale = 11;
             MouseState mouseState = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
             //Position=new Vector3();
