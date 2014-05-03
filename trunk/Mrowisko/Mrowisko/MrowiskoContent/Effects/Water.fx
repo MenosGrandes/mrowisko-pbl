@@ -116,7 +116,7 @@ WPixelToFrame WaterPS(WVertexToPixel PSIn)
 
 		
 
-	float4 dullColor = float4(0.3f, 0.3f, 0.6f, 0.1f);
+	float4 dullColor = float4(0.3f, 0.3f, 0.6f, 0.8f);
 		Output.Color += dullColor;
 	Output.Color =lerp(combinedColor, dullColor, 0.7f);
 

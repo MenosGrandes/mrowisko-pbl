@@ -51,7 +51,7 @@ namespace Map
                 }
                 mesh.Draw();
             }
-            device.BlendState = BlendState.Opaque;
+            device.BlendState = BlendState.AlphaBlend;
             device.DepthStencilState = DepthStencilState.Default;
         }
     }

@@ -31,7 +31,7 @@ namespace Map
             this.waterBumpMap = Content.Load<Texture2D>("Textures/Water/waterbump");
             this.Scale = scale;
             this.device = device;
-            this.waterHeight = scale*5 ;
+            this.waterHeight = 6 ;
             this.terrainLength = terrainLength*Scale;
             this.terrainWidth = this.terrainLength;
            
@@ -124,7 +124,7 @@ namespace Map
             effect.Parameters["xRefractionMap"].SetValue(refractionMap);
             effect.Parameters["xWaterBumpMap"].SetValue(waterBumpMap);
             effect.Parameters["xWaveLength"].SetValue(0.5f);
-            effect.Parameters["xWaveHeight"].SetValue(4.5f);
+            effect.Parameters["xWaveHeight"].SetValue(0.5f);
             effect.Parameters["xTime"].SetValue(time);
             effect.Parameters["xWindForce"].SetValue(0.002f);
             effect.Parameters["xWindDirection"].SetValue(windDirection);
@@ -135,7 +135,7 @@ namespace Map
 
             device.SetVertexBuffer(waterVertexBuffer);
 
-           // device.DrawPrimitives(PrimitiveType.TriangleList, 0, waterVertexBuffer.VertexCount / 3);
+            device.DrawPrimitives(PrimitiveType.TriangleList, 0, waterVertexBuffer.VertexCount / 3);
         }
 
 
