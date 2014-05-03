@@ -324,7 +324,7 @@ SScenePixelToFrame ShadowedScenePixelShader(SSceneVertexToPixel PSIn)
 		}
 	}
 
-	float4 baseColor = tex2D(TextureSampler, PSIn.TexCoords);
+	float4 baseColor = tex2D(GroundText2Sampler, PSIn.TexCoords);	//TUTAJ TRZEBA ZMIENIC!!! NA MULTITEXTURE!
 		Output.Color = baseColor*(diffuseLightingFactor + xAmbient);
 
 	return Output;

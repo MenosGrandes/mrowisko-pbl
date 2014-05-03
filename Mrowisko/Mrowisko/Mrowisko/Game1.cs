@@ -104,7 +104,7 @@ namespace AntHill
 
                     quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
             quadTree.Cull = true;
-          //  quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24);
+           quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24);
             water = new Water(device, Content, texture[4].Width, 1);
            
 
@@ -246,41 +246,35 @@ new Vector3(1), GraphicsDevice, Content);
             water.DrawWater(time, (FreeCamera)camera);
 
 
-           //device.DepthStencilState = DepthStencilState.Default;
-                                       
-      
+            //device.SetRenderTarget(quadTree.shadow.RenderTarget);      
 
-         
-      
 
-          
 
-        if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
+
+
+
+
+
+            /*
+     if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
             
-                        models[0].Draw(camera.View, camera.Projection);
+                     models[0].Draw(camera.View, camera.Projection);
                          
 
 
-          }
+       }
 
+      anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+           */
+            spriteBatch.Begin();
+            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
+                new Vector2(10.0f, 20.0f), Color.Tomato);
+            Vector2 pos = new Vector2(graphics.PreferredBackBufferWidth - (graphics.PreferredBackBufferWidth / 10), 0);
+            spriteBatch.Draw(quadTree.shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
 
-             
-     
-            
+            spriteBatch.End();
 
-
- 
            
-            
-
-            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-
-         //   spriteBatch.Begin();
-        //    spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
-         //       new Vector2(10.0f, 20.0f), Color.Tomato);
-         //   spriteBatch.End();
-
-            
             base.Draw(gameTime);
         }
 

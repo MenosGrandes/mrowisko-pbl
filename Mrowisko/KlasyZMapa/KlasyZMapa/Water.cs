@@ -135,7 +135,7 @@ namespace Map
 
             device.SetVertexBuffer(waterVertexBuffer);
 
-            device.DrawPrimitives(PrimitiveType.TriangleList, 0, waterVertexBuffer.VertexCount / 3);
+           // device.DrawPrimitives(PrimitiveType.TriangleList, 0, waterVertexBuffer.VertexCount / 3);
         }
 
 
