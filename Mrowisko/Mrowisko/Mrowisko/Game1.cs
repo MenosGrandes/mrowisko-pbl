@@ -97,18 +97,18 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("Textures/muszle"));
 
                     camera = new FreeCamera(
-        new Vector3(texture[4].Width * 100 / 2, texture[4].Width * 100 / 10, texture[4].Width * 100 / 2),
+        new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 10, texture[4].Width * 1 / 2),
         MathHelper.ToRadians(0), // Turned around 153 degrees
         MathHelper.ToRadians(-45), // Pitched up 13 degrees
         GraphicsDevice);
 
-                    quadTree = new QuadTree(Vector3.Zero, texture, device, 100, Content, (FreeCamera)camera);
+                    quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
             quadTree.Cull = true;
           //  quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24);
-            water = new Water(device, Content, texture[4].Width, 100);
+            water = new Water(device, Content, texture[4].Width, 1);
            
 
-           models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(20.05f), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(1), GraphicsDevice));
 
            //inter = quadTree.ants.Models;
 
@@ -122,7 +122,7 @@ namespace AntHill
            anim = new LoadModel(
 Content.Load<Model>("animacja"),
 Vector3.Zero, Vector3.Up,
-new Vector3(100), GraphicsDevice, Content);
+new Vector3(1), GraphicsDevice, Content);
            AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
            anim.Player.StartClip(clip);
             lastMouseState = Mouse.GetState();
@@ -235,18 +235,19 @@ new Vector3(100), GraphicsDevice, Content);
 
 
 
-         //   water.DrawRefractionMap(camera.View);
+            water.DrawRefractionMap(camera.View);
 
-        //   water.DrawReflectionMap((FreeCamera)camera);
+          water.DrawReflectionMap((FreeCamera)camera);
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
-         //   water.DrawWater(time, (FreeCamera)camera);
+            quadTree.Draw((FreeCamera)camera, time);
+
+            water.DrawWater(time, (FreeCamera)camera);
 
 
            //device.DepthStencilState = DepthStencilState.Default;
-                                       quadTree.Draw((FreeCamera)camera, time);
-                                     //  device.DepthStencilState = DepthStencilState.None;
+                                       
       
 
          

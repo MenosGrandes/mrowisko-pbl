@@ -171,7 +171,6 @@ namespace Map
                     model.Draw(camera.View, camera.Projection);
                      licznik++;
                 }
-            Console.WriteLine(licznik);
 
 
         }
