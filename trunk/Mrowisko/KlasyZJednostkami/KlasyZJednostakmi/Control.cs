@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Map;
 
@@ -20,71 +22,65 @@ namespace Logic
         public Matrix Projection;
         public GraphicsDevice device;
         public List<Map.LoadModel> models;
-        Vector3 playerTarget;
-        MouseState currentMouseState;
-        int f = 0;
 
         public void Update(GameTime gameTime)
         {
-            //pozycja mrowki
-            float pozycja_X_lewo = models[0].Position.X - 800;
-            float pozycja_X_prawo = models[0].Position.X + 800;
-            float pozycja_Z_gora = models[0].Position.Z + 400;
-            float pozycja_Z_dol = models[0].Position.Z - 800;
-
-
-            currentMouseState = Mouse.GetState();
-            Vector3 mouse3d2 = CalculateMouse3DPosition();
-            
-            if (currentMouseState.RightButton == ButtonState.Pressed)
-            {
-                if ((mouse3d2.X > pozycja_X_lewo && mouse3d2.X < pozycja_X_prawo) && (mouse3d2.Z > pozycja_Z_dol && mouse3d2.Z < pozycja_Z_gora))
-                {
-                    f = 1;
-                }
-                else
-                {
-                    f = 0;
-                }
-
-            }
-            //Console.WriteLine(f);
-            if (currentMouseState.LeftButton == ButtonState.Pressed && f == 1)
-            {
-                // This will give the player a target to go to. 
-                playerTarget.X = mouse3d2.X;
-                playerTarget.Z = mouse3d2.Z;
-            }
-
-
-            updateAnt(gameTime);
+            updateAnt(models);
         }
 
-        void updateAnt(GameTime gameTime)
+        public void updateAnt(List<Map.LoadModel> models)
         {
-
-            // Check if the player has reached the target, if not, move towards it. 
-
-            float Speed = (float)30;
-            if (models[0].Position.X > playerTarget.X)
+            KeyboardState keyState = Keyboard.GetState();
+            MouseState MS = Mouse.GetState();
+            Vector2 mouse_pos = new Vector2(MS.X, MS.Y);
+            Vector3 mouse3d2 = CalculateMouse3DPosition();
+            float Speed = (float)0.002;
+            if (MS.LeftButton == ButtonState.Pressed)
             {
-                models[0].Position += Vector3.Left * Speed;
-            }
-            if (models[0].Position.X < playerTarget.X)
-            {
-                models[0].Position += Vector3.Right * Speed;
-            }
 
-            if (models[0].Position.Z > playerTarget.Z)
-            {
-                models[0].Position += Vector3.Forward * Speed;
-            }
-            if (models[0].Position.Z < playerTarget.Z)
-            {
-                models[0].Position += Vector3.Backward * Speed;
-            }
+                if (mouse3d2.X > models[0].Position.X)
+                {
+                    while (mouse3d2.X > models[0].Position.X)
+                    {
+                        models[0].Position += Vector3.Right * Speed;
+                    }
+
+                }
+
+                if (mouse3d2.X < models[0].Position.X)
+                {
+                    while (mouse3d2.X < models[0].Position.X)
+                    {
+                        models[0].Position += Vector3.Left * Speed;
+                    }
+
+                }
 
 
+                if (mouse3d2.Z > models[0].Position.Z)
+                {
+
+                    while (mouse3d2.Z > models[0].Position.Z)
+                    {
+                        models[0].Position += Vector3.Backward * Speed;
+                    }
+                }
+
+                if (mouse3d2.Z < models[0].Position.Z)
+                {
+                    while (mouse3d2.Z < models[0].Position.Z)
+                    {
+                        models[0].Position += Vector3.Forward * Speed;
+                    }
+                }
+
+
+                if (keyState.IsKeyDown(Keys.Up)) models[0].Position += Vector3.Forward * 100;
+                if (keyState.IsKeyDown(Keys.Down)) models[0].Position += Vector3.Backward * 100;
+                if (keyState.IsKeyDown(Keys.Left)) models[0].Position += Vector3.Left * 100;
+                if (keyState.IsKeyDown(Keys.Right)) models[0].Position += Vector3.Right * 100;
+
+            }
         }
 
 
@@ -100,10 +96,10 @@ namespace Logic
             Matrix world = Matrix.CreateTranslation(0, 0, 0);
 
             Vector3 nearPoint = device.Viewport.Unproject(nearsource,
-                this.Projection, this.View, Matrix.Identity);
+                Projection, View, Matrix.Identity);
 
             Vector3 farPoint = device.Viewport.Unproject(farsource,
-                this.Projection, this.View, Matrix.Identity);
+                Projection, View, Matrix.Identity);
 
             Vector3 direction = farPoint - nearPoint;
             direction.Normalize();
@@ -117,6 +113,7 @@ namespace Logic
 
 
         }
+
 
 
     }
