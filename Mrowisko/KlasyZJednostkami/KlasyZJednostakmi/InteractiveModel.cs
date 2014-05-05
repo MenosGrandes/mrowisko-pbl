@@ -55,10 +55,12 @@ namespace Logic
         {
             
         }
-        new public void Draw()
+         public virtual void Draw(Matrix View, Matrix Projection)
         {
 
-            Console.WriteLine(this.GetType());
+            Console.WriteLine("interactive model");
         }
+
+
     }
 }

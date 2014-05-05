@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Map;
 using System;
+using Microsoft.Xna.Framework;
 namespace Logic.Building
 {
     
@@ -51,10 +52,10 @@ namespace Logic.Building
         }
         public Building()
         { }
-         new public void Draw()
+         public override void Draw(Matrix View, Matrix Projection)
         {
-
             Console.WriteLine(this.GetType());
         }
+
     }
 }

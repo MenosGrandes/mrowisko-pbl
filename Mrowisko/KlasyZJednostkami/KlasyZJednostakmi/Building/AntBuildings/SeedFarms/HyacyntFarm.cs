@@ -1,4 +1,5 @@
 ﻿using Map;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,16 @@ namespace Logic.Building.AntBuildings.SeedFarms
 {
     public class HyacyntFarm:SeedFarm
     {
-        public HyacyntFarm()
-            : base()
-        { }
-        new public void Draw()
-        {
-            Console.WriteLine(this.GetType());
+        public HyacyntFarm(ContentManager content, LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime):base(content, model,_capacity,_durability,_cost,_buildingTime)
+        { 
+        
         }
+         public override void  Draw(Matrix View, Matrix Projection)
+        {
+            model.Draw(View, Projection);
+        }
+        public HyacyntFarm()
+        { }
+
     }
 }

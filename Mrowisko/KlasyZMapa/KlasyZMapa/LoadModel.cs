@@ -26,7 +26,7 @@ namespace Map
         public AnimationPlayer Player;
         private Matrix[] modelTransforms;
         private GraphicsDevice graphicsDevice;
-        public BoundingSphere boundingSphere;
+        private BoundingSphere boundingSphere;
         public BoundingSphere BoundingSphere
         {
             get
@@ -80,6 +80,7 @@ namespace Map
                     ("This model does not contain a SkinningData tag.");
             this.skinningData = Model.Tag as SkinningData;
             Player = new AnimationPlayer(skinningData);
+            buildBoundingSphere();
 
         }
 

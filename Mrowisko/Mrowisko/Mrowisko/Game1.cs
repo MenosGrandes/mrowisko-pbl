@@ -1,6 +1,5 @@
 using Animations;
 using Debugger;
-using Animations;
 using GameCamera;
 using Logic;
 using Map;
@@ -10,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Logic.Building.AntBuildings.Granary;
 using Logic.Building.AntBuildings.SeedFarms;
+using System;
 
 namespace AntHill
 {
@@ -130,13 +130,16 @@ new Vector3(1), GraphicsDevice, Content);
             BoundingSphereRenderer.InitializeGraphics(device, 33);
             AntGranary gr = new AntGranary(Content, new LoadModel(
 Content.Load<Model>("Models/domek"),
-Vector3.Zero, Vector3.Up,
+new Vector3(300, 40, 300), Vector3.Zero,
 new Vector3(1), GraphicsDevice), 10, 10, 10, 10, 10);
-            HyacyntFarm hf = new HyacyntFarm();
 
+
+            HyacyntFarm hf = new HyacyntFarm(Content, new LoadModel(
+Content.Load<Model>("Models/domek2"),
+new Vector3(100,15,100), Vector3.Up,
+new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             IModel.Add(hf);
             IModel.Add(gr);
-           
 
    }
 
@@ -284,7 +287,15 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10, 10);
            
            foreach(InteractiveModel model in IModel)
            {
-               model.Draw();
+               if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+               {
+                   model.Draw(camera.View, camera.Projection);
+                   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                      (Matrix.CreateScale(10) * Matrix.CreateTranslation(model.Model.Position)), Color.Yellow);
+    
+               
+               }
+               
            }
              
 
