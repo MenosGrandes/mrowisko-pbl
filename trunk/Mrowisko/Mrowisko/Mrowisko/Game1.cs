@@ -94,7 +94,7 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("HeighMaps/treeMap"));
             texture.Add(Content.Load<Texture2D>("HeighMaps/colorHeigh"));
             texture.Add(Content.Load<Texture2D>("Textures/lisc"));
-            texture.Add(Content.Load<Texture2D>("Textures/kamien"));
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/grass"));
             texture.Add(Content.Load<Texture2D>("Textures/muszle"));
 
                     camera = new FreeCamera(
@@ -109,9 +109,7 @@ namespace AntHill
            
 
            models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice));
-           models.Add(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(200,30,200), Vector3.Up, new Vector3(0.05f), GraphicsDevice));
-           models.Add(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(200, 30, 200), Vector3.Up, new Vector3(4.0f), GraphicsDevice));
-
+     
             //inter = quadTree.ants.Models;
 
           // GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -170,7 +168,9 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
 
 
             currentMouseState = Mouse.GetState();
+            CalculateMouse3DPosition();
            // LastMouseState_2 = Mouse.GetState();
+            /*
             Vector3 mouse3d2 = CalculateMouse3DPosition();
             if (currentMouseState.RightButton == ButtonState.Pressed)
             {
@@ -190,7 +190,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
                 // This will give the player a target to go to. 
                 playerTarget.X = mouse3d2.X;
                 playerTarget.Z = mouse3d2.Z;
-            }
+            }*/
             updateAnt(gameTime);
 
 
@@ -314,7 +314,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
              
 
 
-
+            /*
             spriteBatch.Begin();
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                 new Vector2(10.0f, 20.0f), Color.Tomato);
@@ -325,7 +325,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", kolizja),
               new Vector2(10.0f, 80.0f), Color.Pink);
             spriteBatch.End();
-           
+               */
             base.Draw(gameTime);
         }
 
@@ -412,7 +412,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
         }
 
 
-        private Vector3 CalculateMouse3DPosition()
+        private void CalculateMouse3DPosition()
         {
             Plane GroundPlane = new Plane(0, 1, 0, 0); // x - lewo prawo Z- gora dol
             int mouseX = Mouse.GetState().X;
@@ -432,14 +432,19 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             Vector3 direction = farPoint - nearPoint;
             direction.Normalize();
             Ray pickRay = new Ray(nearPoint, direction);
-            float? position = pickRay.Intersects(GroundPlane);
-
+           
+            float? position = pickRay.Intersects(models[0].BoundingSphere);
+              /*
             if (position != null)
                 return pickRay.Position + pickRay.Direction * position.Value;
             else
                 return new Vector3(0,0,0);
           
-         
+              */
+
+
+            Console.WriteLine(position);
+            
             
         }
     

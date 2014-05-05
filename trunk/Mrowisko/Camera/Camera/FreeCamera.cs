@@ -32,9 +32,10 @@ namespace GameCamera
             this.Yaw += YawChange;// MathHelper.Lerp((float)MathHelper.ToRadians(this.Yaw), YawChange, 0.9f);
             this.Pitch += PitchChange;
         }
-        public void Move(Vector3 Translation)
+        public void Move(Vector3 Translation,float time)
         {
-            this.translation += Translation;
+            this.translation += Translation*time;
+            Position = Vector3.Lerp(translation, Position, 0.9f);
         }
         public override void Update(GameTime gameTime)
         {
@@ -54,30 +55,29 @@ namespace GameCamera
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             float rotatate = 0;
        
-            if (keyState.IsKeyDown(Keys.W)) translation += new Vector3(0, -1, 1) * MathHelper.ToRadians(Pitch) * scale;
-            if (keyState.IsKeyDown(Keys.S)) translation += new Vector3(0, 1, -1) * MathHelper.ToRadians(Pitch) * scale ;
+            if (keyState.IsKeyDown(Keys.W)) translation += new Vector3(0, 0, 1) * MathHelper.ToRadians(Pitch) * scale;
+            if (keyState.IsKeyDown(Keys.S)) translation += new Vector3(0, 0, -1) * MathHelper.ToRadians(Pitch) * scale ;
             if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.Q)) rotatate += MathHelper.ToRadians(0.05f);
             if (keyState.IsKeyDown(Keys.E)) rotatate -=MathHelper.ToRadians(0.05f);
             if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
             {
-                translation+= Vector3.Lerp(translation, new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale,0.2f);
-               
+               translation+= Vector3.Lerp(translation, new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale,0.1f);
             }
             else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)
             {
-                translation += Vector3.Lerp(translation, new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1 * scale, 0.2f);
+                translation += Vector3.Lerp(translation, new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1 * scale, 0.1f);
 
             }
 
             // Move 3 units per millisecond, independent of frame rate
-            translation *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+           // translation *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             rotatate *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             // Move the camera
           
             Rotate( rotatate,0);
-            Move(translation);
+            Move(translation, (float)gameTime.ElapsedGameTime.TotalMilliseconds);
 
 
 
@@ -89,7 +89,6 @@ namespace GameCamera
             // Offset the position and reset the translation    
             translation = Vector3.Transform(translation, rotation);
             Position += translation;
-            translation = Vector3.Zero;
             // Calculate the new target
             Vector3 forward = Vector3.Transform(Vector3.Forward, rotation);
             Target = Position + forward;
