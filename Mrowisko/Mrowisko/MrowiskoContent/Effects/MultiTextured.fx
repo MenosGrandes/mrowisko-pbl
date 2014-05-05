@@ -218,8 +218,8 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 	colour += tex2D(GroundText2Sampler, PSIn.TextureCoords) * groundSample.b;
 	
 	//Output.Color = ;
-	Output.Color += lerp(nearColor, farColor, blendWidth)*(diffuseLightingFactor + xAmbient);
-	Output.Color = lerp(Output.Color,colour,0.4f);
+	Output.Color = lerp(nearColor, farColor, blendWidth)*(diffuseLightingFactor + xAmbient);
+	Output.Color += colour;
 	  if (Clipping)
 	   clip(PSIn.clipDistances);  //MSS - Water Refactor added
 	return Output;
