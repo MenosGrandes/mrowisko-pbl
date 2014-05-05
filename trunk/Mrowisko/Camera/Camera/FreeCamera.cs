@@ -26,6 +26,8 @@ namespace GameCamera
             this.Yaw = Yaw;
             this.Pitch = Pitch;
             translation = Vector3.Zero;
+            
+            Move(Position, 1.0f);
         }
         public void Rotate(float YawChange, float PitchChange)
         {

@@ -314,7 +314,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
              
 
 
-            /*
+            
             spriteBatch.Begin();
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                 new Vector2(10.0f, 20.0f), Color.Tomato);
@@ -325,7 +325,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", kolizja),
               new Vector2(10.0f, 80.0f), Color.Pink);
             spriteBatch.End();
-               */
+               
             base.Draw(gameTime);
         }
 
@@ -443,7 +443,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
               */
 
 
-            Console.WriteLine(position);
+           // Console.WriteLine(position);
             
             
         }
