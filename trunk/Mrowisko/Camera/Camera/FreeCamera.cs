@@ -49,7 +49,7 @@ namespace GameCamera
             float deltaX = (float)lastMouseState.X - (float)mouseState.X;
             float deltaY = (float)lastMouseState.Y - (float)mouseState.Y;
 
-           //Rotate(deltaX * .01f, -deltaY * .01f);
+           Rotate(deltaX * .01f, -deltaY * .01f);
 
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             float rotatate = 0;

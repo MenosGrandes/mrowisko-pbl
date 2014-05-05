@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,9 @@ namespace Logic.Building.AntBuildings.SeedFarms
         public DicentraFarm()
             : base()
         { }
-        new public void Draw()
+        public override void Draw(Matrix view, Matrix Projection)
         {
-            Console.WriteLine(this.GetType());
+            //Console.WriteLine(this.GetType());
         }
     }
 }
