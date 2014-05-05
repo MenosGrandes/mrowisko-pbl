@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Animations", "Animations\An
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimacjaPipelineExtension", "AnimacjaPipelineExtension\AnimacjaPipelineExtension.csproj", "{C48D080E-13F0-4B71-B4E2-0376EEC21BA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "Debugger\Debugger.csproj", "{0686462B-EC32-4394-89B1-C299D49BCAE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -68,6 +70,10 @@ Global
 		{C48D080E-13F0-4B71-B4E2-0376EEC21BA2}.Debug|x86.Build.0 = Debug|x86
 		{C48D080E-13F0-4B71-B4E2-0376EEC21BA2}.Release|x86.ActiveCfg = Release|x86
 		{C48D080E-13F0-4B71-B4E2-0376EEC21BA2}.Release|x86.Build.0 = Release|x86
+		{0686462B-EC32-4394-89B1-C299D49BCAE1}.Debug|x86.ActiveCfg = Debug|x86
+		{0686462B-EC32-4394-89B1-C299D49BCAE1}.Debug|x86.Build.0 = Debug|x86
+		{0686462B-EC32-4394-89B1-C299D49BCAE1}.Release|x86.ActiveCfg = Release|x86
+		{0686462B-EC32-4394-89B1-C299D49BCAE1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

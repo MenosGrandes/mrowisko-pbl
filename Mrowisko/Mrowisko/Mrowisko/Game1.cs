@@ -1,18 +1,14 @@
-//using Animations;
+using Animations;
+using Debugger;
+using Animations;
 using GameCamera;
+using Logic;
 using Map;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using Animations;
-using LightsAndShadows;
+
 namespace AntHill
 {
     /// <summary>
@@ -20,20 +16,23 @@ namespace AntHill
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-       
+
+
+        
+
         GraphicsDeviceManager graphics;
         public GraphicsDevice device;
         float x, y, z;
         SpriteBatch spriteBatch;
-        List<Map.LoadModel> models = new List<Map.LoadModel>();
-        List<Map.LoadModel> inter = new List<Map.LoadModel>();
+        List<LoadModel> models = new List<Map.LoadModel>();
+        List<LoadModel> inter = new List<Map.LoadModel>();
         public Camera camera;
         MouseState lastMouseState;
-        Map.Water water;
+        Water water;
         LoadModel anim;
          QuadTree quadTree;
                      //FPS COUNTER
-
+         int licznik;
          SpriteFont _spr_font;
          int _total_frames = 0;
          float _elapsed_time = 0.0f;
@@ -104,11 +103,10 @@ namespace AntHill
 
                     quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
             quadTree.Cull = true;
-           quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24);
             water = new Water(device, Content, texture[4].Width, 1);
            
 
-           models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(1), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(1.0f), GraphicsDevice));
 
            //inter = quadTree.ants.Models;
 
@@ -126,7 +124,10 @@ new Vector3(1), GraphicsDevice, Content);
            AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
            anim.Player.StartClip(clip);
             lastMouseState = Mouse.GetState();
-        }
+
+            BoundingSphereRenderer.InitializeGraphics(device, 33);
+
+   }
 
         /// <summary>w
         /// UnloadContent will be called once per game and is the place to unload
@@ -144,10 +145,10 @@ new Vector3(1), GraphicsDevice, Content);
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            float pozycja_X_lewo = models[0].Position.X - 800;
-            float pozycja_X_prawo = models[0].Position.X + 800;
-            float pozycja_Z_gora = models[0].Position.Z + 400;
-            float pozycja_Z_dol = models[0].Position.Z - 800;
+            float pozycja_X_lewo = models[0].Position.X - 80;
+            float pozycja_X_prawo = models[0].Position.X + 80;
+            float pozycja_Z_gora = models[0].Position.Z + 40;
+            float pozycja_Z_dol = models[0].Position.Z - 80;
 
 
             currentMouseState = Mouse.GetState();
@@ -222,11 +223,11 @@ new Vector3(1), GraphicsDevice, Content);
             //rasterizerState.FillMode = FillMode.WireFrame;
             //GraphicsDevice.RasterizerState = rasterizerState;
 
-
+            licznik = 0;
             float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
             RasterizerState rs = new RasterizerState();
-            rs.CullMode = CullMode.CullCounterClockwiseFace;
+            rs.CullMode = CullMode.None;
 
             _total_frames++;
 
@@ -235,18 +236,18 @@ new Vector3(1), GraphicsDevice, Content);
 
 
 
-            water.DrawRefractionMap(camera.View);
+            water.DrawRefractionMap((FreeCamera)camera,quadTree);
 
-          water.DrawReflectionMap((FreeCamera)camera);
-            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+          water.DrawReflectionMap((FreeCamera)camera,quadTree);
+          
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
+            water.sky.DrawSkyDome((FreeCamera)camera);
             quadTree.Draw((FreeCamera)camera, time);
 
             water.DrawWater(time, (FreeCamera)camera);
 
 
-            //device.SetRenderTarget(quadTree.shadow.RenderTarget);      
 
 
 
@@ -254,31 +255,41 @@ new Vector3(1), GraphicsDevice, Content);
 
 
 
-
-            /*
+            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+            
      if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
             
                      models[0].Draw(camera.View, camera.Projection);
-                         
-
+                     BoundingSphereRenderer.Render(models[0].BoundingSphere, device, camera.View, camera.Projection,
+                        (Matrix.CreateScale(models[0].Scale)* Matrix.CreateTranslation(models[0].Position)), new Color(0.3f, 0.4f, 0.2f));
+                     licznik = 1;
 
        }
 
       anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-           */
+      BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
+                       (Matrix.CreateScale(1) * Matrix.CreateTranslation(anim.Position)), new Color(0.3f, 0.4f, 0.2f));
+          
+           
+                 
+             
+
+
+
             spriteBatch.Begin();
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                 new Vector2(10.0f, 20.0f), Color.Tomato);
-            Vector2 pos = new Vector2(graphics.PreferredBackBufferWidth - (graphics.PreferredBackBufferWidth / 10), 0);
-            spriteBatch.Draw(quadTree.shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
+           // Vector2 pos = new Vector2(graphics.PreferredBackBufferWidth - (graphics.PreferredBackBufferWidth / 10), 0);
+           // spriteBatch.Draw(quadTree.shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
+            spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik),
+                new Vector2(10.0f, 50.0f), Color.Tomato);
 
             spriteBatch.End();
-
            
             base.Draw(gameTime);
         }
 
-        void updateAnt(GameTime gameTime)
+       public void updateAnt(GameTime gameTime)
         {
 
             // Check if the player has reached the target, if not, move towards it. 
@@ -388,6 +399,7 @@ new Vector3(1), GraphicsDevice, Content);
             else
                 return new Vector3(0,0,0);
           
+         
             
         }
     

@@ -93,11 +93,12 @@ namespace Map
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
+                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]); 
                 sphere = BoundingSphere.CreateMerged(sphere, transformed);
+
             }
             
-
+             
             this.boundingSphere = sphere;
                
         }
@@ -108,8 +109,7 @@ namespace Map
         /// <param name="Projection"></param>
         public void Draw(Matrix View, Matrix Projection)
         {
-            Matrix baseWorld = Matrix.CreateScale(Scale)
-            * Matrix.CreateFromYawPitchRoll(
+            Matrix baseWorld = Matrix.CreateScale(Scale)* Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)
             * Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in Model.Meshes)

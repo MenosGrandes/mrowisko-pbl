@@ -57,8 +57,8 @@ namespace Map
         public bool Cull { get; set; }
         private QuadNode _activeNode;
 
-        List<EnvModel> envModelList = new List<EnvModel>();
-        List<EnvBilb> envBilbList = new List<EnvBilb>();
+        public List<EnvModel> envModelList = new List<EnvModel>();
+        public List<EnvBilb> envBilbList = new List<EnvBilb>();
         /// <summary>
         /// Create terrain at <paramref name="position"/>
         /// </summary>
@@ -71,14 +71,13 @@ namespace Map
         public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale, ContentManager Content, GameCamera.FreeCamera camera)
         {
             shadow = new LightsAndShadows.Shadow();
-            light = new LightsAndShadows.Light(3.0f, 0.4f, new Vector3(100, 10, 100));
+            light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(513, 45, 513));
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
-            Model model = Content.Load<Model>("Models/mrowka_01");
+            Model model = Content.Load<Model>("Models/stone2");
             this.model = new LoadModel(model, Vector3.One, Vector3.Up, new Vector3(1), device);
             this.textures = textures;
             effect = Content.Load<Effect>("Effects/MultiTextured");
-            effect2 = Content.Load<Effect>("Effects/Shadows");
             Device = device;
 
             _position = position;
@@ -109,7 +108,6 @@ namespace Map
 
 
             
-       effect.CurrentTechnique = effect.Techniques["MultiTextured"];
        effect.Parameters["xTexture0"].SetValue(textures[1]);
        effect.Parameters["xTexture1"].SetValue(textures[0]);
        effect.Parameters["xTexture2"].SetValue(textures[2]);
@@ -117,7 +115,7 @@ namespace Map
        effect.Parameters["xTexture5"].SetValue(textures[7]);
        Matrix worldMatrix = Matrix.Identity;
        effect.Parameters["xWorld"].SetValue(worldMatrix);
-       effect.Parameters["xEnableLighting"].SetValue(false);
+       effect.Parameters["xEnableLighting"].SetValue(true);
        effect.Parameters["xAmbient"].SetValue(light.Ambient);
        effect.Parameters["xLightPower"].SetValue(light.LightPower);
        
@@ -136,21 +134,14 @@ namespace Map
         public void Update(GameTime gameTime)
         {
 
-            //Only update if the camera position has changed
+            
 
 
 
-           
-            // _lastCameraPosition = _cameraPosition;
+       
             IndexCount = 0;
 
 
-            // _activeNode = _rootNode.DeepestNodeWithPoint(CameraPosition);
-
-            // if (_activeNode != null)
-            // {
-            //     _activeNode.Split();
-            //  }
 
             _rootNode.SetActiveVertices();
 
@@ -159,12 +150,13 @@ namespace Map
         }
         public void Draw(GameCamera.FreeCamera camera, float time)
         {
-            
+            effect.CurrentTechnique = effect.Techniques["MultiTextured"];
+
             //RasterizerState rasterizerState = new RasterizerState();
             //rasterizerState.FillMode = FillMode.WireFrame;
             //Device.RasterizerState = rasterizerState;
 
-            this.Device.SetRenderTarget(shadow.RenderTarget);
+         //   this.Device.SetRenderTarget(shadow.RenderTarget);
           //  this.Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
 
             this.CameraPosition = camera.Position;
@@ -176,8 +168,8 @@ namespace Map
             this.Device.Indices = _buffers.IndexBuffer;
           //  this.x+=1;
 
-            this.model.Position = light.lightPosChange(time);
-            effect.Parameters["xLightPos"].SetValue(this.model.Position);
+          //  this.model.Position = light.lightPosChange(time);
+            effect.Parameters["xLightPos"].SetValue(light.lightPosChange(time));
 
 
            shadow.UpdateLightData(0.4f, 0.6f, this.model.Position, camera);
@@ -185,11 +177,13 @@ namespace Map
         //  Console.WriteLine("pozycja mnozenie " + light.lightPosChange(time*100));
            
 
-       effect.Parameters["xView"].SetValue(camera.View);
-       effect.Parameters["xProjection"].SetValue(camera.Projection);
+          effect.Parameters["xView"].SetValue(camera.View);
+          effect.Parameters["xProjection"].SetValue(camera.Projection);
              effect.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
            effect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
-             effect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
+           
+           /*
+            effect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
 
              Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
              effect.CurrentTechnique = effect.Techniques["ShadowMap"];
@@ -209,30 +203,28 @@ namespace Map
            Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
            effect.CurrentTechnique = effect.Techniques["ShadowedScene"];
            effect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
+            * */
            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
            {
                pass.Apply();
                if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
            }
 
-           shadow.ShadowMap = null;
 
 
-       
-          // model.Draw(camera.View, camera.Projection);
+
             /*
-            foreach (EnvModel pass1 in envModelList)
-            {
-                pass1.DrawModels(camera);
-            }
-            Device.BlendState = BlendState.AlphaBlend;
-             
-          */
-      //      foreach (EnvBilb pass in envBilbList)
-      //      {
-       //         pass.DrawBillboards(camera.View, camera.Projection, camera.Position,time/10);
-       //     }
-
+           foreach (EnvModel pass1 in envModelList)
+           {
+               pass1.DrawModels(camera);
+           }
+           
+      
+           foreach (EnvBilb pass in envBilbList)
+           {
+               pass.DrawBillboards(camera.View, camera.Projection, camera.Position, time / 10);
+           }
+               */
            
 
         }
