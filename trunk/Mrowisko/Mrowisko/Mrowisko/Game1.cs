@@ -45,7 +45,7 @@ namespace AntHill
         MouseState LastMouseState_2;
         int f = 0;
         Vector3 playerTarget;
-
+        bool kolizja;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -108,9 +108,11 @@ namespace AntHill
             water = new Water(device, Content, texture[4].Width, 1);
            
 
-           models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(1.0f), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(200,30,200), Vector3.Up, new Vector3(0.05f), GraphicsDevice));
+           models.Add(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(200, 30, 200), Vector3.Up, new Vector3(4.0f), GraphicsDevice));
 
-           //inter = quadTree.ants.Models;
+            //inter = quadTree.ants.Models;
 
           // GraphicsDevice.BlendState = BlendState.AlphaBlend;
           // GraphicsDevice.BlendFactor = Color.Yellow;
@@ -159,6 +161,8 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+            kolizja = false;
             float pozycja_X_lewo = models[0].Position.X - 80;
             float pozycja_X_prawo = models[0].Position.X + 80;
             float pozycja_Z_gora = models[0].Position.Z + 40;
@@ -221,8 +225,18 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
            quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
-          
 
+             foreach(LoadModel model in models)
+             {
+                      foreach(LoadModel model2 in models)
+                     {    if(model2==model)
+                     { break; }
+                         if(model.BoundingSphere.Intersects(model2.BoundingSphere))
+                         {
+                             kolizja = true;
+                         }
+                     }
+              }
              
             camera.Update(gameTime);
             anim.Update(gameTime);
@@ -270,16 +284,16 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
 
 
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-            
+            foreach (LoadModel model in models) { 
      if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
             
-                     models[0].Draw(camera.View, camera.Projection);
-                     BoundingSphereRenderer.Render(models[0].BoundingSphere, device, camera.View, camera.Projection,
-                        (Matrix.CreateScale(models[0].Scale)* Matrix.CreateTranslation(models[0].Position)), new Color(0.3f, 0.4f, 0.2f));
-                     licznik = 1;
+                     model.Draw(camera.View, camera.Projection);
+                     BoundingSphereRenderer.Render(model.BoundingSphere, device, camera.View, camera.Projection,
+                        (Matrix.CreateScale(model.Scale) * Matrix.CreateTranslation(model.Position)), new Color(0.3f, 0.4f, 0.2f));
+                     licznik ++;
 
        }
-
+            } 
       anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
       BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
                        (Matrix.CreateScale(1) * Matrix.CreateTranslation(anim.Position)), new Color(0.3f, 0.4f, 0.2f));
@@ -308,7 +322,8 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
            // spriteBatch.Draw(quadTree.shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
             spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik),
                 new Vector2(10.0f, 50.0f), Color.Tomato);
-
+            spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", kolizja),
+              new Vector2(10.0f, 80.0f), Color.Pink);
             spriteBatch.End();
            
             base.Draw(gameTime);
