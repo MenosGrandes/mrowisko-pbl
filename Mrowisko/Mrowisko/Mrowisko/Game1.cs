@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using Logic.Building.AntBuildings.Granary;
+using Logic.Building.AntBuildings.SeedFarms;
 
 namespace AntHill
 {
@@ -17,7 +19,7 @@ namespace AntHill
     public class Game1 : Microsoft.Xna.Framework.Game
     {
 
-
+        List<InteractiveModel> IModel = new List<InteractiveModel>();
         
 
         GraphicsDeviceManager graphics;
@@ -126,6 +128,15 @@ new Vector3(1), GraphicsDevice, Content);
             lastMouseState = Mouse.GetState();
 
             BoundingSphereRenderer.InitializeGraphics(device, 33);
+            AntGranary gr = new AntGranary(Content, new LoadModel(
+Content.Load<Model>("Models/domek"),
+Vector3.Zero, Vector3.Up,
+new Vector3(1), GraphicsDevice), 10, 10, 10, 10, 10);
+            HyacyntFarm hf = new HyacyntFarm();
+
+            IModel.Add(hf);
+            IModel.Add(gr);
+           
 
    }
 
@@ -271,7 +282,10 @@ new Vector3(1), GraphicsDevice, Content);
                        (Matrix.CreateScale(1) * Matrix.CreateTranslation(anim.Position)), new Color(0.3f, 0.4f, 0.2f));
           
            
-                 
+           foreach(InteractiveModel model in IModel)
+           {
+               model.Draw();
+           }
              
 
 
