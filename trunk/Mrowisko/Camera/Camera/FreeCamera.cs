@@ -98,17 +98,17 @@ namespace GameCamera
             // Calculate the view matrix
             View = Matrix.CreateLookAt(Position, Target, up);
 
-           /*
+
             Vector3 reflCameraPosition = Position;
-            reflCameraPosition.Y = -Position.Y + 38475 ;
-            Vector3 reflTargetPos = Target;
-            reflTargetPos.Y = -Target.Y + 38475 ;
+            reflCameraPosition.Y = -Position.Y + 6 * 2;
+            Vector3 reflTargetPos = Position;
+            reflTargetPos.Y = -Target.Y + 6 * 2;
 
             Vector3 cameraRight = Vector3.Transform(new Vector3(1, 0, 0), rotation);
             Vector3 invUpVector = Vector3.Cross(cameraRight, reflTargetPos - reflCameraPosition);
 
             reflectionViewMatrix = Matrix.CreateLookAt(reflCameraPosition, reflTargetPos, invUpVector);
-                             */
+                            
             lastMouseState = mouseState;
         }
 

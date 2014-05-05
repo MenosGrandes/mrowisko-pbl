@@ -35,7 +35,7 @@ namespace Map
             device.DepthStencilState = DepthStencilState.None;
             Matrix[] modelTransforms = new Matrix[skyDome.Bones.Count];
             skyDome.CopyAbsoluteBoneTransformsTo(modelTransforms);
-            Matrix wMatrix = Matrix.CreateFromYawPitchRoll(camera.Yaw,camera.Pitch,0)*Matrix.CreateTranslation(0, -0.3f, 0) * Matrix.CreateScale(1000*100) * Matrix.CreateTranslation(camera.Position);
+            Matrix wMatrix = Matrix.CreateScale(1)*Matrix.CreateFromYawPitchRoll(camera.Yaw,camera.Pitch,0)*Matrix.CreateTranslation(0, -0.01f, 0) * Matrix.CreateTranslation(camera.Position);
 
             foreach (ModelMesh mesh in skyDome.Meshes)
             {
@@ -47,11 +47,11 @@ namespace Map
                     currentEffect.Parameters["xView"].SetValue(camera.View);
                     currentEffect.Parameters["xProjection"].SetValue(camera.Projection);
                     currentEffect.Parameters["xTexture"].SetValue(cloudMap);
-                  
+
                 }
                 mesh.Draw();
             }
-            device.BlendState = BlendState.AlphaBlend;
+            device.BlendState = BlendState.Opaque;
             device.DepthStencilState = DepthStencilState.Default;
         }
     }
