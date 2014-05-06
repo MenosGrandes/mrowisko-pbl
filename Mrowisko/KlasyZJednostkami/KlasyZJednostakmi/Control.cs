@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,7 +20,7 @@ namespace Logic
         public Matrix Projection;
         public GraphicsDevice device;
         public List<Map.LoadModel> models;
-        public List<Texture2D> texture;
+        public Texture2D texture;
         public List<Map.LoadModel> SelectedModels= new List<LoadModel>();
         //private Vector3 playerTarget;
         private Vector2 selectCorner;
@@ -36,9 +35,10 @@ namespace Logic
         private Vector3 startRectangle;
         private Vector3 endRectangle;
         
-        public void LoadContent(ContentManager content)
+         public Control(Texture2D _texture)
         {
-           // this.texture = content.Load<Texture2D>("select");
+            this.texture = _texture;
+
         }
         public void Update(GameTime gameTime)
         {
@@ -130,10 +130,10 @@ namespace Logic
             if (mouseDown)
             {
                 //spriteBatch.Draw(texture[11], selectRectangle, new Color(255, 255, 255, 180));
-                spriteBatch.Draw(texture[11], new Rectangle(selectRectangle.X, selectRectangle.Y, selectRectangle.Width, 2), Color.White);
-                spriteBatch.Draw(texture[11], new Rectangle(selectRectangle.X + selectRectangle.Width, selectRectangle.Y, 2, selectRectangle.Height), Color.White);
-                spriteBatch.Draw(texture[11], new Rectangle(selectRectangle.X, selectRectangle.Y + selectRectangle.Height, selectRectangle.Width + 2, 2), Color.White);
-                spriteBatch.Draw(texture[11], new Rectangle(selectRectangle.X, selectRectangle.Y, 2, selectRectangle.Height + 2), Color.White);
+                spriteBatch.Draw(texture, new Rectangle(selectRectangle.X, selectRectangle.Y, selectRectangle.Width, 2), Color.White);
+                spriteBatch.Draw(texture, new Rectangle(selectRectangle.X + selectRectangle.Width, selectRectangle.Y, 2, selectRectangle.Height), Color.White);
+                spriteBatch.Draw(texture, new Rectangle(selectRectangle.X, selectRectangle.Y + selectRectangle.Height, selectRectangle.Width + 2, 2), Color.White);
+                spriteBatch.Draw(texture, new Rectangle(selectRectangle.X, selectRectangle.Y, 2, selectRectangle.Height + 2), Color.White);
             }
         }
         void updateAnt(GameTime gameTime)

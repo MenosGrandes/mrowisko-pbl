@@ -1,4 +1,5 @@
 ﻿using Map;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,13 @@ namespace Logic.Building.AntBuildings.Granary
 
             this.materialsCapacity = _materialCapacity;
         }
-
+        new public void Draw()
+        {
+            //Console.WriteLine(this.GetType());
+        }
+        public override void Draw(Matrix View, Matrix Projection)
+        {
+            model.Draw(View, Projection);
+        }
     }
 }
