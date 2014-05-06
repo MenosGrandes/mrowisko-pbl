@@ -296,14 +296,12 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
 
             
             spriteBatch.Begin();
-            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
+     /*       spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                 new Vector2(10.0f, 20.0f), Color.Tomato);
-           // Vector2 pos = new Vector2(graphics.PreferredBackBufferWidth - (graphics.PreferredBackBufferWidth / 10), 0);
-           // spriteBatch.Draw(quadTree.shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
-            spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik),
+                spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik),
                 new Vector2(10.0f, 50.0f), Color.Tomato);
             spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", kolizja),
-              new Vector2(10.0f, 80.0f), Color.Pink);
+              new Vector2(10.0f, 80.0f), Color.Pink); */
             control.Draw(spriteBatch);
 
             spriteBatch.End();

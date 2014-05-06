@@ -83,7 +83,7 @@ namespace Map
             _position = position;
             _topNodeSize = textures[4].Width - 1;
 
-            _vertices = new MapRender(textures[4], scale);
+            _vertices = new MapRender(textures[4], scale, textures[7]);
             _buffers = new BufferManager(_vertices.Vertices, device);
             _rootNode = new QuadNode(NodeType.FullNode, _topNodeSize, 1, null, this, 0);
 
