@@ -107,6 +107,7 @@ namespace AntHill
 
                     quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
             quadTree.Cull = true;
+            quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24Stencil8);
             water = new Water(device, Content, texture[4].Width, 1);
            
 
@@ -298,7 +299,13 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             spriteBatch.Begin();
      /*       spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                 new Vector2(10.0f, 20.0f), Color.Tomato);
+<<<<<<< .mine
+            Vector2 pos = new Vector2(graphics.PreferredBackBufferWidth - (graphics.PreferredBackBufferWidth / 10), 0);
+            spriteBatch.Draw(quadTree.shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
+            spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik),
+=======
                 spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik),
+>>>>>>> .r94
                 new Vector2(10.0f, 50.0f), Color.Tomato);
             spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", kolizja),
               new Vector2(10.0f, 80.0f), Color.Pink); */

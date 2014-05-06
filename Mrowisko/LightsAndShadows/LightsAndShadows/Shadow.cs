@@ -25,6 +25,7 @@ namespace LightsAndShadows
             set { shadowMap = value; }
         }
         public Matrix lightsViewProjectionMatrix;
+        public Matrix woldsViewProjection;
         public Shadow()
         {
 
@@ -38,11 +39,16 @@ namespace LightsAndShadows
             //lightPower = 1.0f;
 
             Matrix lightsView = Matrix.CreateLookAt(lightPos, camera.Target, new Vector3(0, 1, 0));
-            Matrix lightsProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver2, 1.333333f, 0.1f, 100000f);
+            Matrix lightsProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver2, 1.333333f, 100f, 1000f);
 
-            lightsViewProjectionMatrix = lightsView * lightsProjection;
+            lightsViewProjectionMatrix = Matrix.Identity * lightsView * lightsProjection;
+            woldsViewProjection = Matrix.Identity * camera.View * camera.Projection;
         }
 
+        public void setShadowMap()
+        {
+            this.ShadowMap = (Texture2D)this.RenderTarget;
+        }
         public void ShadowToText()
         {
 
