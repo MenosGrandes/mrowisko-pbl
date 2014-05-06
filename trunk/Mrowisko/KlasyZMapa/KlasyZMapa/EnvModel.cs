@@ -15,7 +15,7 @@ using GameCamera;
 
 namespace Map
 {
-    public class EnvModel
+    class EnvModel
     {
         private VertexBuffer VertexBuffer;
         private Effect bbEffect;
@@ -57,7 +57,7 @@ namespace Map
             this.envModel = envModel;
             this.device = device;
             this.scale = scale;
-            this.scaleM = new Vector3((float)scale/150);
+            this.scaleM = new Vector3(scale/30);
             this.objMap = objMap;
 
 
@@ -105,11 +105,11 @@ namespace Map
 
                             for (int currDetail = 0; currDetail < density; currDetail++)
                             {
-                                float rand1 = (float)random.Next(10000) / 10000.0f;
-                                float rand2 = (float)random.Next(10000) / 10000.0f;
+                                float rand1 = (float)random.Next(1000000) / 10000000.0f;
+                                float rand2 = (float)random.Next(1000000) / 10000000.0f;
                                 Vector3 position = new Vector3((float)x - rand1, 0, (float)y - rand2);
                                 position.Y = heightData[x, y];
-                                envBilbList.Add(position );
+                                envBilbList.Add(position * scale);
                             }
                         }
                     }
@@ -129,14 +129,35 @@ namespace Map
             Random random = new Random();
             foreach (Vector3 currentV3 in envBilbList)
             {
-                float rand1 = (float)random.Next(360000) / 10000.0f;
+                float rand1 = (float)random.Next(360000) / 100.0f;
                 models.Add(new LoadModel(envModel, currentV3, new Vector3(0, rand1, 0), scaleM, this.device));
 
 
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public void CreateBillboardVerticesFromList()
+        {
 
+            VertexPositionTexture[] billboardVertices = new VertexPositionTexture[envBilbList.Count * 6];
+            int i = 0;
+            foreach (Vector3 currentV3 in envBilbList)
+            {
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 0));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 1));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 1));
+
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 0));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 0));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 1));
+
+            }
+            VertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
+            VertexBuffer.SetData(billboardVertices);
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -150,6 +171,7 @@ namespace Map
                     model.Draw(camera.View, camera.Projection);
                      licznik++;
                 }
+            Console.WriteLine(licznik);
 
 
         }
