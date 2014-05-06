@@ -22,7 +22,9 @@ namespace Map
         public Vector3 Normal;
         public Vector4 TextureCoordinate;
         public Vector4 TexWeights;
-        public static int SizeInBytes = (3 + 3 + 4 + 4) * sizeof(float);
+        public Vector4 TexWeights2;
+
+        public static int SizeInBytes = (3 + 3 + 4 + 4 + 4) * sizeof(float);
 
         VertexDeclaration IVertexType.VertexDeclaration
         {
@@ -33,7 +35,9 @@ namespace Map
      new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
      new VertexElement(sizeof(float) * 3, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0),
      new VertexElement(sizeof(float) * 6, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 0),
-     new VertexElement(sizeof(float) * 10, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 1)
+     new VertexElement(sizeof(float) * 10, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 1),
+     new VertexElement(sizeof(float) * 14, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 2)
+
  );
     }
     /// <summary>
@@ -64,7 +68,7 @@ namespace Map
            get;
            set;
        }
-       public decimal[,] getHeight
+       public float[,] colorHeightData
        {
            get;
            set;
@@ -101,12 +105,12 @@ namespace Map
         /// </summary>
         /// <param name="texture"> Heigh Map image of terrain</param>
         /// <param name="Scale">It's scale.</param>
-    public MapRender (Texture2D texture,int Scale)    
+    public MapRender (Texture2D texture,int Scale,Texture2D color)    
     {
 
 
 
-            LoadHeightData(texture);
+            LoadHeightData(texture,color);
             SetUpvertices(Scale);
             SetUpTerrainIndices();
             CalculateNormals();
@@ -121,10 +125,13 @@ namespace Map
                                         ///             Loading informations about heigh from texture.
                                         /// </summary>
                                         /// <param name="heightMap">Heigh Map image</param>
-        private void LoadHeightData(Texture2D heightMap)
+    private void LoadHeightData(Texture2D heightMap, Texture2D color)
         {
             float minimumHeight = float.MaxValue;
             float maximumHeight = float.MinValue;
+
+            float minimumHeight2 = float.MaxValue;
+            float maximumHeight2 = float.MinValue;
 
             terrainWidth = heightMap.Width;
             terrainLength = heightMap.Height;
@@ -132,20 +139,30 @@ namespace Map
             Color[] heightMapColors = new Color[terrainWidth * terrainLength];
             heightMap.GetData(heightMapColors);
 
+            Color[] heightMapColors2 = new Color[terrainWidth * terrainLength];
+            color.GetData(heightMapColors2);
+
             heightData = new float[terrainWidth, terrainLength];
+            colorHeightData = new float[terrainWidth, terrainLength];
+
             for (int x = 0; x < terrainWidth; x++)
                 for (int y = 0; y < terrainLength ; y++)
                 {
                     heightData[x, y] = heightMapColors[x + y * terrainWidth].R ;
                     if (heightData[x, y] < minimumHeight) minimumHeight = heightData[x, y];
                     if (heightData[x, y] > maximumHeight) maximumHeight = heightData[x, y];
+
+                    colorHeightData[x, y] = heightMapColors2[x + y * terrainWidth].R;
+                    if (colorHeightData[x, y] < minimumHeight2) minimumHeight2 = colorHeightData[x, y];
+                    if (colorHeightData[x, y] > maximumHeight2) maximumHeight2 = colorHeightData[x, y];
                 }
 
             for (int x = 0; x < terrainWidth; x++)
                 for (int y = 0; y < terrainLength; y++)
                 {
                     heightData[x, y] = (heightData[x, y] - minimumHeight) / (maximumHeight - minimumHeight) * 30.0f;
-                   
+                    colorHeightData[x, y] = (colorHeightData[x, y] - minimumHeight2) / (maximumHeight2 - minimumHeight2) * 30.0f;
+
                 }
         }
 
@@ -164,7 +181,8 @@ namespace Map
                     vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, y * Scale);
                     vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 5.0f;
                     vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 5.0f;
-                        
+                    #region Heigh Vertices
+
                     vertices[x + y * terrainWidth].TexWeights.X = MathHelper.Clamp(1.0f - Math.Abs(heightData[x, y] - 0) / 8.0f, 0, 1);
                     vertices[x + y * terrainWidth].TexWeights.Y = MathHelper.Clamp(1.0f - Math.Abs(heightData[x, y] - 12) / 6.0f, 0, 1);
                     vertices[x + y * terrainWidth].TexWeights.Z = MathHelper.Clamp(1.0f - Math.Abs(heightData[x, y] - 20) / 6.0f, 0, 1);
@@ -179,6 +197,23 @@ namespace Map
                     vertices[x + y * terrainWidth].TexWeights.Y /= total;
                     vertices[x + y * terrainWidth].TexWeights.Z /= total;
                     vertices[x + y * terrainWidth].TexWeights.W /= total;
+                    #endregion
+                    #region Color Map Vertices
+                    vertices[x + y * terrainWidth].TexWeights2.X = MathHelper.Clamp(1.0f - Math.Abs(colorHeightData[x, y] - 0) / 8.0f, 0, 1);
+                    vertices[x + y * terrainWidth].TexWeights2.Y = MathHelper.Clamp(1.0f - Math.Abs(colorHeightData[x, y] - 12) / 6.0f, 0, 1);
+                    vertices[x + y * terrainWidth].TexWeights2.Z = MathHelper.Clamp(1.0f - Math.Abs(colorHeightData[x, y] - 20) / 6.0f, 0, 1);
+                    vertices[x + y * terrainWidth].TexWeights2.W = MathHelper.Clamp(1.0f - Math.Abs(colorHeightData[x, y] - 30) / 6.0f, 0, 1);
+
+                    float total2 = vertices[x + y * terrainWidth].TexWeights2.X;
+                    total2 += vertices[x + y * terrainWidth].TexWeights2.Y;
+                    total2 += vertices[x + y * terrainWidth].TexWeights2.Z;
+                    total2 += vertices[x + y * terrainWidth].TexWeights2.W;
+
+                    vertices[x + y * terrainWidth].TexWeights2.X /= total2;
+                    vertices[x + y * terrainWidth].TexWeights2.Y /= total2;
+                    vertices[x + y * terrainWidth].TexWeights2.Z /= total2;
+                    vertices[x + y * terrainWidth].TexWeights2.W /= total2;
+                    #endregion
                 }
             }
 

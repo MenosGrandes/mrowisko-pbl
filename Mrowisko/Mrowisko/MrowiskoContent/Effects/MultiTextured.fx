@@ -139,6 +139,7 @@ struct MTVertexToPixel
 	float2 TextureCoords    : TEXCOORD1;
 	float4 LightDirection    : TEXCOORD2;
 	float4 TextureWeights    : TEXCOORD3;
+	float4 TextureWeights2    : TEXCOORD7;
 
 
 	float Depth : TEXCOORD4;
@@ -158,7 +159,7 @@ float DotProduct(float3 lightPos, float3 pos3D, float3 normal)
 		return dot(-lightDir, normal);
 }
 
-MTVertexToPixel MultiTexturedVS(float4 inPos : POSITION, float3 inNormal : NORMAL, float2 inTexCoords : TEXCOORD0, float4 inTexWeights : TEXCOORD1)
+MTVertexToPixel MultiTexturedVS(float4 inPos : POSITION, float3 inNormal : NORMAL, float2 inTexCoords : TEXCOORD0, float4 inTexWeights : TEXCOORD1, float4 inTexWeights2 : TEXCOORD2)
 {
 	MTVertexToPixel Output = (MTVertexToPixel)0;
 	float4x4 preViewProjection = mul(xView, xProjection);
@@ -167,9 +168,12 @@ MTVertexToPixel MultiTexturedVS(float4 inPos : POSITION, float3 inNormal : NORMA
 		Output.Position = mul(inPos, preWorldViewProjection);
 	Output.Normal = mul(normalize(inNormal), xWorld);
 	Output.TextureCoords = inTexCoords;
+
 	//Output.LightDirection.xyz = -xLightDirection;
 	//Output.LightDirection.w = 1;    
 	Output.TextureWeights = inTexWeights;
+	Output.TextureWeights2 = inTexWeights2;
+
 	Output.Position3D = mul(inPos, xWorld);
 
 	Output.Depth = Output.Position.z / Output.Position.w;
@@ -209,17 +213,18 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 	nearColor += tex2D(TextureSampler1, nearTextureCoords)*PSIn.TextureWeights.y;
 	nearColor += tex2D(TextureSampler2, nearTextureCoords)*PSIn.TextureWeights.z;
 	nearColor += tex2D(TextureSampler3, nearTextureCoords)*PSIn.TextureWeights.w;
+  //////////////////////////////////////////////////////////////////////////////////////
+	float4 farColor2;
 
-	float4 groundSample = tex2D(GroundSampler, PSIn.TextureCoords / 100);
+	farColor2 = tex2D(GroundText2Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.w;
 
-		float4 colour = float4(0, 0, 0, 1);
-	colour += tex2D(GroundText0Sampler, PSIn.TextureCoords) *groundSample.r;
-	colour += tex2D(GroundText1Sampler, PSIn.TextureCoords) * groundSample.g;
-	colour += tex2D(GroundText2Sampler, PSIn.TextureCoords) * groundSample.b;
-	
+	float4 nearColor2;
+
+	nearColor2 = tex2D(GroundText2Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.w;
 	//Output.Color = ;
-	Output.Color = lerp(nearColor, farColor, blendWidth)*(diffuseLightingFactor + xAmbient);
-	Output.Color += colour;
+	farColor.w = farColor.w;
+	
+		Output.Color = lerp(farColor, nearColor, blendWidth)*(diffuseLightingFactor + xAmbient);//  lerp(nearColor, farColor, blendWidth)*(diffuseLightingFactor + xAmbient);
 	  if (Clipping)
 	   clip(PSIn.clipDistances);  //MSS - Water Refactor added
 	return Output;
