@@ -100,6 +100,10 @@
       <Project>{6cf85617-ff97-4e13-bd6b-11df8733dec7}</Project>
       <Name>GameCamera</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Debugger\Debugger.csproj">
+      <Project>{0686462b-ec32-4394-89b1-c299d49bcae1}</Project>
+      <Name>Debugger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\KlasyZJednostkami\KlasyZJednostakmi\Logic.csproj">
       <Project>{b398f88c-483b-457f-aaec-a71d70280724}</Project>
       <Name>Logic</Name>

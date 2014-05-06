@@ -15,7 +15,7 @@ using GameCamera;
 
 namespace Map
 {
-    class EnvBilb
+    public class EnvBilb
     {
         
         private VertexBuffer VertexBuffer;
@@ -53,7 +53,7 @@ namespace Map
             this.content = Content;
             bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
             bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
-            bbEffect.Parameters["xScale"].SetValue(this.scale);
+            bbEffect.Parameters["xScale"].SetValue((float)this.scale);
             bbEffect.Parameters["xBillboardTexture"].SetValue(envBilbTexture);
 
 
@@ -85,7 +85,7 @@ namespace Map
                 for (int y = 0; y < terrainLength; y++)
                 {
                     float terrainHeight = heightData[x, y];
-                    if ((terrainHeight > 5) && (terrainHeight < 20))
+                    if ((terrainHeight > 1) && (terrainHeight <30))
                     {
                        
                         float flatness = Vector3.Dot(terrainVertices[x + y * terrainWidth].Normal, new Vector3(0, -1, 0));
@@ -113,7 +113,7 @@ namespace Map
                                 float rand2 = (float)random.Next(1000000) / 10000000.0f;
                                 Vector3 position = new Vector3((float)x - rand1, 0, (float)y - rand2);
                                 position.Y = heightData[x, y];
-                                envBilbList.Add(position * scale);
+                                envBilbList.Add(position );
                             }
                         }
                     }

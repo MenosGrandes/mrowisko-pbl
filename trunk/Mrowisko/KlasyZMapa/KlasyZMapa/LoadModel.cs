@@ -19,16 +19,16 @@ namespace Map
     {
         public Vector3 Position { get; set; }
         public Vector3 Rotation { get; set; }
-        public Boolean Selected;
-        public Vector3 playerTarget;
         public Vector3 Scale { get; set; }
         public Model Model { get; private set; }
+        public Boolean Selected;
+        public Vector3 playerTarget;
         public ContentManager content;
         public SkinningData skinningData;
         public AnimationPlayer Player;
         private Matrix[] modelTransforms;
         private GraphicsDevice graphicsDevice;
-        public BoundingSphere boundingSphere;
+        private BoundingSphere boundingSphere;
         public BoundingSphere BoundingSphere
         {
             get
@@ -82,6 +82,7 @@ namespace Map
                     ("This model does not contain a SkinningData tag.");
             this.skinningData = Model.Tag as SkinningData;
             Player = new AnimationPlayer(skinningData);
+            buildBoundingSphere();
 
         }
 
@@ -95,11 +96,12 @@ namespace Map
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
+                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]); 
                 sphere = BoundingSphere.CreateMerged(sphere, transformed);
+
             }
             
-
+             
             this.boundingSphere = sphere;
                
         }
@@ -110,8 +112,7 @@ namespace Map
         /// <param name="Projection"></param>
         public void Draw(Matrix View, Matrix Projection)
         {
-            Matrix baseWorld = Matrix.CreateScale(Scale)
-            * Matrix.CreateFromYawPitchRoll(
+            Matrix baseWorld = Matrix.CreateScale(Scale)* Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)
             * Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in Model.Meshes)
@@ -125,9 +126,8 @@ namespace Map
                     effect.View = View;
                     effect.Projection = Projection;
                     effect.EnableDefaultLighting();
-                    
                 }
-              
+
                 mesh.Draw();
             }
 
@@ -138,8 +138,7 @@ namespace Map
         /// <param name="View"></param>
         /// <param name="Projection"></param>
         /// <param name="CameraPosition"></param>
-        /// 
-         public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
+        public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
         {
 
             Matrix[] bones = Player.GetSkinTransforms();
@@ -182,9 +181,10 @@ namespace Map
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
          Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+
         }
 
-       
+
 
     }
 }
