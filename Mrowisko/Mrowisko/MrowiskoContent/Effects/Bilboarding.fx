@@ -37,8 +37,8 @@ BBVertexToPixel CylBillboardVS(float3 inPos: POSITION0, float2 inTexCoord : TEXC
 	float3 finalPosition = center;
 		
 
-		finalPosition += ((inTexCoord.x - 0.5f)*(xScale ))*sideVector*xScale;
-	finalPosition += ((1.5f - inTexCoord.y*1.5f)*(xScale ))*upVector*xScale;
+		finalPosition += ((inTexCoord.x - 0.5f)*(xScale / 30))*sideVector*xScale;
+	finalPosition += ((1.5f - inTexCoord.y*1.5f)*(xScale / 30))*upVector*xScale;
 	float4 finalPosition4 = float4(finalPosition, 1);
 
 		float4x4 preViewProjection = mul(xView, xProjection);

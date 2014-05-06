@@ -17,8 +17,6 @@ namespace Map
     public class QuadTree
     {
 
-        public LoadModel model;
-
         public int MinimumDepth = 7;
         public int IndexCount { get; private set; }
         public BasicEffect Effect;
@@ -27,8 +25,7 @@ namespace Map
         public BufferManager _buffers;
         private Vector3 _position;
         private int _topNodeSize;
-        public LightsAndShadows.Shadow shadow;
-        LightsAndShadows.Light light;
+        LightsAndShadows.Shadow shadow;
         private Vector3 _cameraPosition;
         private Vector3 _lastCameraPosition;
 
@@ -57,8 +54,8 @@ namespace Map
         public bool Cull { get; set; }
         private QuadNode _activeNode;
 
-        public List<EnvModel> envModelList = new List<EnvModel>();
-        public List<EnvBilb> envBilbList = new List<EnvBilb>();
+        List<EnvModel> envModelList = new List<EnvModel>();
+        List<EnvBilb> envBilbList = new List<EnvBilb>();
         /// <summary>
         /// Create terrain at <paramref name="position"/>
         /// </summary>
@@ -71,13 +68,12 @@ namespace Map
         public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale, ContentManager Content, GameCamera.FreeCamera camera)
         {
             shadow = new LightsAndShadows.Shadow();
-            light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(513, 45, 513));
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
-            Model model = Content.Load<Model>("Models/stone2");
-            this.model = new LoadModel(model, Vector3.One, Vector3.Up, new Vector3(1), device);
+            Model model = Content.Load<Model>("Models/mrowka_01");
             this.textures = textures;
             effect = Content.Load<Effect>("Effects/MultiTextured");
+           // effect2 = Content.Load<Effect>("Effects/Shadows");
             Device = device;
 
             _position = position;
@@ -108,6 +104,7 @@ namespace Map
 
 
             
+       effect.CurrentTechnique = effect.Techniques["MultiTextured"];
        effect.Parameters["xTexture0"].SetValue(textures[1]);
        effect.Parameters["xTexture1"].SetValue(textures[0]);
        effect.Parameters["xTexture2"].SetValue(textures[2]);
@@ -116,8 +113,8 @@ namespace Map
        Matrix worldMatrix = Matrix.Identity;
        effect.Parameters["xWorld"].SetValue(worldMatrix);
        effect.Parameters["xEnableLighting"].SetValue(true);
-       effect.Parameters["xAmbient"].SetValue(light.Ambient);
-       effect.Parameters["xLightPower"].SetValue(light.LightPower);
+       effect.Parameters["xAmbient"].SetValue(0.4f);
+       effect.Parameters["xLightPower"].SetValue(1.0f);
        
           
 
@@ -127,21 +124,28 @@ namespace Map
    effect.Parameters["GroundText2"].SetValue(textures[10]);
 
 
-   _rootNode.EnforceMinimumDepth();
 
 
         }
         public void Update(GameTime gameTime)
         {
 
-            
+            //Only update if the camera position has changed
 
 
 
-       
+
+            // _lastCameraPosition = _cameraPosition;
             IndexCount = 0;
 
+            _rootNode.EnforceMinimumDepth();
 
+            // _activeNode = _rootNode.DeepestNodeWithPoint(CameraPosition);
+
+            // if (_activeNode != null)
+            // {
+            //     _activeNode.Split();
+            //  }
 
             _rootNode.SetActiveVertices();
 
@@ -150,15 +154,10 @@ namespace Map
         }
         public void Draw(GameCamera.FreeCamera camera, float time)
         {
-            effect.CurrentTechnique = effect.Techniques["MultiTextured"];
-
+            
             //RasterizerState rasterizerState = new RasterizerState();
             //rasterizerState.FillMode = FillMode.WireFrame;
             //Device.RasterizerState = rasterizerState;
-
-         //   this.Device.SetRenderTarget(shadow.RenderTarget);
-          //  this.Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-
             this.CameraPosition = camera.Position;
             this.View = camera.View;
             this.Projection = camera.Projection;
@@ -166,65 +165,42 @@ namespace Map
 
             this.Device.SetVertexBuffer(_buffers.VertexBuffer);
             this.Device.Indices = _buffers.IndexBuffer;
-          //  this.x+=1;
+            this.x+=1;
+           // this.y+=1;
+         //   effect.Parameters["xLightPos"].SetValue(new Vector3(1250+x, 800, 1250+x));
+           // shadow.UpdateLightData(0.4f, 0.6f, new Vector3(1250+x, 800, 1250+x), camera);
 
-          //  this.model.Position = light.lightPosChange(time);
-            effect.Parameters["xLightPos"].SetValue(light.lightPosChange(time));
+          //  effect.CurrentTechnique = effect.Techniques["ShadowMap"];
+          //  effect.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
 
+       effect.Parameters["xView"].SetValue(camera.View);
+       effect.Parameters["xProjection"].SetValue(camera.Projection);
 
-           shadow.UpdateLightData(0.4f, 0.6f, this.model.Position, camera);
-          //  Console.WriteLine("pozycja " + this.model.Position);
-        //  Console.WriteLine("pozycja mnozenie " + light.lightPosChange(time*100));
-           
+       effect.Parameters["xTime2"].SetValue(time );
 
-          effect.Parameters["xView"].SetValue(camera.View);
-          effect.Parameters["xProjection"].SetValue(camera.Projection);
-             effect.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
-           effect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
-           
-           /*
-            effect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
-
-             Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-             effect.CurrentTechnique = effect.Techniques["ShadowMap"];
 
            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
            {
+
                pass.Apply();
-
-                   if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
-             
-        
-
-           }
-
-           Device.SetRenderTarget( null);
-           shadow.ShadowMap = (Texture2D)shadow.RenderTarget;
-           Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-           effect.CurrentTechnique = effect.Techniques["ShadowedScene"];
-           effect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
-            * */
-           foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-           {
-               pass.Apply();
+              
                if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
+
            }
-
-
-
 
             /*
-           foreach (EnvModel pass1 in envModelList)
-           {
-               pass1.DrawModels(camera);
-           }
-           
-      
-           foreach (EnvBilb pass in envBilbList)
-           {
-               pass.DrawBillboards(camera.View, camera.Projection, camera.Position, time / 10);
-           }
-               */
+            foreach (EnvModel pass1 in envModelList)
+            {
+                pass1.DrawModels(camera);
+            }
+            Device.BlendState = BlendState.AlphaBlend;
+             
+          */
+      //      foreach (EnvBilb pass in envBilbList)
+      //      {
+       //         pass.DrawBillboards(camera.View, camera.Projection, camera.Position,time/10);
+       //     }
+
            
 
         }
