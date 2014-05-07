@@ -55,9 +55,9 @@ namespace Logic
            
             if (currentMouseState.RightButton == ButtonState.Pressed && !mouseDown)
             {
-              //  SelectedModels.Clear();
+                //SelectedModels.Clear();
 
-                
+                SelectedModels.Clear();
                 mouseDown = true;
                 position = new Vector2(currentMouseState.X, currentMouseState.Y);
                 position3d = CalculateMouse3DPosition(position);
@@ -71,18 +71,16 @@ namespace Logic
             }
             else if (currentMouseState.RightButton == ButtonState.Pressed)
             {
-                Selected();
-                foreach (Map.LoadModel ant in models)
-                    if (ant.Selected)
-                    {
 
-                        SelectedModels.Add(ant);
-                    }
-                    else
+                SelectedModels.Clear();
+                Selected();
+
+                for (int i = 0; i < models.Count; i++)
+                    if (models[i].Selected)
                     {
-                        //f = 0;
-                        SelectedModels.Clear();
+                        SelectedModels.Add(models[i]);
                     }
+   
 
                 selectCorner = new Vector2(currentMouseState.X, currentMouseState.Y);
                 if (selectCorner.X > position.X)
@@ -148,13 +146,13 @@ namespace Logic
                 {
                     //if (ant.Selected)
                     {
-                        if (ant.Position.X == ant.playerTarget.X && ant.Position.Z == ant.playerTarget.Z)
+                        if(Compare(ant.playerTarget, ant.Position))
                         {
                             //ant.Selected = false;
                             return;
                         }
 
-                        float Speed = (float)30;
+                        float Speed = (float)10;
                         if (ant.Position.X > ant.playerTarget.X)
                         {
                             ant.Position += Vector3.Left * Speed;
@@ -224,6 +222,17 @@ namespace Logic
         }
 
 
+        public static bool Compare(Vector3 v1, Vector3 v2)
+        {
+            bool equal = true;
+            float precision = 0.1f;
+
+            if (Math.Abs(v1.X - v2.X) > precision) equal = false;
+            if (Math.Abs(v1.Y - v2.Y) > precision) equal = false;
+            if (Math.Abs(v1.Z - v2.Z) > precision) equal = false;
+
+            return equal;
+        }
         private Vector3 CalculateMouse3DPosition()
         {
             Plane GroundPlane = new Plane(0, 1, 0, 0); // x - lewo prawo Z- gora dol
