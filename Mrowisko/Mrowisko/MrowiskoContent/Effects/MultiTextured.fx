@@ -140,13 +140,10 @@ struct MTVertexToPixel
 	float2 TextureCoords    : TEXCOORD1;
 	float4 LightDirection    : TEXCOORD2;
 	float4 TextureWeights    : TEXCOORD3;
-	float4 TextureWeights2    : TEXCOORD7;
-
-
 	float Depth : TEXCOORD4;
-	float4 clipDistances                : TEXCOORD5;
+	float4 clipDistances : TEXCOORD5;
 	float4 Position3D        : TEXCOORD6;
-
+	float4 TextureWeights2    : TEXCOORD7;
 };
 
 struct MTPixelToFrame
@@ -160,7 +157,7 @@ float DotProduct(float3 lightPos, float3 pos3D, float3 normal)
 		return dot(-lightDir, normal);
 }
 
-<<<<<<< .mine
+
 float4 ComputeShadowColor(float4 worldPos, float4 Color)
 {
 	// Find the position of this pixel in light space
@@ -191,10 +188,8 @@ float4 ComputeShadowColor(float4 worldPos, float4 Color)
 	return Color;
 }
 
-MTVertexToPixel MultiTexturedVS(float4 inPos : POSITION, float3 inNormal : NORMAL, float2 inTexCoords : TEXCOORD0, float4 inTexWeights : TEXCOORD1)
-=======
+
 MTVertexToPixel MultiTexturedVS(float4 inPos : POSITION, float3 inNormal : NORMAL, float2 inTexCoords : TEXCOORD0, float4 inTexWeights : TEXCOORD1, float4 inTexWeights2 : TEXCOORD2)
->>>>>>> .r94
 {
 	MTVertexToPixel Output = (MTVertexToPixel)0;
 	float4x4 preViewProjection = mul(xView, xProjection);
@@ -250,26 +245,29 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 	nearColor += tex2D(TextureSampler3, nearTextureCoords)*PSIn.TextureWeights.w;
   //////////////////////////////////////////////////////////////////////////////////////
 	float4 farColor2;
+	//farColor2 = tex2D(GroundText0Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.x;
+	farColor2 = tex2D(GroundText1Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.y;
+	farColor2 += tex2D(GroundText2Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.z;
+	farColor2 += tex2D(GroundText2Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.w;
 
-	farColor2 = tex2D(GroundText2Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.w;
 
-<<<<<<< .mine
-		float4 colour = float4(0, 0, 0, 1);
-		colour += tex2D(GroundText0Sampler, PSIn.TextureCoords) *groundSample.r;
-	colour += tex2D(GroundText1Sampler, PSIn.TextureCoords) * groundSample.g;
-	colour += tex2D(GroundText2Sampler, PSIn.TextureCoords) * groundSample.b;
-=======
 	float4 nearColor2;
+	float2 nearTextureCoords2 = PSIn.TextureCoords / 3;
+		//nearColor2 = tex2D(GroundText0Sampler, nearTextureCoords2)*PSIn.TextureWeights2.x;
+	nearColor2 = tex2D(GroundText1Sampler, nearTextureCoords2)*PSIn.TextureWeights2.y;
+	nearColor2 += tex2D(GroundText2Sampler, nearTextureCoords2)*PSIn.TextureWeights2.z;
+	nearColor2 += tex2D(GroundText2Sampler, nearTextureCoords2)*PSIn.TextureWeights2.w;
 
-	nearColor2 = tex2D(GroundText2Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.w;
-	//Output.Color = ;
-	farColor.w = farColor.w;
->>>>>>> .r94
+
+
+		Output.Color = lerp(farColor, nearColor, blendWidth)*(diffuseLightingFactor + xAmbient)+  lerp(nearColor2, farColor2, blendWidth)*(diffuseLightingFactor + xAmbient);
+
+
 	
-<<<<<<< .mine
 
-	float4 Color;
-	Color = ComputeShadowColor(mul(PSIn.Position, xWorldViewProjection), Output.Color);
+
+	float4 Color=(0,0,0,0);
+	//Color = ComputeShadowColor(mul(PSIn.Position, xWorldViewProjection), Output.Color);
 	
 	
 	Output.Color = lerp(nearColor, farColor, blendWidth)*(diffuseLightingFactor + xAmbient);
@@ -277,9 +275,7 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 	//Output.Color += colour;
 	
 	Output.Color += Color;
-=======
-		Output.Color = lerp(farColor, nearColor, blendWidth)*(diffuseLightingFactor + xAmbient);//  lerp(nearColor, farColor, blendWidth)*(diffuseLightingFactor + xAmbient);
->>>>>>> .r94
+
 	  if (Clipping)
 	   clip(PSIn.clipDistances);  //MSS - Water Refactor added
 	return Output;

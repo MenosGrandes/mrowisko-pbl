@@ -27,20 +27,25 @@ namespace GameCamera
             this.Pitch = Pitch;
             translation = Vector3.Zero;
             
-            Move(Position, 1.0f);
+            Move(Position, 1.0f,Matrix.Identity);
         }
         public void Rotate(float YawChange, float PitchChange)
         {
             this.Yaw += YawChange;// MathHelper.Lerp((float)MathHelper.ToRadians(this.Yaw), YawChange, 0.9f);
             this.Pitch += PitchChange;
         }
-        public void Move(Vector3 Translation,float time)
+        public void Move(Vector3 Translation,float time,Matrix rotation)
         {
+            Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
+
             this.translation += Translation*time;
-            Position = Vector3.Lerp(translation, Position, 0.9f);
+            
+
+            Position = Vector3.Lerp(Position,translation, 0.1f);
         }
         public override void Update(GameTime gameTime)
         {
+
             int scale = 11;
             MouseState mouseState = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
@@ -57,29 +62,32 @@ namespace GameCamera
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             float rotatate = 0;
        
-            if (keyState.IsKeyDown(Keys.W)) translation += new Vector3(0, 0, 1) * MathHelper.ToRadians(Pitch) * scale;
-            if (keyState.IsKeyDown(Keys.S)) translation += new Vector3(0, 0, -1) * MathHelper.ToRadians(Pitch) * scale ;
+            if (keyState.IsKeyDown(Keys.W)) translation += new Vector3(0, -1, 1) * MathHelper.ToRadians(Pitch) * scale;
+            if (keyState.IsKeyDown(Keys.S)) translation += new Vector3(0, 1, -1) * MathHelper.ToRadians(Pitch) * scale ;
             if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.Q)) rotatate += MathHelper.ToRadians(0.05f);
             if (keyState.IsKeyDown(Keys.E)) rotatate -=MathHelper.ToRadians(0.05f);
             if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
             {
-               translation+= Vector3.Lerp(translation, new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale,0.1f);
+               translation+= Vector3.Lerp(translation, new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale,0.3f);
             }
             else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)
             {
-                translation += Vector3.Lerp(translation, new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1 * scale, 0.1f);
+                translation += Vector3.Lerp(translation, new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1 * scale, 0.3f);
 
             }
-
+            Console.WriteLine(mouseState.ScrollWheelValue);
             // Move 3 units per millisecond, independent of frame rate
            // translation *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             rotatate *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             // Move the camera
-          
+                
+
             Rotate( rotatate,0);
-            Move(translation, (float)gameTime.ElapsedGameTime.TotalMilliseconds);
+            Matrix rotation = Matrix.CreateFromYawPitchRoll(Yaw, Pitch, 0);
+            Move(translation, (float)gameTime.ElapsedGameTime.TotalMilliseconds, rotation);
+
 
 
 
@@ -87,10 +95,8 @@ namespace GameCamera
      // Camera.Position = Target - Camera.Forward * Zoom;
     //  Camera.View = Matrix.CreateLookAt( Camera.Position, Target, Camera.Up);
             // Calculate the rotation matrix
-            Matrix rotation = Matrix.CreateFromYawPitchRoll(Yaw, Pitch, 0);
             // Offset the position and reset the translation    
-            translation = Vector3.Transform(translation, rotation);
-            Position += translation;
+          //  Position += translation;
             // Calculate the new target
             Vector3 forward = Vector3.Transform(Vector3.Forward, rotation);
             Target = Position + forward;
