@@ -12,6 +12,7 @@ using Logic.Building.AntBuildings.SeedFarms;
 using System;
 using Logic.Units.Ants;
 using Logic.Meterials;
+using Logic.Meterials.MaterialCluster;
 
 namespace AntHill
 {
@@ -24,7 +25,6 @@ namespace AntHill
         List<InteractiveModel> IModel = new List<InteractiveModel>();
         Control control;
 
-        Player player;
         GraphicsDeviceManager graphics;
         public GraphicsDevice device;
         float x, y, z;
@@ -113,8 +113,8 @@ namespace AntHill
             water = new Water(device, Content, texture[4].Width, 1);
            
 
-           models.Add(new AntPeasant(10,10,10,10,10,10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice),10));
-           models.Add(new Wood(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150,14,-150), Vector3.Up, new Vector3(0.3f), GraphicsDevice)));
+           models.Add(new AntPeasant(10,10,10,10,10,10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice),101 ));
+           models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150,14,-150), Vector3.Up, new Vector3(1), GraphicsDevice),3000));
 
             //inter = quadTree.ants.Models;
 
@@ -150,7 +150,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             control = new Control(texture[11]);
             inter.Add(models[0]);
             models.Add(gr);
-            player = new Player();
+            
 
    }
 
@@ -211,7 +211,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
                     if (model.Model.BoundingSphere.Intersects(model2.Model.BoundingSphere))
                     {
 
-                          if(model.GetType().Name=="Wood" && model2.GetType().Name=="AntPeasant")
+                          if(model.GetType().Name=="Log" && model2.GetType().Name=="AntPeasant")
                           {
                                                           
                               model2.gaterMaterial((Material)model);
@@ -221,12 +221,11 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
 
                          
                           }
-                        if(model.GetType().Name=="AntGranary" && model2.GetType().Name=="AntPeasant")
+                        if(model.GetType().Name=="AntGranary" && model2.GetType().Name=="AntPeasant" &&((AntPeasant)model2).Capacity>0)
                         {
-                            if (((AntPeasant)model2).Capacity == ((AntPeasant)model2).MaxCapacity)
-                            {
-                            player.addWood(((AntPeasant)model2).releaseMaterial());
-                            }
+
+                            Player.addWood(((AntPeasant)model2).releaseMaterial());
+                           
                         }
                         
                         //kolizja = true;
@@ -340,7 +339,8 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
 
             spriteBatch.DrawString(_spr_font, string.Format("kolizja? ={0}", kolizja),new Vector2(10.0f, 80.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("Drewno mrowki={0}", ((AntPeasant)models[0]).Capacity), new Vector2(10.0f, 110.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("Drewno graczas={0}", player.wood), new Vector2(10.0f, 140.0f), Color.Pink); 
+            spriteBatch.DrawString(_spr_font, string.Format("Drewno graczas={0}",Player.wood ), new Vector2(10.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink); 
 
             control.Draw(spriteBatch);
 

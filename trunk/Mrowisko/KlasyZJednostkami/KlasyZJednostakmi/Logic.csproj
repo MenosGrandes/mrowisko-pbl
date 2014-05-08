@@ -83,6 +83,8 @@
     <Compile Include="Building\AntBuildings\SeedFarms\DicentraFarm.cs" />
     <Compile Include="Building\AntBuildings\SeedFarms\HyacyntFarm.cs" />
     <Compile Include="Meterials\Material.cs" />
+    <Compile Include="Meterials\MaterialCluster\Log.cs" />
+    <Compile Include="Meterials\MaterialCluster\Rock.cs" />
     <Compile Include="Meterials\Wood.cs" />
     <Compile Include="Units\Allies\Allies.cs" />
     <Compile Include="Units\Ants\Ant.cs" />

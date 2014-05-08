@@ -15,9 +15,6 @@ namespace Logic.Meterials
        }
        public Material()
        { }
-       public override void Draw(Matrix View, Matrix Projection)
-       {
-           model.Draw(View, Projection);
-       }
+
     }
 }

@@ -5,21 +5,21 @@ using System.Text;
 using Logic.Meterials;
 namespace AntHill
 {
-    public class Player
+   public static class  Player
     {
-       private List<Wood> Wood=new List<Wood>();
-       public int wood
+      static private List<Wood> Wood=new List<Wood>();
+     static  public int wood
        {
            get
            {
                return Wood.Count;
            }
        } 
-            public void addWood()
+            public static void addWood()
             {
                    Wood.Add(new Wood());
             }
-            public  void addWood(int n)
+            public static void addWood(int n)
             {
                 for (int i = 0; i < n;i++ )
                     Wood.Add(new Wood());
