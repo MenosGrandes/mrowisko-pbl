@@ -19,9 +19,9 @@ namespace Logic
         public Matrix View;
         public Matrix Projection;
         public GraphicsDevice device;
-        public List<Map.LoadModel> models;
+        public List<InteractiveModel> models;
         public Texture2D texture;
-        public List<Map.LoadModel> SelectedModels= new List<LoadModel>();
+        public List<InteractiveModel> SelectedModels = new List<InteractiveModel>();
         //private Vector3 playerTarget;
         private Vector2 selectCorner;
         private Rectangle selectRectangle;
@@ -42,11 +42,7 @@ namespace Logic
         }
         public void Update(GameTime gameTime)
         {
-            //pozycja mrowki
-            float pozycja_X_lewo = models[0].Position.X - 800;
-            float pozycja_X_prawo = models[0].Position.X + 800;
-            float pozycja_Z_gora = models[0].Position.Z + 400;
-            float pozycja_Z_dol = models[0].Position.Z - 800;
+
 
            
             currentMouseState = Mouse.GetState();
@@ -55,9 +51,9 @@ namespace Logic
            
             if (currentMouseState.RightButton == ButtonState.Pressed && !mouseDown)
             {
-                //SelectedModels.Clear();
+              //  SelectedModels.Clear();
 
-                SelectedModels.Clear();
+                
                 mouseDown = true;
                 position = new Vector2(currentMouseState.X, currentMouseState.Y);
                 position3d = CalculateMouse3DPosition(position);
@@ -71,16 +67,18 @@ namespace Logic
             }
             else if (currentMouseState.RightButton == ButtonState.Pressed)
             {
-
-                SelectedModels.Clear();
                 Selected();
-
-                for (int i = 0; i < models.Count; i++)
-                    if (models[i].Selected)
+                foreach (InteractiveModel ant in models)
+                    if (ant.Model.Selected)
                     {
-                        SelectedModels.Add(models[i]);
+
+                        SelectedModels.Add(ant);
                     }
-   
+                    else
+                    {
+                        //f = 0;
+                        SelectedModels.Clear();
+                    }
 
                 selectCorner = new Vector2(currentMouseState.X, currentMouseState.Y);
                 if (selectCorner.X > position.X)
@@ -115,8 +113,8 @@ namespace Logic
                 // This will give the player a target to go to.
                 foreach (var ant in SelectedModels)
                 {
-                    ant.playerTarget.X = mouse3d2.X;
-                    ant.playerTarget.Z = mouse3d2.Z;
+                    ant.Model.playerTarget.X = mouse3d2.X;
+                    ant.Model.playerTarget.Z = mouse3d2.Z;
                 }
             }
 
@@ -146,29 +144,35 @@ namespace Logic
                 {
                     //if (ant.Selected)
                     {
-                        if(Compare(ant.playerTarget, ant.Position))
+                        if (ant.Model.Position.X == ant.Model.playerTarget.X && ant.Model.Position.Z == ant.Model.playerTarget.Z)
                         {
                             //ant.Selected = false;
                             return;
                         }
 
-                        float Speed = (float)10;
-                        if (ant.Position.X > ant.playerTarget.X)
+                        float Speed = (float)30;
+                        if (ant.Model.Position.X > ant.Model.playerTarget.X)
                         {
-                            ant.Position += Vector3.Left * Speed;
+                            //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;
+                            ant.Model.Position += Vector3.Left * Speed;
                         }
-                        if (ant.Position.X < ant.playerTarget.X)
+                        if (ant.Model.Position.X < ant.Model.playerTarget.X)
                         {
-                            ant.Position += Vector3.Right * Speed;
+                            ant.Model.Position += Vector3.Right * Speed;
+                            //ant.Model.Position += new Vector3(0.01f, 0, 0) * Speed;
                         }
 
-                        if (ant.Position.Z > ant.playerTarget.Z)
+                        if (ant.Model.Position.Z > ant.Model.playerTarget.Z)
                         {
-                            ant.Position += Vector3.Forward * Speed;
+                           // ant.Model.Position += new Vector3(0, 0, -0.01f) * Speed;
+                            ant.Model.Position += Vector3.Forward * Speed;
+
                         }
-                        if (ant.Position.Z < ant.playerTarget.Z)
+                        if (ant.Model.Position.Z < ant.Model.playerTarget.Z)
                         {
-                            ant.Position += Vector3.Backward * Speed;
+                           // ant.Model.Position += new Vector3(0, 0, 0.01f) * Speed;
+                            ant.Model.Position += Vector3.Backward * Speed;
+
                         }
 
 
@@ -209,30 +213,19 @@ namespace Logic
 
             foreach (var ant in models)
             {
-                if ((minRectangle.X < ant.Position.X && maxRectangle.X > ant.Position.X) &&
-                (minRectangle.Z < ant.Position.Z && maxRectangle.Z > ant.Position.Z))
+                if ((minRectangle.X < ant.Model.Position.X && maxRectangle.X > ant.Model.Position.X) &&
+                (minRectangle.Z < ant.Model.Position.Z && maxRectangle.Z > ant.Model.Position.Z))
                 {
-                    ant.Selected = true;
+                    ant.Model.Selected = true;
                 }
                 else
                 {
-                    ant.Selected = false;
+                    ant.Model.Selected = false;
                 }
             }
         }
 
 
-        public static bool Compare(Vector3 v1, Vector3 v2)
-        {
-            bool equal = true;
-            float precision = 0.1f;
-
-            if (Math.Abs(v1.X - v2.X) > precision) equal = false;
-            if (Math.Abs(v1.Y - v2.Y) > precision) equal = false;
-            if (Math.Abs(v1.Z - v2.Z) > precision) equal = false;
-
-            return equal;
-        }
         private Vector3 CalculateMouse3DPosition()
         {
             Plane GroundPlane = new Plane(0, 1, 0, 0); // x - lewo prawo Z- gora dol

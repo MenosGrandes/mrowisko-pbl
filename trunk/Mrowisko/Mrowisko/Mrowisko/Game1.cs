@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using Logic.Building.AntBuildings.Granary;
 using Logic.Building.AntBuildings.SeedFarms;
 using System;
+using Logic.Units.Ants;
+using Logic.Meterials;
 
 namespace AntHill
 {
@@ -22,13 +24,13 @@ namespace AntHill
         List<InteractiveModel> IModel = new List<InteractiveModel>();
         Control control;
 
-
+        Player player;
         GraphicsDeviceManager graphics;
         public GraphicsDevice device;
         float x, y, z;
         SpriteBatch spriteBatch;
-        List<LoadModel> models = new List<Map.LoadModel>();
-        List<LoadModel> inter = new List<Map.LoadModel>();
+        List<InteractiveModel> models = new List<InteractiveModel>();
+        List<InteractiveModel> inter = new List<InteractiveModel>();
         public Camera camera;
         MouseState lastMouseState;
         Water water;
@@ -47,11 +49,6 @@ namespace AntHill
         int f = 0;
         Vector3 playerTarget;
         bool kolizja;
-        public LightsAndShadows.Shadow shadow;
-        public LightsAndShadows.Light light;
-        Effect hiDefShadowEffect;
-
-        Matrix world = Matrix.CreateTranslation(Vector3.Zero);
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -80,17 +77,13 @@ namespace AntHill
         /// </summary>
         protected override void LoadContent()
         {
-            light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(513, 100, 513));
-            shadow = new LightsAndShadows.Shadow();
+
                         PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
             pp.DepthStencilFormat = DepthFormat.Depth24Stencil8;
             pp.BackBufferHeight = 600;
             pp.BackBufferWidth = 800;
-           
-           
-            hiDefShadowEffect = Content.Load<Effect>("Effects/Shadows");
+
             device = GraphicsDevice;
-            shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, pp.BackBufferFormat, DepthFormat.Depth24Stencil8);
             spriteBatch = new SpriteBatch(GraphicsDevice);
             _spr_font = Content.Load<SpriteFont>("Fonts/FPS");// you have on your project
 
@@ -116,13 +109,13 @@ namespace AntHill
 
                     quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
             quadTree.Cull = true;
-            
+            quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24Stencil8);
             water = new Water(device, Content, texture[4].Width, 1);
+           
 
+           models.Add(new AntPeasant(10,10,10,10,10,10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice),10));
+           models.Add(new Wood(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150,14,-150), Vector3.Up, new Vector3(0.3f), GraphicsDevice)));
 
-            models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice));
-            models.Add(new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice));
-     
             //inter = quadTree.ants.Models;
 
           // GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -141,13 +134,13 @@ new Vector3(1), GraphicsDevice, Content);
             lastMouseState = Mouse.GetState();
 
             BoundingSphereRenderer.InitializeGraphics(device, 33);
-            AntGranary gr = new AntGranary(Content, new LoadModel(
+            AntGranary gr = new AntGranary( new LoadModel(
 Content.Load<Model>("Models/domek"),
-new Vector3(300, 40, 300), Vector3.Zero,
+new Vector3(300, 13, 300), Vector3.Zero,
 new Vector3(1), GraphicsDevice), 10, 10, 10, 10, 10);
 
 
-            HyacyntFarm hf = new HyacyntFarm(Content, new LoadModel(
+            HyacyntFarm hf = new HyacyntFarm( new LoadModel(
 Content.Load<Model>("Models/domek2"),
 new Vector3(100,15,100), Vector3.Up,
 new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
@@ -155,7 +148,9 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             IModel.Add(gr);
 
             control = new Control(texture[11]);
-
+            inter.Add(models[0]);
+            models.Add(gr);
+            player = new Player();
 
    }
 
@@ -194,16 +189,57 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
                 _fps = _total_frames;
                 _total_frames = 0;
                 _elapsed_time = 0;
+               
             }
-            if (keyState.IsKeyDown(Keys.C) && !keyState.IsKeyDown(Keys.C))
+            if (keyState.IsKeyDown(Keys.C) )
             {
-                quadTree.Cull = !quadTree.Cull;
+                RasterizerState rasterizerState = new RasterizerState();
+                rasterizerState.FillMode = FillMode.WireFrame;
+                GraphicsDevice.RasterizerState = rasterizerState;
             }
 
             
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-          
+            foreach (InteractiveModel model in models)
+            {
+               // Console.WriteLine(model.GetType().Name);
+                foreach (InteractiveModel model2 in models)
+                {
+                    if (model2 == model)
+                    { break; }
+                    if (model.Model.BoundingSphere.Intersects(model2.Model.BoundingSphere))
+                    {
+
+                          if(model.GetType().Name=="Wood" && model2.GetType().Name=="AntPeasant")
+                          {
+                                                          
+                              model2.gaterMaterial((Material)model);
+
+                             
+                               
+
+                         
+                          }
+                        if(model.GetType().Name=="AntGranary" && model2.GetType().Name=="AntPeasant")
+                        {
+                            if (((AntPeasant)model2).Capacity == ((AntPeasant)model2).MaxCapacity)
+                            {
+                            player.addWood(((AntPeasant)model2).releaseMaterial());
+                            }
+                        }
+                        
+                        //kolizja = true;
+                        //model.Model.Scale -= new Vector3(0.001f, 0.001f, 0.001f);
+                        //player.addWood();
+                        //if (model.Scale.X < 0)
+                        //{
+                        //    model.Position = new Vector3(1000, 10000, 10000);
+                        //}
+                    }
+                }
+
+            }
            
             quadTree.View =camera.View;
            quadTree.Projection = camera.Projection;
@@ -213,24 +249,13 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
 
             control.View = camera.View;
             control.Projection = camera.Projection;
-            control.models = models;
+            control.models = inter;
             control.device = device;
             control.Update(gameTime);
-
-             foreach(LoadModel model in models)
-             {
-                      foreach(LoadModel model2 in models)
-                     {    if(model2==model)
-                     { break; }
-                         if(model.BoundingSphere.Intersects(model2.BoundingSphere))
-                         {
-                             kolizja = true;
-                         }
-                     }
-              }
-             
-            camera.Update(gameTime);
             anim.Update(gameTime);
+            camera.Update(gameTime);
+           
+
             base.Update(gameTime);
             
         }
@@ -242,12 +267,6 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             //rasterizerState.FillMode = FillMode.WireFrame;
             //GraphicsDevice.RasterizerState = rasterizerState;
 
-            device.SetRenderTarget(shadow.RenderTarget);
-            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-           
-            //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-
-            
             licznik = 0;
             float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
@@ -256,31 +275,11 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
 
             _total_frames++;
 
-          
-            shadow.UpdateLightData(0.6f, light.lightPosChange(time), (FreeCamera)camera);
-            shadow.setShadowMap();
-            device.SetRenderTarget(null);
-            PopulateShadowEffect("ShadowMap");
-            
-            foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-               
-                quadTree.basicDraw();
-                
-             
-            }
-            
-          
-           
-
-            device.SetRenderTarget(null);
-           
-           // PopulateShadowEffect(false);
 
 
-            
-            /*
+
+
+
             water.DrawRefractionMap((FreeCamera)camera,quadTree);
 
           water.DrawReflectionMap((FreeCamera)camera,quadTree);
@@ -289,7 +288,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
             water.sky.DrawSkyDome((FreeCamera)camera);
             quadTree.Draw((FreeCamera)camera, time);
-           
+
             water.DrawWater(time, (FreeCamera)camera);
 
 
@@ -297,49 +296,52 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
 
 
 
+
+
+
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-            foreach (LoadModel model in models)
-            {
-                if (camera.BoundingVolumeIsInView(models[0].BoundingSphere))
-                {
+            foreach (InteractiveModel model in models) { 
+     if(camera.BoundingVolumeIsInView(model.Model.BoundingSphere))  {
 
-                    model.Draw(camera.View, camera.Projection);
-                    BoundingSphereRenderer.Render(model.BoundingSphere, device, camera.View, camera.Projection,
-                       (Matrix.CreateScale(model.Scale) * Matrix.CreateTranslation(model.Position)), new Color(0.3f, 0.4f, 0.2f));
-                    licznik++;
+         model.Draw(camera.View, camera.Projection);
+                     BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                         new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
+                     licznik ++;
 
-                }
-            }
-            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-            BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
-                             (Matrix.CreateScale(1) * Matrix.CreateTranslation(anim.Position)), new Color(0.3f, 0.4f, 0.2f));
+       }
+            } 
+      anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+      BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
+                       new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
+          
+           
+           foreach(InteractiveModel model in IModel)
+           {
+               if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+               {
+                   model.Draw(camera.View, camera.Projection);
+                 
+    
+               
+               }
+               
+           }
+             
 
 
-            foreach (InteractiveModel model in IModel)
-            {
-                if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
-                {
-                    model.Draw(camera.View, camera.Projection);
-              
-
-                }
-
-            }
-
-
-
-            
-            */
             
             spriteBatch.Begin();
            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                 new Vector2(10.0f, 20.0f), Color.Tomato);
             Vector2 pos = new Vector2(graphics.PreferredBackBufferWidth - (graphics.PreferredBackBufferWidth / 10), 0);
-            spriteBatch.Draw(shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
+            spriteBatch.Draw(quadTree.shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
                
                 spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik),new Vector2(10.0f, 50.0f), Color.Tomato);
 
-            spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", kolizja),new Vector2(10.0f, 80.0f), Color.Pink); 
+            spriteBatch.DrawString(_spr_font, string.Format("kolizja? ={0}", kolizja),new Vector2(10.0f, 80.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("Drewno mrowki={0}", ((AntPeasant)models[0]).Capacity), new Vector2(10.0f, 110.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("Drewno graczas={0}", player.wood), new Vector2(10.0f, 140.0f), Color.Pink); 
+
             control.Draw(spriteBatch);
 
             spriteBatch.End();
@@ -347,40 +349,11 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             base.Draw(gameTime);
         }
 
+    
 
-        private void PopulateShadowEffect(string techniqueName)
-        {
-            
-            hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques[techniqueName];
-            hiDefShadowEffect.Parameters["xView"].SetValue(camera.View);
-            hiDefShadowEffect.Parameters["xProjection"].SetValue(camera.Projection);
-            hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
-            hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
-            hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
-           
-        }
-        private void DrawModel(Model model, Matrix wMatrix, string technique, LightsAndShadows.Light light, LightsAndShadows.Shadow shadow, float time)
-        {
-            Matrix[] modelTransforms = new Matrix[model.Bones.Count];
-            model.CopyAbsoluteBoneTransformsTo(modelTransforms);
-            int i = 0;
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (Effect currentEffect in mesh.Effects)
-                {
-                    Matrix worldMatrix = modelTransforms[mesh.ParentBone.Index] * wMatrix;
-                    currentEffect.CurrentTechnique = currentEffect.Techniques[technique];
-                    currentEffect.Parameters["xWorldViewProjection"].SetValue(worldMatrix * camera.View * camera.Projection);
-                    //currentEffect.Parameters["xTexture"].SetValue(textures[i++]);
-                    currentEffect.Parameters["xWorld"].SetValue(worldMatrix);
-                    currentEffect.Parameters["xLightPos"].SetValue(light.lightPosChange(time));
-                    currentEffect.Parameters["xLightPower"].SetValue(light.LightPower);
-                    currentEffect.Parameters["xAmbient"].SetValue(light.Ambient);
-                    currentEffect.Parameters["xLightsWorldViewProjection"].SetValue(worldMatrix * shadow.lightsViewProjectionMatrix);
-                }
-                mesh.Draw();
-            }
-        }
+
+       
+    
     
     }
 }

@@ -18,7 +18,7 @@ namespace Map
     {
 
         public LoadModel model;
-
+        private QuadNode _activeNode;
         public int MinimumDepth = 7;
         public int IndexCount { get; private set; }
         public BasicEffect Effect;
@@ -27,7 +27,7 @@ namespace Map
         public BufferManager _buffers;
         private Vector3 _position;
         private int _topNodeSize;
-        
+        public LightsAndShadows.Shadow shadow;
         LightsAndShadows.Light light;
         private Vector3 _cameraPosition;
         private Vector3 _lastCameraPosition;
@@ -47,14 +47,15 @@ namespace Map
             get { return _cameraPosition; }
             set { _cameraPosition = value; }
         }
+        public Matrix CameraRotation;
 
         public BoundingFrustum ViewFrustrum { get; private set; }
         Effect effect;
-        
+        Effect effect2;
+
         List<Texture2D> textures;
 
         public bool Cull { get; set; }
-        private QuadNode _activeNode;
 
         public List<EnvModel> envModelList = new List<EnvModel>();
         public List<EnvBilb> envBilbList = new List<EnvBilb>();
@@ -69,7 +70,7 @@ namespace Map
         /// <param name="camera"></param>
         public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale, ContentManager Content, GameCamera.FreeCamera camera)
         {
-           
+            shadow = new LightsAndShadows.Shadow();
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(513, 100, 513));
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
@@ -77,7 +78,7 @@ namespace Map
             this.model = new LoadModel(model, Vector3.One, Vector3.Up, new Vector3(1), device);
             this.textures = textures;
             effect = Content.Load<Effect>("Effects/MultiTextured");
-           
+            effect2 = Content.Load<Effect>("Effects/Shadows");
             Device = device;
 
             _position = position;
@@ -127,8 +128,8 @@ namespace Map
    effect.Parameters["GroundText2"].SetValue(textures[10]);
 
 
-   _rootNode.EnforceMinimumDepth();
 
+   _rootNode.EnforceMinimumDepth();
 
         }
         public void Update(GameTime gameTime)
@@ -140,9 +141,14 @@ namespace Map
 
        
             IndexCount = 0;
-
-
-
+           // _rootNode.Merge();
+            /*
+            _activeNode = _rootNode.DeepestNodeWithPoint(Vector3.Transform(CameraPosition,CameraRotation));
+           
+            if (_activeNode != null)
+            {
+                _activeNode.Split();
+            }   */
             _rootNode.SetActiveVertices();
 
             _buffers.UpdateIndexBuffer(Indices, IndexCount);
@@ -152,33 +158,64 @@ namespace Map
         {
             effect.CurrentTechnique = effect.Techniques["MultiTextured"];
 
-            //RasterizerState rasterizerState = new RasterizerState();
-            //rasterizerState.FillMode = FillMode.WireFrame;
-            //Device.RasterizerState = rasterizerState;
+
+            this.Device.SetRenderTarget(shadow.RenderTarget);
+            //this.Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
 
             this.CameraPosition = camera.Position;
             this.View = camera.View;
             this.Projection = camera.Projection;
+           // this.CameraRotation = Matrix.CreateFromYawPitchRoll(camera.Yaw,camera.Pitch,0);
             ViewFrustrum.Matrix = camera.View * camera.Projection;
-
+             
             this.Device.SetVertexBuffer(_buffers.VertexBuffer);
             this.Device.Indices = _buffers.IndexBuffer;
-      
+          //  this.x+=1;
+
+          //  this.model.Position = light.lightPosChange(time);
             effect.Parameters["xLightPos"].SetValue(light.lightPosChange(time));
 
 
-         
-      
+            shadow.UpdateLightData(0.4f, 0.6f, light.lightPosChange(time), camera);
+          //  Console.WriteLine("pozycja " + this.model.Position);
+        //  Console.WriteLine("pozycja mnozenie " + light.lightPosChange(time*100));
+           
+
           effect.Parameters["xView"].SetValue(camera.View);
           effect.Parameters["xProjection"].SetValue(camera.Projection);
-           
+             effect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix);
+           effect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection);
+           Device.SetRenderTarget(null);
+           shadow.setShadowMap();
+          
+          
+            effect2.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
+
+             Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+             effect2.CurrentTechnique = effect2.Techniques["ShadowMap"];
+             
+          // foreach (EffectPass pass2 in effect2.CurrentTechnique.Passes)
+         //  {
+         //      pass2.Apply();
+
+        //           if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
+             
+        
+
+        //   }
+          
+        //   Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+          // effect.CurrentTechnique = effect.Techniques["ShadowedScene"];
+         //  effect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
+            
            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
           {
               pass.Apply();
                if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
            }
 
-     
+
+
 
             /*
            foreach (EnvModel pass1 in envModelList)
@@ -199,14 +236,6 @@ namespace Map
         {
             Indices[IndexCount] = vIndex;
             IndexCount++;
-        }
-        public void basicDraw()
-        {
-
-            this.Device.SetVertexBuffer(_buffers.VertexBuffer);
-            this.Device.Indices = _buffers.IndexBuffer;
-      
-            if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
         }
 
 

@@ -35,7 +35,7 @@ namespace Map
             device.DepthStencilState = DepthStencilState.None;
             Matrix[] modelTransforms = new Matrix[skyDome.Bones.Count];
             skyDome.CopyAbsoluteBoneTransformsTo(modelTransforms);
-            Matrix wMatrix = Matrix.CreateTranslation(0, -0.1f, 0) * Matrix.CreateScale(10) * Matrix.CreateFromYawPitchRoll(camera.Yaw, camera.Pitch, 0) * Matrix.CreateTranslation(camera.Position);
+            Matrix wMatrix = Matrix.CreateTranslation(0, -0.1f, 0) * Matrix.CreateScale(100) * Matrix.CreateFromYawPitchRoll(camera.Yaw, camera.Pitch, 0) * Matrix.CreateTranslation(camera.Position);
 
             foreach (ModelMesh mesh in skyDome.Meshes)
             {

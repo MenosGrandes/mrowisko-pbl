@@ -41,8 +41,8 @@ namespace Logic.Building
             set { capacity = value; }
         }
 
-        public Building(ContentManager content, LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime)
-            : base(content, model)
+        public Building( LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime)
+            : base( model)
         {
             this.model = model;
             this.content = content;

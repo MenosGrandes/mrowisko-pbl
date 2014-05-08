@@ -10,8 +10,8 @@ namespace Logic.Building.AntBuildings
 {
     public class SeedFarm:Building
     {
-        public SeedFarm(ContentManager content, LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime)
-            : base(content, model,_capacity,_durability,_cost,_buildingTime)
+        public SeedFarm( LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime)
+            : base( model,_capacity,_durability,_cost,_buildingTime)
         { }
         public override void Draw(Matrix View, Matrix Projection)
         {

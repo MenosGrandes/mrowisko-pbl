@@ -117,55 +117,55 @@ namespace Map
             * Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                   Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
-                   * baseWorld;
-                   foreach (ModelMeshPart meshPart in mesh.MeshParts)
-                   {
-                       BasicEffect effect = (BasicEffect)meshPart.Effect;
-                       effect.World = localWorld;
-                       effect.View = View;
-                       effect.Projection = Projection;
-                       effect.EnableDefaultLighting();
-                   }
+                Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
+                * baseWorld;
+                foreach (ModelMeshPart meshPart in mesh.MeshParts)
+                {
+                    BasicEffect effect = (BasicEffect)meshPart.Effect;
+                    effect.World = localWorld;
+                    effect.View = View;
+                    effect.Projection = Projection;
+                    effect.EnableDefaultLighting();
+                }
 
-                   mesh.Draw();
-               }
+                mesh.Draw();
+            }
 
-           }
-           /// <summary>
-           /// Method to Draw AnimatedModel
-           /// </summary>
-           /// <param name="View"></param>
-           /// <param name="Projection"></param>
-           /// <param name="CameraPosition"></param>
-           public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
-           {
+        }
+        /// <summary>
+        /// Method to Draw AnimatedModel
+        /// </summary>
+        /// <param name="View"></param>
+        /// <param name="Projection"></param>
+        /// <param name="CameraPosition"></param>
+        public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
+        {
 
-               Matrix[] bones = Player.GetSkinTransforms();
+            Matrix[] bones = Player.GetSkinTransforms();
 
-               Matrix baseWorld = Matrix.CreateScale(Scale)
-               * Matrix.CreateFromYawPitchRoll(
-               Rotation.Y, Rotation.X, Rotation.Z)
-               * Matrix.CreateTranslation(Position);
+            Matrix baseWorld = Matrix.CreateScale(Scale)
+            * Matrix.CreateFromYawPitchRoll(
+            Rotation.Y, Rotation.X, Rotation.Z)
+            * Matrix.CreateTranslation(Position);
 
 
-               foreach (ModelMesh mesh in Model.Meshes)
-               {
-                   Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
-                  * baseWorld;
-                   foreach (SkinnedEffect effect in mesh.Effects)
-                   {
-                       effect.SetBoneTransforms(bones);
-                       effect.World = localWorld;
-                       effect.View = View;
-                       effect.Projection = Projection;
+            foreach (ModelMesh mesh in Model.Meshes)
+            {
+                Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
+               * baseWorld;
+                foreach (SkinnedEffect effect in mesh.Effects)
+                {
+                    effect.SetBoneTransforms(bones);
+                    effect.World = localWorld;
+                    effect.View = View;
+                    effect.Projection = Projection;
 
-                       effect.EnableDefaultLighting();
+                    effect.EnableDefaultLighting();
 
-                       effect.SpecularColor = new Vector3(0.25f);
-                       effect.SpecularPower = 16;
-                   }
-                   
+                    effect.SpecularColor = new Vector3(0.25f);
+                    effect.SpecularPower = 16;
+                }
+
                 mesh.Draw();
             }
 
@@ -181,15 +181,6 @@ namespace Map
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
          Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-
-        }
-
-        public void basicDraw()
-        {
-             foreach (ModelMesh mesh in Model.Meshes)
-               {
-                   mesh.Draw();
-               }
 
         }
 
