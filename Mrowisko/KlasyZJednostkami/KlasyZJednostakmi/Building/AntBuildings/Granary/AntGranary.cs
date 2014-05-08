@@ -16,7 +16,7 @@ namespace Logic.Building.AntBuildings.Granary
             get { return materialsCapacity; }
             set { materialsCapacity = value; }
         }
-        public AntGranary(ContentManager content, LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime,int _materialCapacity):base(content,model,_capacity,_durability,_cost,_buildingTime)
+        public AntGranary(LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime,int _materialCapacity):base(model,_capacity,_durability,_cost,_buildingTime)
         {
 
             this.materialsCapacity = _materialCapacity;

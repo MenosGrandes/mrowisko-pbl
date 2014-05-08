@@ -82,7 +82,7 @@ namespace Logic
         
        
 
-         public Unit(ContentManager content, int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model):base(content, model)
+         public Unit(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model):base( model)
         {
             
             this.hp = hp;

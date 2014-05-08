@@ -77,7 +77,7 @@ namespace GameCamera
                 translation += Vector3.Lerp(translation, new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1 * scale, 0.3f);
 
             }
-            Console.WriteLine(mouseState.ScrollWheelValue);
+           
             // Move 3 units per millisecond, independent of frame rate
            // translation *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             rotatate *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;

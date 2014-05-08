@@ -10,7 +10,7 @@ namespace Logic.Building.AntBuildings.SeedFarms
 {
     public class HyacyntFarm:SeedFarm
     {
-        public HyacyntFarm(ContentManager content, LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime):base(content, model,_capacity,_durability,_cost,_buildingTime)
+        public HyacyntFarm( LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime):base( model,_capacity,_durability,_cost,_buildingTime)
         { 
         
         }

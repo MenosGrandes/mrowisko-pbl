@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Map;
+using Logic.Meterials;
 
 namespace Logic
 {
@@ -43,9 +44,9 @@ namespace Logic
 
 
 
-        public InteractiveModel(ContentManager content, LoadModel model)
+        public InteractiveModel( LoadModel model)
         {
-            this.content = content;
+            
             this.model=model;
           
            
@@ -60,7 +61,11 @@ namespace Logic
 
             Console.WriteLine("interactive model");
         }
-
+        public virtual void gaterMaterial(Material material)
+        {}
+        public virtual int releaseMaterial() {
+            Console.WriteLine("dupa");
+            return 0; }
 
     }
 }
