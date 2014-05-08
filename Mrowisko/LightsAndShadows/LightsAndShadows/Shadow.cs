@@ -28,10 +28,10 @@ namespace LightsAndShadows
         public Matrix woldsViewProjection;
         public Shadow()
         {
-
+            this.lightsViewProjectionMatrix = Matrix.Identity;
         }
 
-        public void UpdateLightData(float ambientPower, float lightPower, Vector3 lightPos, GameCamera.FreeCamera camera)
+        public void UpdateLightData(float lightPower, Vector3 lightPos, GameCamera.FreeCamera camera)
         {
             //ambientPower = 0.2f;
 

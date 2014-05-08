@@ -179,11 +179,11 @@ float4 ComputeShadowColor(float4 worldPos, float4 Color)
 	float ourdepth = (lightingPosition.z / lightingPosition.w) - DepthBias;
 
 	// Check to see if this pixel is in front or behind the value in the shadow map
-	//if (shadowdepth < ourdepth)
-	//{
+	if (shadowdepth < ourdepth)
+	{
 		// Shadow the pixel by lowering the intensity
 		Color *= float4(shadowOpacity , shadowOpacity , shadowOpacity , 1);
-	//};
+	};
 
 	return Color;
 }
@@ -260,15 +260,14 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 
 
 
-		Output.Color = lerp(farColor, nearColor, blendWidth)*(diffuseLightingFactor + xAmbient)+  lerp(nearColor2, farColor2, blendWidth)*(diffuseLightingFactor + xAmbient);
+		//Output.Color = lerp(farColor, nearColor, blendWidth)*(diffuseLightingFactor + xAmbient)+  lerp(nearColor2, farColor2, blendWidth)*(diffuseLightingFactor + xAmbient);
 
 
 	
 
 
-	float4 Color=(0,0,0,0);
-	//Color = ComputeShadowColor(mul(PSIn.Position, xWorldViewProjection), Output.Color);
-	
+	float4 Color=(1,1,1,1);
+	Color = ComputeShadowColor(mul(PSIn.Position, xWorldViewProjection), Output.Color);
 	
 	Output.Color = lerp(nearColor, farColor, blendWidth)*(diffuseLightingFactor + xAmbient);
 
@@ -416,6 +415,64 @@ technique Water
 	{
 		VertexShader = compile vs_2_0 WaterVS();
 		PixelShader = compile ps_2_0 WaterPS();
+	}
+}
+
+
+struct SMapVertexToPixel
+{
+	float4 Position     : POSITION;
+	float4 Position2D    : TEXCOORD0;
+};
+
+struct SMapPixelToFrame
+{
+	float4 Color : COLOR0;
+};
+
+
+struct SSceneVertexToPixel
+{
+	float4 Position             : POSITION;
+	float4 Pos2DAsSeenByLight    : TEXCOORD0;
+
+	float2 TexCoords            : TEXCOORD1;
+	float3 Normal                : TEXCOORD2;
+	float4 Position3D            : TEXCOORD3;
+
+};
+
+struct SScenePixelToFrame
+{
+	float4 Color : COLOR0;
+};
+
+SMapVertexToPixel ShadowMapVertexShader(float4 inPos : POSITION)
+{
+	SMapVertexToPixel Output = (SMapVertexToPixel)0;
+
+	Output.Position = mul(inPos, xLightsWorldViewProjection);
+	Output.Position2D = Output.Position;
+
+	return Output;
+}
+
+SMapPixelToFrame ShadowMapPixelShader(SMapVertexToPixel PSIn)
+{
+	SMapPixelToFrame Output = (SMapPixelToFrame)0;
+
+	Output.Color = PSIn.Position2D.z / PSIn.Position2D.w;
+
+	return Output;
+}
+
+
+technique ShadowMap
+{
+	pass Pass0
+	{
+		VertexShader = compile vs_2_0 ShadowMapVertexShader();
+		PixelShader = compile ps_2_0 ShadowMapPixelShader();
 	}
 }
 

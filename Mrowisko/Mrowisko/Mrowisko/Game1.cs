@@ -47,6 +47,11 @@ namespace AntHill
         int f = 0;
         Vector3 playerTarget;
         bool kolizja;
+        public LightsAndShadows.Shadow shadow;
+        public LightsAndShadows.Light light;
+        Effect hiDefShadowEffect;
+
+        Matrix world = Matrix.CreateTranslation(Vector3.Zero);
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -75,13 +80,17 @@ namespace AntHill
         /// </summary>
         protected override void LoadContent()
         {
-
+            light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(513, 100, 513));
+            shadow = new LightsAndShadows.Shadow();
                         PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
             pp.DepthStencilFormat = DepthFormat.Depth24Stencil8;
             pp.BackBufferHeight = 600;
             pp.BackBufferWidth = 800;
-
+           
+           
+            hiDefShadowEffect = Content.Load<Effect>("Effects/Shadows");
             device = GraphicsDevice;
+            shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, false, pp.BackBufferFormat, DepthFormat.Depth24Stencil8);
             spriteBatch = new SpriteBatch(GraphicsDevice);
             _spr_font = Content.Load<SpriteFont>("Fonts/FPS");// you have on your project
 
@@ -107,7 +116,7 @@ namespace AntHill
 
                     quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
             quadTree.Cull = true;
-            quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24Stencil8);
+            
             water = new Water(device, Content, texture[4].Width, 1);
 
 
@@ -233,6 +242,12 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             //rasterizerState.FillMode = FillMode.WireFrame;
             //GraphicsDevice.RasterizerState = rasterizerState;
 
+            device.SetRenderTarget(shadow.RenderTarget);
+            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+           
+            //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+
+            
             licznik = 0;
             float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
@@ -241,11 +256,31 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
 
             _total_frames++;
 
+          
+            shadow.UpdateLightData(0.6f, light.lightPosChange(time), (FreeCamera)camera);
+            shadow.setShadowMap();
+            device.SetRenderTarget(null);
+            PopulateShadowEffect("ShadowMap");
+            
+            foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+               
+                quadTree.basicDraw();
+                
+             
+            }
+            
+          
+           
+
+            device.SetRenderTarget(null);
+           
+           // PopulateShadowEffect(false);
 
 
-
-
-
+            
+            /*
             water.DrawRefractionMap((FreeCamera)camera,quadTree);
 
           water.DrawReflectionMap((FreeCamera)camera,quadTree);
@@ -254,7 +289,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
             water.sky.DrawSkyDome((FreeCamera)camera);
             quadTree.Draw((FreeCamera)camera, time);
-
+           
             water.DrawWater(time, (FreeCamera)camera);
 
 
@@ -262,46 +297,45 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
 
 
 
-
-
-
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-            foreach (LoadModel model in models) { 
-     if(camera.BoundingVolumeIsInView(models[0].BoundingSphere))  {
+            foreach (LoadModel model in models)
+            {
+                if (camera.BoundingVolumeIsInView(models[0].BoundingSphere))
+                {
+
+                    model.Draw(camera.View, camera.Projection);
+                    BoundingSphereRenderer.Render(model.BoundingSphere, device, camera.View, camera.Projection,
+                       (Matrix.CreateScale(model.Scale) * Matrix.CreateTranslation(model.Position)), new Color(0.3f, 0.4f, 0.2f));
+                    licznik++;
+
+                }
+            }
+            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+            BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
+                             (Matrix.CreateScale(1) * Matrix.CreateTranslation(anim.Position)), new Color(0.3f, 0.4f, 0.2f));
+
+
+            foreach (InteractiveModel model in IModel)
+            {
+                if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                {
+                    model.Draw(camera.View, camera.Projection);
+              
+
+                }
+
+            }
+
+
+
             
-                     model.Draw(camera.View, camera.Projection);
-                     BoundingSphereRenderer.Render(model.BoundingSphere, device, camera.View, camera.Projection,
-                        (Matrix.CreateScale(model.Scale) * Matrix.CreateTranslation(model.Position)), new Color(0.3f, 0.4f, 0.2f));
-                     licznik ++;
-
-       }
-            } 
-      anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-      BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
-                       (Matrix.CreateScale(1) * Matrix.CreateTranslation(anim.Position)), new Color(0.3f, 0.4f, 0.2f));
-          
-           
-           foreach(InteractiveModel model in IModel)
-           {
-               if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
-               {
-                   model.Draw(camera.View, camera.Projection);
-                   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                      (Matrix.CreateScale(10) * Matrix.CreateTranslation(model.Model.Position)), Color.Yellow);
-    
-               
-               }
-               
-           }
-             
-
-
+            */
             
             spriteBatch.Begin();
            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                 new Vector2(10.0f, 20.0f), Color.Tomato);
             Vector2 pos = new Vector2(graphics.PreferredBackBufferWidth - (graphics.PreferredBackBufferWidth / 10), 0);
-            spriteBatch.Draw(quadTree.shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
+            spriteBatch.Draw(shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
                
                 spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik),new Vector2(10.0f, 50.0f), Color.Tomato);
 
@@ -313,125 +347,40 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             base.Draw(gameTime);
         }
 
-       public void updateAnt(GameTime gameTime)
+
+        private void PopulateShadowEffect(string techniqueName)
         {
-
-            // Check if the player has reached the target, if not, move towards it. 
-
-            float Speed = (float)30;
-            if (models[0].Position.X > playerTarget.X)
-            {
-                models[0].Position += Vector3.Left * Speed;
-            }
-            if (models[0].Position.X < playerTarget.X)
-            {
-                models[0].Position += Vector3.Right * Speed;
-            }
-
-            if (models[0].Position.Z > playerTarget.Z)
-            {
-                models[0].Position += Vector3.Forward * Speed;
-            }
-            if (models[0].Position.Z < playerTarget.Z)
-            {
-                models[0].Position += Vector3.Backward * Speed;
-            }
-
-
-
             
-            /*KeyboardState keyState = Keyboard.GetState();
-            MouseState MS = Mouse.GetState();
-            Vector2 mouse_pos = new Vector2(MS.X, MS.Y);
-            Vector3 mouse3d2 = CalculateMouse3DPosition();
-            float Speed = (float)4;
-            if (MS.LeftButton == ButtonState.Pressed)
-            {
-
-                if (mouse3d2.X > models[0].Position.X)
-                {
-                    while (mouse3d2.X > models[0].Position.X)
-                    {
-                        models[0].Position += Vector3.Right * Speed;
-                    }
-
-                }
-
-                if (mouse3d2.X < models[0].Position.X)
-                {
-                    while (mouse3d2.X < models[0].Position.X)
-                    {
-                        models[0].Position += Vector3.Left * Speed;
-                    }
-
-                }
-
-
-                if (mouse3d2.Z > models[0].Position.Z)
-                {
-
-                    while (mouse3d2.Z > models[0].Position.Z)
-                    {
-                        models[0].Position += Vector3.Backward * Speed;
-                    }
-                }
-
-                if (mouse3d2.Z < models[0].Position.Z)
-                {
-                    while (mouse3d2.Z < models[0].Position.Z)
-                    {
-                        models[0].Position += Vector3.Forward * Speed;
-                    }
-                }
-
-
-                if (keyState.IsKeyDown(Keys.Up)) models[0].Position += Vector3.Forward * 100;
-                if (keyState.IsKeyDown(Keys.Down)) models[0].Position += Vector3.Backward * 100;
-                if (keyState.IsKeyDown(Keys.Left)) models[0].Position += Vector3.Left * 100;
-                if (keyState.IsKeyDown(Keys.Right)) models[0].Position += Vector3.Right * 100;
-
-            }
-        
-             */ 
-        }
-
-
-        private void CalculateMouse3DPosition()
-        {
-            Plane GroundPlane = new Plane(0, 1, 0, 0); // x - lewo prawo Z- gora dol
-            int mouseX = Mouse.GetState().X;
-            int mouseY = Mouse.GetState().Y;
-
-            Vector3 nearsource = new Vector3((float)mouseX, (float)mouseY, 0f);
-            Vector3 farsource = new Vector3((float)mouseX, (float)mouseY, 1f);
-
-            Matrix world = Matrix.CreateTranslation(0, 0, 0);
-
-            Vector3 nearPoint = device.Viewport.Unproject(nearsource,
-                camera.Projection, camera.View, Matrix.Identity);
-
-            Vector3 farPoint = device.Viewport.Unproject(farsource,
-                camera.Projection, camera.View, Matrix.Identity);
-
-            Vector3 direction = farPoint - nearPoint;
-            direction.Normalize();
-            Ray pickRay = new Ray(nearPoint, direction);
+            hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques[techniqueName];
+            hiDefShadowEffect.Parameters["xView"].SetValue(camera.View);
+            hiDefShadowEffect.Parameters["xProjection"].SetValue(camera.Projection);
+            hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(Matrix.Identity * shadow.lightsViewProjectionMatrix);
+            hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
+            hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
            
-            float? position = pickRay.Intersects(models[0].BoundingSphere);
-              /*
-            if (position != null)
-                return pickRay.Position + pickRay.Direction * position.Value;
-            else
-                return new Vector3(0,0,0);
-          
-              */
-
-
-           // Console.WriteLine(position);
-            
-            
         }
-    
+        private void DrawModel(Model model, Matrix wMatrix, string technique, LightsAndShadows.Light light, LightsAndShadows.Shadow shadow, float time)
+        {
+            Matrix[] modelTransforms = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(modelTransforms);
+            int i = 0;
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (Effect currentEffect in mesh.Effects)
+                {
+                    Matrix worldMatrix = modelTransforms[mesh.ParentBone.Index] * wMatrix;
+                    currentEffect.CurrentTechnique = currentEffect.Techniques[technique];
+                    currentEffect.Parameters["xWorldViewProjection"].SetValue(worldMatrix * camera.View * camera.Projection);
+                    //currentEffect.Parameters["xTexture"].SetValue(textures[i++]);
+                    currentEffect.Parameters["xWorld"].SetValue(worldMatrix);
+                    currentEffect.Parameters["xLightPos"].SetValue(light.lightPosChange(time));
+                    currentEffect.Parameters["xLightPower"].SetValue(light.LightPower);
+                    currentEffect.Parameters["xAmbient"].SetValue(light.Ambient);
+                    currentEffect.Parameters["xLightsWorldViewProjection"].SetValue(worldMatrix * shadow.lightsViewProjectionMatrix);
+                }
+                mesh.Draw();
+            }
+        }
     
     }
 }
