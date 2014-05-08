@@ -1,15 +1,29 @@
-float4x4 xLightsWorldViewProjection;
-float4x4 xWorldViewProjection;
 float4x4 xView;
 float4x4 xProjection;
 float4x4 xWorld;
 float xAmbient;
+
+
 float3 xLightPos;
 float xLightPower;
+float4x4 xLightsWorldViewProjection;
+float4x4 xWorldViewProjection;
+
 Texture xShadowMap;
+Texture xTexture;
 
 sampler ShadowMapSampler = sampler_state { texture = <xShadowMap>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = clamp; AddressV = clamp; };
 
+
+sampler TextureSampler = sampler_state
+{
+	texture = <xTexture>;
+	magfilter = LINEAR;
+	minfilter = LINEAR;
+	mipfilter = LINEAR;
+	AddressU = wrap;
+	AddressV = wrap;
+};
 
 struct SMapVertexToPixel
 {
@@ -39,6 +53,13 @@ struct SScenePixelToFrame
 	float4 Color : COLOR0;
 };
 
+
+float DotProduct(float3 lightPos, float3 pos3D, float3 normal)
+{
+	float3 lightDir = normalize(pos3D - lightPos);
+		return dot(-lightDir, normal);
+}
+
 SMapVertexToPixel ShadowMapVertexShader(float4 inPos : POSITION)
 {
 	SMapVertexToPixel Output = (SMapVertexToPixel)0;
@@ -67,7 +88,7 @@ technique ShadowMap
 		PixelShader = compile ps_2_0 ShadowMapPixelShader();
 	}
 }
-/*
+
 SSceneVertexToPixel ShadowedSceneVertexShader(float4 inPos : POSITION, float2 inTexCoords : TEXCOORD0, float3 inNormal : NORMAL)
 {
 	SSceneVertexToPixel Output = (SSceneVertexToPixel)0;
@@ -102,7 +123,7 @@ SScenePixelToFrame ShadowedScenePixelShader(SSceneVertexToPixel PSIn)
 		}
 	}
 
-	float4 baseColor = tex2D(GroundText2Sampler, PSIn.TexCoords);	//TUTAJ TRZEBA ZMIENIC!!! NA MULTITEXTURE!
+	float4 baseColor = tex2D(TextureSampler, PSIn.TexCoords);	//TUTAJ TRZEBA ZMIENIC!!! NA MULTITEXTURE!
 		Output.Color = baseColor*(diffuseLightingFactor + xAmbient);
 
 	return Output;
@@ -117,4 +138,3 @@ technique ShadowedScene
 		PixelShader = compile ps_2_0 ShadowedScenePixelShader();
 	}
 }
-*/
