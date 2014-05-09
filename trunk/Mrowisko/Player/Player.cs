@@ -3,27 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Logic.Meterials;
+using Logic.Meterials.MaterialCluster;
 namespace AntHill
 {
    public static class  Player
-    {
-      static private List<Wood> Wood=new List<Wood>();
-     static  public int wood
+   {
+       public static List<Material> materials = new List<Material>();
+       #region AddMaterial
+       public static void addMaterial(List<Material> material)
+            {
+                materials.AddRange(material);
+            }
+       #endregion
+       public static int wood
        {
            get
            {
-               return Wood.Count;
+               return materials.Count(mat => mat.GetType().Name =="Wood" );
            }
-       } 
-            public static void addWood()
-            {
-                   Wood.Add(new Wood());
-            }
-            public static void addWood(int n)
-            {
-                for (int i = 0; i < n;i++ )
-                    Wood.Add(new Wood());
-            }
-    }
+       }
+       public static int stone
+       {
+           get
+           {
+               return materials.Count(mat => mat.GetType().Name == "Stone");
+           }
+       }
+   }
 
 }

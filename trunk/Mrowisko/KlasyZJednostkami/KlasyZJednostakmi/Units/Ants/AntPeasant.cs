@@ -12,6 +12,11 @@ namespace Logic.Units.Ants
 {
     public class AntPeasant:Ant
     {
+        private List<Material> materials = new List<Material>();
+        public  int wood2;
+        public  int rock2;
+
+
         public int MaxCapacity { get { return maxCapacity; } }
         private int maxCapacity;
         public int Capacity { 
@@ -26,14 +31,26 @@ namespace Logic.Units.Ants
         {
             this.maxCapacity = maxCapacity;
             this.capacity = 0;
+            rock2 = 0;
+            wood2 = 0;
+
         }
         public override void gaterMaterial(Material material)
         {
             if(material.Model.Scale.X >0 && capacity<maxCapacity)
             {
-                ((Log)material).ClusterSize--;
-                material.Model.Scale = new Vector3((float)((float)((Log)material).ClusterSize / (float)((Log)material).MaxClusterSize));
+
+                ((Material)material).Model.Scale = new Vector3((float)((float)((Material)material).ClusterSize / (float)((Material)material).MaxClusterSize));
+                switch (material.GetType().Name)
+               {
+
+                   case "Log": materials.Add(new Wood()); wood2++; ((Log)material).removeWood(1); break;
+                   case "Rock": materials.Add(new Stone()); rock2++; ((Rock)material).removeRock(1); break;
+                     
+               }
+
                 capacity++;
+                
             }
 
         }
@@ -42,10 +59,14 @@ namespace Logic.Units.Ants
         {
             model.Draw(View, Projection);
         }
-        public override int releaseMaterial()
+        public override List<Material> releaseMaterial()
         {
-            capacity --;
-            return 1;
+            List<Material> mat = new List<Material>(materials);
+            capacity = 0;
+            wood2 = 0;
+            rock2 = 0;
+            materials.Clear();
+            return mat;
         }
 
     }
