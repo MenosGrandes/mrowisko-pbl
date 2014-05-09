@@ -54,7 +54,6 @@ namespace Logic.Building
         { }
          public override void Draw(Matrix View, Matrix Projection)
         {
-            Console.WriteLine(this.GetType());
         }
 
     }

@@ -13,6 +13,8 @@ using System;
 using Logic.Units.Ants;
 using Logic.Meterials;
 using Logic.Meterials.MaterialCluster;
+using Logic.Building;
+using Logic.Building.AntBuildings;
 
 namespace AntHill
 {
@@ -144,14 +146,14 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10, 10);
             HyacyntFarm hf = new HyacyntFarm( new LoadModel(
 Content.Load<Model>("Models/domek2"),
 new Vector3(100,15,100), Vector3.Up,
-new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
+new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
             IModel.Add(hf);
             IModel.Add(gr);
 
             control = new Control(texture[11]);
             inter.Add(models[0]);
             models.Add(gr);
-            
+   
 
    }
 
@@ -185,6 +187,9 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
              _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
  
             // 1 Second has passed
+
+
+           
             if (_elapsed_time >= 1000.0f)
             {
                 _fps = _total_frames;
@@ -192,6 +197,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
                 _elapsed_time = 0;
                
             }
+            
             if (keyState.IsKeyDown(Keys.C) )
             {
                 RasterizerState rasterizerState = new RasterizerState();
@@ -239,7 +245,16 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
                 }
 
             }
-           
+            
+            foreach(InteractiveModel model in IModel)
+            {
+                if(model.GetType().BaseType==typeof(SeedFarm))
+               if(_elapsed_time>=((SeedFarm)model).BuildingTime)
+                {
+               Player.addMaterial( model.addCrop());
+                    }
+            }
+
             quadTree.View =camera.View;
            quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
@@ -303,8 +318,9 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
      if(camera.BoundingVolumeIsInView(model.Model.BoundingSphere))  {
 
          model.Draw(camera.View, camera.Projection);
-                     BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                         new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
+                    BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                        new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
+       //  BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                      licznik ++;
 
        }
@@ -342,6 +358,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
             spriteBatch.DrawString(_spr_font, string.Format("K m={0}", ((AntPeasant)models[0]).rock2), new Vector2(140.0f, 110.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("D g={0}",Player.wood ), new Vector2(10.0f, 140.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(110.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.hyacynt), new Vector2(210.0f, 140.0f), Color.Pink);
 
             spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink); 

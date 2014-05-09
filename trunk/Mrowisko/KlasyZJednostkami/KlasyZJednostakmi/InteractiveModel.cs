@@ -45,28 +45,29 @@ namespace Logic
 
 
         public InteractiveModel( LoadModel model)
-        {
-            
+        {         
             this.model=model;
-          
-           
         }
 
         public InteractiveModel()
-        {
-            
+        {           
         }
          public virtual void Draw(Matrix View, Matrix Projection)
         {
-
-            Console.WriteLine("interactive model");
         }
         public virtual void gaterMaterial(Material material)
-        {}
+        {
+        }
         public virtual List<Material> releaseMaterial()
         {
             return null;
         }
+
+        public virtual Logic.Meterials.Material addCrop()
+        {
+            return null;
+        }
+
 
     }
 }

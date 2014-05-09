@@ -8,8 +8,7 @@ using System.Text;
 
 namespace Logic.Building.AntBuildings.SeedFarms
 {
-    public class HyacyntFarm:SeedFarm
-    {
+    public class HyacyntFarm : SeedFarm    {
         public HyacyntFarm( LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime):base( model,_capacity,_durability,_cost,_buildingTime)
         { 
         
@@ -20,6 +19,14 @@ namespace Logic.Building.AntBuildings.SeedFarms
         }
         public HyacyntFarm()
         { }
+        public override Logic.Meterials.Material addCrop()
+        {  
+            return new Logic.Meterials.Hyacynt();
+        }
+
+
+
+       
 
     }
 }

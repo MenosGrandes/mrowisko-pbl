@@ -107,7 +107,6 @@ namespace Map
                 pass1.CreateModelFromList();
             }
 
-
             
        effect.Parameters["xTexture0"].SetValue(textures[1]);
        effect.Parameters["xTexture1"].SetValue(textures[0]);
