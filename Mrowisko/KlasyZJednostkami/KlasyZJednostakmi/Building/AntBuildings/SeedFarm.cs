@@ -13,11 +13,10 @@ namespace Logic.Building.AntBuildings
         public SeedFarm( LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime)
             : base( model,_capacity,_durability,_cost,_buildingTime)
         { }
-        public override void Draw(Matrix View, Matrix Projection)
-        {
-            model.Draw(View, Projection);
-        }
+
         public SeedFarm()
         { }
+
+
     }
 }

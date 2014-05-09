@@ -41,6 +41,26 @@ namespace Map
                 return transformed;
             }
         }
+        public BoundingSphere[] spheres
+        {
+
+            get
+            {
+                // No need for rotation, as this is a sphere
+                Matrix worldTransform = Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position);
+                List<BoundingSphere> spheres = new List<BoundingSphere>();
+                foreach (ModelMesh mesh in Model.Meshes)
+                {
+                    BoundingSphere transformed = mesh.BoundingSphere.Transform(worldTransform);
+                    spheres.Add(transformed);
+
+                }
+
+                return spheres.ToArray();
+            }
+            set{}
+        }
+
         /// <summary>
         /// Constructor of LoadModel class.
         /// Create <paramref name="Model"/> at <paramref name="Position"/ >  with <paramref name="Scale"/> and <paramref name="Rotation"/>
@@ -92,16 +112,15 @@ namespace Map
         /// </summary>
         private void buildBoundingSphere()
         {
-
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
+           // List<BoundingSphere> spheres=new List<BoundingSphere>(); 
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]); 
+                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
+               // spheres.Add(transformed);
                 sphere = BoundingSphere.CreateMerged(sphere, transformed);
-
             }
-            
-             
+           // this.spheres=spheres.ToArray(); 
             this.boundingSphere = sphere;
                
         }

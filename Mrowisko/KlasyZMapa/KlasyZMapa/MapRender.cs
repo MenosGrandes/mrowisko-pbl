@@ -63,11 +63,8 @@ namespace Map
            get { return terrainLength; }
            set { terrainLength = value; }
        }
-       public float[,] heightData
-       {
-           get;
-           set;
-       }
+       public float[,] heightData;
+
        public float[,] colorHeightData
        {
            get;
@@ -111,14 +108,28 @@ namespace Map
 
 
             LoadHeightData(texture,color);
-            SetUpvertices(Scale);
-            SetUpTerrainIndices();
-            CalculateNormals();
+            Refresh(0, 0, 0, 0, 0,false);
 
-            
-
+          
 
         }
+        public void Refresh(int x,int y,int heigh,int m,int n,bool _f)
+    {
+        if (_f==true) {
+            Console.WriteLine("juz robie");
+             for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    heightData[i, j] = n;
+
+                }
+            }
+        }
+            SetUpvertices(1);
+            SetUpTerrainIndices();
+            CalculateNormals();
+    }
 
         
                                         /// <summary>
