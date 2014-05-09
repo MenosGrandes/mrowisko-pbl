@@ -12,7 +12,7 @@ namespace Logic.Meterials.MaterialCluster
 
               private List<Wood> wood = new List<Wood>();
 
-       public int ClusterSize
+       new public  int ClusterSize
        {
            get
            {
@@ -20,18 +20,16 @@ namespace Logic.Meterials.MaterialCluster
            }
            set
            {
-               wood.RemoveRange(0, 1);
+               value = ClusterSize;
            }
 
-       }
-       public int MaxClusterSize;
-       private int clusterSize;
 
-       public Log(LoadModel model,int clusterSize):base(model)
+       }
+
+       public Log(LoadModel model,int ClusterSize):base(model,ClusterSize)
        {
-           this.clusterSize = clusterSize;
-           this.MaxClusterSize = clusterSize;
-           for(int i=0;i<clusterSize;i++)
+           this.ClusterSize = ClusterSize;
+           for (int i = 0; i < ClusterSize; i++)
            {
                wood.Add(new Wood());
            }
@@ -40,6 +38,11 @@ namespace Logic.Meterials.MaterialCluster
        public override void Draw(Matrix View, Matrix Projection)
        {
            model.Draw(View, Projection);
+       }
+       public void removeWood(int n)
+       {
+                           if (wood.Count != 0) { wood.RemoveRange(0, 1); }
+
        }
 
    }

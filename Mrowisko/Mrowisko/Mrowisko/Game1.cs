@@ -113,9 +113,10 @@ namespace AntHill
             water = new Water(device, Content, texture[4].Width, 1);
            
 
-           models.Add(new AntPeasant(10,10,10,10,10,10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice),101 ));
+           models.Add(new AntPeasant(10,10,10,10,10,10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice),10 ));
            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150,14,-150), Vector3.Up, new Vector3(1), GraphicsDevice),3000));
-
+           models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
+                      //
             //inter = quadTree.ants.Models;
 
           // GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -210,21 +211,20 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
                     { break; }
                     if (model.Model.BoundingSphere.Intersects(model2.Model.BoundingSphere))
                     {
-
-                          if(model.GetType().Name=="Log" && model2.GetType().Name=="AntPeasant")
+                        if (model.GetType().BaseType == typeof(Material) && model2.GetType().Name == "AntPeasant")
                           {
-                                                          
-                              model2.gaterMaterial((Material)model);
-
-                             
-                               
+                              if (_elapsed_time >= 999.0f)
+                              {
+                                  model2.gaterMaterial((Material)model);
+                              }
 
                          
                           }
+                       
                         if(model.GetType().Name=="AntGranary" && model2.GetType().Name=="AntPeasant" &&((AntPeasant)model2).Capacity>0)
                         {
-
-                            Player.addWood(((AntPeasant)model2).releaseMaterial());
+                            Console.WriteLine(((AntPeasant)model2).Capacity);
+                            Player.addMaterial(((AntPeasant)model2).releaseMaterial());
                            
                         }
                         
@@ -338,9 +338,13 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10);
                 spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik),new Vector2(10.0f, 50.0f), Color.Tomato);
 
             spriteBatch.DrawString(_spr_font, string.Format("kolizja? ={0}", kolizja),new Vector2(10.0f, 80.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("Drewno mrowki={0}", ((AntPeasant)models[0]).Capacity), new Vector2(10.0f, 110.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("Drewno graczas={0}",Player.wood ), new Vector2(10.0f, 140.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink); 
+            spriteBatch.DrawString(_spr_font, string.Format("D m={0}", ((AntPeasant)models[0]).wood2), new Vector2(10.0f, 110.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("K m={0}", ((AntPeasant)models[0]).rock2), new Vector2(140.0f, 110.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("D g={0}",Player.wood ), new Vector2(10.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(110.0f, 140.0f), Color.Pink);
+
+            spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink); 
 
             control.Draw(spriteBatch);
 

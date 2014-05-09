@@ -63,9 +63,10 @@ namespace Logic
         }
         public virtual void gaterMaterial(Material material)
         {}
-        public virtual int releaseMaterial() {
-            Console.WriteLine("dupa");
-            return 0; }
+        public virtual List<Material> releaseMaterial()
+        {
+            return null;
+        }
 
     }
 }
