@@ -150,7 +150,7 @@ namespace Logic
                             return;
                         }
 
-                        float Speed = (float)30;
+                        float Speed = (float)2.0;
                         if (ant.Model.Position.X > ant.Model.playerTarget.X)
                         {
                             //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;

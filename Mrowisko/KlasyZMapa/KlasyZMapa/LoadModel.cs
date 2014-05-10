@@ -131,8 +131,7 @@ namespace Map
         /// <param name="Projection"></param>
         public void Draw(Matrix View, Matrix Projection)
         {
-            Matrix baseWorld = Matrix.CreateScale(Scale)* Matrix.CreateFromYawPitchRoll(
-            Rotation.Y, Rotation.X, Rotation.Z)
+            Matrix baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateRotationY(Rotation.Y) 
             * Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in Model.Meshes)
             {
