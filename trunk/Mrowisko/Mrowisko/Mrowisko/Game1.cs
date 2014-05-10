@@ -51,6 +51,10 @@ namespace AntHill
         int f = 0;
         Vector3 playerTarget;
         bool kolizja;
+        Vector3 S = new Vector3(250.0f, 0.0f, 250.0f);
+        Vector3 pozycja = new Vector3(250.0f, 0.0f, 250.0f);
+        int promien=100;
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -118,7 +122,7 @@ namespace AntHill
            models.Add(new AntPeasant(10,10,10,10,10,10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice),10 ));
            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150,14,-150), Vector3.Up, new Vector3(1), GraphicsDevice),3000));
            models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
-                      //
+           models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"),new Vector3(250.0f,0.0f,250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10));      //
             //inter = quadTree.ants.Models;
 
           // GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -178,6 +182,25 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
 
 
             currentMouseState = Mouse.GetState();
+
+            float x;
+            float z;
+            float spr = (float)Math.Pow(models[0].Model.Position.X - S.X, 2.0) + (float)Math.Pow(models[0].Model.Position.Z - S.Z, 2.0);
+            Console.WriteLine((float)Math.Pow(models[0].Model.Position.X - S.X, 2.0));
+            if (models[3].Model.Position.X == pozycja.X && models[3].Model.Position.Z == pozycja.Z && spr>(promien*promien))
+            {
+               Random losuj = new System.Random(DateTime.Now.Millisecond);
+               x = (S.X - promien) + ((float)losuj.NextDouble() * ((S.X + promien) - (S.X - promien)));
+               z = (S.Z - promien) + ((float)losuj.NextDouble() * ((S.Z + promien)- (S.Z - promien)));
+
+               pozycja = new Vector3(x, 0.0f,z);
+           }
+            if (spr <= (promien * promien))
+            {
+                pozycja = new Vector3(models[0].Model.Position.X, 0.0f, models[0].Model.Position.Z);
+            }
+
+            updateAnt(pozycja);
 
 
 
@@ -370,8 +393,45 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
             base.Draw(gameTime);
         }
 
-    
 
+        public void updateAnt(Vector3 cel)
+        {
+            float Speed = 0.4f;
+
+            if (Math.Abs(models[3].Model.Position.X - cel.X)<2.0f && Math.Abs(models[3].Model.Position.Z - cel.Z)<2.0f)
+            {
+                //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;
+                models[3].Model.Position = cel;
+            }
+
+
+            if (models[3].Model.Position.X > cel.X)
+            {
+                //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;
+                models[3].Model.Position += Vector3.Left * Speed;
+            }
+            if (models[3].Model.Position.X < cel.X)
+            {
+                models[3].Model.Position += Vector3.Right * Speed;
+             
+                //ant.Model.Position += new Vector3(0.01f, 0, 0) * Speed;
+            }
+
+            if (models[3].Model.Position.Z > cel.Z)
+            {
+                // ant.Model.Position += new Vector3(0, 0, -0.01f) * Speed;
+                models[3].Model.Position += Vector3.Forward * Speed;
+               
+ 
+            }
+            if (models[3].Model.Position.Z < cel.Z)
+            {
+                // ant.Model.Position += new Vector3(0, 0, 0.01f) * Speed;
+                models[3].Model.Position += Vector3.Backward * Speed;
+               
+            }
+
+        }
 
        
     
