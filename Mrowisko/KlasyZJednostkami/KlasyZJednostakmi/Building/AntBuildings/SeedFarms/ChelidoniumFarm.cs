@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Map;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,14 +7,26 @@ using System.Text;
 
 namespace Logic.Building.AntBuildings.SeedFarms
 {
-    class ChelidoniumFarm:SeedFarm
+   public class ChelidoniumFarm:SeedFarm
     {
-        public ChelidoniumFarm()
-            : base()
-        { }
-         public override void Draw(Matrix view,Matrix Projection)
+    
+        public ChelidoniumFarm( LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime,float cropTime):base( model,_capacity,_durability,_cost,_buildingTime,cropTime)
+        { 
+        
+        }
+         public override void  Draw(Matrix View, Matrix Projection)
         {
-            //Console.WriteLine(this.GetType());
+            model.Draw(View, Projection);
+        }
+        public ChelidoniumFarm()
+        { }
+        public override Logic.Meterials.Material addCrop()
+        {  
+            return new Logic.Meterials.Chelidonium();
+        }
+        public override void Update(GameTime gameTime)
+        {
+            timeElapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds/100;
         }
 
     }

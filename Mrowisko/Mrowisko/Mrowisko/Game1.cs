@@ -119,10 +119,12 @@ GraphicsDevice);
             water = new Water(device, Content, texture[4].Width, 1);
 
 
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice), 1000,1000));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300,12,300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 1000,1000));
             models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 3000));
             models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10,1000));      //
+           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice), 1000, 1000));
+
             //inter = quadTree.ants.Models;
 
             // GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -151,12 +153,28 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 10, 10);
 Content.Load<Model>("Models/domek2"),
 new Vector3(100, 15, 100), Vector3.Up,
 new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 10);
+
+            DicentraFarm df = new DicentraFarm(new LoadModel(
+Content.Load<Model>("Models/domek2"),
+new Vector3(100, 15, 100), Vector3.Up,
+new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
+
+
+            ChelidoniumFarm hef = new ChelidoniumFarm(new LoadModel(
+Content.Load<Model>("Models/domek2"),
+new Vector3(100, 15, 100), Vector3.Up,
+new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
+
+
             IModel.Add(hf);
             IModel.Add(gr);
-
+            IModel.Add(df);
+            IModel.Add(hef);
             control = new Control(texture[11]);
             inter.Add(models[0]);
-            models.Add(gr);
+            inter.Add(models[3]);
+
+         //   models.Add(gr);
 
 
         }
@@ -182,7 +200,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 10);
 
 
             currentMouseState = Mouse.GetState();
-
+             /*
             float x;
             float z;
             float spr = (float)Math.Pow(models[0].Model.Position.X - S.X, 2.0) + (float)Math.Pow(models[0].Model.Position.Z - S.Z, 2.0);
@@ -202,7 +220,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 10);
 
             updateAnt(pozycja);
 
-
+             */
 
 
 
@@ -241,13 +259,25 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 10);
                     { break; }
                     if (model.Model.BoundingSphere.Intersects(model2.Model.BoundingSphere))
                     {
-                        if (model.GetType().BaseType == typeof(Material) && model2.GetType() == typeof(AntPeasant) )
+                        if (model.GetType().BaseType == typeof(Material) && model2.GetType() == typeof(AntPeasant) || model2.GetType().BaseType == typeof(Material) && model.GetType() == typeof(AntPeasant))
                         {
+
+                            if (model2.GetType() == typeof(AntPeasant)) { 
                               if (((AntPeasant)model2).gaterTime <((AntPeasant)model2).elapsedTime) 
                               {
                                   model2.gaterMaterial((Material)model);
                                   ((AntPeasant)model2).elapsedTime = 0;
                               }
+                            }
+                            else if (model2.GetType().BaseType == typeof(Material))
+                            {
+                                if (((AntPeasant)model).gaterTime < ((AntPeasant)model).elapsedTime)
+                                {
+                                    model.gaterMaterial((Material)model2);
+                                    ((AntPeasant)model).elapsedTime = 0;
+                                }
+
+                            }
 
                          
                           }
@@ -384,8 +414,10 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 10);
             spriteBatch.DrawString(_spr_font, string.Format("D m={0}", ((AntPeasant)models[0]).wood2), new Vector2(10.0f, 110.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("K m={0}", ((AntPeasant)models[0]).rock2), new Vector2(140.0f, 110.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("D g={0}", Player.wood), new Vector2(10.0f, 140.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(110.0f, 140.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.hyacynt), new Vector2(210.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(240.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(350.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 140.0f), Color.Pink);
 
             spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
@@ -397,7 +429,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 10);
             base.Draw(gameTime);
         }
 
-
+              /*
         public void updateAnt(Vector3 cel)
         {
             float Speed = 0.4f;
@@ -438,7 +470,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 10);
 
         }
 
-
+          */
 
 
     }

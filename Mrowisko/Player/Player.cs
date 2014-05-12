@@ -26,23 +26,37 @@ namespace AntHill
        {
            get
            {
-               return materials.Count(mat => mat.GetType().Name =="Wood" );
+               return materials.Count(mat => mat.GetType() == typeof(Wood));
            }
        }
        public static int stone
        {
            get
            {
-               return materials.Count(mat => mat.GetType().Name == "Stone");
+               return materials.Count(mat => mat.GetType() == typeof(Stone));
            }
        }
        public static int hyacynt
        {
            get
            {
-               return materials.Count(mat => mat.GetType().Name == "Hyacynt");
+               return materials.Count(mat => mat.GetType() == typeof(Hyacynt));
            }
        }
+       public static int dicentra
+       {
+           get
+           {
+               return materials.Count(mat => mat.GetType() == typeof(Dicentra));
+           }
+       }
+       public static int chelidonium
+       {
+           get
+           {
+               return materials.Count(mat => mat.GetType() == typeof(Chelidonium));
+           }
+       }                                                                       
        #endregion
    }
 
