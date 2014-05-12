@@ -9,7 +9,7 @@ using System.Text;
 namespace Logic.Building.AntBuildings.SeedFarms
 {
     public class HyacyntFarm : SeedFarm    {
-        public HyacyntFarm( LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime):base( model,_capacity,_durability,_cost,_buildingTime)
+        public HyacyntFarm( LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime,float cropTime):base( model,_capacity,_durability,_cost,_buildingTime,cropTime)
         { 
         
         }
@@ -23,7 +23,10 @@ namespace Logic.Building.AntBuildings.SeedFarms
         {  
             return new Logic.Meterials.Hyacynt();
         }
-
+        public override void Update(GameTime gameTime)
+        {
+            timeElapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds/100;
+        }
 
 
        

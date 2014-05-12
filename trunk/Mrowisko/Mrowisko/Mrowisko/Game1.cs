@@ -37,15 +37,15 @@ namespace AntHill
         MouseState lastMouseState;
         Water water;
         LoadModel anim;
-         QuadTree quadTree;
-                     //FPS COUNTER
-         int licznik;
-         SpriteFont _spr_font;
-         int _total_frames = 0;
-         float _elapsed_time = 0.0f;
-         int _fps = 0;
-        
-        
+        QuadTree quadTree;
+        //FPS COUNTER
+        int licznik;
+        SpriteFont _spr_font;
+        int _total_frames = 0;
+        float _elapsed_time = 0.0f;
+        int _fps = 0;
+
+
         MouseState currentMouseState;
         MouseState LastMouseState_2;
         int f = 0;
@@ -53,8 +53,8 @@ namespace AntHill
         bool kolizja;
         Vector3 S = new Vector3(250.0f, 0.0f, 250.0f);
         Vector3 pozycja = new Vector3(250.0f, 0.0f, 250.0f);
-        int promien=100;
-        
+        int promien = 100;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -74,7 +74,7 @@ namespace AntHill
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
-            
+
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace AntHill
         protected override void LoadContent()
         {
 
-                        PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
+            PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
             pp.DepthStencilFormat = DepthFormat.Depth24Stencil8;
             pp.BackBufferHeight = 600;
             pp.BackBufferWidth = 800;
@@ -107,59 +107,59 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("Textures/muszle"));
             texture.Add(Content.Load<Texture2D>("Textures/select2"));
 
-                    camera = new FreeCamera(
-        new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 10, texture[4].Width * 1 / 2),
-        MathHelper.ToRadians(0), // Turned around 153 degrees
-        MathHelper.ToRadians(-45), // Pitched up 13 degrees
-        GraphicsDevice);
+            camera = new FreeCamera(
+new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 10, texture[4].Width * 1 / 2),
+MathHelper.ToRadians(0), // Turned around 153 degrees
+MathHelper.ToRadians(-45), // Pitched up 13 degrees
+GraphicsDevice);
 
-                    quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
+            quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
             quadTree.Cull = true;
             quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24Stencil8);
             water = new Water(device, Content, texture[4].Width, 1);
-           
 
-           models.Add(new AntPeasant(10,10,10,10,10,10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice),10 ));
-           models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150,14,-150), Vector3.Up, new Vector3(1), GraphicsDevice),3000));
-           models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
-           models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"),new Vector3(250.0f,0.0f,250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10));      //
+
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice), 1000,1000));
+            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 3000));
+            models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10,1000));      //
             //inter = quadTree.ants.Models;
 
-          // GraphicsDevice.BlendState = BlendState.AlphaBlend;
-          // GraphicsDevice.BlendFactor = Color.Yellow;
+            // GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            // GraphicsDevice.BlendFactor = Color.Yellow;
 
 
             //animacja CHYBA dzia³a (nie wiem jak zrobiæ ¿eby by³o j¹ widaæ)
             //na starszych wersjach repozytorium dzia³a bez problemu (pliki x)
             //plik xml jest potrzebny ¿eby dzia³a³o prze³¹czanie, nie wiem czemu ale jak jest w folderze models to nie dzia³a 
-           anim = new LoadModel(
-Content.Load<Model>("animacja"),
-Vector3.Zero, Vector3.Up,
-new Vector3(1), GraphicsDevice, Content);
-           AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
-           anim.Player.StartClip(clip);
+            anim = new LoadModel(
+ Content.Load<Model>("animacja"),
+ Vector3.Zero, Vector3.Up,
+ new Vector3(1), GraphicsDevice, Content);
+            AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
+            anim.Player.StartClip(clip);
             lastMouseState = Mouse.GetState();
 
             BoundingSphereRenderer.InitializeGraphics(device, 33);
-            AntGranary gr = new AntGranary( new LoadModel(
+            AntGranary gr = new AntGranary(new LoadModel(
 Content.Load<Model>("Models/domek"),
 new Vector3(300, 13, 300), Vector3.Zero,
 new Vector3(1), GraphicsDevice), 10, 10, 10, 10, 10);
 
 
-            HyacyntFarm hf = new HyacyntFarm( new LoadModel(
+            HyacyntFarm hf = new HyacyntFarm(new LoadModel(
 Content.Load<Model>("Models/domek2"),
-new Vector3(100,15,100), Vector3.Up,
-new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
+new Vector3(100, 15, 100), Vector3.Up,
+new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 10);
             IModel.Add(hf);
             IModel.Add(gr);
 
             control = new Control(texture[11]);
             inter.Add(models[0]);
             models.Add(gr);
-   
 
-   }
+
+        }
 
         /// <summary>w
         /// UnloadContent will be called once per game and is the place to unload
@@ -186,7 +186,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
             float x;
             float z;
             float spr = (float)Math.Pow(models[0].Model.Position.X - S.X, 2.0) + (float)Math.Pow(models[0].Model.Position.Z - S.Z, 2.0);
-            Console.WriteLine((float)Math.Pow(models[0].Model.Position.X - S.X, 2.0));
+           // Console.WriteLine((float)Math.Pow(models[0].Model.Position.X - S.X, 2.0));
             if (models[3].Model.Position.X == pozycja.X && models[3].Model.Position.Z == pozycja.Z && spr>(promien*promien))
             {
                Random losuj = new System.Random(DateTime.Now.Millisecond);
@@ -233,18 +233,20 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
                 this.Exit();
             foreach (InteractiveModel model in models)
             {
-               // Console.WriteLine(model.GetType().Name);
+                model.Update(gameTime);
+               
                 foreach (InteractiveModel model2 in models)
                 {
                     if (model2 == model)
                     { break; }
                     if (model.Model.BoundingSphere.Intersects(model2.Model.BoundingSphere))
                     {
-                        if (model.GetType().BaseType == typeof(Material) && model2.GetType().Name == "AntPeasant")
-                          {
-                              if (_elapsed_time >= 999.0f)
+                        if (model.GetType().BaseType == typeof(Material) && model2.GetType() == typeof(AntPeasant) )
+                        {
+                              if (((AntPeasant)model2).gaterTime <((AntPeasant)model2).elapsedTime) 
                               {
                                   model2.gaterMaterial((Material)model);
+                                  ((AntPeasant)model2).elapsedTime = 0;
                               }
 
                          
@@ -252,18 +254,11 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
                        
                         if(model.GetType().Name=="AntGranary" && model2.GetType().Name=="AntPeasant" &&((AntPeasant)model2).Capacity>0)
                         {
-                            Console.WriteLine(((AntPeasant)model2).Capacity);
+                          //  Console.WriteLine(((AntPeasant)model2).Capacity);
                             Player.addMaterial(((AntPeasant)model2).releaseMaterial());
                            
                         }
-                        
-                        //kolizja = true;
-                        //model.Model.Scale -= new Vector3(0.001f, 0.001f, 0.001f);
-                        //player.addWood();
-                        //if (model.Scale.X < 0)
-                        //{
-                        //    model.Position = new Vector3(1000, 10000, 10000);
-                        //}
+
                     }
                 }
 
@@ -271,11 +266,18 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
             
             foreach(InteractiveModel model in IModel)
             {
+                model.Update(gameTime);
+
                 if(model.GetType().BaseType==typeof(SeedFarm))
-               if(_elapsed_time>=((SeedFarm)model).BuildingTime)
                 {
-               Player.addMaterial( model.addCrop());
+                   // Console.WriteLine(((SeedFarm)model).timeElapsed);
+                    if(((SeedFarm)model).timeElapsed>((SeedFarm)model).CropTime)
+                    {
+                        Player.addMaterial( model.addCrop());
+                        ((SeedFarm)model).timeElapsed = 0;
                     }
+                }
+
             }
 
             quadTree.View =camera.View;
@@ -317,12 +319,12 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
 
 
 
-            water.DrawRefractionMap((FreeCamera)camera,quadTree);
+            water.DrawRefractionMap((FreeCamera)camera, quadTree);
 
-          water.DrawReflectionMap((FreeCamera)camera,quadTree);
-          
+            water.DrawReflectionMap((FreeCamera)camera, quadTree);
 
-            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
+
+            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             water.sky.DrawSkyDome((FreeCamera)camera);
             quadTree.Draw((FreeCamera)camera, time);
 
@@ -337,59 +339,61 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
 
 
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-            foreach (InteractiveModel model in models) { 
-     if(camera.BoundingVolumeIsInView(model.Model.BoundingSphere))  {
+            foreach (InteractiveModel model in models)
+            {
+                if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                {
 
-         model.Draw(camera.View, camera.Projection);
+                    model.Draw(camera.View, camera.Projection);
                     BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
                         new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
-       //  BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
-                     licznik ++;
+                    //  BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                    licznik++;
 
-       }
-            } 
-      anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-      BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
-                       new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
-          
-           
-           foreach(InteractiveModel model in IModel)
-           {
-               if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
-               {
-                   model.Draw(camera.View, camera.Projection);
-                 
-    
-               
-               }
-               
-           }
-             
+                }
+            }
+            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+            BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
+                             new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
 
 
-            
+            foreach (InteractiveModel model in IModel)
+            {
+                if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                {
+                    model.Draw(camera.View, camera.Projection);
+
+
+
+                }
+
+            }
+
+
+
+
             spriteBatch.Begin();
-           spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
-                new Vector2(10.0f, 20.0f), Color.Tomato);
+            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
+                 new Vector2(10.0f, 20.0f), Color.Tomato);
             Vector2 pos = new Vector2(graphics.PreferredBackBufferWidth - (graphics.PreferredBackBufferWidth / 10), 0);
             spriteBatch.Draw(quadTree.shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
-               
-                spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik),new Vector2(10.0f, 50.0f), Color.Tomato);
 
-            spriteBatch.DrawString(_spr_font, string.Format("kolizja? ={0}", kolizja),new Vector2(10.0f, 80.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
+
+            spriteBatch.DrawString(_spr_font, string.Format("kolizja? ={0}", kolizja), new Vector2(10.0f, 80.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("D m={0}", ((AntPeasant)models[0]).wood2), new Vector2(10.0f, 110.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("K m={0}", ((AntPeasant)models[0]).rock2), new Vector2(140.0f, 110.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("D g={0}",Player.wood ), new Vector2(10.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("D g={0}", Player.wood), new Vector2(10.0f, 140.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(110.0f, 140.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.hyacynt), new Vector2(210.0f, 140.0f), Color.Pink);
 
             spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink); 
+            spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
 
             control.Draw(spriteBatch);
 
             spriteBatch.End();
-               
+
             base.Draw(gameTime);
         }
 
@@ -398,7 +402,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
         {
             float Speed = 0.4f;
 
-            if (Math.Abs(models[3].Model.Position.X - cel.X)<2.0f && Math.Abs(models[3].Model.Position.Z - cel.Z)<2.0f)
+            if (Math.Abs(models[3].Model.Position.X - cel.X) < 2.0f && Math.Abs(models[3].Model.Position.Z - cel.Z) < 2.0f)
             {
                 //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;
                 models[3].Model.Position = cel;
@@ -413,7 +417,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
             if (models[3].Model.Position.X < cel.X)
             {
                 models[3].Model.Position += Vector3.Right * Speed;
-             
+
                 //ant.Model.Position += new Vector3(0.01f, 0, 0) * Speed;
             }
 
@@ -421,21 +425,22 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 999);
             {
                 // ant.Model.Position += new Vector3(0, 0, -0.01f) * Speed;
                 models[3].Model.Position += Vector3.Forward * Speed;
-               
- 
+
+
+
             }
             if (models[3].Model.Position.Z < cel.Z)
             {
                 // ant.Model.Position += new Vector3(0, 0, 0.01f) * Speed;
                 models[3].Model.Position += Vector3.Backward * Speed;
-               
+
             }
 
         }
 
-       
-    
-    
+
+
+
     }
 }
 
