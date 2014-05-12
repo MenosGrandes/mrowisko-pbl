@@ -120,9 +120,9 @@ GraphicsDevice);
 
 
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300,12,300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 1000,1000));
-            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 3000));
+            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
             models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10,1000));      //
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10000,1));      //
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice), 1000, 1000));
 
             //inter = quadTree.ants.Models;
@@ -174,7 +174,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             inter.Add(models[0]);
             inter.Add(models[3]);
 
-         //   models.Add(gr);
+            models.Add(gr);
 
 
         }
@@ -266,7 +266,6 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                               if (((AntPeasant)model2).gaterTime <((AntPeasant)model2).elapsedTime) 
                               {
                                   model2.gaterMaterial((Material)model);
-                                  ((AntPeasant)model2).elapsedTime = 0;
                               }
                             }
                             else if (model2.GetType().BaseType == typeof(Material))
@@ -274,7 +273,6 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                                 if (((AntPeasant)model).gaterTime < ((AntPeasant)model).elapsedTime)
                                 {
                                     model.gaterMaterial((Material)model2);
-                                    ((AntPeasant)model).elapsedTime = 0;
                                 }
 
                             }
@@ -300,7 +298,6 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
                 if(model.GetType().BaseType==typeof(SeedFarm))
                 {
-                   // Console.WriteLine(((SeedFarm)model).timeElapsed);
                     if(((SeedFarm)model).timeElapsed>((SeedFarm)model).CropTime)
                     {
                         Player.addMaterial( model.addCrop());

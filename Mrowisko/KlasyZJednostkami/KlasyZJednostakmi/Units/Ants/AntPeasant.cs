@@ -47,20 +47,25 @@ namespace Logic.Units.Ants
                 if(material.Model.Scale.X >0 && capacity<maxCapacity)
                 {
 
-                    ((Material)material).Model.Scale = new Vector3((float)((float)((Material)material).ClusterSize / (float)((Material)material).MaxClusterSize));
                     switch (material.GetType().Name)
                    {
 
-                       case "Log": materials.Add(new Wood()); wood2++; ((Log)material).removeWood(1); break;
-                       case "Rock": materials.Add(new Stone()); rock2++; ((Rock)material).removeRock(1); break;
+                       case "Log": materials.Add(new Wood()); wood2++; ((Log)material).removeWood(1);
+                           ((Log)material).Model.Scale = new Vector3((float)((float)((Log)material).ClusterSize / (float)((Log)material).MaxClusterSize));
+     
+                           break;
+                       case "Rock": materials.Add(new Stone()); rock2++; ((Rock)material).removeRock(1);
+                           ((Rock)material).Model.Scale = new Vector3((float)((float)((Rock)material).ClusterSize / (float)((Rock)material).MaxClusterSize));
+     
+                           break;
                      
                    }
-
                     capacity++;
-                
+                   
                 }
                 
             }
+            elapsedTime = 0.0f;
             
         }
         public override void Update(GameTime time)
