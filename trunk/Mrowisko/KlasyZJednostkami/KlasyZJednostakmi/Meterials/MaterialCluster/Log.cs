@@ -41,7 +41,7 @@ namespace Logic.Meterials.MaterialCluster
        }
        public void removeWood(int n)
        {
-                           if (wood.Count != 0) { wood.RemoveRange(0, 1); }
+              wood.RemoveRange(0, 1); 
 
        }
 
