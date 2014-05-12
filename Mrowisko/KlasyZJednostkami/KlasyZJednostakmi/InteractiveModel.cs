@@ -67,7 +67,8 @@ namespace Logic
         {
             return null;
         }
-
+        public virtual void Update(GameTime time)
+        { }
 
     }
 }

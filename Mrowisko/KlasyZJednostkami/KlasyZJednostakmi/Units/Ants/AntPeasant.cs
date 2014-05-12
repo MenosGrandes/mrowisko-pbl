@@ -27,34 +27,47 @@ namespace Logic.Units.Ants
             set { }
         }
         private int capacity;
-        public AntPeasant(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model,int maxCapacity):base(hp,armor,strength,range,cost,buildingTime,model)
+
+        public float gaterTime;
+        public float elapsedTime;
+        public AntPeasant(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model,int maxCapacity,float gaterTime):base(hp,armor,strength,range,cost,buildingTime,model)
         {
             this.maxCapacity = maxCapacity;
             this.capacity = 0;
+            this.gaterTime = gaterTime;
             rock2 = 0;
             wood2 = 0;
 
         }
         public override void gaterMaterial(Material material)
         {
-            if(material.Model.Scale.X >0 && capacity<maxCapacity)
-            {
 
-                ((Material)material).Model.Scale = new Vector3((float)((float)((Material)material).ClusterSize / (float)((Material)material).MaxClusterSize));
-                switch (material.GetType().Name)
-               {
+            if (elapsedTime >= gaterTime) 
+            { 
+                if(material.Model.Scale.X >0 && capacity<maxCapacity)
+                {
 
-                   case "Log": materials.Add(new Wood()); wood2++; ((Log)material).removeWood(1); break;
-                   case "Rock": materials.Add(new Stone()); rock2++; ((Rock)material).removeRock(1); break;
+                    ((Material)material).Model.Scale = new Vector3((float)((float)((Material)material).ClusterSize / (float)((Material)material).MaxClusterSize));
+                    switch (material.GetType().Name)
+                   {
+
+                       case "Log": materials.Add(new Wood()); wood2++; ((Log)material).removeWood(1); break;
+                       case "Rock": materials.Add(new Stone()); rock2++; ((Rock)material).removeRock(1); break;
                      
-               }
+                   }
 
-                capacity++;
+                    capacity++;
+                
+                }
                 
             }
-
+            
         }
+        public override void Update(GameTime time)
+        {
 
+            this.elapsedTime += time.ElapsedGameTime.Milliseconds ;
+        }
         public override void Draw(Matrix View, Matrix Projection)
         {
             model.Draw(View, Projection);

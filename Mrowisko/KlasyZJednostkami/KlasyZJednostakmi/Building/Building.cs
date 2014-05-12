@@ -41,6 +41,8 @@ namespace Logic.Building
             set { capacity = value; }
         }
 
+
+
         public Building( LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime)
             : base( model)
         {
@@ -53,8 +55,8 @@ namespace Logic.Building
         public Building()
         { }
          public override void Draw(Matrix View, Matrix Projection)
-        {
-        }
-
+        {   }
+         public override void Update(GameTime gameTime)
+         { }
     }
 }
