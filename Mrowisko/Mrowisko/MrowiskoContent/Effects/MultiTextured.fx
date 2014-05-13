@@ -143,7 +143,6 @@ struct MTVertexToPixel
 	float Depth : TEXCOORD4;
 	float4 clipDistances : TEXCOORD5;
 	float4 Position3D        : TEXCOORD6;
-	float4 TextureWeights2    : TEXCOORD7;
 };
 
 struct MTPixelToFrame
@@ -189,7 +188,7 @@ float4 ComputeShadowColor(float4 worldPos, float4 Color)
 }
 
 
-MTVertexToPixel MultiTexturedVS(float4 inPos : POSITION, float3 inNormal : NORMAL, float2 inTexCoords : TEXCOORD0, float4 inTexWeights : TEXCOORD1, float4 inTexWeights2 : TEXCOORD2)
+MTVertexToPixel MultiTexturedVS(float4 inPos : POSITION, float3 inNormal : NORMAL, float2 inTexCoords : TEXCOORD0, float4 inTexWeights : TEXCOORD1)
 {
 	MTVertexToPixel Output = (MTVertexToPixel)0;
 	float4x4 preViewProjection = mul(xView, xProjection);
@@ -202,7 +201,6 @@ MTVertexToPixel MultiTexturedVS(float4 inPos : POSITION, float3 inNormal : NORMA
 	//Output.LightDirection.xyz = -xLightDirection;
 	//Output.LightDirection.w = 1;    
 	Output.TextureWeights = inTexWeights;
-	Output.TextureWeights2 = inTexWeights2;
 
 	Output.Position3D = mul(inPos, xWorld);
 
@@ -236,20 +234,15 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 	farColor += tex2D(TextureSampler1, PSIn.TextureCoords)*PSIn.TextureWeights.y;
 	farColor += tex2D(TextureSampler2, PSIn.TextureCoords)*PSIn.TextureWeights.z;
 	farColor += tex2D(TextureSampler3, PSIn.TextureCoords)*PSIn.TextureWeights.w;
-	farColor += tex2D(GroundText0Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.x;
-	farColor += tex2D(GroundText1Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.y;
-	farColor += tex2D(GroundText2Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.z;
-	farColor += tex2D(GroundText2Sampler, PSIn.TextureCoords)*PSIn.TextureWeights2.w;
+
+
 	float4 nearColor;
 	float2 nearTextureCoords = PSIn.TextureCoords /3;
 	nearColor = tex2D(TextureSampler0, nearTextureCoords)*PSIn.TextureWeights.x;
 	nearColor += tex2D(TextureSampler1, nearTextureCoords)*PSIn.TextureWeights.y;
 	nearColor += tex2D(TextureSampler2, nearTextureCoords)*PSIn.TextureWeights.z;
 	nearColor += tex2D(TextureSampler3, nearTextureCoords)*PSIn.TextureWeights.w;
-	nearColor += tex2D(GroundText0Sampler, nearTextureCoords)*PSIn.TextureWeights2.x;
-	nearColor += tex2D(GroundText1Sampler, nearTextureCoords)*PSIn.TextureWeights2.y;
-	nearColor += tex2D(GroundText2Sampler, nearTextureCoords)*PSIn.TextureWeights2.z;
-	nearColor += tex2D(GroundText2Sampler, nearTextureCoords)*PSIn.TextureWeights2.w;
+
   //////////////////////////////////////////////////////////////////////////////////////
 
 

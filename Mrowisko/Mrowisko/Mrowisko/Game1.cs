@@ -119,12 +119,10 @@ GraphicsDevice);
             water = new Water(device, Content, texture[4].Width, 1);
 
 
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300,12,300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 1000,1000));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 1000, 1000));
             models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
             models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10000,1));      //
-           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Up, new Vector3(0.5f), GraphicsDevice), 1000, 1000));
-
+      
             //inter = quadTree.ants.Models;
 
             // GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -170,12 +168,15 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             IModel.Add(gr);
             IModel.Add(df);
             IModel.Add(hef);
-            control = new Control(texture[11]);
+             control = new Control(texture[11]);
             inter.Add(models[0]);
-            inter.Add(models[3]);
-
-            models.Add(gr);
-
+           // inter.Add(models[3]);
+            /*
+            for (int i = 4; i < 16;i++ )
+            {
+                inter.Add(models[i]);
+            } */
+                models.Add(gr);
 
         }
 
@@ -279,6 +280,13 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
                          
                           }
+                      //  if(model2.GetType().BaseType==typeof(Ant) && model.GetType().BaseType==typeof(Ant)   )
+                     //   {
+                       // Random r= new Random();
+                     //   model.Model.Position += new Vector3((float)r.NextDouble() * 5, 0, (float)r.NextDouble() * 5);
+                       // Console.WriteLine((float)r.NextDouble() * 5 + "  " + (float)r.NextDouble() * 5);
+                       // model2.Model.Position -= new Vector3(r.Next(1, 5), 0, r.Next(1, 5));
+                     //   }
                        
                         if(model.GetType().Name=="AntGranary" && model2.GetType().Name=="AntPeasant" &&((AntPeasant)model2).Capacity>0)
                         {
@@ -372,22 +380,23 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                 {
 
                     model.Draw(camera.View, camera.Projection);
-                    BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                        new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
+                 //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                    //    new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
                     //  BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     licznik++;
 
                 }
             }
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-            BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
-                             new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
+          //  BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
+             //                new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
 
 
             foreach (InteractiveModel model in IModel)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
+                 //   BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     model.Draw(camera.View, camera.Projection);
 
 
@@ -402,9 +411,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             spriteBatch.Begin();
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                  new Vector2(10.0f, 20.0f), Color.Tomato);
-            Vector2 pos = new Vector2(graphics.PreferredBackBufferWidth - (graphics.PreferredBackBufferWidth / 10), 0);
-            spriteBatch.Draw(quadTree.shadow.RenderTarget, pos, null, Color.White, 0f, Vector2.Zero, .1F, SpriteEffects.None, 0f);
-
+            /*
             spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
 
             spriteBatch.DrawString(_spr_font, string.Format("kolizja? ={0}", kolizja), new Vector2(10.0f, 80.0f), Color.Pink);
@@ -418,7 +425,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
             spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
-
+          */
             control.Draw(spriteBatch);
 
             spriteBatch.End();
