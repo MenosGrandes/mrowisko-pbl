@@ -216,7 +216,6 @@ namespace Map
 
 
 
-            /*
            foreach (EnvModel pass1 in envModelList)
            {
                pass1.DrawModels(camera);
@@ -227,7 +226,7 @@ namespace Map
            {
                pass.DrawBillboards(camera.View, camera.Projection, camera.Position, time / 10);
            }
-               */
+            
            
 
         }

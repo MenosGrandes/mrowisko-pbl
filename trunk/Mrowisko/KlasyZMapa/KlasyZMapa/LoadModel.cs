@@ -113,14 +113,14 @@ namespace Map
         private void buildBoundingSphere()
         {
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
-           // List<BoundingSphere> spheres=new List<BoundingSphere>(); 
+            List<BoundingSphere> spheres=new List<BoundingSphere>();
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
-               // spheres.Add(transformed);
+                     spheres.Add(transformed);
                 sphere = BoundingSphere.CreateMerged(sphere, transformed);
             }
-           // this.spheres=spheres.ToArray(); 
+            this.spheres=spheres.ToArray(); 
             this.boundingSphere = sphere;
                
         }
