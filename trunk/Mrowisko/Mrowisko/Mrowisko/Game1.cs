@@ -118,11 +118,18 @@ GraphicsDevice);
             quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24Stencil8);
             water = new Water(device, Content, texture[4].Width, 1);
 
+            
+
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice), 10));
+            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 3000));
+            models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10));      //
+
 
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 1000, 1000));
             models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
             models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
-      
+
             //inter = quadTree.ants.Models;
 
             // GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -166,17 +173,19 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
             IModel.Add(hf);
             IModel.Add(gr);
+
+            control = new Control(texture[11],quadTree);
             IModel.Add(df);
             IModel.Add(hef);
-             control = new Control(texture[11]);
+
             inter.Add(models[0]);
-           // inter.Add(models[3]);
+            // inter.Add(models[3]);
             /*
             for (int i = 4; i < 16;i++ )
             {
                 inter.Add(models[i]);
             } */
-                models.Add(gr);
+            models.Add(gr);
 
         }
 
@@ -201,59 +210,65 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
 
             currentMouseState = Mouse.GetState();
-             /*
-            float x;
-            float z;
-            float spr = (float)Math.Pow(models[0].Model.Position.X - S.X, 2.0) + (float)Math.Pow(models[0].Model.Position.Z - S.Z, 2.0);
-           // Console.WriteLine((float)Math.Pow(models[0].Model.Position.X - S.X, 2.0));
-            if (models[3].Model.Position.X == pozycja.X && models[3].Model.Position.Z == pozycja.Z && spr>(promien*promien))
-            {
-               Random losuj = new System.Random(DateTime.Now.Millisecond);
-               x = (S.X - promien) + ((float)losuj.NextDouble() * ((S.X + promien) - (S.X - promien)));
-               z = (S.Z - promien) + ((float)losuj.NextDouble() * ((S.Z + promien)- (S.Z - promien)));
+            /*
+           float x;
+           float z;
+           float spr = (float)Math.Pow(models[0].Model.Position.X - S.X, 2.0) + (float)Math.Pow(models[0].Model.Position.Z - S.Z, 2.0);
+          // Console.WriteLine((float)Math.Pow(models[0].Model.Position.X - S.X, 2.0));
+           if (models[3].Model.Position.X == pozycja.X && models[3].Model.Position.Z == pozycja.Z && spr>(promien*promien))
+           {
+              Random losuj = new System.Random(DateTime.Now.Millisecond);
+              x = (S.X - promien) + ((float)losuj.NextDouble() * ((S.X + promien) - (S.X - promien)));
+              z = (S.Z - promien) + ((float)losuj.NextDouble() * ((S.Z + promien)- (S.Z - promien)));
 
-               pozycja = new Vector3(x, 0.0f,z);
+              pozycja = new Vector3(x, 0.0f,z);
+          }
+           if (spr <= (promien * promien))
+           {
+               pozycja = new Vector3(models[0].Model.Position.X, 0.0f, models[0].Model.Position.Z);
            }
-            if (spr <= (promien * promien))
-            {
-                pozycja = new Vector3(models[0].Model.Position.X, 0.0f, models[0].Model.Position.Z);
-            }
 
-            updateAnt(pozycja);
+           updateAnt(pozycja);
 
-             */
+            */
+
 
 
 
             KeyboardState keyState = Keyboard.GetState();
-             _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
- 
+            _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
             // 1 Second has passed
 
+            if (keyState.IsKeyDown(Keys.J))
+            {
 
-           
+                models[0].Model.Rotation += new Vector3(0, 0.1f, 0);
+            }
+
+
             if (_elapsed_time >= 1000.0f)
             {
                 _fps = _total_frames;
                 _total_frames = 0;
                 _elapsed_time = 0;
-               
+
             }
-            
-            if (keyState.IsKeyDown(Keys.C) )
+
+            if (keyState.IsKeyDown(Keys.C))
             {
                 RasterizerState rasterizerState = new RasterizerState();
                 rasterizerState.FillMode = FillMode.WireFrame;
                 GraphicsDevice.RasterizerState = rasterizerState;
             }
 
-            
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             foreach (InteractiveModel model in models)
             {
                 model.Update(gameTime);
-               
+
                 foreach (InteractiveModel model2 in models)
                 {
                     if (model2 == model)
@@ -263,11 +278,12 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                         if (model.GetType().BaseType == typeof(Material) && model2.GetType() == typeof(AntPeasant) || model2.GetType().BaseType == typeof(Material) && model.GetType() == typeof(AntPeasant))
                         {
 
-                            if (model2.GetType() == typeof(AntPeasant)) { 
-                              if (((AntPeasant)model2).gaterTime <((AntPeasant)model2).elapsedTime) 
-                              {
-                                  model2.gaterMaterial((Material)model);
-                              }
+                            if (model2.GetType() == typeof(AntPeasant))
+                            {
+                                if (((AntPeasant)model2).gaterTime < ((AntPeasant)model2).elapsedTime)
+                                {
+                                    model2.gaterMaterial((Material)model);
+                                }
                             }
                             else if (model2.GetType().BaseType == typeof(Material))
                             {
@@ -278,45 +294,45 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
                             }
 
-                         
-                          }
-                      //  if(model2.GetType().BaseType==typeof(Ant) && model.GetType().BaseType==typeof(Ant)   )
-                     //   {
-                       // Random r= new Random();
-                     //   model.Model.Position += new Vector3((float)r.NextDouble() * 5, 0, (float)r.NextDouble() * 5);
-                       // Console.WriteLine((float)r.NextDouble() * 5 + "  " + (float)r.NextDouble() * 5);
-                       // model2.Model.Position -= new Vector3(r.Next(1, 5), 0, r.Next(1, 5));
-                     //   }
-                       
-                        if(model.GetType().Name=="AntGranary" && model2.GetType().Name=="AntPeasant" &&((AntPeasant)model2).Capacity>0)
+
+                        }
+                        //  if(model2.GetType().BaseType==typeof(Ant) && model.GetType().BaseType==typeof(Ant)   )
+                        //   {
+                        // Random r= new Random();
+                        //   model.Model.Position += new Vector3((float)r.NextDouble() * 5, 0, (float)r.NextDouble() * 5);
+                        // Console.WriteLine((float)r.NextDouble() * 5 + "  " + (float)r.NextDouble() * 5);
+                        // model2.Model.Position -= new Vector3(r.Next(1, 5), 0, r.Next(1, 5));
+                        //   }
+
+                        if (model.GetType().Name == "AntGranary" && model2.GetType().Name == "AntPeasant" && ((AntPeasant)model2).Capacity > 0)
                         {
-                          //  Console.WriteLine(((AntPeasant)model2).Capacity);
+                            //  Console.WriteLine(((AntPeasant)model2).Capacity);
                             Player.addMaterial(((AntPeasant)model2).releaseMaterial());
-                           
+
                         }
 
                     }
                 }
 
             }
-            
-            foreach(InteractiveModel model in IModel)
+
+            foreach (InteractiveModel model in IModel)
             {
                 model.Update(gameTime);
 
-                if(model.GetType().BaseType==typeof(SeedFarm))
+                if (model.GetType().BaseType == typeof(SeedFarm))
                 {
-                    if(((SeedFarm)model).timeElapsed>((SeedFarm)model).CropTime)
+                    if (((SeedFarm)model).timeElapsed > ((SeedFarm)model).CropTime)
                     {
-                        Player.addMaterial( model.addCrop());
+                        Player.addMaterial(model.addCrop());
                         ((SeedFarm)model).timeElapsed = 0;
                     }
                 }
 
             }
 
-            quadTree.View =camera.View;
-           quadTree.Projection = camera.Projection;
+            quadTree.View = camera.View;
+            quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
 
@@ -324,14 +340,15 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             control.View = camera.View;
             control.Projection = camera.Projection;
             control.models = inter;
+            control.IModel = IModel;
             control.device = device;
             control.Update(gameTime);
             anim.Update(gameTime);
             camera.Update(gameTime);
-           
+
 
             base.Update(gameTime);
-            
+
         }
 
 
@@ -380,7 +397,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                 {
 
                     model.Draw(camera.View, camera.Projection);
-                 //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                    //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
                     //    new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
                     //  BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     licznik++;
@@ -388,15 +405,15 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                 }
             }
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-          //  BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
-             //                new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
+            //  BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
+            //                new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
 
 
             foreach (InteractiveModel model in IModel)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
-                 //   BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                    //   BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     model.Draw(camera.View, camera.Projection);
 
 
@@ -425,6 +442,9 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
             spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
+            
+            spriteBatch.DrawString(_spr_font, string.Format("rot={0}", models[0].Model.Rotation), new Vector2(10.0f, 260.0f), Color.Pink); 
+            spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
           */
             control.Draw(spriteBatch);
 
@@ -433,48 +453,48 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             base.Draw(gameTime);
         }
 
-              /*
-        public void updateAnt(Vector3 cel)
-        {
-            float Speed = 0.4f;
+        /*
+  public void updateAnt(Vector3 cel)
+  {
+      float Speed = 0.4f;
 
-            if (Math.Abs(models[3].Model.Position.X - cel.X) < 2.0f && Math.Abs(models[3].Model.Position.Z - cel.Z) < 2.0f)
-            {
-                //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;
-                models[3].Model.Position = cel;
-            }
-
-
-            if (models[3].Model.Position.X > cel.X)
-            {
-                //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;
-                models[3].Model.Position += Vector3.Left * Speed;
-            }
-            if (models[3].Model.Position.X < cel.X)
-            {
-                models[3].Model.Position += Vector3.Right * Speed;
-
-                //ant.Model.Position += new Vector3(0.01f, 0, 0) * Speed;
-            }
-
-            if (models[3].Model.Position.Z > cel.Z)
-            {
-                // ant.Model.Position += new Vector3(0, 0, -0.01f) * Speed;
-                models[3].Model.Position += Vector3.Forward * Speed;
+      if (Math.Abs(models[3].Model.Position.X - cel.X) < 2.0f && Math.Abs(models[3].Model.Position.Z - cel.Z) < 2.0f)
+      {
+          //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;
+          models[3].Model.Position = cel;
+      }
 
 
+      if (models[3].Model.Position.X > cel.X)
+      {
+          //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;
+          models[3].Model.Position += Vector3.Left * Speed;
+      }
+      if (models[3].Model.Position.X < cel.X)
+      {
+          models[3].Model.Position += Vector3.Right * Speed;
 
-            }
-            if (models[3].Model.Position.Z < cel.Z)
-            {
-                // ant.Model.Position += new Vector3(0, 0, 0.01f) * Speed;
-                models[3].Model.Position += Vector3.Backward * Speed;
+          //ant.Model.Position += new Vector3(0.01f, 0, 0) * Speed;
+      }
 
-            }
+      if (models[3].Model.Position.Z > cel.Z)
+      {
+          // ant.Model.Position += new Vector3(0, 0, -0.01f) * Speed;
+          models[3].Model.Position += Vector3.Forward * Speed;
 
-        }
 
-          */
+
+      }
+      if (models[3].Model.Position.Z < cel.Z)
+      {
+          // ant.Model.Position += new Vector3(0, 0, 0.01f) * Speed;
+          models[3].Model.Position += Vector3.Backward * Speed;
+
+      }
+
+  }
+
+    */
 
 
     }

@@ -43,7 +43,8 @@ namespace Map
     /// </summary>
     public class MapRender
     {
-         
+         public MapRender()
+        { }
 
       // private GraphicsDevice device;
 
