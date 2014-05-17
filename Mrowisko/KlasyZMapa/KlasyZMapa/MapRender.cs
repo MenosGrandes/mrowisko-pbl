@@ -43,8 +43,7 @@ namespace Map
     /// </summary>
     public class MapRender
     {
-         public MapRender()
-        { }
+         
 
       // private GraphicsDevice device;
 
@@ -62,8 +61,11 @@ namespace Map
            get { return terrainLength; }
            set { terrainLength = value; }
        }
-       public float[,] heightData;
-
+       public float[,] heightData
+       {
+           get;
+           set;
+       }
        public float[,] colorHeightData
        {
            get;
@@ -107,14 +109,14 @@ namespace Map
 
 
             LoadHeightData(texture,color);
-            SetUpvertices(1);
+            SetUpvertices(Scale);
             SetUpTerrainIndices();
             CalculateNormals();
 
-          
+            
+
 
         }
-       
 
         
                                         /// <summary>
@@ -127,14 +129,14 @@ namespace Map
             float maximumHeight = float.MinValue;
 
 
+
             terrainWidth = heightMap.Width;
             terrainLength = heightMap.Height;
 
             Color[] heightMapColors = new Color[terrainWidth * terrainLength];
             heightMap.GetData(heightMapColors);
 
-
-
+          
             heightData = new float[terrainWidth, terrainLength];
 
             for (int x = 0; x < terrainWidth; x++)
@@ -144,7 +146,7 @@ namespace Map
                     if (heightData[x, y] < minimumHeight) minimumHeight = heightData[x, y];
                     if (heightData[x, y] > maximumHeight) maximumHeight = heightData[x, y];
 
-                                 }
+                                  }
 
             for (int x = 0; x < terrainWidth; x++)
                 for (int y = 0; y < terrainLength; y++)
@@ -186,8 +188,8 @@ namespace Map
                     vertices[x + y * terrainWidth].TexWeights.Z /= total;
                     vertices[x + y * terrainWidth].TexWeights.W /= total;
                     #endregion
-                    #region Color Map Vertices
-                        #endregion
+                  
+                   
                 }
             }
 

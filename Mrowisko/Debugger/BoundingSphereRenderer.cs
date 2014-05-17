@@ -133,6 +133,7 @@ namespace Debugger
            GraphicsDevice graphicsDevice,
            Matrix view,
            Matrix projection,
+            Matrix world,
            Color xyColor,
             Color xzColor,
             Color yzColor)

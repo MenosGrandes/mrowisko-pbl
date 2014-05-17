@@ -9,6 +9,8 @@ float xLightPower;
 float4x4 xLightsWorldViewProjection;
 float4x4 xWorldViewProjection;
 
+float DepthBias = 1.8f;
+float2 PCFSamples[17];
 bool Clipping;
 float4 ClipPlane0;
 
@@ -22,9 +24,16 @@ Texture xTexture5;
 Texture xShadowMap;
 texture Ground;
 
-float DepthBias = 0.0001f;
-
-sampler ShadowMapSampler = sampler_state { texture = <xShadowMap>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = clamp; AddressV = clamp; };
+texture shadowTexture;
+sampler ShadowSampler = sampler_state
+{
+	Texture = (shadowTexture);
+	magfilter = LINEAR;
+	minfilter = LINEAR;
+	mipfilter = LINEAR;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
 
 
 sampler TextureSampler = sampler_state 
@@ -137,12 +146,15 @@ struct MTVertexToPixel
 	float4 Position         : POSITION;
 	float4 Color            : COLOR0;
 	float3 Normal            : TEXCOORD0;
+	
 	float2 TextureCoords    : TEXCOORD1;
 	float4 LightDirection    : TEXCOORD2;
 	float4 TextureWeights    : TEXCOORD3;
 	float Depth : TEXCOORD4;
 	float4 clipDistances : TEXCOORD5;
 	float4 Position3D        : TEXCOORD6;
+	float4 Pos2DAsSeenByLight    : TEXCOORD7;
+	
 };
 
 struct MTPixelToFrame
@@ -157,56 +169,23 @@ float DotProduct(float3 lightPos, float3 pos3D, float3 normal)
 }
 
 
-float4 ComputeShadowColor(float4 worldPos, float4 Color)
-{
-	// Find the position of this pixel in light space
-	float4 lightingPosition = mul(worldPos, xLightsWorldViewProjection);
-
-		// Find the position in the shadow map for this pixel
-		float2 ShadowTexCoord = 0.5 * lightingPosition.xy /
-		lightingPosition.w + float2(0.5, 0.5);
-	ShadowTexCoord.y = 1.0f - ShadowTexCoord.y;
-
-	// Get the current depth stored in the shadow map
-	float4 shadowInfo = tex2D(ShadowMapSampler, ShadowTexCoord);
-		float shadowdepth = shadowInfo.r;
-	float shadowOpacity = (0.5f + 0.5f * (1 - shadowInfo.g));
-
-	// Calculate the current pixel depth
-	// The bias is used to prevent folating point errors that occur when
-	// the pixel of the occluder is being drawn
-	float ourdepth = (lightingPosition.z / lightingPosition.w) - DepthBias;
-
-	// Check to see if this pixel is in front or behind the value in the shadow map
-	//if (shadowdepth < ourdepth)
-	//{
-		// Shadow the pixel by lowering the intensity
-		Color *= float4(shadowOpacity , shadowOpacity , shadowOpacity , 1);
-	//};
-
-	return Color;
-}
-
-
 MTVertexToPixel MultiTexturedVS(float4 inPos : POSITION, float3 inNormal : NORMAL, float2 inTexCoords : TEXCOORD0, float4 inTexWeights : TEXCOORD1)
 {
 	MTVertexToPixel Output = (MTVertexToPixel)0;
 	float4x4 preViewProjection = mul(xView, xProjection);
 		float4x4 preWorldViewProjection = mul(xWorld, preViewProjection);
 
-		Output.Position = mul(inPos, preWorldViewProjection);
+		Output.Position = mul(inPos, xWorldViewProjection);
+	Output.Pos2DAsSeenByLight = mul(inPos, xLightsWorldViewProjection);
 	Output.Normal = mul(normalize(inNormal), xWorld);
 	Output.TextureCoords = inTexCoords;
-
-	//Output.LightDirection.xyz = -xLightDirection;
-	//Output.LightDirection.w = 1;    
+  
 	Output.TextureWeights = inTexWeights;
 
 	Output.Position3D = mul(inPos, xWorld);
 
 	Output.Depth = Output.Position.z / Output.Position.w;
 	Output.clipDistances = dot(inPos, ClipPlane0); //MSS - Water Refactor added
-
 
 	return Output;
 }
@@ -216,13 +195,13 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 	
 	MTPixelToFrame Output = (MTPixelToFrame)0;
 
-	float diffuseLightingFactor=0.3f;
+	float diffuseLightingFactor2=0.3f;
 	if (xEnableLighting)
 	{
 		
-		diffuseLightingFactor = DotProduct(xLightPos, PSIn.Position3D, PSIn.Normal*(-1));
-		diffuseLightingFactor = saturate(diffuseLightingFactor);
-		diffuseLightingFactor *= xLightPower;
+		diffuseLightingFactor2 = DotProduct(xLightPos, PSIn.Position3D, PSIn.Normal*(-1));
+		diffuseLightingFactor2 = saturate(diffuseLightingFactor2);
+		diffuseLightingFactor2 *= xLightPower;
 	}
 
 	float blendDistance = 0.99f;
@@ -235,7 +214,6 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 	farColor += tex2D(TextureSampler2, PSIn.TextureCoords)*PSIn.TextureWeights.z;
 	farColor += tex2D(TextureSampler3, PSIn.TextureCoords)*PSIn.TextureWeights.w;
 
-
 	float4 nearColor;
 	float2 nearTextureCoords = PSIn.TextureCoords /3;
 	nearColor = tex2D(TextureSampler0, nearTextureCoords)*PSIn.TextureWeights.x;
@@ -243,27 +221,26 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 	nearColor += tex2D(TextureSampler2, nearTextureCoords)*PSIn.TextureWeights.z;
 	nearColor += tex2D(TextureSampler3, nearTextureCoords)*PSIn.TextureWeights.w;
 
-  //////////////////////////////////////////////////////////////////////////////////////
+	float2 ProjectedTexCoords;
+	ProjectedTexCoords[0] = PSIn.Pos2DAsSeenByLight.x / PSIn.Pos2DAsSeenByLight.w/ 2.0f + 0.5f;
+	ProjectedTexCoords[1] = -PSIn.Pos2DAsSeenByLight.y / PSIn.Pos2DAsSeenByLight.w/ 2.0f + 0.5f;
 
-
-		
-
-
-
-
-
+	float depthStoredInShadowMap = tex2D(ShadowSampler, ProjectedTexCoords).r;
+	float realDistance = PSIn.Pos2DAsSeenByLight.z / PSIn.Pos2DAsSeenByLight.w;
+	float4 color;
+	Output.Color = lerp(nearColor, farColor, blendWidth)*(diffuseLightingFactor2 + xAmbient);
 	
+		for (int i = 0; i < 17; i++)
+		{
+			if ((realDistance - DepthBias) <= depthStoredInShadowMap)
+			{
+
+				Output.Color -= tex2D(ShadowSampler, ProjectedTexCoords + PCFSamples[i]) / 100;
 
 
-	float4 Color=(0,0,0,0);
-	Color = ComputeShadowColor(mul(PSIn.Position, xWorldViewProjection), Output.Color);
+		}
+	}
 	
-	
-	Output.Color = lerp(farColor, nearColor, blendWidth)*(diffuseLightingFactor + xAmbient);//+ lerp(nearColor2, farColor2, blendWidth)*(diffuseLightingFactor + xAmbient);
-
-	//Output.Color += colour;
-	
-	Output.Color += Color;
 
 	  if (Clipping)
 	   clip(PSIn.clipDistances);  //MSS - Water Refactor added
@@ -274,9 +251,10 @@ technique MultiTextured
 {
 	pass Pass0
 	{
-		VertexShader = compile vs_2_0 MultiTexturedVS();
-		PixelShader = compile ps_2_0 MultiTexturedPS();
+		VertexShader = compile vs_3_0 MultiTexturedVS();
+		PixelShader = compile ps_3_0 MultiTexturedPS();
 	}
+	
 }
 
 
@@ -405,6 +383,64 @@ technique Water
 	{
 		VertexShader = compile vs_2_0 WaterVS();
 		PixelShader = compile ps_2_0 WaterPS();
+	}
+}
+
+
+struct SMapVertexToPixel
+{
+	float4 Position     : POSITION;
+	float4 Position2D    : TEXCOORD0;
+};
+
+struct SMapPixelToFrame
+{
+	float4 Color : COLOR0;
+};
+
+
+struct SSceneVertexToPixel
+{
+	float4 Position             : POSITION;
+	float4 Pos2DAsSeenByLight    : TEXCOORD0;
+
+	float2 TexCoords            : TEXCOORD1;
+	float3 Normal                : TEXCOORD2;
+	float4 Position3D            : TEXCOORD3;
+
+};
+
+struct SScenePixelToFrame
+{
+	float4 Color : COLOR0;
+};
+
+SMapVertexToPixel ShadowMapVertexShader(float4 inPos : POSITION)
+{
+	SMapVertexToPixel Output = (SMapVertexToPixel)0;
+
+	Output.Position = mul(inPos, xLightsWorldViewProjection);
+	Output.Position2D = Output.Position;
+
+	return Output;
+}
+
+SMapPixelToFrame ShadowMapPixelShader(SMapVertexToPixel PSIn)
+{
+	SMapPixelToFrame Output = (SMapPixelToFrame)0;
+
+	Output.Color = PSIn.Position2D.z / PSIn.Position2D.w;
+
+	return Output;
+}
+
+
+technique ShadowMap
+{
+	pass Pass0
+	{
+		VertexShader = compile vs_2_0 ShadowMapVertexShader();
+		PixelShader = compile ps_2_0 ShadowMapPixelShader();
 	}
 }
 
