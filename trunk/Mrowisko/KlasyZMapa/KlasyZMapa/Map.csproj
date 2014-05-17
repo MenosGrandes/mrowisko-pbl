@@ -88,6 +88,7 @@
     <Compile Include="QuadNode.cs" />
     <Compile Include="QuadNodeVertex.cs" />
     <Compile Include="QuadTree.cs" />
+    <Compile Include="ShadowCasterObject.cs" />
     <Compile Include="SkyDome.cs" />
     <Compile Include="Water.cs" />
   </ItemGroup>

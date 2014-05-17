@@ -10,11 +10,10 @@ using System.Collections.Generic;
 using Logic.Building.AntBuildings.Granary;
 using Logic.Building.AntBuildings.SeedFarms;
 using System;
-using Logic.Units.Ants;
-using Logic.Meterials;
 using Logic.Meterials.MaterialCluster;
-using Logic.Building;
+using Logic.Units.Ants;
 using Logic.Building.AntBuildings;
+using Logic.Meterials;
 
 namespace AntHill
 {
@@ -24,37 +23,38 @@ namespace AntHill
     public class Game1 : Microsoft.Xna.Framework.Game
     {
 
+        List<InteractiveModel> models = new List<InteractiveModel>();
+        List<InteractiveModel> inter = new List<InteractiveModel>(); Control control;
         List<InteractiveModel> IModel = new List<InteractiveModel>();
-        Control control;
+
 
         GraphicsDeviceManager graphics;
         public GraphicsDevice device;
         float x, y, z;
         SpriteBatch spriteBatch;
-        List<InteractiveModel> models = new List<InteractiveModel>();
-        List<InteractiveModel> inter = new List<InteractiveModel>();
         public Camera camera;
         MouseState lastMouseState;
         Water water;
         LoadModel anim;
-        QuadTree quadTree;
-        //FPS COUNTER
-        int licznik;
-        SpriteFont _spr_font;
-        int _total_frames = 0;
-        float _elapsed_time = 0.0f;
-        int _fps = 0;
-
-
+         QuadTree quadTree;
+                     //FPS COUNTER
+         int licznik;
+         SpriteFont _spr_font;
+         int _total_frames = 0;
+         float _elapsed_time = 0.0f;
+         int _fps = 0;
+        
+        
         MouseState currentMouseState;
         MouseState LastMouseState_2;
         int f = 0;
         Vector3 playerTarget;
         bool kolizja;
-        Vector3 S = new Vector3(250.0f, 0.0f, 250.0f);
-        Vector3 pozycja = new Vector3(250.0f, 0.0f, 250.0f);
-        int promien = 100;
+        public LightsAndShadows.Shadow shadow;
+        public LightsAndShadows.Light light;
+        Effect hiDefShadowEffect;
 
+        Matrix world = Matrix.CreateTranslation(Vector3.Zero);
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -74,7 +74,7 @@ namespace AntHill
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
-
+            
         }
 
         /// <summary>
@@ -83,13 +83,19 @@ namespace AntHill
         /// </summary>
         protected override void LoadContent()
         {
-
-            PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
+            light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(2048, 1200, 2048));
+            shadow = new LightsAndShadows.Shadow();
+                        PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
             pp.DepthStencilFormat = DepthFormat.Depth24Stencil8;
             pp.BackBufferHeight = 600;
             pp.BackBufferWidth = 800;
-
+           
+           
+            hiDefShadowEffect = Content.Load<Effect>("Effects/Shadows");
             device = GraphicsDevice;
+            device.DepthStencilState = DepthStencilState.Default;
+            shadow.RenderTarget = new RenderTarget2D(device, 4096, 4096, false, pp.BackBufferFormat, DepthFormat.Depth24Stencil8);
+           
             spriteBatch = new SpriteBatch(GraphicsDevice);
             _spr_font = Content.Load<SpriteFont>("Fonts/FPS");// you have on your project
 
@@ -107,29 +113,22 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("Textures/muszle"));
             texture.Add(Content.Load<Texture2D>("Textures/select2"));
 
-            camera = new FreeCamera(
-new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 10, texture[4].Width * 1 / 2),
-MathHelper.ToRadians(0), // Turned around 153 degrees
-MathHelper.ToRadians(-45), // Pitched up 13 degrees
-GraphicsDevice);
+                    camera = new FreeCamera(
+        new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 10, texture[4].Width * 1 / 2),
+        MathHelper.ToRadians(0), // Turned around 153 degrees
+        MathHelper.ToRadians(-45), // Pitched up 13 degrees
+        GraphicsDevice);
 
-            quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
+                    quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
             quadTree.Cull = true;
-            quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24Stencil8);
+            
             water = new Water(device, Content, texture[4].Width, 1);
 
-            
 
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice), 10));
-            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 3000));
-            models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10));      //
-
-
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 1000, 1000));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
             models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
             models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
-
+      
             //inter = quadTree.ants.Models;
 
             // GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -150,7 +149,7 @@ GraphicsDevice);
             BoundingSphereRenderer.InitializeGraphics(device, 33);
             AntGranary gr = new AntGranary(new LoadModel(
 Content.Load<Model>("Models/domek"),
-new Vector3(300, 13, 300), Vector3.Zero,
+new Vector3(600, 13, 300), Vector3.Zero,
 new Vector3(1), GraphicsDevice), 10, 10, 10, 10, 10);
 
 
@@ -161,33 +160,32 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 10);
 
             DicentraFarm df = new DicentraFarm(new LoadModel(
 Content.Load<Model>("Models/domek2"),
-new Vector3(100, 15, 100), Vector3.Up,
+new Vector3(200, 15, 100), Vector3.Up,
 new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
 
             ChelidoniumFarm hef = new ChelidoniumFarm(new LoadModel(
 Content.Load<Model>("Models/domek2"),
-new Vector3(100, 15, 100), Vector3.Up,
+new Vector3(300, 15, 100), Vector3.Up,
 new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
 
             IModel.Add(hf);
             IModel.Add(gr);
-
-            control = new Control(texture[11],quadTree);
             IModel.Add(df);
             IModel.Add(hef);
-
-            inter.Add(models[0]);
-            // inter.Add(models[3]);
+             control = new Control(texture[11]);
+           // inter.Add(models[0]);
+           // inter.Add(models[3]);
             /*
             for (int i = 4; i < 16;i++ )
             {
                 inter.Add(models[i]);
             } */
-            models.Add(gr);
+            //models.Add(gr);
 
-        }
+
+   }
 
         /// <summary>w
         /// UnloadContent will be called once per game and is the place to unload
@@ -210,61 +208,30 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
 
             currentMouseState = Mouse.GetState();
-            /*
-           float x;
-           float z;
-           float spr = (float)Math.Pow(models[0].Model.Position.X - S.X, 2.0) + (float)Math.Pow(models[0].Model.Position.Z - S.Z, 2.0);
-          // Console.WriteLine((float)Math.Pow(models[0].Model.Position.X - S.X, 2.0));
-           if (models[3].Model.Position.X == pozycja.X && models[3].Model.Position.Z == pozycja.Z && spr>(promien*promien))
-           {
-              Random losuj = new System.Random(DateTime.Now.Millisecond);
-              x = (S.X - promien) + ((float)losuj.NextDouble() * ((S.X + promien) - (S.X - promien)));
-              z = (S.Z - promien) + ((float)losuj.NextDouble() * ((S.Z + promien)- (S.Z - promien)));
 
-              pozycja = new Vector3(x, 0.0f,z);
-          }
-           if (spr <= (promien * promien))
-           {
-               pozycja = new Vector3(models[0].Model.Position.X, 0.0f, models[0].Model.Position.Z);
-           }
-
-           updateAnt(pozycja);
-
-            */
 
 
 
 
             KeyboardState keyState = Keyboard.GetState();
-            _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-
+             _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+ 
             // 1 Second has passed
-
-            if (keyState.IsKeyDown(Keys.J))
-            {
-
-                models[0].Model.Rotation += new Vector3(0, 0.1f, 0);
-            }
-
-
             if (_elapsed_time >= 1000.0f)
             {
                 _fps = _total_frames;
                 _total_frames = 0;
                 _elapsed_time = 0;
-
             }
-
-            if (keyState.IsKeyDown(Keys.C))
+            if (keyState.IsKeyDown(Keys.C) && !keyState.IsKeyDown(Keys.C))
             {
-                RasterizerState rasterizerState = new RasterizerState();
-                rasterizerState.FillMode = FillMode.WireFrame;
-                GraphicsDevice.RasterizerState = rasterizerState;
+                quadTree.Cull = !quadTree.Cull;
             }
 
-
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+
             foreach (InteractiveModel model in models)
             {
                 model.Update(gameTime);
@@ -275,6 +242,10 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                     { break; }
                     if (model.Model.BoundingSphere.Intersects(model2.Model.BoundingSphere))
                     {
+
+                        //model2.Model.Position -= new Vector3(model2.Model.BoundingSphere.Radius, 0, model2.Model.BoundingSphere.Radius);
+
+
                         if (model.GetType().BaseType == typeof(Material) && model2.GetType() == typeof(AntPeasant) || model2.GetType().BaseType == typeof(Material) && model.GetType() == typeof(AntPeasant))
                         {
 
@@ -296,13 +267,9 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
 
                         }
-                        //  if(model2.GetType().BaseType==typeof(Ant) && model.GetType().BaseType==typeof(Ant)   )
-                        //   {
-                        // Random r= new Random();
-                        //   model.Model.Position += new Vector3((float)r.NextDouble() * 5, 0, (float)r.NextDouble() * 5);
-                        // Console.WriteLine((float)r.NextDouble() * 5 + "  " + (float)r.NextDouble() * 5);
-                        // model2.Model.Position -= new Vector3(r.Next(1, 5), 0, r.Next(1, 5));
-                        //   }
+                        if (model2.GetType().BaseType == typeof(Ant) && model.GetType().BaseType == typeof(Ant))
+                        {
+                        }
 
                         if (model.GetType().Name == "AntGranary" && model2.GetType().Name == "AntPeasant" && ((AntPeasant)model2).Capacity > 0)
                         {
@@ -330,25 +297,24 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                 }
 
             }
-
-            quadTree.View = camera.View;
-            quadTree.Projection = camera.Projection;
+            quadTree.View =camera.View;
+           quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
 
 
             control.View = camera.View;
             control.Projection = camera.Projection;
-            control.models = inter;
-            control.IModel = IModel;
+            control.models = models;
             control.device = device;
             control.Update(gameTime);
-            anim.Update(gameTime);
+
+             
+             
             camera.Update(gameTime);
-
-
+            anim.Update(gameTime);
             base.Update(gameTime);
-
+            
         }
 
 
@@ -358,6 +324,12 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             //rasterizerState.FillMode = FillMode.WireFrame;
             //GraphicsDevice.RasterizerState = rasterizerState;
 
+            device.SetRenderTarget(shadow.RenderTarget);
+            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+           
+            //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+
+            
             licznik = 0;
             float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
@@ -366,30 +338,113 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
             _total_frames++;
 
+          
+            shadow.UpdateLightData(0.6f, light.lightPosChange(time), (FreeCamera)camera);
+            shadow.setShadowMap();
+            device.SetRenderTarget(shadow.RenderTarget);
+            PopulateShadowEffect("ShadowMap");
+            
+          /*  foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+            {
+
+                pass.Apply();
+                quadTree.basicDraw();
+            }*/
+
+                foreach (InteractiveModel model in IModel)
+                {
+                    hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["Technique1"];
+                    //hiDefShadowEffect.Parameters["Model"].SetValue(true);
+                    hiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
+                    hiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
+                   // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
+                    //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
+                    //hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
 
 
+                     foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+            {
+               // pass.Apply();
+                   // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                  //  {
+               
+                
+                foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
+                {
+                    hiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
+                    pass.Apply();
+                    device.SetVertexBuffer(shadowCaster.VertexBuffer);
+                    device.Indices = shadowCaster.IndexBuffer;
+                    device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
+                }
+                }
+            }
+                shadow.setShadowMap();
+                device.SetRenderTarget(null);
+
+                /*
+                    hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowedScene"];
+                            
+                    hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);
+                    hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection * Matrix.Identity);
+                    hiDefShadowEffect.Parameters["shadowTexture"].SetValue(shadow.ShadowMap);
+                    foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+                    {
+
+                        pass.Apply();
+                        quadTree.basicDraw();
+                    }
+            
+                    foreach (InteractiveModel model in IModel)
+                    {
+                        hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowedScene"];
+                        //hiDefShadowEffect.Parameters["Model"].SetValue(true);
+                        hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);
+                    
+                        // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
+                        //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
+                        //hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
 
 
+                        foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+                        {
+                            // pass.Apply();
+                            // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                            //  {
 
-            water.DrawRefractionMap((FreeCamera)camera, quadTree);
 
-            water.DrawReflectionMap((FreeCamera)camera, quadTree);
+                            foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
+                            {
+                                hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection * Matrix.Identity * shadowCaster.World);
+                           
+                                pass.Apply();
+                                device.SetVertexBuffer(shadowCaster.VertexBuffer);
+                                device.Indices = shadowCaster.IndexBuffer;
+                                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
+                            }
+                        }
+                    }
+            */
+            
+            water.DrawRefractionMap((FreeCamera)camera,quadTree);
 
+          water.DrawReflectionMap((FreeCamera)camera,quadTree);
+          
 
-            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
             water.sky.DrawSkyDome((FreeCamera)camera);
-            quadTree.Draw((FreeCamera)camera, time);
 
-            water.DrawWater(time, (FreeCamera)camera);
+                
+                quadTree.Draw((FreeCamera)camera, time, shadow, light);
 
-
-
-
+                water.DrawWater(time, (FreeCamera)camera);
 
 
 
 
 
+
+                
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
             foreach (InteractiveModel model in models)
             {
@@ -397,7 +452,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                 {
 
                     model.Draw(camera.View, camera.Projection);
-                    //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                 //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
                     //    new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
                     //  BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     licznik++;
@@ -405,15 +460,17 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                 }
             }
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-            //  BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
-            //                new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
+          //  BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
+             //                new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
 
 
             foreach (InteractiveModel model in IModel)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
-                    //   BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                   // BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                    BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f));
+
                     model.Draw(camera.View, camera.Projection);
 
 
@@ -425,11 +482,15 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
 
 
+
+
+
+
+
             spriteBatch.Begin();
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                  new Vector2(10.0f, 20.0f), Color.Tomato);
-            /*
-            spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
+            
 
             spriteBatch.DrawString(_spr_font, string.Format("kolizja? ={0}", kolizja), new Vector2(10.0f, 80.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("D m={0}", ((AntPeasant)models[0]).wood2), new Vector2(10.0f, 110.0f), Color.Pink);
@@ -442,61 +503,38 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
             spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
-            
-            spriteBatch.DrawString(_spr_font, string.Format("rot={0}", models[0].Model.Rotation), new Vector2(10.0f, 260.0f), Color.Pink); 
-            spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
-          */
+            /*
+          spriteBatch.DrawString(_spr_font, string.Format("iloscMrowek={0}", models.Count), new Vector2(10.0f, 220.0f), Color.Pink);
+          spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
+          spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Yaw), new Vector2(10.0f, 150.0f), Color.Tomato);
+          spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
+          spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
+         */
             control.Draw(spriteBatch);
 
             spriteBatch.End();
-
+               
             base.Draw(gameTime);
         }
 
-        /*
-  public void updateAnt(Vector3 cel)
-  {
-      float Speed = 0.4f;
 
-      if (Math.Abs(models[3].Model.Position.X - cel.X) < 2.0f && Math.Abs(models[3].Model.Position.Z - cel.Z) < 2.0f)
-      {
-          //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;
-          models[3].Model.Position = cel;
-      }
+        private void PopulateShadowEffect(string techniqueName)
+        {
 
-
-      if (models[3].Model.Position.X > cel.X)
-      {
-          //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;
-          models[3].Model.Position += Vector3.Left * Speed;
-      }
-      if (models[3].Model.Position.X < cel.X)
-      {
-          models[3].Model.Position += Vector3.Right * Speed;
-
-          //ant.Model.Position += new Vector3(0.01f, 0, 0) * Speed;
-      }
-
-      if (models[3].Model.Position.Z > cel.Z)
-      {
-          // ant.Model.Position += new Vector3(0, 0, -0.01f) * Speed;
-          models[3].Model.Position += Vector3.Forward * Speed;
+            hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowMap"];
+            
+            hiDefShadowEffect.Parameters["xView"].SetValue(camera.View);
+            hiDefShadowEffect.Parameters["xProjection"].SetValue(camera.Projection);
+            hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix*Matrix.Identity);
+            hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection);
+            hiDefShadowEffect.Parameters["Model"].SetValue(false);
+            //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
+            
+        }
+      
 
 
-
-      }
-      if (models[3].Model.Position.Z < cel.Z)
-      {
-          // ant.Model.Position += new Vector3(0, 0, 0.01f) * Speed;
-          models[3].Model.Position += Vector3.Backward * Speed;
-
-      }
-
-  }
-
-    */
-
-
+    
     }
 }
 

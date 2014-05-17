@@ -26,9 +26,13 @@ namespace Map
         public ContentManager content;
         public SkinningData skinningData;
         public AnimationPlayer Player;
-        private Matrix[] modelTransforms;
+        public List<ShadowCasterObject> shadowCasters;
+        public Matrix baseWorld;
+
+        public Matrix[] modelTransforms;
         private GraphicsDevice graphicsDevice;
         private BoundingSphere boundingSphere;
+
         public BoundingSphere BoundingSphere
         {
             get
@@ -41,26 +45,6 @@ namespace Map
                 return transformed;
             }
         }
-        public BoundingSphere[] spheres
-        {
-
-            get
-            {
-                // No need for rotation, as this is a sphere
-                Matrix worldTransform = Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position);
-                List<BoundingSphere> spheres = new List<BoundingSphere>();
-                foreach (ModelMesh mesh in Model.Meshes)
-                {
-                    BoundingSphere transformed = mesh.BoundingSphere.Transform(worldTransform);
-                    spheres.Add(transformed);
-
-                }
-
-                return spheres.ToArray();
-            }
-            set{}
-        }
-
         /// <summary>
         /// Constructor of LoadModel class.
         /// Create <paramref name="Model"/> at <paramref name="Position"/ >  with <paramref name="Scale"/> and <paramref name="Rotation"/>
@@ -73,6 +57,11 @@ namespace Map
         public LoadModel(Model Model, Vector3 Position, Vector3 Rotation,
         Vector3 Scale, GraphicsDevice graphicsDevice)
         {
+            this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(
+            Rotation.Y, Rotation.X, Rotation.Z)
+            * Matrix.CreateTranslation(Position);
+
+            shadowCasters = new List<ShadowCasterObject>();
             this.Model = Model;
             modelTransforms = new Matrix[Model.Bones.Count];
             Model.CopyAbsoluteBoneTransformsTo(modelTransforms);
@@ -82,6 +71,32 @@ namespace Map
             this.Scale = Scale;
             this.graphicsDevice = graphicsDevice;
             buildBoundingSphere();
+
+            Matrix[] bones = new Matrix[Model.Bones.Count];
+            Model.CopyAbsoluteBoneTransformsTo(bones);
+
+            foreach (ModelMesh mesh in Model.Meshes)
+            {
+                 
+                foreach (ModelMeshPart meshpart in mesh.MeshParts)
+                {
+
+
+                     ShadowCasterObject shad = new ShadowCasterObject(
+                                                    //meshpart.VertexDeclaration,
+                                                    meshpart.VertexBuffer,
+                                                    meshpart.VertexOffset,
+                                                    //meshpart.VertexStride,
+                                                    meshpart.IndexBuffer,
+                                                    //meshpart.BaseVertex,
+                                                    meshpart.NumVertices,
+                                                    meshpart.StartIndex,
+                                                    meshpart.PrimitiveCount,
+                                                    bones[mesh.ParentBone.Index]*Matrix.CreateTranslation(Position));
+                     this.shadowCasters.Add(shad);
+                }
+            }
+            
         }
         //Animated model constructor
         public LoadModel(Model Model, Vector3 Position, Vector3 Rotation,
@@ -112,15 +127,16 @@ namespace Map
         /// </summary>
         private void buildBoundingSphere()
         {
+
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
-            List<BoundingSphere> spheres=new List<BoundingSphere>();
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
-                     spheres.Add(transformed);
+                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]); 
                 sphere = BoundingSphere.CreateMerged(sphere, transformed);
+
             }
-            this.spheres=spheres.ToArray(); 
+            
+             
             this.boundingSphere = sphere;
                
         }
@@ -131,59 +147,60 @@ namespace Map
         /// <param name="Projection"></param>
         public void Draw(Matrix View, Matrix Projection)
         {
-            Matrix baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateRotationY(Rotation.Y) 
-            * Matrix.CreateTranslation(Position);
-            foreach (ModelMesh mesh in Model.Meshes)
-            {
-                Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
-                * baseWorld;
-                foreach (ModelMeshPart meshPart in mesh.MeshParts)
-                {
-                    BasicEffect effect = (BasicEffect)meshPart.Effect;
-                    effect.World = localWorld;
-                    effect.View = View;
-                    effect.Projection = Projection;
-                    effect.EnableDefaultLighting();
-                }
-
-                mesh.Draw();
-            }
-
-        }
-        /// <summary>
-        /// Method to Draw AnimatedModel
-        /// </summary>
-        /// <param name="View"></param>
-        /// <param name="Projection"></param>
-        /// <param name="CameraPosition"></param>
-        public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
-        {
-
-            Matrix[] bones = Player.GetSkinTransforms();
-
-            Matrix baseWorld = Matrix.CreateScale(Scale)
-            * Matrix.CreateFromYawPitchRoll(
+            Matrix baseWorld = Matrix.CreateScale(Scale)* Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)
             * Matrix.CreateTranslation(Position);
-
-
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
-               * baseWorld;
-                foreach (SkinnedEffect effect in mesh.Effects)
-                {
-                    effect.SetBoneTransforms(bones);
-                    effect.World = localWorld;
-                    effect.View = View;
-                    effect.Projection = Projection;
+                   Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
+                   * baseWorld;
+                   foreach (ModelMeshPart meshPart in mesh.MeshParts)
+                   {
+                       BasicEffect effect = (BasicEffect)meshPart.Effect;
+                       effect.World = localWorld;
+                       effect.View = View;
+                       effect.Projection = Projection;
+                       effect.EnableDefaultLighting();
+                   }
 
-                    effect.EnableDefaultLighting();
+                   mesh.Draw();
+               }
 
-                    effect.SpecularColor = new Vector3(0.25f);
-                    effect.SpecularPower = 16;
-                }
+           }
+           /// <summary>
+           /// Method to Draw AnimatedModel
+           /// </summary>
+           /// <param name="View"></param>
+           /// <param name="Projection"></param>
+           /// <param name="CameraPosition"></param>
+           public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
+           {
 
+               Matrix[] bones = Player.GetSkinTransforms();
+
+               Matrix baseWorld = Matrix.CreateScale(Scale)
+               * Matrix.CreateFromYawPitchRoll(
+               Rotation.Y, Rotation.X, Rotation.Z)
+               * Matrix.CreateTranslation(Position);
+
+
+               foreach (ModelMesh mesh in Model.Meshes)
+               {
+                   Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
+                  * baseWorld;
+                   foreach (SkinnedEffect effect in mesh.Effects)
+                   {
+                       effect.SetBoneTransforms(bones);
+                       effect.World = localWorld;
+                       effect.View = View;
+                       effect.Projection = Projection;
+
+                       effect.EnableDefaultLighting();
+
+                       effect.SpecularColor = new Vector3(0.25f);
+                       effect.SpecularPower = 16;
+                   }
+                   
                 mesh.Draw();
             }
 
@@ -199,6 +216,15 @@ namespace Map
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
          Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+
+        }
+
+        public void basicDraw()
+        {
+             foreach (ModelMesh mesh in Model.Meshes)
+               {
+                   mesh.Draw();
+               }
 
         }
 

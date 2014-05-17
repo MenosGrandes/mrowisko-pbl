@@ -1,14 +1,39 @@
-float4x4 xLightsWorldViewProjection;
-float4x4 xWorldViewProjection;
 float4x4 xView;
 float4x4 xProjection;
 float4x4 xWorld;
 float xAmbient;
+
+
+float4x4 World;
+float4x4 LightView;
+float4x4 LightProjection;
+
+float4x4 View;
+float4x4 Projection;
+
+float4x4 MatTexture;
+bool Model;
+float2 PCFSamples[9];
+float depthBias = 0.001;
+
 float3 xLightPos;
 float xLightPower;
-Texture xShadowMap;
+float4x4 xLightsWorldViewProjection;
+float4x4 xWorldViewProjection;
 
-sampler ShadowMapSampler = sampler_state { texture = <xShadowMap>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = clamp; AddressV = clamp; };
+Texture xShadowMap;
+texture shadowTexture;
+
+//sampler ShadowMapSampler = sampler_state { texture = <xShadowMap>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = clamp; AddressV = clamp; };
+sampler ShadowSampler = sampler_state
+{
+	Texture = (shadowTexture);
+	magfilter = LINEAR;
+	minfilter = LINEAR;
+	mipfilter = LINEAR;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
 
 
 struct SMapVertexToPixel
@@ -39,6 +64,13 @@ struct SScenePixelToFrame
 	float4 Color : COLOR0;
 };
 
+
+float DotProduct(float3 lightPos, float3 pos3D, float3 normal)
+{
+	float3 lightDir = normalize(pos3D - lightPos);
+		return dot(-lightDir, normal);
+}
+
 SMapVertexToPixel ShadowMapVertexShader(float4 inPos : POSITION)
 {
 	SMapVertexToPixel Output = (SMapVertexToPixel)0;
@@ -67,17 +99,14 @@ technique ShadowMap
 		PixelShader = compile ps_2_0 ShadowMapPixelShader();
 	}
 }
-/*
-SSceneVertexToPixel ShadowedSceneVertexShader(float4 inPos : POSITION, float2 inTexCoords : TEXCOORD0, float3 inNormal : NORMAL)
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+SSceneVertexToPixel ShadowedSceneVertexShader(float4 inPos : POSITION)
 {
 	SSceneVertexToPixel Output = (SSceneVertexToPixel)0;
 
 	Output.Position = mul(inPos, xWorldViewProjection);
 	Output.Pos2DAsSeenByLight = mul(inPos, xLightsWorldViewProjection);
-	Output.Normal = normalize(mul(inNormal, (float3x3)xWorld));
-	Output.Position3D = mul(inPos, xWorld);
-	Output.TexCoords = inTexCoords;
-
 	return Output;
 }
 
@@ -89,25 +118,10 @@ SScenePixelToFrame ShadowedScenePixelShader(SSceneVertexToPixel PSIn)
 	ProjectedTexCoords[0] = PSIn.Pos2DAsSeenByLight.x / PSIn.Pos2DAsSeenByLight.w / 2.0f + 0.5f;
 	ProjectedTexCoords[1] = -PSIn.Pos2DAsSeenByLight.y / PSIn.Pos2DAsSeenByLight.w / 2.0f + 0.5f;
 
-	float diffuseLightingFactor = 0;
-	if ((saturate(ProjectedTexCoords).x == ProjectedTexCoords.x) && (saturate(ProjectedTexCoords).y == ProjectedTexCoords.y))
-	{
-		float depthStoredInShadowMap = tex2D(ShadowMapSampler, ProjectedTexCoords).r;
-		float realDistance = PSIn.Pos2DAsSeenByLight.z / PSIn.Pos2DAsSeenByLight.w;
-		if ((realDistance - 1.0f / 100.0f) <= depthStoredInShadowMap)
-		{
-			diffuseLightingFactor = DotProduct(xLightPos, PSIn.Position3D, PSIn.Normal);
-			diffuseLightingFactor = saturate(diffuseLightingFactor);
-			diffuseLightingFactor *= xLightPower;
-		}
-	}
-
-	float4 baseColor = tex2D(GroundText2Sampler, PSIn.TexCoords);	//TUTAJ TRZEBA ZMIENIC!!! NA MULTITEXTURE!
-		Output.Color = baseColor*(diffuseLightingFactor + xAmbient);
+	Output.Color = tex2D(ShadowSampler, ProjectedTexCoords);
 
 	return Output;
 }
-
 
 technique ShadowedScene
 {
@@ -117,4 +131,44 @@ technique ShadowedScene
 		PixelShader = compile ps_2_0 ShadowedScenePixelShader();
 	}
 }
-*/
+/////////////////////////////////////////////////////////////////////////////////
+//SC oznacza shadow casters
+
+
+struct VertexShaderInputSC
+{
+	float4 Position : POSITION0;
+};
+
+struct VertexShaderOutputSC
+{
+	float4 Position : POSITION0;
+	float Depth : TEXCOORD0;
+};
+
+VertexShaderOutputSC VertexShaderFunctionSC(VertexShaderInputSC input)
+{
+	VertexShaderOutputSC output;
+
+	float4 worldPosition = mul(input.Position, World);
+		float4 viewPosition = mul(worldPosition, LightView);
+		output.Position = mul(viewPosition, LightProjection);
+	output.Depth = output.Position.z;
+	return output;
+}
+
+float4 PixelShaderFunctionSC(VertexShaderOutputSC input) : COLOR0
+{
+	return float4(input.Depth, input.Depth, input.Depth, 1);
+}
+
+technique Technique1
+{
+	pass Pass1
+	{
+		// TODO: set renderstates here.
+
+		VertexShader = compile vs_2_0 VertexShaderFunctionSC();
+		PixelShader = compile ps_2_0 PixelShaderFunctionSC();
+	}
+}
