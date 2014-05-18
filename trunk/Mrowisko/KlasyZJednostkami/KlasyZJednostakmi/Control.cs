@@ -136,7 +136,7 @@ namespace Logic
         {
 
             // Check if the player has reached the target, if not, move towards it. 
-         
+            if(models!=null)
             foreach (var ant in models)
             {
 

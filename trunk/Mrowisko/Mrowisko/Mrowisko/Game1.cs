@@ -126,23 +126,21 @@ namespace AntHill
 
 
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(500, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(200, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12,700), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 500), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
+          //  models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(500, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
+            //models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(200, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
+           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12,700), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
+           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 500), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
 
             //models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
            // models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
-      
-            //inter = quadTree.ants.Models;
 
-            // GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            // GraphicsDevice.BlendFactor = Color.Yellow;
 
 
             //animacja CHYBA dzia³a (nie wiem jak zrobiæ ¿eby by³o j¹ widaæ)
             //na starszych wersjach repozytorium dzia³a bez problemu (pliki x)
             //plik xml jest potrzebny ¿eby dzia³a³o prze³¹czanie, nie wiem czemu ale jak jest w folderze models to nie dzia³a 
+
+            
             anim = new LoadModel(
  Content.Load<Model>("animacja"),
  Vector3.Zero, Vector3.Up,
@@ -179,18 +177,18 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             IModel.Add(gr);
             IModel.Add(df);
             IModel.Add(hef);
-             control = new Control(texture[11]);
+             
            // inter.Add(models[0]);
            // inter.Add(models[3]);
             /*
             for (int i = 4; i < 16;i++ )
             {
                 inter.Add(models[i]);
-            } */
+            } 
             //models.Add(gr);
-
-
-   }
+             */
+            control = new Control(texture[11]);
+        }
 
         /// <summary>w
         /// UnloadContent will be called once per game and is the place to unload
@@ -288,6 +286,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
             }
 
+            
             foreach (InteractiveModel model in IModel)
             {
                 model.Update(gameTime);
@@ -301,23 +300,25 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                     }
                 }
 
-            }
+            }  anim.Update(gameTime);
+             
             quadTree.View =camera.View;
            quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
 
-
-            control.View = camera.View;
-            control.Projection = camera.Projection;
-            control.models = models;
-            control.device = device;
-            control.Update(gameTime);
-
+            
+             control.View = camera.View;
+             control.Projection = camera.Projection;
+             control.models = models;
+             control.device = device;
+             control.Update(gameTime);
              
-             
+         
+
+
             camera.Update(gameTime);
-            anim.Update(gameTime);
+           
             base.Update(gameTime);
             
         }
@@ -457,23 +458,19 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                 {
 
                     model.Draw(camera.View, camera.Projection);
-                 //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                    //    new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
-                    //  BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                 BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                        new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
                     licznik++;
+                   // Console.WriteLine(model.Model.spheres[0].Center);
 
                 }
             }
-            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
-          //  BoundingSphereRenderer.Render(anim.BoundingSphere, device, camera.View, camera.Projection,
-             //                new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
-
-
+       
+           
             foreach (InteractiveModel model in IModel)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
-                   // BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f));
 
                     model.Draw(camera.View, camera.Projection);
@@ -484,7 +481,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
             }
 
-
+              
 
 
 
@@ -506,18 +503,18 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(350.0f, 140.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 140.0f), Color.Pink);
 
-              /*
-            spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
+            /*
+          spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
+          spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
             
-          spriteBatch.DrawString(_spr_font, string.Format("iloscMrowek={0}", models.Count), new Vector2(10.0f, 220.0f), Color.Pink);
-          spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
-          spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Yaw), new Vector2(10.0f, 150.0f), Color.Tomato);
-          spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
-          spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
-         */
+        spriteBatch.DrawString(_spr_font, string.Format("iloscMrowek={0}", models.Count), new Vector2(10.0f, 220.0f), Color.Pink);
+        spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
+        spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Yaw), new Vector2(10.0f, 150.0f), Color.Tomato);
+        spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
+        spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
+            */
             control.Draw(spriteBatch);
-
+         
             spriteBatch.End();
                
             base.Draw(gameTime);
