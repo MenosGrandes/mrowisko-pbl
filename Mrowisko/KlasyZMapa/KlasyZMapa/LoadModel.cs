@@ -27,6 +27,29 @@ namespace Map
         public SkinningData skinningData;
         public AnimationPlayer Player;
         public List<ShadowCasterObject> shadowCasters;
+       public BoundingSphere[] spheres
+        {
+
+            get
+            {
+                // No need for rotation, as this is a sphere
+                List<BoundingSphere> spheres = new List<BoundingSphere>();
+                foreach (ModelMesh mesh in Model.Meshes)
+                {
+                    Matrix worldTransform = Matrix.CreateScale(Scale)* Matrix.CreateTranslation(Position);
+
+                    if (mesh.Name.Contains("BoundingSphere")) {
+
+                    BoundingSphere transformed = mesh.BoundingSphere.Transform(worldTransform);
+                    spheres.Add(transformed);
+                    }
+                }
+
+                return spheres.ToArray();
+            }
+            set{}
+        }
+        
         public Matrix baseWorld;
 
         public Matrix[] modelTransforms;
@@ -38,7 +61,7 @@ namespace Map
             get
             {
                 // No need for rotation, as this is a sphere
-                Matrix worldTransform = Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position);
+                Matrix worldTransform = Matrix.CreateScale(Scale) *  Matrix.CreateTranslation(Position);
                 BoundingSphere transformed = boundingSphere;
                 transformed = transformed.Transform(worldTransform);
 
@@ -77,8 +100,8 @@ namespace Map
 
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                 
-                foreach (ModelMeshPart meshpart in mesh.MeshParts)
+                if (!mesh.Name.Contains("BoundingSphere"))
+                    foreach (ModelMeshPart meshpart in mesh.MeshParts)
                 {
 
 
@@ -129,16 +152,21 @@ namespace Map
         {
 
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
+            List<BoundingSphere> spheres = new List<BoundingSphere>();
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]); 
+                if (mesh.Name.Contains("BoundingSphere") )
+                {
+                    BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
+                spheres.Add(transformed);
                 sphere = BoundingSphere.CreateMerged(sphere, transformed);
 
+                }
             }
             
              
             this.boundingSphere = sphere;
-               
+            this.spheres = spheres.ToArray();   
         }
         /// <summary>
         /// Method to Draw model 
@@ -152,6 +180,8 @@ namespace Map
             * Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in Model.Meshes)
             {
+                if (!mesh.Name.Contains("BoundingSphere"))
+                { 
                    Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
                    * baseWorld;
                    foreach (ModelMeshPart meshPart in mesh.MeshParts)
@@ -164,8 +194,8 @@ namespace Map
                    }
 
                    mesh.Draw();
-               }
-
+                           }
+            }
            }
            /// <summary>
            /// Method to Draw AnimatedModel
@@ -186,6 +216,7 @@ namespace Map
 
                foreach (ModelMesh mesh in Model.Meshes)
                {
+
                    Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
                   * baseWorld;
                    foreach (SkinnedEffect effect in mesh.Effects)
@@ -223,12 +254,20 @@ namespace Map
         {
              foreach (ModelMesh mesh in Model.Meshes)
                {
+
+                   if (!mesh.Name.Contains("BoundingSphere"))
                    mesh.Draw();
                }
 
         }
+        public void UpdateBoundingSpheres()
+        {
 
+            }   
+        
 
+                         
+                
 
     }
 }
