@@ -214,7 +214,7 @@ namespace Map
                * Matrix.CreateTranslation(Position);
 
 
-               foreach (ModelMesh mesh in Model.Meshes)
+               foreach (ModelMesh mesh in this.Model.Meshes)
                {
 
                    Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
@@ -246,7 +246,32 @@ namespace Map
             Matrix world = Matrix.CreateScale(Scale) *
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
-         Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+         //Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+         if (shadowCasters != null)
+         {
+             Matrix[] bones = new Matrix[Model.Bones.Count];
+             Model.CopyAbsoluteBoneTransformsTo(bones);
+
+             foreach (ModelMesh mesh in Model.Meshes)
+             {
+                 if (!mesh.Name.Contains("BoundingSphere"))
+                     foreach (ModelMeshPart meshpart in mesh.MeshParts)
+                     {
+
+                         foreach (ShadowCasterObject sc in shadowCasters)
+                         {
+                             sc.VertexBuffer = meshpart.VertexBuffer;
+                             sc.StreamOffset = meshpart.VertexOffset;
+                             sc.IndexBuffer = meshpart.IndexBuffer;
+                             sc.VerticesCount = meshpart.NumVertices;
+                             sc.StartIndex = meshpart.StartIndex;
+                             sc.PrimitiveCount = meshpart.PrimitiveCount;
+                             sc.World = bones[mesh.ParentBone.Index] * Matrix.CreateTranslation(Position);
+                         }
+
+                     }
+             }
+         }
 
         }
 

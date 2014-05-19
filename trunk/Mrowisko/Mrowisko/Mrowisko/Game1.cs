@@ -131,7 +131,7 @@ namespace AntHill
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12,700), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 500), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
 
-            //models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
+           // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
            // models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
 
 
@@ -289,7 +289,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             
             foreach (InteractiveModel model in IModel)
             {
-                model.Update(gameTime);
+                model.Model.Update(gameTime);
 
                 if (model.GetType().BaseType == typeof(SeedFarm))
                 {
@@ -310,7 +310,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             
              control.View = camera.View;
              control.Projection = camera.Projection;
-             control.models = models;
+             control.models = IModel;
              control.device = device;
              control.Update(gameTime);
              
