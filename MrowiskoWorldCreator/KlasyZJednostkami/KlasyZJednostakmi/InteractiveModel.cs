@@ -13,16 +13,11 @@ using Map;
 using Logic.Meterials;
 
 namespace Logic
-{
+{    [Serializable]
     public class InteractiveModel
     {
-        protected ContentManager content;
+        public bool selected = false;
 
-        public ContentManager Content
-        {
-            get { return content; }
-            set { content = value; }
-        }
 
         protected LoadModel model;
 
@@ -69,6 +64,9 @@ namespace Logic
         }
         public virtual void Update(GameTime time)
         { }
-
+        public virtual void Save()
+        { }
+        public virtual InteractiveModel Load()
+        { return null; }
     }
 }

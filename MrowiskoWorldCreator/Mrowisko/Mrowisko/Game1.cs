@@ -177,10 +177,13 @@ GraphicsDevice);
 
             kolizja = false;
 
-          
+            CreatorController.View = camera.View;
+            CreatorController.Projection = camera.Projection;
             currentMouseState = Mouse.GetState();
-
-
+            CreatorController.mouseState = currentMouseState;
+            CreatorController.CalculateMouse3DPosition();
+         //   Console.WriteLine(CreatorController.MousePosition);
+           // Console.WriteLine(CreatorController.mouseState);
 
 
 
@@ -259,7 +262,10 @@ GraphicsDevice);
            {
                if(((FreeCamera)camera).BoundingVolumeIsInView(model.Model.BoundingSphere))
                model.Model.Draw(((FreeCamera)camera).View, ((FreeCamera)camera).Projection);
-
+               if(model.selected==true)
+               {
+                   BoundingSphereRenderer.Render(model.Model.BoundingSphere, CreatorController.device, camera.View, camera.Projection, Color.Red,Color.Beige,Color.Gainsboro);
+               }
            }
 
 

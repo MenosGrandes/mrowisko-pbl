@@ -14,6 +14,7 @@ using Map;
 
 namespace Logic
 {
+    [Serializable]
     public class Unit:InteractiveModel
     {
         //tutaj sa elementy ktore kazda jednostka bedzie miec. content po to zeby w konstruktorze 
