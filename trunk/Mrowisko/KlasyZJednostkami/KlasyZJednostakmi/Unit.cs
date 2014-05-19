@@ -110,7 +110,7 @@ namespace Logic
             return this.model.Rotation;
         }
 
-        public void setRottation(Vector3 rotation)
+        public void setRotation(Vector3 rotation)
         {
             this.model.Rotation = rotation;
         }
