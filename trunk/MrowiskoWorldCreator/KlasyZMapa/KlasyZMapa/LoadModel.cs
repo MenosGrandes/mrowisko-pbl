@@ -15,18 +15,27 @@ namespace Map
     /// <summary>
     /// Class responsible of loding and positioning model at the terrain.
     /// </summary>
+    [Serializable]
     public class LoadModel                                                                                      
     {
         public Vector3 Position { get; set; }
         public Vector3 Rotation { get; set; }
-        public Vector3 Scale { get; set; }
-        public Model Model { get; private set; }
+        public Vector3 Scale { get; set; }  
+
+        [NonSerialized]
+        public Model Model;
         public Boolean Selected;
         public Vector3 playerTarget;
+        [NonSerialized]
         public ContentManager content;
+        [NonSerialized]
         public SkinningData skinningData;
+                 [NonSerialized]
+
         public AnimationPlayer Player;
         private Matrix[] modelTransforms;
+                [NonSerialized]
+
         private GraphicsDevice graphicsDevice;
         private BoundingSphere boundingSphere;
         public BoundingSphere BoundingSphere

@@ -47,7 +47,6 @@ namespace Logic.Building
             : base( model)
         {
             this.model = model;
-            this.content = content;
             this.capacity = _capacity;
             this.cost = _cost;
             this.buildingTime = _buildingTime;

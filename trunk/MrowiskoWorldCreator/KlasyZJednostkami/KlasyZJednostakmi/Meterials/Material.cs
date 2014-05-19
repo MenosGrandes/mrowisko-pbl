@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Logic.Meterials
 {
+    [Serializable]
    public class Material:InteractiveModel
    {
       public int ClusterSize;
