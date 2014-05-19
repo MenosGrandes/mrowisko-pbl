@@ -1,0 +1,26 @@
+﻿using Map;
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Logic.Meterials
+{
+   public class Material:InteractiveModel
+   {
+      public int ClusterSize;
+       public int MaxClusterSize;
+
+       public Material(LoadModel model, int ClusterSize)
+           : base(model)
+       {
+           this.MaxClusterSize = ClusterSize;
+           this.ClusterSize = ClusterSize;
+       }
+       public Material()
+       { }
+       public Material(LoadModel model):base(model)
+       { }
+    }
+}
