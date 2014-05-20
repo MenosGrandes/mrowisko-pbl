@@ -180,9 +180,10 @@ namespace Map
                if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
            }
 
-     
 
             /*
+     
+            
            foreach (EnvModel pass1 in envModelList)
            {
                pass1.DrawModels(camera);
