@@ -145,6 +145,12 @@ namespace AntHill
              model2.Model.Rotation =new Vector3( (float)numericUpDown4.Value,(float)numericUpDown5.Value,(float)numericUpDown6.Value);
 
          }
+         private void EditObjectPosition(InteractiveModel model2)
+         {
+
+             model2.Model.Position = new Vector3((float)numericUpDown9.Value, (float)numericUpDown8.Value, (float)numericUpDown7.Value);
+
+         }
 
 
 
@@ -158,6 +164,9 @@ namespace AntHill
              }
              if (listBox2.SelectedIndex>=0)
                  (CreatorController.models.ElementAt(selectedIndex)).selected = true;
+
+
+
          }
 
 
@@ -228,6 +237,21 @@ namespace AntHill
 
 
         }
+
+        private void PositionChanged(object sender, System.EventArgs e)
+        {
+            if (selectedIndex >= 0)
+                EditObjectPosition(CreatorController.models[selectedIndex]);
+        }
+
+        private void button1_Click(object sender, System.EventArgs e)
+        {
+            numericUpDown7.Value = (decimal)CreatorController.models[selectedIndex].Model.Position.X;
+            numericUpDown8.Value = (decimal)CreatorController.models[selectedIndex].Model.Position.Y;
+            numericUpDown9.Value = (decimal)CreatorController.models[selectedIndex].Model.Position.Z;
+            Console.WriteLine(numericUpDown7.Value);
+        }
+
 
 
 
