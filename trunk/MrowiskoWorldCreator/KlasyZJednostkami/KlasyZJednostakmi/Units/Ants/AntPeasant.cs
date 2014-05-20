@@ -17,12 +17,15 @@ namespace Logic.Units.Ants
     [Serializable]
     public class AntPeasant : Ant
     {
+        [NonSerialized]
         private List<Material> materials = new List<Material>();
+         [NonSerialized]
         public int wood2;
+         [NonSerialized]
         public int rock2;
 
-
         public int MaxCapacity { get { return maxCapacity; } }
+         [NonSerialized]
         private int maxCapacity;
         public int Capacity
         {
@@ -32,9 +35,11 @@ namespace Logic.Units.Ants
             }
             set { }
         }
+         [NonSerialized]
         private int capacity;
-
+         [NonSerialized]
         public float gaterTime;
+         [NonSerialized]
         public float elapsedTime;
         public AntPeasant(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, int maxCapacity, float gaterTime)
             : base(hp, armor, strength, range, cost, buildingTime, model)
@@ -44,6 +49,10 @@ namespace Logic.Units.Ants
             this.gaterTime = gaterTime;
             rock2 = 0;
             wood2 = 0;
+
+        }
+        public AntPeasant(LoadModel model):base(model)
+        {
 
         }
         public override void gaterMaterial(Material material)

@@ -66,11 +66,7 @@ namespace Map
            get;
            set;
        }
-       public float[,] colorHeightData
-       {
-           get;
-           set;
-       }
+
 
        //private VertexBuffer terrainVertexBuffer;
        //private IndexBuffer terrainIndexBuffer;

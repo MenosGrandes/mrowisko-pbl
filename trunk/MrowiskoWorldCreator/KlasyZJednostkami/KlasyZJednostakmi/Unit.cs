@@ -96,7 +96,8 @@ namespace Logic
             
 
         }
-
+         public Unit(LoadModel model):base(model)
+         { }
         public Vector3 getPosition()
          {
              return this.model.Position;

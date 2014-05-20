@@ -205,15 +205,25 @@ namespace AntHill
                 var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
                 List<InteractiveModel> salesman = (List<InteractiveModel>)bformatter.Deserialize(stream);
-            foreach(InteractiveModel model in salesman)
+                listBox2.DataSource = null;
+
+                foreach(InteractiveModel model in salesman)
             {
-                if(model.GetType().Name=="AntPeasant")
-                {
-                    Console.WriteLine(((AntPeasant)model).Model.Position);
 
-                }
+                //CreatorController.models.Add(model);
+                 if(model.GetType().Name=="AntPeasant")
+                 {
+                     AntPeasant p = new AntPeasant(null);
+                     p.Model = new LoadModel(CreatorController.content.Load<Model>("Models/mrowka_01"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
+                    
+                     CreatorController.models.Add(p);
+                     _items.Add(p.ToString());
+                         
 
+                 }
+                  
             }
+                listBox2.DataSource = _items;
             }
 
 
