@@ -36,15 +36,15 @@ namespace AntHill
         MouseState lastMouseState;
         Water water;
         LoadModel anim;
-         QuadTree quadTree;
-                     //FPS COUNTER
-         int licznik;
-         SpriteFont _spr_font;
-         int _total_frames = 0;
-         float _elapsed_time = 0.0f;
-         int _fps = 0;
-        
-        
+        QuadTree quadTree;
+        //FPS COUNTER
+        int licznik;
+        SpriteFont _spr_font;
+        int _total_frames = 0;
+        float _elapsed_time = 0.0f;
+        int _fps = 0;
+
+
         MouseState currentMouseState;
         MouseState LastMouseState_2;
         int f = 0;
@@ -53,12 +53,7 @@ namespace AntHill
         public LightsAndShadows.Shadow shadow;
         public LightsAndShadows.Light light;
         Effect hiDefShadowEffect;
-        public AnimationClip clip = null;
-        public AnimationClip clip2 = null;
-        public AnimationClip clip3 = null;
-        public AnimationClip clip4 = null;
-        bool keyPressed = false;//flaga nacisniecia klawisza x do animacji
-        int animacja = 0;//numer animacji
+
         Matrix world = Matrix.CreateTranslation(Vector3.Zero);
         public Game1()
         {
@@ -79,7 +74,7 @@ namespace AntHill
             this.IsFixedTimeStep = false;
             base.Initialize();
             this.IsMouseVisible = true;
-            
+
         }
 
         /// <summary>
@@ -90,17 +85,17 @@ namespace AntHill
         {
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(2048, 1200, 2048));
             shadow = new LightsAndShadows.Shadow();
-                        PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
+            PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
             pp.DepthStencilFormat = DepthFormat.Depth24Stencil8;
             pp.BackBufferHeight = 600;
             pp.BackBufferWidth = 800;
-           
-           
+
+
             hiDefShadowEffect = Content.Load<Effect>("Effects/Shadows");
             device = GraphicsDevice;
             device.DepthStencilState = DepthStencilState.Default;
             shadow.RenderTarget = new RenderTarget2D(device, 4096, 4096, false, pp.BackBufferFormat, DepthFormat.Depth24Stencil8);
-           
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
             _spr_font = Content.Load<SpriteFont>("Fonts/FPS");// you have on your project
 
@@ -118,43 +113,36 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("Textures/muszle"));
             texture.Add(Content.Load<Texture2D>("Textures/select2"));
 
-                    camera = new FreeCamera(
-        new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 10, texture[4].Width * 1 / 2),
-        MathHelper.ToRadians(0), // Turned around 153 degrees
-        MathHelper.ToRadians(-45), // Pitched up 13 degrees
-        GraphicsDevice);
+            camera = new FreeCamera(
+new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 10, texture[4].Width * 1 / 2),
+MathHelper.ToRadians(0), // Turned around 153 degrees
+MathHelper.ToRadians(-45), // Pitched up 13 degrees
+GraphicsDevice);
 
-                    quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
+            quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
             quadTree.Cull = true;
-            
+
             water = new Water(device, Content, texture[4].Width, 1);
 
 
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
-          //  models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(500, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
-            //models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(200, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
-           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12,700), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
-           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 500), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
+            // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
+            ///  models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
 
-           // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
-           // models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
+            //inter = quadTree.ants.Models;
+
+            // GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            // GraphicsDevice.BlendFactor = Color.Yellow;
 
 
-
+            //animacja CHYBA dzia³a (nie wiem jak zrobiæ ¿eby by³o j¹ widaæ)
+            //na starszych wersjach repozytorium dzia³a bez problemu (pliki x)
             //plik xml jest potrzebny ¿eby dzia³a³o prze³¹czanie, nie wiem czemu ale jak jest w folderze models to nie dzia³a 
-            //animacje paj¹ka Jump, Death, JumpForward, Atack1, Atack2
-            //animacje konika polnego Jump, Death, Idle1, Kick
-            //animacje mrowki Idle1, Idle2, run
-
-
             anim = new LoadModel(
-Content.Load<Model>("grasshopper"),
-Vector3.Zero, Vector3.Up,
-new Vector3(1), GraphicsDevice, Content);
-            clip = anim.skinningData.AnimationClips["Jump"];//inne animacje to idle2 i run
-            clip2 = anim.skinningData.AnimationClips["Death"];//inne animacje to idle2 i run
-            clip3 = anim.skinningData.AnimationClips["Idle1"];//inne animacje to idle2 i run
-            clip4 = anim.skinningData.AnimationClips["Kick"];//inne animacje to idle2 i run
+ Content.Load<Model>("animacja"),
+ Vector3.Zero, Vector3.Up,
+ new Vector3(1), GraphicsDevice, Content);
+            AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
             anim.Player.StartClip(clip);
             lastMouseState = Mouse.GetState();
 
@@ -186,18 +174,17 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             IModel.Add(gr);
             IModel.Add(df);
             IModel.Add(hef);
-             
-           // inter.Add(models[0]);
-           // inter.Add(models[3]);
+            control = new Control(texture[11]);
+            // inter.Add(models[0]);
+            // inter.Add(models[3]);
             /*
             for (int i = 4; i < 16;i++ )
             {
                 inter.Add(models[i]);
-            } 
-            
-             */
+            } */
             models.Add(gr);
-            control = new Control(texture[11]);
+
+
         }
 
         /// <summary>w
@@ -227,8 +214,8 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
 
             KeyboardState keyState = Keyboard.GetState();
-             _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
- 
+            _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
             // 1 Second has passed
             if (_elapsed_time >= 1000.0f)
             {
@@ -236,37 +223,12 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                 _total_frames = 0;
                 _elapsed_time = 0;
             }
-            if (keyState.IsKeyDown(Keys.X))
-            {
-                if (!keyPressed)
-                {
-
-                    keyPressed = true;
-                    animacja++;
-                    animacja = animacja % 4;
-                    Console.Out.WriteLine(animacja);
-                    switch (animacja)
-                    {
-                        case 0: anim.Player.StartClip(clip); break;
-                        case 1: anim.Player.StartClip(clip2); break;
-                        case 2: anim.Player.StartClip(clip3); break;
-                        case 3: anim.Player.StartClip(clip4); break;
-                    }
-                }
-
-
-            }
-            else
-            {
-                keyPressed = false;
-                anim.Player.StartClip(clip);
-            }
             if (keyState.IsKeyDown(Keys.C) && !keyState.IsKeyDown(Keys.C))
             {
                 quadTree.Cull = !quadTree.Cull;
             }
 
-            
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
@@ -281,13 +243,8 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                     if (model.Model.BoundingSphere.Intersects(model2.Model.BoundingSphere))
                     {
 
-                        model2.Model.Collide = true;
-                        model.Model.Collide = true;
                         //model2.Model.Position -= new Vector3(model2.Model.BoundingSphere.Radius, 0, model2.Model.BoundingSphere.Radius);
-                        model2.Model.Position = model2.Model.tempPosition;
-                        model.Model.Position = model.Model.tempPosition;
 
-                        Console.WriteLine("KOLIZJA");
 
                         if (model.GetType().BaseType == typeof(Material) && model2.GetType() == typeof(AntPeasant) || model2.GetType().BaseType == typeof(Material) && model.GetType() == typeof(AntPeasant))
                         {
@@ -322,18 +279,13 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                         }
 
                     }
-                    else
-                    {
-                        model2.Model.Collide = false;
-                        model.Model.Collide = false;
-                    }
                 }
 
             }
 
-            
             foreach (InteractiveModel model in IModel)
             {
+                model.Update(gameTime);
                 model.Model.Update(gameTime);
 
                 if (model.GetType().BaseType == typeof(SeedFarm))
@@ -345,27 +297,25 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                     }
                 }
 
-            }  anim.Update(gameTime);
-             
-            quadTree.View =camera.View;
-           quadTree.Projection = camera.Projection;
+            }
+            quadTree.View = camera.View;
+            quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
             quadTree.Update(gameTime);
 
-            
-             control.View = camera.View;
-             control.Projection = camera.Projection;
-             control.models = models;
-             control.device = device;
-             control.Update(gameTime);
-             
-         
+
+            control.View = camera.View;
+            control.Projection = camera.Projection;
+            control.models = models;
+            control.device = device;
+            control.Update(gameTime);
+
 
 
             camera.Update(gameTime);
-           
+            anim.Update(gameTime);
             base.Update(gameTime);
-            
+
         }
 
 
@@ -377,10 +327,10 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
             device.SetRenderTarget(shadow.RenderTarget);
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-           
+
             //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
 
-            
+
             licznik = 0;
             float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
@@ -389,113 +339,113 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
             _total_frames++;
 
-          
+
             shadow.UpdateLightData(0.6f, light.lightPosChange(time), (FreeCamera)camera);
             shadow.setShadowMap();
             device.SetRenderTarget(shadow.RenderTarget);
             PopulateShadowEffect("ShadowMap");
-            
-          /*  foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+
+            /*  foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+              {
+
+                  pass.Apply();
+                  quadTree.basicDraw();
+              }*/
+
+            foreach (InteractiveModel model in IModel)
             {
+                hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["Technique1"];
+                //hiDefShadowEffect.Parameters["Model"].SetValue(true);
+                hiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
+                hiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
+                // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
+                //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
+                //hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
 
-                pass.Apply();
-                quadTree.basicDraw();
-            }*/
 
+                foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+                {
+                    // pass.Apply();
+                    // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                    //  {
+
+
+                    foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
+                    {
+                        hiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
+                        pass.Apply();
+                        device.SetVertexBuffer(shadowCaster.VertexBuffer);
+                        device.Indices = shadowCaster.IndexBuffer;
+                        device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
+                    }
+                }
+            }
+            shadow.setShadowMap();
+            device.SetRenderTarget(null);
+
+            /*
+                hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowedScene"];
+                            
+                hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);
+                hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection * Matrix.Identity);
+                hiDefShadowEffect.Parameters["shadowTexture"].SetValue(shadow.ShadowMap);
+                foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+                {
+
+                    pass.Apply();
+                    quadTree.basicDraw();
+                }
+            
                 foreach (InteractiveModel model in IModel)
                 {
-                    hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["Technique1"];
+                    hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowedScene"];
                     //hiDefShadowEffect.Parameters["Model"].SetValue(true);
-                    hiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
-                    hiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
-                   // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
+                    hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);
+                    
+                    // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
                     //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
                     //hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
 
 
-                     foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
-            {
-               // pass.Apply();
-                   // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
-                  //  {
-               
-                
-                foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
-                {
-                    hiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
-                    pass.Apply();
-                    device.SetVertexBuffer(shadowCaster.VertexBuffer);
-                    device.Indices = shadowCaster.IndexBuffer;
-                    device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
-                }
-                }
-            }
-                shadow.setShadowMap();
-                device.SetRenderTarget(null);
-
-                /*
-                    hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowedScene"];
-                            
-                    hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);
-                    hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection * Matrix.Identity);
-                    hiDefShadowEffect.Parameters["shadowTexture"].SetValue(shadow.ShadowMap);
                     foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
                     {
-
-                        pass.Apply();
-                        quadTree.basicDraw();
-                    }
-            
-                    foreach (InteractiveModel model in IModel)
-                    {
-                        hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowedScene"];
-                        //hiDefShadowEffect.Parameters["Model"].SetValue(true);
-                        hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);
-                    
-                        // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
-                        //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
-                        //hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
+                        // pass.Apply();
+                        // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                        //  {
 
 
-                        foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+                        foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
                         {
-                            // pass.Apply();
-                            // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
-                            //  {
-
-
-                            foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
-                            {
-                                hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection * Matrix.Identity * shadowCaster.World);
+                            hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection * Matrix.Identity * shadowCaster.World);
                            
-                                pass.Apply();
-                                device.SetVertexBuffer(shadowCaster.VertexBuffer);
-                                device.Indices = shadowCaster.IndexBuffer;
-                                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
-                            }
+                            pass.Apply();
+                            device.SetVertexBuffer(shadowCaster.VertexBuffer);
+                            device.Indices = shadowCaster.IndexBuffer;
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
                         }
                     }
-            */
-            
-            water.DrawRefractionMap((FreeCamera)camera,quadTree);
+                }
+        */
 
-          water.DrawReflectionMap((FreeCamera)camera,quadTree);
-          
+            water.DrawRefractionMap((FreeCamera)camera, quadTree);
 
-            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer , Color.Black, 1.0f, 0);
+            water.DrawReflectionMap((FreeCamera)camera, quadTree);
+
+
+            device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             water.sky.DrawSkyDome((FreeCamera)camera);
 
-                
-                quadTree.Draw((FreeCamera)camera, time, shadow, light);
 
-                water.DrawWater(time, (FreeCamera)camera);
+            quadTree.Draw((FreeCamera)camera, time, shadow, light);
 
-
+            water.DrawWater(time, (FreeCamera)camera);
 
 
 
 
-                
+
+
+
             anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
             foreach (InteractiveModel model in models)
             {
@@ -503,19 +453,19 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                 {
 
                     model.Draw(camera.View, camera.Projection);
-                 BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                        new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
+                    //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                    //    new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
+                    //  BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     licznik++;
-                   // Console.WriteLine(model.Model.spheres[0].Center);
 
                 }
             }
-       
-           
+
             foreach (InteractiveModel model in IModel)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
+                    // BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f));
 
                     model.Draw(camera.View, camera.Projection);
@@ -526,7 +476,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
             }
 
-              
+
 
 
 
@@ -537,7 +487,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             spriteBatch.Begin();
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                  new Vector2(10.0f, 20.0f), Color.Tomato);
-            
+
 
             spriteBatch.DrawString(_spr_font, string.Format("kolizja? ={0}", kolizja), new Vector2(10.0f, 80.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("D m={0}", ((AntPeasant)models[0]).wood2), new Vector2(10.0f, 110.0f), Color.Pink);
@@ -547,21 +497,20 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(240.0f, 140.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(350.0f, 140.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 140.0f), Color.Pink);
-
             /*
           spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
           spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
-            
+           
         spriteBatch.DrawString(_spr_font, string.Format("iloscMrowek={0}", models.Count), new Vector2(10.0f, 220.0f), Color.Pink);
         spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
         spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Yaw), new Vector2(10.0f, 150.0f), Color.Tomato);
         spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
         spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
-            */
+       */
             control.Draw(spriteBatch);
-         
+
             spriteBatch.End();
-               
+
             base.Draw(gameTime);
         }
 
@@ -570,19 +519,19 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
         {
 
             hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowMap"];
-            
+
             hiDefShadowEffect.Parameters["xView"].SetValue(camera.View);
             hiDefShadowEffect.Parameters["xProjection"].SetValue(camera.Projection);
-            hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix*Matrix.Identity);
+            hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);
             hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection);
             hiDefShadowEffect.Parameters["Model"].SetValue(false);
             //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
-            
+
         }
-      
 
 
-    
+
+
     }
 }
 

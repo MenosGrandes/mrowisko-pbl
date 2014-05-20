@@ -144,7 +144,7 @@ namespace Logic
                 {
                     //if (ant.Selected)
                     {
-                        if (ant.Model.Position.X == ant.Model.playerTarget.X && ant.Model.Position.Z == ant.Model.playerTarget.Z || ant.Model.Collide==true)
+                        if (ant.Model.Position.X == ant.Model.playerTarget.X && ant.Model.Position.Z == ant.Model.playerTarget.Z )//|| ant.Model.Collide==true)
                         {
                             //ant.Selected = false;
                             return;
