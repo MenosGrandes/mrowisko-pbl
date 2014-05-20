@@ -125,6 +125,11 @@ GraphicsDevice);
             water = new Water(device, Content, texture[4].Width, 1);
 
 
+           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice), 10));
+           // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 3000));
+            //models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
+            //models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10));      //
+
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
             // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
             ///  models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
@@ -174,18 +179,24 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             IModel.Add(gr);
             IModel.Add(df);
             IModel.Add(hef);
-            control = new Control(texture[11]);
+            control = new Control(texture[11],quadTree);
             // inter.Add(models[0]);
             // inter.Add(models[3]);
-            /*
+        /*    
             for (int i = 4; i < 16;i++ )
             {
                 inter.Add(models[i]);
-            } */
-            models.Add(gr);
+
+            } 
+            //models.Add(gr);
+             */
+ 
+            } 
+          //  models.Add(gr);
 
 
-        }
+
+        
 
         /// <summary>w
         /// UnloadContent will be called once per game and is the place to unload
@@ -507,6 +518,8 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
         spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
         spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
        */
+            //spriteBatch.DrawString(_spr_font, string.Format("obrot ={0}", models[0].Model.Rotation), new Vector2(10.0f, 80.0f), Color.Pink);
+           
             control.Draw(spriteBatch);
 
             spriteBatch.End();
