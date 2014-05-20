@@ -70,7 +70,7 @@ namespace Logic.Units.Ants
         }
         public override void Update(GameTime time)
         {
-            this.model.tempPosition = this.model.Position;
+          //  this.model.tempPosition = this.model.Position;
             this.elapsedTime += time.ElapsedGameTime.Milliseconds ;
         }
         public override void Draw(Matrix View, Matrix Projection)

@@ -248,11 +248,11 @@ namespace Map
             Matrix world = Matrix.CreateScale(Scale) *
    Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
    Matrix.CreateTranslation(Position);
-         //Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+            if (Player != null) { 
+         Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+            }
          if (shadowCasters != null)
          {
-             Matrix[] bones = new Matrix[Model.Bones.Count];
-             Model.CopyAbsoluteBoneTransformsTo(bones);
 
              foreach (ModelMesh mesh in Model.Meshes)
              {
@@ -268,7 +268,7 @@ namespace Map
                              sc.VerticesCount = meshpart.NumVertices;
                              sc.StartIndex = meshpart.StartIndex;
                              sc.PrimitiveCount = meshpart.PrimitiveCount;
-                             sc.World = bones[mesh.ParentBone.Index] * Matrix.CreateTranslation(Position);
+                             sc.World = modelTransforms[mesh.ParentBone.Index] * Matrix.CreateTranslation(Position);
                          }
 
                      }

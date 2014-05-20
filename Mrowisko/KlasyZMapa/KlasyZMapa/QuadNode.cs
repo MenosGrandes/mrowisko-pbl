@@ -79,8 +79,7 @@ namespace Map
 
             Bounds = new BoundingBox(_parentTree.Vertices[VertexTopLeft.Index].Position,
                         _parentTree.Vertices[VertexBottomRight.Index].Position);
-            Bounds.Min.Y = -0.00000005f;
-            Bounds.Max.Y =  0.00000005f;
+
          
 
             if (nodeSize >= 4)
@@ -297,6 +296,7 @@ namespace Map
         }
         internal void SetActiveVertices()
         {
+           
             if (_parentTree.Cull && !IsInView)
                 return;
             if (_isSplit && this.HasChildren)
@@ -381,9 +381,10 @@ namespace Map
                     ChildBottomLeft.EnforceMinimumDepth();
                     ChildBottomRight.EnforceMinimumDepth();
                 }
-                else
+                if(this.HasChildren==false)
                 {
-                    this.Activate();
+                    Console.WriteLine(Bounds.Min);
+
                     _isSplit = false;
                 }
 
@@ -394,6 +395,7 @@ namespace Map
             {
                 this.Activate();
                 _isSplit = false;
+                StaticQuadNodeList.nodes.Add(this);
             }
         }
         public bool Contains(BoundingFrustum boundingFrustrum)
@@ -404,6 +406,9 @@ namespace Map
         {
             get { return Contains(_parentTree.ViewFrustrum); }
         }
-
+        public override string ToString()
+        {
+            return Bounds.ToString();
+        }
     }
 }

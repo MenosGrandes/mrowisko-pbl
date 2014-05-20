@@ -231,11 +231,6 @@
       <Importer>XImporter</Importer>
       <Processor>AnimatedModelProcessor</Processor>
     </Compile>
-    <Compile Include="spider.X">
-      <Name>spider</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimatedModelProcessor</Processor>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="grasshopper_Anims.xml">
@@ -243,10 +238,17 @@
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </Compile>
-    <Compile Include="spider_Anims.xml">
-      <Name>spider_Anims</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="grasshopperUVW.png">
+      <Name>grasshopperUVW</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="wingUVW.png">
+      <Name>wingUVW</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

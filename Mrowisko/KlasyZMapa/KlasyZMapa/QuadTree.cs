@@ -129,7 +129,6 @@ namespace Map
 
    _rootNode.EnforceMinimumDepth();
 
-
         }
         public void Update(GameTime gameTime)
         {
