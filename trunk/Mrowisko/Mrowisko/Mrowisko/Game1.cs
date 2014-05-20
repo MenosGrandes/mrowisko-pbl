@@ -53,7 +53,12 @@ namespace AntHill
         public LightsAndShadows.Shadow shadow;
         public LightsAndShadows.Light light;
         Effect hiDefShadowEffect;
-
+        public AnimationClip clip = null;
+        public AnimationClip clip2 = null;
+        public AnimationClip clip3 = null;
+        public AnimationClip clip4 = null;
+        bool keyPressed = false;//flaga nacisniecia klawisza x do animacji
+        int animacja = 0;//numer animacji
         Matrix world = Matrix.CreateTranslation(Vector3.Zero);
         public Game1()
         {
@@ -136,16 +141,20 @@ namespace AntHill
 
 
 
-            //animacja CHYBA dzia³a (nie wiem jak zrobiæ ¿eby by³o j¹ widaæ)
-            //na starszych wersjach repozytorium dzia³a bez problemu (pliki x)
             //plik xml jest potrzebny ¿eby dzia³a³o prze³¹czanie, nie wiem czemu ale jak jest w folderze models to nie dzia³a 
+            //animacje paj¹ka Jump, Death, JumpForward, Atack1, Atack2
+            //animacje konika polnego Jump, Death, Idle1, Kick
+            //animacje mrowki Idle1, Idle2, run
 
-            
+
             anim = new LoadModel(
- Content.Load<Model>("animacja"),
- Vector3.Zero, Vector3.Up,
- new Vector3(1), GraphicsDevice, Content);
-            AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
+Content.Load<Model>("grasshopper"),
+Vector3.Zero, Vector3.Up,
+new Vector3(1), GraphicsDevice, Content);
+            clip = anim.skinningData.AnimationClips["Jump"];//inne animacje to idle2 i run
+            clip2 = anim.skinningData.AnimationClips["Death"];//inne animacje to idle2 i run
+            clip3 = anim.skinningData.AnimationClips["Idle1"];//inne animacje to idle2 i run
+            clip4 = anim.skinningData.AnimationClips["Kick"];//inne animacje to idle2 i run
             anim.Player.StartClip(clip);
             lastMouseState = Mouse.GetState();
 
@@ -226,6 +235,31 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                 _fps = _total_frames;
                 _total_frames = 0;
                 _elapsed_time = 0;
+            }
+            if (keyState.IsKeyDown(Keys.X))
+            {
+                if (!keyPressed)
+                {
+
+                    keyPressed = true;
+                    animacja++;
+                    animacja = animacja % 4;
+                    Console.Out.WriteLine(animacja);
+                    switch (animacja)
+                    {
+                        case 0: anim.Player.StartClip(clip); break;
+                        case 1: anim.Player.StartClip(clip2); break;
+                        case 2: anim.Player.StartClip(clip3); break;
+                        case 3: anim.Player.StartClip(clip4); break;
+                    }
+                }
+
+
+            }
+            else
+            {
+                keyPressed = false;
+                anim.Player.StartClip(clip);
             }
             if (keyState.IsKeyDown(Keys.C) && !keyState.IsKeyDown(Keys.C))
             {
