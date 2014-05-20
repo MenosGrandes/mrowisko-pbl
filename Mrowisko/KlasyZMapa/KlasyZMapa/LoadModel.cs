@@ -17,7 +17,9 @@ namespace Map
     /// </summary>
     public class LoadModel                                                                                      
     {
+        public bool Collide;
         public Vector3 Position { get; set; }
+        public Vector3 tempPosition { get; set; }
         public Vector3 Rotation { get; set; }
         public Vector3 Scale { get; set; }
         public Model Model { get; private set; }

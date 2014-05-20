@@ -185,8 +185,9 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             {
                 inter.Add(models[i]);
             } 
-            //models.Add(gr);
+            
              */
+            models.Add(gr);
             control = new Control(texture[11]);
         }
 
@@ -246,8 +247,13 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                     if (model.Model.BoundingSphere.Intersects(model2.Model.BoundingSphere))
                     {
 
+                        model2.Model.Collide = true;
+                        model.Model.Collide = true;
                         //model2.Model.Position -= new Vector3(model2.Model.BoundingSphere.Radius, 0, model2.Model.BoundingSphere.Radius);
+                        model2.Model.Position = model2.Model.tempPosition;
+                        model.Model.Position = model.Model.tempPosition;
 
+                        Console.WriteLine("KOLIZJA");
 
                         if (model.GetType().BaseType == typeof(Material) && model2.GetType() == typeof(AntPeasant) || model2.GetType().BaseType == typeof(Material) && model.GetType() == typeof(AntPeasant))
                         {
@@ -282,6 +288,11 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                         }
 
                     }
+                    else
+                    {
+                        model2.Model.Collide = false;
+                        model.Model.Collide = false;
+                    }
                 }
 
             }
@@ -310,7 +321,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
             
              control.View = camera.View;
              control.Projection = camera.Projection;
-             control.models = IModel;
+             control.models = models;
              control.device = device;
              control.Update(gameTime);
              

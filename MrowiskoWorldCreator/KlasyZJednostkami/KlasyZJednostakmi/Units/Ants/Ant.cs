@@ -13,6 +13,7 @@ namespace Logic
         { }
         public Ant()
         {}
-     
+        public Ant(LoadModel model):base(model)
+        { }
     }
 }
