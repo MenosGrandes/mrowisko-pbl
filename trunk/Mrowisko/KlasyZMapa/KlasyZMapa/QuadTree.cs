@@ -74,7 +74,7 @@ namespace Map
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
             Model model = Content.Load<Model>("Models/stone2");
-            this.model = new LoadModel(model, Vector3.One, Vector3.Up, new Vector3(1), device);
+           // this.model = new LoadModel(model, Vector3.One, Vector3.Up, new Vector3(1), device);
             this.textures = textures;
             effect = Content.Load<Effect>("Effects/MultiTextured");
            
@@ -93,18 +93,18 @@ namespace Map
 
 
             envBilbList.Add(new EnvBilb(textures[6], textures[5], device, Content, scale));
-            envModelList.Add(new EnvModel(textures[6], model, device, Content, scale));
+           // envModelList.Add(new EnvModel(textures[6], model, device, Content, scale));
             foreach (EnvBilb pass in envBilbList)
             {
                 pass.GenerateObjPositions(_vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
                 pass.CreateBillboardVerticesFromList();
             }
 
-            foreach (EnvModel pass1 in envModelList)
+          /*  foreach (EnvModel pass1 in envModelList)
             {
                 pass1.GenerateObjPositions(_vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
                 pass1.CreateModelFromList();
-            }
+            }*/
 
 
             

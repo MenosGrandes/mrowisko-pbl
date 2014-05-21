@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Animations;
+
 namespace Map
 {
     /// <summary>
@@ -28,6 +29,7 @@ namespace Map
         public ContentManager content;
         public SkinningData skinningData;
         public AnimationPlayer Player;
+        public LightsAndShadows.Light light;
         public List<ShadowCasterObject> shadowCasters;
        public BoundingSphere[] spheres
         {
@@ -80,7 +82,7 @@ namespace Map
         /// <param name="Scale"></param>
         /// <param name="graphicsDevice"></param>
         public LoadModel(Model Model, Vector3 Position, Vector3 Rotation,
-        Vector3 Scale, GraphicsDevice graphicsDevice)
+        Vector3 Scale, GraphicsDevice graphicsDevice, LightsAndShadows.Light light)
         {
             this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)
@@ -96,6 +98,7 @@ namespace Map
             this.playerTarget = this.Position;
             this.Scale = Scale;
             this.graphicsDevice = graphicsDevice;
+            this.light = light;
             buildBoundingSphere();
 
             Matrix[] bones = new Matrix[Model.Bones.Count];
@@ -127,7 +130,7 @@ namespace Map
         //Animated model constructor
         public LoadModel(Model Model, Vector3 Position, Vector3 Rotation,
         Vector3 Scale, GraphicsDevice GraphicsDevice,
-        ContentManager Content)
+        ContentManager Content, LightsAndShadows.Light light)
         {
             this.Model = Model;
             this.graphicsDevice = GraphicsDevice;
@@ -135,6 +138,7 @@ namespace Map
             this.Position = Position;
             this.Rotation = Rotation;
             this.Scale = Scale;
+            this.light = light;
             modelTransforms = new Matrix[Model.Bones.Count];
             Model.CopyAbsoluteBoneTransformsTo(modelTransforms);
             SkinningData skinningData = Model.Tag as SkinningData;
@@ -206,7 +210,7 @@ namespace Map
            /// <param name="View"></param>
            /// <param name="Projection"></param>
            /// <param name="CameraPosition"></param>
-           public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition)
+           public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition, float time)
            {
 
                Matrix[] bones = Player.GetSkinTransforms();
@@ -224,15 +228,21 @@ namespace Map
                   * baseWorld;
                    foreach (SkinnedEffect effect in mesh.Effects)
                    {
+                       Vector3 lightDir = Vector3.Normalize((this.Position * this.Rotation) - light.lightPosChange(time));
+                       lightDir.X *= -1;
+                       lightDir.Z *= -1;
                        effect.SetBoneTransforms(bones);
                        effect.World = localWorld;
                        effect.View = View;
                        effect.Projection = Projection;
 
-                       effect.EnableDefaultLighting();
+                       effect.DirectionalLight0.Enabled = true;
+                       effect.DirectionalLight0.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs(-1*(float)Math.Sin(MathHelper.ToRadians(time-1.58f))/light.LightPower)+1),0.3f,0.9f); // a red light
+                       effect.DirectionalLight0.Direction = lightDir;  // coming along the x-axis
+                       effect.DirectionalLight0.SpecularColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs((float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f); ; // with green highlights
 
-                       effect.SpecularColor = new Vector3(0.25f);
-                       effect.SpecularPower = 16;
+                       //effect.SpecularColor = new Vector3(0.25f);
+                       //effect.SpecularPower = 16;
                    }
                    
                 mesh.Draw();
@@ -263,13 +273,8 @@ namespace Map
 
                          foreach (ShadowCasterObject sc in shadowCasters)
                          {
-                             sc.VertexBuffer = meshpart.VertexBuffer;
-                             sc.StreamOffset = meshpart.VertexOffset;
-                             sc.IndexBuffer = meshpart.IndexBuffer;
-                             sc.VerticesCount = meshpart.NumVertices;
-                             sc.StartIndex = meshpart.StartIndex;
-                             sc.PrimitiveCount = meshpart.PrimitiveCount;
-                             sc.World = modelTransforms[mesh.ParentBone.Index] * Matrix.CreateTranslation(Position);
+                             
+                             sc.World = modelTransforms[mesh.ParentBone.Index] * world;
                          }
 
                      }
