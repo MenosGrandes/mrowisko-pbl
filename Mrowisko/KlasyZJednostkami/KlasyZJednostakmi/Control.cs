@@ -161,7 +161,7 @@ namespace Logic
 
                 {
 
-                    Vector3 oldPosition = ant.Model.Position;
+                    ant.Model.tempPosition = ant.Model.Position;
 /*                    if (FloatEquals(ant.Model.Position.X, ant.Model.playerTarget.X) && FloatEquals(ant.Model.Position.Z, ant.Model.playerTarget.Z))
                     //if (ant.Selected)
                     {
@@ -217,7 +217,7 @@ namespace Logic
                         }
 
                     
-                        Vector3 direction = oldPosition - ant.Model.Position;
+                        Vector3 direction = ant.Model.tempPosition - ant.Model.Position;
                         
                     //if (!ant.Model.playerTarget.Equals(ant.Model.Position))
                         //{
