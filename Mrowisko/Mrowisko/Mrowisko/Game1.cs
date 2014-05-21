@@ -125,12 +125,12 @@ GraphicsDevice);
             water = new Water(device, Content, texture[4].Width, 1);
 
 
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice), 10, 1000));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10, 1000));
            // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 3000));
             //models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));      //
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10, 1000));      //
 
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice), 10, 1000));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10, 1000));
             // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
             ///  models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
 
@@ -146,7 +146,7 @@ GraphicsDevice);
             anim = new LoadModel(
  Content.Load<Model>("animacja"),
  Vector3.Zero, Vector3.Up,
- new Vector3(1), GraphicsDevice, Content);
+ new Vector3(1), GraphicsDevice, Content, light);
             AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
             anim.Player.StartClip(clip);
             lastMouseState = Mouse.GetState();
@@ -155,24 +155,24 @@ GraphicsDevice);
             AntGranary gr = new AntGranary(new LoadModel(
 Content.Load<Model>("Models/domek"),
 new Vector3(600, 13, 300), Vector3.Zero,
-new Vector3(1), GraphicsDevice), 10, 10, 10, 10, 10);
+new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
 
 
             HyacyntFarm hf = new HyacyntFarm(new LoadModel(
 Content.Load<Model>("Models/domek2"),
 new Vector3(100, 15, 100), Vector3.Up,
-new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 10);
+new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 10);
 
             DicentraFarm df = new DicentraFarm(new LoadModel(
 Content.Load<Model>("Models/domek2"),
 new Vector3(200, 15, 100), Vector3.Up,
-new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
+new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
 
 
             ChelidoniumFarm hef = new ChelidoniumFarm(new LoadModel(
 Content.Load<Model>("Models/domek2"),
 new Vector3(300, 15, 100), Vector3.Up,
-new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
+new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
 
 
             IModel.Add(hf);
@@ -245,7 +245,9 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
             foreach (InteractiveModel model in models)
             {
-                model.Update(gameTime);
+                //model.Update(gameTime);
+
+                model.Model.Update(gameTime);
 
                 foreach (InteractiveModel model2 in models)
                 {
@@ -363,7 +365,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                   quadTree.basicDraw();
               }*/
 
-            foreach (InteractiveModel model in IModel)
+            foreach (InteractiveModel model in models)
             {
                 hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["Technique1"];
                 //hiDefShadowEffect.Parameters["Model"].SetValue(true);
@@ -457,7 +459,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
 
 
 
-            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position);
+            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
             foreach (InteractiveModel model in models)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
