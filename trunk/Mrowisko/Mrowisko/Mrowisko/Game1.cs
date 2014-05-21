@@ -255,7 +255,7 @@ new Vector3(1), GraphicsDevice), 10, 10, 10, 5000, 30);
                     {
 
                         //model2.Model.Position -= new Vector3(model2.Model.BoundingSphere.Radius, 0, model2.Model.BoundingSphere.Radius);
-
+                        model2.Model.Position = model2.Model.tempPosition;
 
                         if (model.GetType().BaseType == typeof(Material) && model2.GetType() == typeof(AntPeasant) || model2.GetType().BaseType == typeof(Material) && model.GetType() == typeof(AntPeasant))
                         {
