@@ -85,7 +85,7 @@ namespace Map
             this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)
             * Matrix.CreateTranslation(Position);
-
+            
             shadowCasters = new List<ShadowCasterObject>();
             this.Model = Model;
             modelTransforms = new Matrix[Model.Bones.Count];
@@ -93,6 +93,7 @@ namespace Map
 
             this.Position = Position;
             this.Rotation = Rotation;
+            this.playerTarget = this.Position;
             this.Scale = Scale;
             this.graphicsDevice = graphicsDevice;
             buildBoundingSphere();

@@ -82,18 +82,7 @@ namespace Logic
             }
             else if (currentMouseState.RightButton == ButtonState.Pressed)  
             {
-                Selected(startRectangle, endRectangle);
-                foreach (InteractiveModel ant in models)
-                    if (ant.Model.Selected)
-                    {
 
-                        SelectedModels.Add(ant);
-                    }
-                    else
-                    {
-                        //f = 0;
-                        SelectedModels.Clear();
-                    }
 
                 selectCorner = new Vector2(currentMouseState.X, currentMouseState.Y);
                 if (selectCorner.X > position.X)
@@ -119,6 +108,20 @@ namespace Logic
             }
             else
             {
+                Selected(startRectangle, endRectangle);
+                foreach (InteractiveModel ant in models)
+                    if (ant.Model.Selected)
+                    {
+
+                        SelectedModels.Add(ant);
+                    }
+                        /*
+                    else
+                    {
+                        //f = 0;
+                        //SelectedModels.Clear();
+                    }
+                          */
                 mouseDown = false;
             }
             
@@ -151,7 +154,7 @@ namespace Logic
         {
 
             // Check if the player has reached the target, if not, move towards it. 
-            if(models!=null)
+            //if(models!=null)
             foreach (var ant in models)
             {
 
@@ -159,22 +162,22 @@ namespace Logic
                 {
 
                     Vector3 oldPosition = ant.Model.Position;
-                    if (FloatEquals(ant.Model.Position.X, ant.Model.playerTarget.X) && FloatEquals(ant.Model.Position.Z, ant.Model.playerTarget.Z))
+/*                    if (FloatEquals(ant.Model.Position.X, ant.Model.playerTarget.X) && FloatEquals(ant.Model.Position.Z, ant.Model.playerTarget.Z))
                     //if (ant.Selected)
                     {
 
                         //ant.Selected = false;
                         return;
                     }
-
+                    */
                     ////////////////////////////////////////////////////////////////////////////////////////////
                     //poruszanie się pod kątem 90 lub 45 stopni
 
-                        if (ant.Model.Position.X == ant.Model.playerTarget.X && ant.Model.Position.Z == ant.Model.playerTarget.Z )//|| ant.Model.Collide==true)
+                        if (FloatEquals(ant.Model.Position.X, ant.Model.playerTarget.X) && FloatEquals(ant.Model.Position.Z, ant.Model.playerTarget.Z ))//|| ant.Model.Collide==true)
 
                         {
                             //ant.Selected = false;
-                            return;
+                            continue;
                         }
 
                         float Speed = (float)2.0;
@@ -213,10 +216,15 @@ namespace Logic
                             ant.Model.Position += Vector3.Down;
                         }
 
-
-                   // Vector3 direction = ant.Model.Position - oldPosition;
-                    //ant.Model.Rotation = new Vector3(Vector3ToRadian(direction)+3);
-                    //ant.Model.Rotation=new Vector3((float)Rotation(ant, oldPosition));
+                    
+                        Vector3 direction = oldPosition - ant.Model.Position;
+                        
+                    //if (!ant.Model.playerTarget.Equals(ant.Model.Position))
+                        //{
+                          //  Console.WriteLine(ant.Model.playerTarget - ant.Model.Position);
+                             ant.Model.Rotation = new Vector3(0, Vector3ToRadian(direction), 0);
+                           //ant.Model.Rotation=new Vector3(0,(float)Rotation(ant, oldPosition),0);
+                       // }
                     
 
 
@@ -247,7 +255,7 @@ namespace Logic
 
         public static bool FloatEquals(float f1, float f2)
         {
-            return Math.Abs(f1 - f2) < 1;
+            return Math.Abs(f1 - f2) < 2;
         }
 
         
@@ -308,7 +316,7 @@ namespace Logic
 
         private float Vector3ToRadian(Vector3 direction)
         {
-            return (float)Math.Atan2(direction.X, -direction.Z);
+            return (float)Math.Atan2(direction.X, direction.Z);
         }
 
         public float GetHeightAt(float worldX, float worldZ)
