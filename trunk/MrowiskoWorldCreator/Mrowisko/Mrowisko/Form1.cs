@@ -186,7 +186,8 @@ namespace AntHill
       
         private void button2_MouseClick(object sender, MouseEventArgs e)
         {
-            Save();
+            saveFileDialog1.ShowDialog();
+          //  Save();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -251,6 +252,13 @@ namespace AntHill
             numericUpDown9.Value = (decimal)CreatorController.models[selectedIndex].Model.Position.Z;
             Console.WriteLine(numericUpDown7.Value);
         }
+
+        private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+
+        }
+
+
 
 
 

@@ -15,9 +15,9 @@ namespace Logic.Meterials
         }
         public Wood()
         { }
-        public override void Draw(Matrix View, Matrix Projection, float time)
+        public override void Draw(Matrix View, Matrix Projection)
         {
-            model.Draw(View, Projection, time);
+            model.Draw(View, Projection);
         }
     }
 }

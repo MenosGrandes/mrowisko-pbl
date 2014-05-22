@@ -106,9 +106,9 @@ namespace GameCamera
 
 
             Vector3 reflCameraPosition = Position;
-            reflCameraPosition.Y = -Position.Y + 6 * 2;
+            reflCameraPosition.Y = -Position.Y + 3 * 2;
             Vector3 reflTargetPos = Position;
-            reflTargetPos.Y = -Target.Y + 6 * 2;
+            reflTargetPos.Y = -Target.Y + 3 * 2;
 
             Vector3 cameraRight = Vector3.Transform(new Vector3(1, 0, 0), rotation);
             Vector3 invUpVector = Vector3.Cross(cameraRight, reflTargetPos - reflCameraPosition);

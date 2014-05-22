@@ -141,13 +141,13 @@ namespace Map
         /// 
         /// </summary>
         /// <param name="camera"></param>
-        public void DrawModels(FreeCamera camera, float time)
+        public void DrawModels(FreeCamera camera)
         {
               int licznik = 0;
             foreach (LoadModel model in models)
                 if (camera.BoundingVolumeIsInView(model.BoundingSphere))
                 {
-                    model.Draw(camera.View, camera.Projection, time);
+                    model.Draw(camera.View, camera.Projection);
                      licznik++;
                 }
 

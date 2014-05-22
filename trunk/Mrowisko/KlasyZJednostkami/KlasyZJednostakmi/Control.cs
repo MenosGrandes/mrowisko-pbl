@@ -112,7 +112,7 @@ namespace Logic
                 foreach (InteractiveModel ant in models)
                     if (ant.Model.Selected)
                     {
-
+                       if(ant.GetType().BaseType==typeof(Ant))
                         SelectedModels.Add(ant);
                     }
                         /*

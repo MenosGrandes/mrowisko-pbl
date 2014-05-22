@@ -99,19 +99,49 @@ namespace AntHill
             spriteBatch = new SpriteBatch(GraphicsDevice);
             _spr_font = Content.Load<SpriteFont>("Fonts/FPS");// you have on your project
 
+            #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
-            texture.Add(Content.Load<Texture2D>("Textures/Ground/grass"));
-            texture.Add(Content.Load<Texture2D>("Textures/Ground/sand"));
-            texture.Add(Content.Load<Texture2D>("Textures/Ground/rock"));
-            texture.Add(Content.Load<Texture2D>("Textures/Ground/snow"));
+            //alphy do terenu
+            texture.Add(Content.Load<Texture2D>("HeighMaps/texturemap_grass")); // alpha pomiedzy trawa 0 i trawa1
+            texture.Add(Content.Load<Texture2D>("HeighMaps/texturemap_grass1")); // alpha pomiedzy 1 2
+            texture.Add(Content.Load<Texture2D>("HeighMaps/texturemap_sand"));
+            texture.Add(Content.Load<Texture2D>("HeighMaps/texturemap_forest_cover"));
+            texture.Add(Content.Load<Texture2D>("HeighMaps/texturemap_stone")); // alpha pomiedzy 4 5
+            texture.Add(Content.Load<Texture2D>("HeighMaps/texturemap_grass1")); // alpha pomiedzy 5 6
+            texture.Add(Content.Load<Texture2D>("HeighMaps/texturemap_snow")); // alpha pomiedzy ciemne7 i jasne 8
+            //0 - 6
+
+            //tekstury terenu
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/grass1")); //
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/grass1"));  // to mo縩a wyci规
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/grass1")); // to mo縩a wyci规
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/sand"));  //
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/forest_cover")); //
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/rock"));  //
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/rock"));  // to mo縩a wyci规
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/rock"));  // to mo縩a wyci规
+            //7 - 14
+            //heighmapa terenu
             texture.Add(Content.Load<Texture2D>("HeighMaps/terrain"));
-            texture.Add(Content.Load<Texture2D>("Textures/Bilboard/tree"));
-            texture.Add(Content.Load<Texture2D>("HeighMaps/treeMap"));
-            texture.Add(Content.Load<Texture2D>("HeighMaps/colorHeigh"));
-            texture.Add(Content.Load<Texture2D>("Textures/lisc"));
-            texture.Add(Content.Load<Texture2D>("Textures/Ground/grass"));
-            texture.Add(Content.Load<Texture2D>("Textures/muszle"));
+            //15
+            //tekstura od zaznaczenia
             texture.Add(Content.Load<Texture2D>("Textures/select2"));
+            //16
+            //mapy rozmieszczenia obiektow i bilboardow (w zaleznosci ile czego bedzie to sobie pododajesz)
+            texture.Add(Content.Load<Texture2D>("HeighMaps/grassMap"));
+            texture.Add(Content.Load<Texture2D>("Textures/Bilboard/tree"));
+            texture.Add(Content.Load<Texture2D>("HeighMaps/iguyMap"));
+            texture.Add(Content.Load<Texture2D>("Textures/Bilboard/igua"));
+            texture.Add(Content.Load<Texture2D>("HeighMaps/szuwaryMap"));
+            texture.Add(Content.Load<Texture2D>("Textures/Bilboard/szuwary"));
+            //17 - 22
+
+            //mapy rozmieszczenia obiektow (w zaleznosci ile czego bedzie to sobie pododajesz)
+            texture.Add(Content.Load<Texture2D>("HeighMaps/koamienMap"));
+            texture.Add(Content.Load<Texture2D>("HeighMaps/trawaMap"));
+            texture.Add(Content.Load<Texture2D>("HeighMaps/kzak1Map"));
+            //23 - 25
+            #endregion
 
             camera = new FreeCamera(
 new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 10, texture[4].Width * 1 / 2),
@@ -125,12 +155,12 @@ GraphicsDevice);
             water = new Water(device, Content, texture[4].Width, 1);
 
 
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10, 1000));
-           // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 3000));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+        //    models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice, light), 3000));
             //models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10, 1000));      //
+           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));      //
 
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10, 1000));
+           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
             // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
             ///  models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
 
@@ -144,10 +174,10 @@ GraphicsDevice);
             //na starszych wersjach repozytorium dzia砤 bez problemu (pliki x)
             //plik xml jest potrzebny 縠by dzia砤硂 prze彻czanie, nie wiem czemu ale jak jest w folderze models to nie dzia砤 
             anim = new LoadModel(
- Content.Load<Model>("animacja"),
+ Content.Load<Model>("grasshopper"),
  Vector3.Zero, Vector3.Up,
  new Vector3(1), GraphicsDevice, Content, light);
-            AnimationClip clip = anim.skinningData.AnimationClips["run"];//inne animacje to idle2 i run
+            AnimationClip clip = anim.skinningData.AnimationClips["Jump"];//inne animacje to idle2 i run
             anim.Player.StartClip(clip);
             lastMouseState = Mouse.GetState();
 
@@ -179,23 +209,25 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
             IModel.Add(gr);
             IModel.Add(df);
             IModel.Add(hef);
-            control = new Control(texture[11],quadTree);
-             inter.Add(models[0]);
-             //inter.Add(models[3]);
-        /*    
-            for (int i = 4; i < 16;i++ )
-            {
-                inter.Add(models[i]);
+            control = new Control(texture[11], quadTree);
+            inter.Add(models[0]);
+            //inter.Add(models[1]);
 
-            } 
-            //models.Add(gr);
-             */
- 
-            } 
-            //models.Add(gr);
+            //inter.Add(models[3]);
+            /*    
+                for (int i = 4; i < 16;i++ )
+                {
+                    inter.Add(models[i]);
 
+                } 
+                //models.Add(gr);
+                 */
 
 
+            models.Add(gr);
+
+
+        }
         
 
         /// <summary>w
@@ -238,15 +270,16 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
             {
                 quadTree.Cull = !quadTree.Cull;
             }
-
+            if (keyState.IsKeyDown(Keys.J))
+            {
+            }
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             foreach (InteractiveModel model in models)
             {
-                //model.Update(gameTime);
-
+                model.Update(gameTime);
                 model.Model.Update(gameTime);
 
                 foreach (InteractiveModel model2 in models)
@@ -258,21 +291,29 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
 
                         //model2.Model.Position -= new Vector3(model2.Model.BoundingSphere.Radius, 0, model2.Model.BoundingSphere.Radius);
                         model2.Model.Position = model2.Model.tempPosition;
+                        model.Model.Position = model.Model.tempPosition;
 
                         if (model.GetType().BaseType == typeof(Material) && model2.GetType() == typeof(AntPeasant) || model2.GetType().BaseType == typeof(Material) && model.GetType() == typeof(AntPeasant))
                         {
-
+                           
                             if (model2.GetType() == typeof(AntPeasant))
                             {
+                                Console.WriteLine(((AntPeasant)model2).elapsedTime);
+                                Console.WriteLine(((AntPeasant)model2).gaterTime);
                                 if (((AntPeasant)model2).gaterTime < ((AntPeasant)model2).elapsedTime)
                                 {
+                                    Console.WriteLine("Zbieram");
                                     model2.gaterMaterial((Material)model);
                                 }
                             }
                             else if (model2.GetType().BaseType == typeof(Material))
                             {
+
+                                Console.WriteLine(((AntPeasant)model).elapsedTime);
+                                Console.WriteLine(((AntPeasant)model).gaterTime);
                                 if (((AntPeasant)model).gaterTime < ((AntPeasant)model).elapsedTime)
                                 {
+                                    Console.WriteLine("zbieram");
                                     model.gaterMaterial((Material)model2);
                                 }
 
@@ -465,10 +506,10 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
 
-                    model.Draw(camera.View, camera.Projection, (float)time);
+                    model.Draw(camera.View, camera.Projection);
                     //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
                     //    new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
-                    //  BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                      BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     licznik++;
 
                 }
@@ -481,7 +522,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
                     // BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f));
 
-                    model.Draw(camera.View, camera.Projection, (float)time);
+                    model.Draw(camera.View, camera.Projection);
 
 
 

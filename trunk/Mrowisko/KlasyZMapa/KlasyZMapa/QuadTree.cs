@@ -81,9 +81,9 @@ namespace Map
             Device = device;
 
             _position = position;
-            _topNodeSize = textures[4].Width - 1;
+            _topNodeSize = textures[15].Width - 1;
 
-            _vertices = new MapRender(textures[4], scale, textures[7]);
+            _vertices = new MapRender(textures[15], scale);
             _buffers = new BufferManager(_vertices.Vertices, device);
             _rootNode = new QuadNode(NodeType.FullNode, _topNodeSize, 1, null, this, 0);
 
@@ -108,23 +108,32 @@ namespace Map
 
 
             
-       effect.Parameters["xTexture0"].SetValue(textures[1]);
-       effect.Parameters["xTexture1"].SetValue(textures[0]);
-       effect.Parameters["xTexture2"].SetValue(textures[2]);
-       effect.Parameters["xTexture3"].SetValue(textures[3]);
-       effect.Parameters["xTexture5"].SetValue(textures[7]);
+
        Matrix worldMatrix = Matrix.Identity;
        effect.Parameters["xWorld"].SetValue(worldMatrix);
        effect.Parameters["xEnableLighting"].SetValue(true);
        effect.Parameters["xAmbient"].SetValue(light.Ambient);
        effect.Parameters["xLightPower"].SetValue(light.LightPower);
-       
-          
+       #region tekstury Alphy
+       effect.Parameters["xTexture0"].SetValue(textures[0]);
+       effect.Parameters["xTexture1"].SetValue(textures[1]);
+       effect.Parameters["xTexture2"].SetValue(textures[2]);
+       effect.Parameters["xTexture3"].SetValue(textures[3]);
+       effect.Parameters["xTexture4"].SetValue(textures[4]);
+       effect.Parameters["xTexture5"].SetValue(textures[5]);
+       effect.Parameters["xTexture6"].SetValue(textures[6]);
+       #endregion
+       #region Tekstury Terenu
+       effect.Parameters["xTexture7"].SetValue(textures[7]);
+       effect.Parameters["xTexture8"].SetValue(textures[8]);
+       effect.Parameters["xTexture9"].SetValue(textures[9]);
+       effect.Parameters["xTexture10"].SetValue(textures[10]);
+       effect.Parameters["xTexture11"].SetValue(textures[11]);
 
-           effect.Parameters["Ground"].SetValue(textures[7]);
-   effect.Parameters["GroundText0"].SetValue(textures[8]);
-   effect.Parameters["GroundText1"].SetValue(textures[9]);
-   effect.Parameters["GroundText2"].SetValue(textures[10]);
+       effect.Parameters["xTexture12"].SetValue(textures[12]);
+       effect.Parameters["xTexture13"].SetValue(textures[13]);
+       effect.Parameters["xTexture14"].SetValue(textures[14]);
+       #endregion
 
 
    _rootNode.EnforceMinimumDepth();
