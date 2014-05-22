@@ -92,7 +92,7 @@ namespace Map
             Indices = _vertices.indices;
 
 
-            envBilbList.Add(new EnvBilb(textures[6], textures[5], device, Content, scale));
+            envBilbList.Add(new EnvBilb(textures[6], textures[5], device, Content, scale, light));
            // envModelList.Add(new EnvModel(textures[6], model, device, Content, scale));
             foreach (EnvBilb pass in envBilbList)
             {
@@ -190,20 +190,20 @@ namespace Map
            }
 
 
-            /*
+           /*
      
             
-           foreach (EnvModel pass1 in envModelList)
-           {
-               pass1.DrawModels(camera);
-           }
+          foreach (EnvModel pass1 in envModelList)
+          {
+              pass1.DrawModels(camera);
+          }
            
-      
+     */
            foreach (EnvBilb pass in envBilbList)
            {
-               pass.DrawBillboards(camera.View, camera.Projection, camera.Position, time / 10);
+               pass.DrawBillboards(camera.View, camera.Projection, camera.Position, time);
            }
-               */
+               
            
 
         }

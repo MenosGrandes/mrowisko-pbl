@@ -23,6 +23,7 @@ namespace Map
         private Texture2D envBilbTexture;
         private GraphicsDevice device;
         private List<Vector3> envBilbList;
+        private LightsAndShadows.Light light;
     
         private int scale;
         private ContentManager content;
@@ -43,7 +44,7 @@ namespace Map
         /// <param name="device"></param>
         /// <param name="Content"></param>
         /// <param name="scale"></param>
-        public EnvBilb(Texture2D objMap, Texture2D bilboardTexture, GraphicsDevice device, ContentManager Content, int scale)
+        public EnvBilb(Texture2D objMap, Texture2D bilboardTexture, GraphicsDevice device, ContentManager Content, int scale, LightsAndShadows.Light light)
         {
             envBilbTexture = bilboardTexture;
             this.device = device;
@@ -51,6 +52,7 @@ namespace Map
             this.objMap = objMap;
             this.bbEffect = Content.Load<Effect>("Effects/Bilboarding");
             this.content = Content;
+            this.light = light;
             bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
             bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
             bbEffect.Parameters["xScale"].SetValue((float)this.scale);
@@ -159,9 +161,9 @@ namespace Map
             bbEffect.Parameters["xView"].SetValue(currentViewMatrix);
             bbEffect.Parameters["xProjection"].SetValue(projectionMatrix);
             bbEffect.Parameters["xCamPos"].SetValue(position);
-            bbEffect.Parameters["xTime"].SetValue(time);
+            bbEffect.Parameters["xAmbient"].SetValue(light.lightPosChangeBilb(time));
             device.SetVertexBuffer(VertexBuffer);
-
+            //Console.WriteLine(light.lightPosChangeBilb(time));
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();

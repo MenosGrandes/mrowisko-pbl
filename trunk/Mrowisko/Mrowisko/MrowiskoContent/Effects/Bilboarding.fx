@@ -4,7 +4,7 @@ float3 xCamPos;
 float3 xAllowedRotDir;
 float4x4 xView;
 int xScale;
-float xTime;
+float xAmbient;
 Texture xBillboardTexture;
 sampler textureSampler = sampler_state { texture = <xBillboardTexture>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
 
@@ -53,6 +53,7 @@ BBPixelToFrame BillboardPS(BBVertexToPixel PSIn) : COLOR0
 {
 	BBPixelToFrame Output = (BBPixelToFrame)0;
 	Output.Color = tex2D(textureSampler, PSIn.TexCoord);
+	Output.Color += xAmbient;
 
 	clip(Output.Color.w - 0.7843f);
 
