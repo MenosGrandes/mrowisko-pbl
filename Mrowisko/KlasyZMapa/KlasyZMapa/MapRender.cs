@@ -99,12 +99,12 @@ namespace Map
         /// </summary>
         /// <param name="texture"> Heigh Map image of terrain</param>
         /// <param name="Scale">It's scale.</param>
-    public MapRender (Texture2D texture,int Scale,Texture2D color)    
+    public MapRender (Texture2D texture,int Scale)    
     {
 
 
 
-            LoadHeightData(texture,color);
+            LoadHeightData(texture);
             SetUpvertices(Scale);
             SetUpTerrainIndices();
             CalculateNormals();
@@ -119,7 +119,7 @@ namespace Map
                                         ///             Loading informations about heigh from texture.
                                         /// </summary>
                                         /// <param name="heightMap">Heigh Map image</param>
-    private void LoadHeightData(Texture2D heightMap, Texture2D color)
+    private void LoadHeightData(Texture2D heightMap)
         {
             float minimumHeight = float.MaxValue;
             float maximumHeight = float.MinValue;

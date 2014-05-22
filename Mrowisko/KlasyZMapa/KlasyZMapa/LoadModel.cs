@@ -31,27 +31,38 @@ namespace Map
         public AnimationPlayer Player;
         public LightsAndShadows.Light light;
         public List<ShadowCasterObject> shadowCasters;
-       public BoundingSphere[] spheres
+        private BoundingSphere[] spheres;
+
+        public BoundingSphere[] Spheres
         {
 
             get
             {
                 // No need for rotation, as this is a sphere
-                List<BoundingSphere> spheres = new List<BoundingSphere>();
-                foreach (ModelMesh mesh in Model.Meshes)
+                //List<BoundingSphere> spheres = new List<BoundingSphere>();
+                //foreach (ModelMesh mesh in Model.Meshes)
+                //{
+
+                //    if (mesh.Name.Contains("BoundingSphere")) {
+                //        Matrix worldTransform = Matrix.CreateScale(Scale) * ( Matrix.CreateTranslation(mesh.BoundingSphere.Center));
+                //        BoundingSphere transformed = mesh.BoundingSphere.Transform(worldTransform);
+                //    Console.WriteLine(transformed);
+                //    spheres.Add(transformed);
+                //    }
+                //} 
+                BoundingSphere[] a = spheres;
+                Matrix worldTransform = (((Matrix.CreateTranslation(Scale))))*(((Matrix.CreateTranslation(Position))));
+                //Console.WriteLine(a.Length);
+                for (int i = 0; i < a.Length; i++)
                 {
-                    Matrix worldTransform = Matrix.CreateScale(Scale)* Matrix.CreateTranslation(Position);
+                    a[i].Center = Vector3.Transform(a[i].Center,worldTransform);
+                 
+                }   //
+              
 
-                    if (mesh.Name.Contains("BoundingSphere")) {
-
-                    BoundingSphere transformed = mesh.BoundingSphere.Transform(worldTransform);
-                    spheres.Add(transformed);
-                    }
-                }
-
-                return spheres.ToArray();
+                return a;
             }
-            set{}
+            
         }
         
         public Matrix baseWorld;
@@ -157,31 +168,33 @@ namespace Map
         /// </summary>
         private void buildBoundingSphere()
         {
-
+            int d=0;
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
-            List<BoundingSphere> spheres = new List<BoundingSphere>();
+            BoundingSphere[] spheres2=new BoundingSphere[3];
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 if (mesh.Name.Contains("BoundingSphere") )
-                {
+                {   
                     BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
-                spheres.Add(transformed);
+                    spheres2[d] = transformed;
                 sphere = BoundingSphere.CreateMerged(sphere, transformed);
-
+                  d++;
                 }
             }
             
              
             this.boundingSphere = sphere;
-            this.spheres = spheres.ToArray();   
+            this.spheres=spheres2;
         }
         /// <summary>
         /// Method to Draw model 
         /// </summary>
         /// <param name="View"></param>
         /// <param name="Projection"></param>
-        public void Draw(Matrix View, Matrix Projection, float time)
+        public void Draw(Matrix View, Matrix Projection)
         {
+            Console.WriteLine(spheres.Length);
+
             Matrix baseWorld = Matrix.CreateScale(Scale)* Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)
             * Matrix.CreateTranslation(Position);
@@ -193,17 +206,11 @@ namespace Map
                    * baseWorld;
                    foreach (ModelMeshPart meshPart in mesh.MeshParts)
                    {
-                       Vector3 lightDir = Vector3.Normalize((this.Position * this.Rotation) - light.lightPosChange(time));
                        BasicEffect effect = (BasicEffect)meshPart.Effect;
                        effect.World = localWorld;
                        effect.View = View;
                        effect.Projection = Projection;
                        effect.EnableDefaultLighting();
-                       effect.DirectionalLight0.Enabled = true;
-                       effect.DirectionalLight0.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs(-1 * (float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f); // a red light
-                       effect.DirectionalLight0.Direction = lightDir;  // coming along the x-axis
-                       effect.DirectionalLight0.SpecularColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs((float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f); ; // with green highlights
-
                    }
 
                    mesh.Draw();

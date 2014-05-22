@@ -31,7 +31,7 @@ namespace Map
             this.waterBumpMap = Content.Load<Texture2D>("Textures/Water/waterbump");
             this.Scale = scale;
             this.device = device;
-            this.waterHeight = 6 ;
+            this.waterHeight = 1 ;
             this.terrainLength = terrainLength*Scale;
             this.terrainWidth = this.terrainLength;
            
