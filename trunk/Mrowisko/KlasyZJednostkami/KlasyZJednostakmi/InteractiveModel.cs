@@ -52,7 +52,7 @@ namespace Logic
         public InteractiveModel()
         {           
         }
-         public virtual void Draw(Matrix View, Matrix Projection)
+         public virtual void Draw(Matrix View, Matrix Projection, float time)
         {
         }
         public virtual void gaterMaterial(Material material)

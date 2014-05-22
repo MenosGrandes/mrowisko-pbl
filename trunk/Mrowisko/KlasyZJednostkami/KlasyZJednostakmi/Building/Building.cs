@@ -54,7 +54,7 @@ namespace Logic.Building
         }
         public Building()
         { }
-         public override void Draw(Matrix View, Matrix Projection)
+         public override void Draw(Matrix View, Matrix Projection, float time)
         {   }
          public override void Update(GameTime gameTime)
          { }

@@ -180,7 +180,7 @@ namespace Map
         /// </summary>
         /// <param name="View"></param>
         /// <param name="Projection"></param>
-        public void Draw(Matrix View, Matrix Projection)
+        public void Draw(Matrix View, Matrix Projection, float time)
         {
             Matrix baseWorld = Matrix.CreateScale(Scale)* Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)
@@ -193,11 +193,17 @@ namespace Map
                    * baseWorld;
                    foreach (ModelMeshPart meshPart in mesh.MeshParts)
                    {
+                       Vector3 lightDir = Vector3.Normalize((this.Position * this.Rotation) - light.lightPosChange(time));
                        BasicEffect effect = (BasicEffect)meshPart.Effect;
                        effect.World = localWorld;
                        effect.View = View;
                        effect.Projection = Projection;
                        effect.EnableDefaultLighting();
+                       effect.DirectionalLight0.Enabled = true;
+                       effect.DirectionalLight0.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs(-1 * (float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f); // a red light
+                       effect.DirectionalLight0.Direction = lightDir;  // coming along the x-axis
+                       effect.DirectionalLight0.SpecularColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs((float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f); ; // with green highlights
+
                    }
 
                    mesh.Draw();
