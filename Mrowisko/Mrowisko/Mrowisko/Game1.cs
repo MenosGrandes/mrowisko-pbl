@@ -465,7 +465,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
 
-                    model.Draw(camera.View, camera.Projection);
+                    model.Draw(camera.View, camera.Projection, (float)time);
                     //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
                     //    new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
                     //  BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
@@ -481,7 +481,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
                     // BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f));
 
-                    model.Draw(camera.View, camera.Projection);
+                    model.Draw(camera.View, camera.Projection, (float)time);
 
 
 

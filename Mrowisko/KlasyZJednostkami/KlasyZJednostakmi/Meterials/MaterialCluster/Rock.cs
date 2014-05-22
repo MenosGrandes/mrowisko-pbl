@@ -35,9 +35,9 @@ namespace Logic.Meterials.MaterialCluster
            }
            
        }
-       public override void Draw(Matrix View, Matrix Projection)
+       public void Draw(Matrix View, Matrix Projection, float time)
        {
-           model.Draw(View, Projection);
+           model.Draw(View, Projection, time);
        }
        public void removeRock(int n)
        {
