@@ -44,6 +44,10 @@ namespace LightsAndShadows
            // (xLightPos.x/**sin(radians(xTime2))*/, abs(xLightPos.y/**sin(radians(xTime2))*/), xLightPos.z/**sin(radians(xTime2))*/)
             return new Vector3(this.LightPos.X * (float)Math.Sin(MathHelper.ToRadians(time)), this.LightPos.Y , this.LightPos.Z * (float)Math.Sin(MathHelper.ToRadians(time)));
         }
+        public float lightPosChangeBilb(float time)
+       {
+           return MathHelper.Clamp(((float)Math.Cos(MathHelper.ToRadians((time-0.9f)*0.7f)*2.0f / this.LightPower)), -0.1f, 0.3f);
+       }
 
     
     }

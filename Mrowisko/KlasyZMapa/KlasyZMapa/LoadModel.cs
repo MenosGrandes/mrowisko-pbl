@@ -211,6 +211,15 @@ namespace Map
                        effect.View = View;
                        effect.Projection = Projection;
                        effect.EnableDefaultLighting();
+<<<<<<< .mine
+                       effect.DirectionalLight0.Enabled = true;
+                       effect.DirectionalLight0.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs(-1 * (float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f);
+                       //Console.WriteLine(MathHelper.Clamp((Math.Abs(-1 * (float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower)), 0.3f, 0.9f));// a red light
+                       effect.DirectionalLight0.Direction = lightDir;  // coming along the x-axis
+                       effect.DirectionalLight0.SpecularColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs((float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f); ; // with green highlights
+
+=======
+>>>>>>> .r125
                    }
 
                    mesh.Draw();
