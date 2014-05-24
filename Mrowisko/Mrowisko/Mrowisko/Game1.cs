@@ -14,6 +14,7 @@ using Logic.Meterials.MaterialCluster;
 using Logic.Units.Ants;
 using Logic.Building.AntBuildings;
 using Logic.Meterials;
+using Logic.Building;
 
 namespace AntHill
 {
@@ -24,10 +25,10 @@ namespace AntHill
     {
 
         List<InteractiveModel> models = new List<InteractiveModel>();
-        List<InteractiveModel> inter = new List<InteractiveModel>(); Control control;
+        List<InteractiveModel> inter = new List<InteractiveModel>(); 
         List<InteractiveModel> IModel = new List<InteractiveModel>();
 
-
+        Control control;
         GraphicsDeviceManager graphics;
         public GraphicsDevice device;
         float x, y, z;
@@ -164,15 +165,8 @@ GraphicsDevice);
             // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
             ///  models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
 
-            //inter = quadTree.ants.Models;
-
-            // GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            // GraphicsDevice.BlendFactor = Color.Yellow;
-
-
-            //animacja CHYBA dzia³a (nie wiem jak zrobiæ ¿eby by³o j¹ widaæ)
-            //na starszych wersjach repozytorium dzia³a bez problemu (pliki x)
-            //plik xml jest potrzebny ¿eby dzia³a³o prze³¹czanie, nie wiem czemu ale jak jest w folderze models to nie dzia³a 
+            IModel.Add(new BuildingPlace(new LoadModel(Content.Load<Model>("Models/BuildingPlace"),new Vector3(100,15,100),Vector3.Zero,new Vector3(1),device,light)));
+            
             /*
             anim = new LoadModel(
  Content.Load<Model>("grasshopper"),
@@ -229,7 +223,8 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
 
          //   models.Add(gr);
 
-
+            StaticHelpers.StaticHelper.Content = Content;
+            StaticHelpers.StaticHelper.Device = device;
         }
         
 
@@ -275,8 +270,25 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
             }
             if (keyState.IsKeyDown(Keys.J))
             {
+                ((BuildingPlace)IModel[0]).Building = new AntGranary(new LoadModel(
+                    Content.Load<Model>("Models/domek"),
+                    IModel[0].Model.Position, Vector3.Zero,
+                    new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
             }
-
+            if (keyState.IsKeyDown(Keys.K))
+            {
+                ((BuildingPlace)IModel[0]).Building = new ChelidoniumFarm(new LoadModel(
+Content.Load<Model>("Models/domek2"),
+IModel[0].Model.Position, Vector3.Up,
+new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
+            }
+            if (keyState.IsKeyDown(Keys.L))
+            {
+                ((BuildingPlace)IModel[0]).Building =new DicentraFarm(new LoadModel(
+Content.Load<Model>("Models/stone2"),
+IModel[0].Model.Position, Vector3.Up,
+new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
+            }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
@@ -301,22 +313,18 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
                            
                             if (model2.GetType() == typeof(AntPeasant))
                             {
-                                Console.WriteLine(((AntPeasant)model2).elapsedTime);
-                                Console.WriteLine(((AntPeasant)model2).gaterTime);
+                             
                                 if (((AntPeasant)model2).gaterTime < ((AntPeasant)model2).elapsedTime)
                                 {
-                                    Console.WriteLine("Zbieram");
                                     model2.gaterMaterial((Material)model);
                                 }
                             }
                             else if (model2.GetType().BaseType == typeof(Material))
                             {
 
-                                Console.WriteLine(((AntPeasant)model).elapsedTime);
-                                Console.WriteLine(((AntPeasant)model).gaterTime);
+
                                 if (((AntPeasant)model).gaterTime < ((AntPeasant)model).elapsedTime)
                                 {
-                                    Console.WriteLine("zbieram");
                                     model.gaterMaterial((Material)model2);
                                 }
 
@@ -339,22 +347,26 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
                 }
 
             }
-                 /*
-                foreach (InteractiveModel model in IModel)
+                 
+                foreach (BuildingPlace model in IModel)
                 {
-                    model.Update(gameTime);
-                    model.Model.Update(gameTime);
-
-                    if (model.GetType().BaseType == typeof(SeedFarm))
+                    if (model.Building != null)
                     {
-                        if (((SeedFarm)model).timeElapsed > ((SeedFarm)model).CropTime)
-                        {
-                            Player.addMaterial(model.addCrop());
-                            ((SeedFarm)model).timeElapsed = 0;
-                        }
-                    }
+                        model.Building.Update(gameTime);
+                        model.Model.Update(gameTime);
 
-                }              */
+
+                        if (model.Building.GetType().BaseType == typeof(SeedFarm))
+                        {
+                            if (((SeedFarm)model.Building).timeElapsed > ((SeedFarm)model.Building).CropTime)
+                            {
+                                Player.addMaterial(model.Building.addCrop());
+                                ((SeedFarm)model.Building).timeElapsed = 0;
+                            }
+                        }
+
+                    }
+                }              
             quadTree.View = camera.View;
             quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
@@ -517,7 +529,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
 
                 }
             }
-             /*
+             
             foreach (InteractiveModel model in IModel)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
@@ -532,7 +544,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
                 }
 
             }
-            */
+            
 
 
 
