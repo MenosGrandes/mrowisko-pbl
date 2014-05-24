@@ -157,16 +157,16 @@ GraphicsDevice);
 
 
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-        //    models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice, light), 3000));
-            //models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
+           models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice, light), 3000));
+        models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice,light), 5000));
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));      //
 
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
             // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
             ///  models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
 
-            IModel.Add(new BuildingPlace(new LoadModel(Content.Load<Model>("Models/BuildingPlace"),new Vector3(100,15,100),Vector3.Zero,new Vector3(1),device,light)));
-            
+            IModel.Add(new BuildingPlace(new LoadModel(Content.Load<Model>("Models/BuildingPlace"),new Vector3(100,15,100),Vector3.Zero,new Vector3(1),device,light),0,0,0,0));
+            models.Add(IModel[0]);
             /*
             anim = new LoadModel(
  Content.Load<Model>("grasshopper"),
@@ -268,26 +268,41 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
             {
                 quadTree.Cull = !quadTree.Cull;
             }
+            if (IModel[0].GetType() == typeof(BuildingPlace)) { 
             if (keyState.IsKeyDown(Keys.J))
             {
-                ((BuildingPlace)IModel[0]).Building = new AntGranary(new LoadModel(
+                Vector3 Pos = IModel[0].Model.Position;
+                models.Remove(IModel[0]);
+                IModel.Remove(IModel[0]);
+                IModel.Add( new AntGranary(new LoadModel(
                     Content.Load<Model>("Models/domek"),
-                    IModel[0].Model.Position, Vector3.Zero,
-                    new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
+                    Pos, Vector3.Zero,
+                    new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10));
+                models.Add(IModel[0]);
+
             }
             if (keyState.IsKeyDown(Keys.K))
             {
-                ((BuildingPlace)IModel[0]).Building = new ChelidoniumFarm(new LoadModel(
+                Vector3 Pos = IModel[0].Model.Position;
+                models.Remove(IModel[0]);
+                IModel.Remove(IModel[0]);
+                IModel.Add(new HyacyntFarm(new LoadModel(
 Content.Load<Model>("Models/domek2"),
-IModel[0].Model.Position, Vector3.Up,
-new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
+new Vector3(100, 15, 100), Vector3.Up,
+new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 10));
+                models.Add(IModel[0]);
             }
             if (keyState.IsKeyDown(Keys.L))
             {
-                ((BuildingPlace)IModel[0]).Building =new DicentraFarm(new LoadModel(
-Content.Load<Model>("Models/stone2"),
-IModel[0].Model.Position, Vector3.Up,
-new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
+                Vector3 Pos = IModel[0].Model.Position;
+                models.Remove(IModel[0]);
+                IModel.Remove(IModel[0]);
+                IModel.Add(new ChelidoniumFarm(new LoadModel(
+Content.Load<Model>("Models/domek2"),
+new Vector3(300, 15, 100), Vector3.Up,
+new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
+                models.Add(IModel[0]);
+            }
             }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -348,24 +363,23 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
 
             }
                  
-                foreach (BuildingPlace model in IModel)
+                foreach (Building model in IModel)
                 {
-                    if (model.Building != null)
-                    {
-                        model.Building.Update(gameTime);
+                  
+                        model.Update(gameTime);
                         model.Model.Update(gameTime);
 
 
-                        if (model.Building.GetType().BaseType == typeof(SeedFarm))
+                        if (model.GetType().BaseType == typeof(SeedFarm))
                         {
-                            if (((SeedFarm)model.Building).timeElapsed > ((SeedFarm)model.Building).CropTime)
+                            if (((SeedFarm)model).timeElapsed > ((SeedFarm)model).CropTime)
                             {
-                                Player.addMaterial(model.Building.addCrop());
-                                ((SeedFarm)model.Building).timeElapsed = 0;
+                                Player.addMaterial(model.addCrop());
+                                ((SeedFarm)model).timeElapsed = 0;
                             }
                         }
 
-                    }
+                    
                 }              
             quadTree.View = camera.View;
             quadTree.Projection = camera.Projection;
