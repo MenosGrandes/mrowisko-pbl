@@ -37,7 +37,7 @@ namespace Map
         {
 
             get {
-                Matrix worldTransform = Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position);
+                Matrix worldTransform = Matrix.CreateScale(Scale) *Matrix.CreateRotationX(Rotation.X) * Matrix.CreateRotationY(Rotation.Y) * Matrix.CreateRotationZ(Rotation.Z)* Matrix.CreateTranslation(Position) ;
                 BoundingSphere[] spheres2 =new  BoundingSphere[spheres.Length];
                 for (int i = 0; i < spheres2.Length;i++ )
                 {
