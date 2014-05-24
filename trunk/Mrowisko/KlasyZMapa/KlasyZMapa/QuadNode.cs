@@ -395,7 +395,6 @@ namespace Map
             {
                 this.Activate();
                 _isSplit = false;
-                StaticQuadNodeList.nodes.Add(this);
             }
         }
         public bool Contains(BoundingFrustum boundingFrustrum)

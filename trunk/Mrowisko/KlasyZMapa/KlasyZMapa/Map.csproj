@@ -90,7 +90,6 @@
     <Compile Include="QuadTree.cs" />
     <Compile Include="ShadowCasterObject.cs" />
     <Compile Include="SkyDome.cs" />
-    <Compile Include="StaticQuadNodeList.cs" />
     <Compile Include="Water.cs" />
   </ItemGroup>
   <ItemGroup>

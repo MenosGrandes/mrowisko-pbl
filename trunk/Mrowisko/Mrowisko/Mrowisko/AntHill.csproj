@@ -122,6 +122,10 @@
       <Project>{80fbc0ee-2892-4ffe-805f-1c37d3981824}</Project>
       <Name>Player</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\StaticHelpers\StaticHelpers.csproj">
+      <Project>{adb8cf44-88f0-42de-ae42-62e5b9704438}</Project>
+      <Name>StaticHelpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MrowiskoContent\AntHillContent.contentproj">
       <Name>AntHillContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>

@@ -82,6 +82,7 @@
     <Compile Include="Building\AntBuildings\SeedFarms\ChelidoniumFarm.cs" />
     <Compile Include="Building\AntBuildings\SeedFarms\DicentraFarm.cs" />
     <Compile Include="Building\AntBuildings\SeedFarms\HyacyntFarm.cs" />
+    <Compile Include="Building\BuildingPlace.cs" />
     <Compile Include="Meterials\Chelidonium.cs" />
     <Compile Include="Meterials\Dicentra.cs" />
     <Compile Include="Meterials\Hyacynt.cs" />
@@ -128,6 +129,10 @@
     <ProjectReference Include="..\..\KlasyZMapa\KlasyZMapa\Map.csproj">
       <Project>{3ca21884-420f-46fd-84a1-a98bb1177b66}</Project>
       <Name>Map</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\StaticHelpers\StaticHelpers.csproj">
+      <Project>{adb8cf44-88f0-42de-ae42-62e5b9704438}</Project>
+      <Name>StaticHelpers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
