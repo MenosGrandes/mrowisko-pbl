@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Logic.Building
 {
-    public class BuildingPlace:InteractiveModel
+    public class BuildingPlace:Building
     {
         private Building building;
 
@@ -17,7 +17,8 @@ namespace Logic.Building
             get { return building; }
             set { building = value; }
         }
-        public BuildingPlace(LoadModel model):base(model)
+        public BuildingPlace(LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime)
+            : base(model, _capacity, _durability, _cost, _buildingTime)
         {
                                                     
         }
