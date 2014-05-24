@@ -173,6 +173,7 @@ GraphicsDevice);
             //animacja CHYBA dzia³a (nie wiem jak zrobiæ ¿eby by³o j¹ widaæ)
             //na starszych wersjach repozytorium dzia³a bez problemu (pliki x)
             //plik xml jest potrzebny ¿eby dzia³a³o prze³¹czanie, nie wiem czemu ale jak jest w folderze models to nie dzia³a 
+            /*
             anim = new LoadModel(
  Content.Load<Model>("grasshopper"),
  Vector3.Zero, Vector3.Up,
@@ -203,14 +204,16 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
 Content.Load<Model>("Models/domek2"),
 new Vector3(300, 15, 100), Vector3.Up,
 new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
-
-
-            IModel.Add(hf);
+             *             IModel.Add(hf);
             IModel.Add(gr);
             IModel.Add(df);
             IModel.Add(hef);
+             *             inter.Add(models[0]);
+
+                  */
+
+
             control = new Control(texture[11], quadTree);
-            inter.Add(models[0]);
             //inter.Add(models[1]);
 
             //inter.Add(models[3]);
@@ -224,7 +227,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
                  */
 
 
-            models.Add(gr);
+         //   models.Add(gr);
 
 
         }
@@ -336,22 +339,22 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
                 }
 
             }
-
-            foreach (InteractiveModel model in IModel)
-            {
-                model.Update(gameTime);
-                model.Model.Update(gameTime);
-
-                if (model.GetType().BaseType == typeof(SeedFarm))
+                 /*
+                foreach (InteractiveModel model in IModel)
                 {
-                    if (((SeedFarm)model).timeElapsed > ((SeedFarm)model).CropTime)
-                    {
-                        Player.addMaterial(model.addCrop());
-                        ((SeedFarm)model).timeElapsed = 0;
-                    }
-                }
+                    model.Update(gameTime);
+                    model.Model.Update(gameTime);
 
-            }
+                    if (model.GetType().BaseType == typeof(SeedFarm))
+                    {
+                        if (((SeedFarm)model).timeElapsed > ((SeedFarm)model).CropTime)
+                        {
+                            Player.addMaterial(model.addCrop());
+                            ((SeedFarm)model).timeElapsed = 0;
+                        }
+                    }
+
+                }              */
             quadTree.View = camera.View;
             quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
@@ -367,7 +370,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
 
 
             camera.Update(gameTime);
-            anim.Update(gameTime);
+          //  anim.Update(gameTime);
             base.Update(gameTime);
 
         }
@@ -500,7 +503,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
 
 
 
-            anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
+         //   anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
             foreach (InteractiveModel model in models)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
@@ -514,7 +517,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
 
                 }
             }
-
+             /*
             foreach (InteractiveModel model in IModel)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
@@ -529,7 +532,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
                 }
 
             }
-
+            */
 
 
 
