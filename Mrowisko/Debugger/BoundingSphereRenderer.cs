@@ -137,9 +137,9 @@ namespace Debugger
             Color xzColor,
             Color yzColor)
         {
-            foreach (BoundingSphere sphere in spheres)
+            for (int i=0;i<spheres.Length;i++)
             {
-                Render(sphere, graphicsDevice, view, projection, xyColor, xzColor, yzColor);
+                Render(spheres[i], graphicsDevice, view, projection, xyColor, xzColor, yzColor);
             }
         }
 
