@@ -29,6 +29,7 @@ namespace AntHill
         List<InteractiveModel> IModel = new List<InteractiveModel>();
 
         Control control;
+        ControlEnemy e= new ControlEnemy();
         GraphicsDeviceManager graphics;
         public GraphicsDevice device;
         float x, y, z;
@@ -159,6 +160,7 @@ GraphicsDevice);
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice, light), 3000));
         models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice,light), 5000));
+        models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));      //
 
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
@@ -205,9 +207,19 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
              *             inter.Add(models[0]);
 
                   */
+    
+            AntGranary gr = new AntGranary(new LoadModel(
+Content.Load<Model>("Models/domek"),
+new Vector3(600, 13, 300), Vector3.Zero,
+new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
+            IModel.Add(gr);
 
 
             control = new Control(texture[11], quadTree);
+          
+            e.Ant = models[0];
+            e.Enemy = models[3];
+            
             //inter.Add(models[1]);
 
             //inter.Add(models[3]);
@@ -392,8 +404,11 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             control.models = models;
             control.device = device;
             control.Update(gameTime);
-            
+            control.Models_Colision = IModel;
 
+
+            e.gameTime = gameTime;
+            e.Update();
 
             camera.Update(gameTime);
           //  anim.Update(gameTime);
