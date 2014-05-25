@@ -24,6 +24,8 @@ namespace Logic
         public Texture2D texture;
         public List<InteractiveModel> SelectedModels = new List<InteractiveModel>();
         public List<InteractiveModel> IModel = new List<InteractiveModel>();
+        public List<InteractiveModel> Models_Colision = new List<InteractiveModel>();
+        private Vector3 poprzedni = Vector3.Zero;
         public Ray ray;
         public Vector3 angle = new Vector3(0, 0, 0);
         //private Vector3 playerTarget;
@@ -152,16 +154,192 @@ namespace Logic
         }
         void updateAnt(GameTime gameTime)
         {
-
-            // Check if the player has reached the target, if not, move towards it. 
-            //if(models!=null)
+            float Speed = (float)2.0;
+        
             foreach (var ant in models)
             {
+
+                if (Math.Abs(ant.Model.Position.X - ant.Model.playerTarget.X) <= Speed && Math.Abs(ant.Model.Position.Z - ant.Model.playerTarget.Z) <= Speed)
+                {
+                    return;
+                }
+
+                foreach (InteractiveModel modelsy in Models_Colision)
+                {
+                    if ((modelsy.Model.BoundingSphere.Contains(ant.Model.playerTarget) == ContainmentType.Contains))
+                    {
+                        ant.Model.playerTarget.X = modelsy.Model.BoundingSphere.Center.X + modelsy.Model.BoundingSphere.Radius;
+                        ant.Model.playerTarget.Z = modelsy.Model.BoundingSphere.Center.Z + modelsy.Model.BoundingSphere.Radius;
+                        break;
+                    }
+
+                }
+
+
+                Vector3 lewo, prawo, gora, dol;
+                Vector3 lewy_gorny, prawy_gorny, lewy_dolny, prawy_dolny;
+                bool czylewo = false, czyprawo = false, czygora = false, czydol = false, czylewy_gorny = false, czyprawy_gorny = false, czylewy_dolny = false, czyprawy_dolny = false;
+                lewo = ant.Model.Position + (Vector3.Left * Speed);
+                prawo = ant.Model.Position + (Vector3.Right * Speed);
+                gora = ant.Model.Position + (Vector3.Forward * Speed);
+                dol = ant.Model.Position + (Vector3.Backward * Speed);
+                lewy_gorny = ant.Model.Position + (new Vector3(-1, 0, -1) * Speed);
+                lewy_dolny = ant.Model.Position + (new Vector3(-1, 0, 1) * Speed);
+                prawy_dolny = ant.Model.Position + (new Vector3(1, 0, 1) * Speed);
+                prawy_gorny = ant.Model.Position + (new Vector3(1, 0, -1) * Speed);
+
+                float min;
+                int indeks;
+                float[] tab = new float[8];
+
+                foreach (InteractiveModel model in Models_Colision)
+                {
+                    if ((model.Model.BoundingSphere.Contains(lewo) == ContainmentType.Contains))
+                        czylewo = true;
+                    if ((model.Model.BoundingSphere.Contains(prawo) == ContainmentType.Contains))
+                        czyprawo = true;
+                    if ((model.Model.BoundingSphere.Contains(gora) == ContainmentType.Contains))
+                        czygora = true;
+                    if ((model.Model.BoundingSphere.Contains(dol) == ContainmentType.Contains))
+                        czydol = true;
+                    if ((model.Model.BoundingSphere.Contains(lewy_gorny) == ContainmentType.Contains))
+                        czylewy_gorny = true;
+                    if ((model.Model.BoundingSphere.Contains(lewy_dolny) == ContainmentType.Contains))
+                        czylewy_dolny = true;
+                    if ((model.Model.BoundingSphere.Contains(prawy_dolny) == ContainmentType.Contains))
+                        czyprawy_dolny = true;
+                    if ((model.Model.BoundingSphere.Contains(prawy_gorny) == ContainmentType.Contains))
+                        czyprawy_gorny = true;
+                }
+
+
+
+
+
+                if (czylewo == false)
+                    tab[0] = (float)Math.Sqrt((float)Math.Pow(lewo.X - ant.Model.playerTarget.X, 2.0f) + (float)Math.Pow(lewo.Z - ant.Model.playerTarget.Z, 2.0f));
+
+                if (czyprawo == false)
+                    tab[1] = (float)Math.Sqrt((float)Math.Pow(prawo.X - ant.Model.playerTarget.X, 2.0f) + (float)Math.Pow(prawo.Z - ant.Model.playerTarget.Z, 2.0f));
+
+                if (czygora == false)
+                    tab[2] = (float)Math.Sqrt((float)Math.Pow(gora.X - ant.Model.playerTarget.X, 2.0f) + (float)Math.Pow(gora.Z - ant.Model.playerTarget.Z, 2.0f));
+
+                if (czydol == false)
+                    tab[3] = (float)Math.Sqrt((float)Math.Pow(dol.X - ant.Model.playerTarget.X, 2.0f) + (float)Math.Pow(dol.Z - ant.Model.playerTarget.Z, 2.0f));
+
+                if (czylewy_gorny == false)
+                    tab[4] = (float)Math.Sqrt((float)Math.Pow(lewy_gorny.X - ant.Model.playerTarget.X, 2.0f) + (float)Math.Pow(lewy_gorny.Z - ant.Model.playerTarget.Z, 2.0f));
+
+                if (czylewy_dolny == false)
+                    tab[5] = (float)Math.Sqrt((float)Math.Pow(lewy_dolny.X - ant.Model.playerTarget.X, 2.0f) + (float)Math.Pow(lewy_dolny.Z - ant.Model.playerTarget.Z, 2.0f));
+
+                if (czyprawy_dolny == false)
+                    tab[6] = (float)Math.Sqrt((float)Math.Pow(prawy_dolny.X - ant.Model.playerTarget.X, 2.0f) + (float)Math.Pow(prawy_dolny.Z - ant.Model.playerTarget.Z, 2.0f));
+
+                if (czyprawy_gorny == false)
+                    tab[7] = (float)Math.Sqrt((float)Math.Pow(prawy_gorny.X - ant.Model.playerTarget.X, 2.0f) + (float)Math.Pow(prawy_gorny.Z - ant.Model.playerTarget.Z, 2.0f));
+
+                min = 10000.0f;
+                indeks = 0;
+                for (int i = 0; i < tab.Length; i++)
+                {
+                    if (tab[i] < min && tab[i] != 0)
+                    {
+                        min = tab[i];
+                        indeks = i;
+                    }
+                }
+
+                if (indeks == 0)
+                {
+                    if (poprzedni == Vector3.Right)
+                        // ant.Model.Position += new Vector3(-1, 0, -1) * 4.0f;
+                        ant.Model.playerTarget.X = ant.Model.playerTarget.X + Speed;
+                    else
+                        ant.Model.Position += Vector3.Left * Speed;
+                    poprzedni = Vector3.Left;
+                    ant.Model.Rotation = Vector3.Up * (44.8f);
+
+                }
+                if (indeks == 1)
+                {
+                    if (poprzedni == Vector3.Left)
+                        // ant.Model.Position += new Vector3(-1, 0, 1) * 4.0f;
+                        ant.Model.playerTarget.X = ant.Model.playerTarget.X + Speed;
+                    else
+                        ant.Model.Position += Vector3.Right * Speed;
+                    poprzedni = Vector3.Right;
+                    ant.Model.Rotation = Vector3.Up * 179.9f;
+                }
+                if (indeks == 2)
+                {
+                    if (poprzedni == Vector3.Backward)
+                        // ant.Model.Position += new Vector3(1, 0, -1) * 4.0f;
+                        ant.Model.playerTarget.Z = ant.Model.playerTarget.Z + Speed;
+                    else
+                        ant.Model.Position += Vector3.Forward * Speed;
+                    poprzedni = Vector3.Forward;
+                    ant.Model.Rotation = Vector3.Up * 43.15f;
+                }
+                if (indeks == 3)
+                {
+                    if (poprzedni == Vector3.Forward)
+                        ant.Model.playerTarget.Z = ant.Model.playerTarget.Z + Speed;
+                    else
+                        ant.Model.Position += Vector3.Backward * Speed;
+                    poprzedni = Vector3.Backward;
+                    ant.Model.Rotation = Vector3.Up * (-179.9f);
+                }
+
+                if (indeks == 4)
+                {
+                    if (poprzedni == prawy_dolny)
+                        ant.Model.playerTarget = ant.Model.playerTarget + (new Vector3(-1, 0, -1) * Speed);
+                    else
+                        ant.Model.Position += (new Vector3(-1, 0, -1) * Speed);
+                    ant.Model.Rotation = Vector3.Up * (-44);
+                    poprzedni = lewy_gorny;
+                }
+
+                if (indeks == 5)
+                {
+                    if (poprzedni == prawy_gorny)
+                        ant.Model.Position += Vector3.Backward * Speed;
+                    else
+                        ant.Model.Position += (new Vector3(-1, 0, 1) * Speed);
+                    ant.Model.Rotation = Vector3.Up * (-42.4f);
+                    poprzedni = lewy_dolny;
+
+                }
+
+                if (indeks == 6)
+                {
+                    if (poprzedni == lewy_gorny)
+                        ant.Model.playerTarget = ant.Model.playerTarget + (new Vector3(-1, 0, -1) * Speed);
+                    else
+                        ant.Model.Position += (new Vector3(1, 0, 1) * Speed);
+                    ant.Model.Rotation = Vector3.Up * (-47.4f);
+                    poprzedni = prawy_dolny;
+
+                }
+                if (indeks == 7)
+                {
+                    if (poprzedni == lewy_dolny)
+                        ant.Model.playerTarget = ant.Model.playerTarget + (new Vector3(-1, 0, -1) * Speed);
+                    else
+                        ant.Model.Position += (new Vector3(1, 0, -1) * Speed);
+                    ant.Model.Rotation = Vector3.Up * (-45.5f);
+                    poprzedni = prawy_gorny;
+                }
+
+
+
 
 
                 {
 
-                    ant.Model.tempPosition = ant.Model.Position;
+                   // ant.Model.tempPosition = ant.Model.Position;
 /*                    if (FloatEquals(ant.Model.Position.X, ant.Model.playerTarget.X) && FloatEquals(ant.Model.Position.Z, ant.Model.playerTarget.Z))
                     //if (ant.Selected)
                     {
@@ -173,37 +351,24 @@ namespace Logic
                     ////////////////////////////////////////////////////////////////////////////////////////////
                     //poruszanie się pod kątem 90 lub 45 stopni
 
-                        if (FloatEquals(ant.Model.Position.X, ant.Model.playerTarget.X) && FloatEquals(ant.Model.Position.Z, ant.Model.playerTarget.Z ))//|| ant.Model.Collide==true)
+                      //  if (FloatEquals(ant.Model.Position.X, ant.Model.playerTarget.X) && FloatEquals(ant.Model.Position.Z, ant.Model.playerTarget.Z ))//|| ant.Model.Collide==true)
 
-                        {
+                     //   {
                             //ant.Selected = false;
-                            continue;
-                        }
+                   //         continue;
+                   //     }
 
-                        float Speed = (float)2.0;
-                        if (ant.Model.Position.X > ant.Model.playerTarget.X)
-                        {
-                            //ant.Model.Position += new Vector3(-0.01f,0,0) * Speed;
-                            ant.Model.Position += Vector3.Left * Speed;
-                        }
-                        if (ant.Model.Position.X < ant.Model.playerTarget.X)
-                        {
-                            ant.Model.Position += Vector3.Right * Speed;
-                            //ant.Model.Position += new Vector3(0.01f, 0, 0) * Speed;
-                        }
+                   
 
-                        if (ant.Model.Position.Z > ant.Model.playerTarget.Z)
-                        {
-                           // ant.Model.Position += new Vector3(0, 0, -0.01f) * Speed;
-                            ant.Model.Position += Vector3.Forward * Speed;
 
-                        }
-                        if (ant.Model.Position.Z < ant.Model.playerTarget.Z)
-                        {
-                           // ant.Model.Position += new Vector3(0, 0, 0.01f) * Speed;
-                            ant.Model.Position += Vector3.Backward * Speed;
 
-                        }
+
+
+
+
+
+
+                      
 
                         //wysokosc
                         float height = GetHeightAt(ant.Model.Position.X, ant.Model.Position.Z);
@@ -217,12 +382,12 @@ namespace Logic
                         }
 
                     
-                        Vector3 direction = ant.Model.tempPosition - ant.Model.Position;
+                      //  Vector3 direction = ant.Model.tempPosition - ant.Model.Position;
                         
                     //if (!ant.Model.playerTarget.Equals(ant.Model.Position))
                         //{
                           //  Console.WriteLine(ant.Model.playerTarget - ant.Model.Position);
-                             ant.Model.Rotation = new Vector3(0, Vector3ToRadian(direction), 0);
+                          //   ant.Model.Rotation = new Vector3(0, Vector3ToRadian(direction), 0);
                            //ant.Model.Rotation=new Vector3(0,(float)Rotation(ant, oldPosition),0);
                        // }
                     
