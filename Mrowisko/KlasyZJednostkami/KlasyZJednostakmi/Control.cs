@@ -25,6 +25,7 @@ namespace Logic
         public List<InteractiveModel> SelectedModels = new List<InteractiveModel>();
         public List<InteractiveModel> IModel = new List<InteractiveModel>();
         public List<InteractiveModel> Models_Colision = new List<InteractiveModel>();
+        public InteractiveModel selectedObject;
         private Vector3 poprzedni = Vector3.Zero;
         public Ray ray;
         public Vector3 angle = new Vector3(0, 0, 0);
@@ -76,7 +77,7 @@ namespace Logic
                 position3d = CalculateMouse3DPosition(position);
                 selectCorner = position;
                 selectRectangle = new Rectangle((int)position.X, (int)position.Y, 0, 0);
-
+                selectedObject = SelectedObject(mouse3d2);
            
                 //if ((mouse3d2.X > pozycja_X_lewo && mouse3d2.X < pozycja_X_prawo) && (mouse3d2.Z > pozycja_Z_dol && mouse3d2.Z < pozycja_Z_gora))
                
@@ -137,7 +138,7 @@ namespace Logic
                     ant.Model.playerTarget.Z = mouse3d2.Z;
                 }
             }
-
+           
             updateAnt(gameTime);
         }
 
@@ -591,7 +592,7 @@ namespace Logic
         }
 
 
-        public InteractiveModel SelectedObject(Vector3 vector, Vector3 position)
+        public InteractiveModel SelectedObject( Vector3 position)
         {
 
             ray.Position = position;
@@ -608,6 +609,8 @@ namespace Logic
             {
                 if (ant.Model.BoundingSphere.Intersects(ray) != null)
                 {
+                    Console.WriteLine(ant);
+                    SelectedModels.Add(ant); 
                     return ant;
                 }
             }
