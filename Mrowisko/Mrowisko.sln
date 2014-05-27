@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Player", "Player\Player.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticHelpers", "StaticHelpers\StaticHelpers.csproj", "{ADB8CF44-88F0-42DE-AE42-62E5B9704438}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Materials", "Materials\Materials.csproj", "{8E5A93BA-B5D7-472D-AED9-D24DA66F9D5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -87,6 +89,10 @@ Global
 		{ADB8CF44-88F0-42DE-AE42-62E5B9704438}.Debug|x86.Build.0 = Debug|x86
 		{ADB8CF44-88F0-42DE-AE42-62E5B9704438}.Release|x86.ActiveCfg = Release|x86
 		{ADB8CF44-88F0-42DE-AE42-62E5B9704438}.Release|x86.Build.0 = Release|x86
+		{8E5A93BA-B5D7-472D-AED9-D24DA66F9D5D}.Debug|x86.ActiveCfg = Debug|x86
+		{8E5A93BA-B5D7-472D-AED9-D24DA66F9D5D}.Debug|x86.Build.0 = Debug|x86
+		{8E5A93BA-B5D7-472D-AED9-D24DA66F9D5D}.Release|x86.ActiveCfg = Release|x86
+		{8E5A93BA-B5D7-472D-AED9-D24DA66F9D5D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

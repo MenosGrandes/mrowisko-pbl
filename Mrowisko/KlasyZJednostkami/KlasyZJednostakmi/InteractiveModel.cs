@@ -58,6 +58,9 @@ namespace Logic
         public virtual void gaterMaterial(Material material)
         {
         }
+        public virtual void Intersect(InteractiveModel interactive)
+    {
+    }
         public virtual List<Material> releaseMaterial()
         {
             return null;
