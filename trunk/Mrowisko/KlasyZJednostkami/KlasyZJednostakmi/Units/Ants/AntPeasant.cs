@@ -1,4 +1,5 @@
-﻿using Logic.Meterials;
+﻿using Logic.Building.AntBuildings.Granary;
+using Logic.Meterials;
 using Logic.Meterials.MaterialCluster;
 using Map;
 using Microsoft.Xna.Framework;
@@ -86,6 +87,37 @@ namespace Logic.Units.Ants
             materials.Clear();
             return mat;
         }
+        public override void Intersect(InteractiveModel interactive)
+        {
+            if(this==interactive)
+            { return ; }
+                    foreach(BoundingSphere b in model.Spheres)
+                    {
 
+                           foreach(BoundingSphere b2 in interactive.Model.Spheres)
+                           {
+
+
+                             if (b.Intersects(b2))
+                             {
+                                 if(interactive.GetType().BaseType==typeof(Material))
+                                 {
+                                     if (gaterTime < elapsedTime)
+                                     {
+                                         gaterMaterial((Material)interactive);
+                                     }
+                                 }
+                                 else if(interactive.GetType()==typeof(AntGranary))
+                                 {
+                                  //   Player.addMaterial(((AntPeasant)model2).releaseMaterial());
+
+                                 }
+                                 
+                             }
+
+                           }
+                   }
+            }
+        }
     }
-}
+

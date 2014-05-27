@@ -29,7 +29,7 @@ namespace AntHill
         List<InteractiveModel> IModel = new List<InteractiveModel>();
 
         Control control;
-        ControlEnemy e= new ControlEnemy();
+       // ControlEnemy e= new ControlEnemy();
         GraphicsDeviceManager graphics;
         public GraphicsDevice device;
         float x, y, z;
@@ -160,7 +160,6 @@ GraphicsDevice);
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice, light), 3000));
         models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice,light), 5000));
-        models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));      //
 
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
@@ -217,8 +216,8 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
 
             control = new Control(texture[11], quadTree);
           
-            e.Ant = models[0];
-            e.Enemy = models[3];
+            //e.Ant = models[0];
+            //e.Enemy = models[3];
             
             //inter.Add(models[1]);
 
@@ -323,57 +322,14 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             {
                 model.Update(gameTime);
                 model.Model.Update(gameTime);
-
+               
                 foreach (InteractiveModel model2 in models)
-                {
-                    if (model2 == model)
-                    { break; }
-                    if (model.Model.BoundingSphere.Intersects(model2.Model.BoundingSphere))
-                    {
-
-                        //model2.Model.Position -= new Vector3(model2.Model.BoundingSphere.Radius, 0, model2.Model.BoundingSphere.Radius);
-                        model2.Model.Position = model2.Model.tempPosition;
-                        model.Model.Position = model.Model.tempPosition;
-
-                        if (model.GetType().BaseType == typeof(Material) && model2.GetType() == typeof(AntPeasant) || model2.GetType().BaseType == typeof(Material) && model.GetType() == typeof(AntPeasant))
-                        {
-                           
-                            if (model2.GetType() == typeof(AntPeasant))
-                            {
-                             
-                                if (((AntPeasant)model2).gaterTime < ((AntPeasant)model2).elapsedTime)
-                                {
-                                    model2.gaterMaterial((Material)model);
-                                }
-                            }
-                            else if (model2.GetType().BaseType == typeof(Material))
-                            {
-
-
-                                if (((AntPeasant)model).gaterTime < ((AntPeasant)model).elapsedTime)
-                                {
-                                    model.gaterMaterial((Material)model2);
-                                }
-
-                            }
-
-
-                        }
-                        if (model2.GetType().BaseType == typeof(Ant) && model.GetType().BaseType == typeof(Ant))
-                        {
-                        }
-
-                        if (model.GetType().Name == "AntGranary" && model2.GetType().Name == "AntPeasant" && ((AntPeasant)model2).Capacity > 0)
-                        {
-                            //  Console.WriteLine(((AntPeasant)model2).Capacity);
-                            Player.addMaterial(((AntPeasant)model2).releaseMaterial());
-
-                        }
-
-                    }
-                }
-
+                    { 
+                    model.Intersect(model2);
+                    } 
             }
+
+            
                  
                 foreach (Building model in IModel)
                 {
@@ -407,8 +363,8 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             control.Models_Colision = IModel;
 
 
-            e.gameTime = gameTime;
-            e.Update();
+            //e.gameTime = gameTime;
+            //e.Update();
 
             camera.Update(gameTime);
           //  anim.Update(gameTime);
@@ -564,7 +520,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
                     // BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
-                    BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f));
+                    BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
 
                     model.Draw(camera.View, camera.Projection);
 

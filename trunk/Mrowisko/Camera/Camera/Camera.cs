@@ -41,7 +41,7 @@ namespace GameCamera
         {
             PresentationParameters pp = GraphicsDevice.PresentationParameters;
             float aspectRatio = (float)pp.BackBufferWidth /(float)pp.BackBufferHeight;
-            this.Projection = Matrix.CreatePerspectiveFieldOfView( MathHelper.ToRadians(45), aspectRatio, 0.1f, 1000000.0f);
+            this.Projection = Matrix.CreatePerspectiveFieldOfView( MathHelper.ToRadians(45), aspectRatio, 0.1f, 10000.0f);
 
         }
         public virtual void Update(GameTime gameTime)
