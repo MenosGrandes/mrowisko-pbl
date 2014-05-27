@@ -16,8 +16,8 @@ namespace Logic.Units.Ants
         private List<Material> materials = new List<Material>();
         public  int wood2;
         public  int rock2;
-
-
+        private Material GaterMaterialObject;
+        public Material  gaterMaterialObject;
         public int MaxCapacity { get { return maxCapacity; } }
         private int maxCapacity;
         public int Capacity { 
@@ -100,12 +100,16 @@ namespace Logic.Units.Ants
 
                              if (b.Intersects(b2))
                              {
+                                 if(gaterMaterialObject==interactive)
+                                 {
+                                     Console.WriteLine(gaterMaterialObject.Model.Position);
                                  if(interactive.GetType().BaseType==typeof(Material))
                                  {
                                      if (gaterTime < elapsedTime)
                                      {
                                          gaterMaterial((Material)interactive);
                                      }
+                                 }
                                  }
                                  else if(interactive.GetType()==typeof(AntGranary))
                                  {
@@ -118,6 +122,16 @@ namespace Logic.Units.Ants
                            }
                    }
             }
+        public override void setGaterMaterial(Material m)
+        {
+            if(m!=gaterMaterialObject)
+            {
+                gaterMaterialObject = m;
+
+                Console.WriteLine(gaterMaterialObject.Model.Position);
+            }
         }
+        }
+
     }
 

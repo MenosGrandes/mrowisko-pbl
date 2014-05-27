@@ -72,6 +72,8 @@ namespace Logic
         }
         public virtual void Update(GameTime time)
         { }
+        public virtual void setGaterMaterial(Material m)
+        { }
 
     }
 }

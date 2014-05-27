@@ -61,16 +61,23 @@ namespace Logic
         public void Update(GameTime gameTime)
         {
 
+            if(selectedObject!=null)
+            Console.WriteLine(selectedObject);
 
-           
             currentMouseState = Mouse.GetState();
             Vector3 mouse3d2 = CalculateMouse3DPosition();
 
-           
+            if(currentMouseState.LeftButton==ButtonState.Pressed)
+            {
+                position = new Vector2(currentMouseState.X, currentMouseState.Y);
+                position3d = CalculateMouse3DPosition(position);
+                selectedObject = SelectedObject(mouse3d2);
+
+            }
             if (currentMouseState.RightButton == ButtonState.Pressed && !mouseDown)
             {
                 SelectedModels.Clear();
-
+                
                 
                 mouseDown = true;
                 position = new Vector2(currentMouseState.X, currentMouseState.Y);
@@ -78,9 +85,8 @@ namespace Logic
                 selectCorner = position;
                 selectRectangle = new Rectangle((int)position.X, (int)position.Y, 0, 0);
                 selectedObject = SelectedObject(mouse3d2);
-           
                 //if ((mouse3d2.X > pozycja_X_lewo && mouse3d2.X < pozycja_X_prawo) && (mouse3d2.Z > pozycja_Z_dol && mouse3d2.Z < pozycja_Z_gora))
-               
+                
                 
             }
             else if (currentMouseState.RightButton == ButtonState.Pressed)  
@@ -115,8 +121,9 @@ namespace Logic
                 foreach (InteractiveModel ant in models)
                     if (ant.Model.Selected)
                     {
-                       if(ant.GetType().BaseType==typeof(Ant))
-                        SelectedModels.Add(ant);
+                        if (ant.GetType().BaseType == typeof(Ant))
+                        { SelectedModels.Add(ant); 
+                        }
                     }
                         /*
                     else
@@ -159,7 +166,10 @@ namespace Logic
         
             foreach (var ant in models)
             {
-
+                 if(ant.GetType().BaseType!=typeof(Ant))
+                 {
+                     return;
+                 }
                 if (Math.Abs(ant.Model.Position.X - ant.Model.playerTarget.X) <= Speed && Math.Abs(ant.Model.Position.Z - ant.Model.playerTarget.Z) <= Speed)
                 {
                     return;
