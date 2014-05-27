@@ -331,13 +331,21 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             {
                 model.Update(gameTime);
                 model.Model.Update(gameTime);
-               
+                if(control.selectedObject!=null)
+                {
+
+                if(control.selectedObject.GetType().BaseType==typeof(Material))
+                {
+                    model.setGaterMaterial((Material)control.selectedObject);
+
+                }
+                }
                 foreach (InteractiveModel model2 in models)
                     { 
                     model.Intersect(model2);
                     } 
             }
-
+             
             
                  
                 foreach (Building model in IModel)
