@@ -29,11 +29,11 @@ namespace AntHill
         List<InteractiveModel> IModel = new List<InteractiveModel>();
 
         Control control;
-<<<<<<< .mine
+
         //ControlEnemy e= new ControlEnemy();
-=======
+
        // ControlEnemy e= new ControlEnemy();
->>>>>>> .r132
+
         GraphicsDeviceManager graphics;
         public GraphicsDevice device;
         float x, y, z;
@@ -220,13 +220,13 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
 
             control = new Control(texture[11], quadTree);
           
-<<<<<<< .mine
+
            // e.Ant = models[0];
             //e.Enemy = models[3];
-=======
+
             //e.Ant = models[0];
             //e.Enemy = models[3];
->>>>>>> .r132
+
             
             //inter.Add(models[1]);
 
