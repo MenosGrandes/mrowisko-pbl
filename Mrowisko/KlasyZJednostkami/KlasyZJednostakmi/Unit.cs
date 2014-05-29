@@ -66,7 +66,15 @@ namespace Logic
         {
             get { return cost; }
             set { cost = value; }
-        } 
+        }
+
+        protected HUD.LifeBar lifeBar;
+
+        public HUD.LifeBar LifeBar
+        {
+            get { return lifeBar; }
+            set { lifeBar = value; }
+        }
 
 
 
@@ -84,7 +92,8 @@ namespace Logic
 
          public Unit(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model):base( model)
         {
-            
+
+            this.lifeBar = new HUD.LifeBar(2);
             this.hp = hp;
             this.armor = armor;
             this.strength = strength;

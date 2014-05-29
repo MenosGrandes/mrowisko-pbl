@@ -92,7 +92,8 @@ namespace Map
             Indices = _vertices.indices;
 
 
-            envBilbList.Add(new EnvBilb(textures[6], textures[5], device, Content, scale, light));
+
+            envBilbList.Add(new EnvBilb(textures[6], textures[18], device, Content, scale, light));
            // envModelList.Add(new EnvModel(textures[6], model, device, Content, scale));
             foreach (EnvBilb pass in envBilbList)
             {

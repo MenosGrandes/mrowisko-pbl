@@ -73,10 +73,12 @@ namespace Logic.Units.Ants
         {
           //  this.model.tempPosition = this.model.Position;
             this.elapsedTime += time.ElapsedGameTime.Milliseconds ;
+            LifeBar.CreateBillboardVerticesFromList(this.Model.Position+new Vector3(0,10,0));
         }
-        public override void Draw(Matrix View, Matrix Projection)
+        public override void Draw(Matrix View, Matrix Projection, GameCamera.FreeCamera camera)
         {
             model.Draw(View, Projection);
+            //LifeBar.healthDraw(View,Projection,camera.Position);
         }
         public override List<Material> releaseMaterial()
         {

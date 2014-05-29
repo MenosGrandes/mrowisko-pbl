@@ -15,5 +15,6 @@ namespace StaticHelpers
     {
         public static ContentManager Content;
         public static GraphicsDevice Device;
+        
     }
 }
