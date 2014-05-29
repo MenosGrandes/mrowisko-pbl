@@ -81,7 +81,7 @@ namespace AntHill
             // TODO: Add your initialization logic here
             this.IsFixedTimeStep = false;
             base.Initialize();
-            this.IsMouseVisible = false;
+            this.IsMouseVisible = true;
 
         }
 
@@ -109,6 +109,10 @@ namespace AntHill
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             _spr_font = Content.Load<SpriteFont>("Fonts/FPS");// you have on your project
+
+
+            StaticHelpers.StaticHelper.Content = Content;
+            StaticHelpers.StaticHelper.Device = device;
 
             #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
@@ -248,8 +252,6 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
 
          //   models.Add(gr);
 
-            StaticHelpers.StaticHelper.Content = Content;
-            StaticHelpers.StaticHelper.Device = device;
         }
         
 
@@ -535,7 +537,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
 
-                    model.Draw(camera.View, camera.Projection);
+                    model.Draw(camera.View, camera.Projection, (FreeCamera)camera);
                     //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
                     //    new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
                       BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));

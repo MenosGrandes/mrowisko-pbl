@@ -126,6 +126,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Camera\Camera\GameCamera.csproj">
+      <Project>{6cf85617-ff97-4e13-bd6b-11df8733dec7}</Project>
+      <Name>GameCamera</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HUD\HUD.csproj">
+      <Project>{5cce79ba-5158-48ff-b1f6-885b21896993}</Project>
+      <Name>HUD</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\KlasyZMapa\KlasyZMapa\Map.csproj">
       <Project>{3ca21884-420f-46fd-84a1-a98bb1177b66}</Project>
       <Name>Map</Name>
