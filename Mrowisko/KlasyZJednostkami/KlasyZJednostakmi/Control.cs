@@ -25,7 +25,7 @@ namespace Logic
         public List<InteractiveModel> SelectedModels = new List<InteractiveModel>();
         public List<InteractiveModel> IModel = new List<InteractiveModel>();
         public List<InteractiveModel> Models_Colision = new List<InteractiveModel>();
-        public InteractiveModel selectedObject;
+        public InteractiveModel selectedObject, selectedObjectMouseOnlyMove;
         private Vector3 poprzedni = Vector3.Zero;
         public Ray ray;
         public Vector3 angle = new Vector3(0, 0, 0);
@@ -41,8 +41,8 @@ namespace Logic
 
 
         //private Texture2D texture;
-        Vector2 position;
-        Vector3 position3d;
+        Vector2 position,positionMouseOnlyMove;
+        Vector3 position3d, position3DMouseOnlyMove;
         MouseState currentMouseState;
         int f = 0;
         private bool mouseDown;
@@ -66,6 +66,11 @@ namespace Logic
 
             currentMouseState = Mouse.GetState();
             Vector3 mouse3d2 = CalculateMouse3DPosition();
+
+            positionMouseOnlyMove = new Vector2(currentMouseState.X, currentMouseState.Y);
+            position3DMouseOnlyMove = CalculateMouse3DPosition(positionMouseOnlyMove);
+            selectedObjectMouseOnlyMove = SelectedObject(position3DMouseOnlyMove);
+
 
             if(currentMouseState.LeftButton==ButtonState.Pressed)
             {
