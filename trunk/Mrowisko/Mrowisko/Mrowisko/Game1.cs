@@ -15,7 +15,10 @@ using Logic.Units.Ants;
 using Logic.Building.AntBuildings;
 using Logic.Meterials;
 using Logic.Building;
-
+using System.Windows.Forms;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Reflection;
 namespace AntHill
 {
     /// <summary>
@@ -27,11 +30,12 @@ namespace AntHill
         List<InteractiveModel> models = new List<InteractiveModel>();
         List<InteractiveModel> inter = new List<InteractiveModel>(); 
         List<InteractiveModel> IModel = new List<InteractiveModel>();
+        #region KUROSRY
+        List<Cursor> cursors = new List<Cursor>();
+        Form window;
+        #endregion 
+        Logic.Control control;
 
-        Control control;
-        Vector2 position;
-        Texture2D cursor;
-        bool blabla;
         //ControlEnemy e= new ControlEnemy();
 
        // ControlEnemy e= new ControlEnemy();
@@ -91,8 +95,14 @@ namespace AntHill
         /// </summary>
         protected override void LoadContent()
         {
-            blabla = false;
-            cursor = Content.Load<Texture2D>("hammer_cursor");
+            #region KURSORY
+            cursors.Add(StaticHelpers.NativeMethods.LoadCustomCursor(@"Content/Cursors/TronNormal.ani"));
+            cursors.Add(StaticHelpers.NativeMethods.LoadCustomCursor(@"Content/Cursors/TronBusy.ani"));
+            cursors.Add(StaticHelpers.NativeMethods.LoadCustomCursor(@"Content/Cursors/TronAlternate.ani"));
+            window= (Form)Form.FromHandle(this.Window.Handle);
+            window.Cursor = cursors[0];
+            #endregion
+
 
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(2048, 1200, 2048));
             shadow = new LightsAndShadows.Shadow();
@@ -227,7 +237,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
             IModel.Add(gr);
 
 
-            control = new Control(texture[11], quadTree);
+            control = new Logic.Control(texture[11], quadTree);
           
 
            // e.Ant = models[0];
@@ -275,7 +285,6 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
             kolizja = false;
 
             currentMouseState = Mouse.GetState();
-            position = new Vector2(currentMouseState.X, currentMouseState.Y);
 
 
 
@@ -291,12 +300,12 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
                 _total_frames = 0;
                 _elapsed_time = 0;
             }
-            if (keyState.IsKeyDown(Keys.C) && !keyState.IsKeyDown(Keys.C))
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C) && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C))
             {
                 quadTree.Cull = !quadTree.Cull;
             }
             if (IModel[0].GetType() == typeof(BuildingPlace)) { 
-            if (keyState.IsKeyDown(Keys.J))
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.J))
             {
                 Vector3 Pos = IModel[0].Model.Position;
                 models.Remove(IModel[0]);
@@ -308,7 +317,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
                 models.Add(IModel[0]);
 
             }
-            if (keyState.IsKeyDown(Keys.K))
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.K))
             {
                 Vector3 Pos = IModel[0].Model.Position;
                 models.Remove(IModel[0]);
@@ -319,7 +328,7 @@ new Vector3(100, 15, 100), Vector3.Up,
 new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 10));
                 models.Add(IModel[0]);
             }
-            if (keyState.IsKeyDown(Keys.L))
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.L))
             {
                 Vector3 Pos = IModel[0].Model.Position;
                 models.Remove(IModel[0]);
@@ -331,33 +340,49 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                 models.Add(IModel[0]);
             }
             }
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 this.Exit();
 
             foreach (InteractiveModel model in models)
             {
                 model.Update(gameTime);
                 model.Model.Update(gameTime);
-                if(control.selectedObject!=null)
+                if (control.selectedObject != null)
                 {
+                    if (control.selectedObject.GetType().BaseType == typeof(Material))
+                    {
 
-                if(control.selectedObject.GetType().BaseType==typeof(Material))
+                        model.setGaterMaterial((Material)control.selectedObject);
+                    }
+                }
+                if (control.selectedObjectMouseOnlyMove != null)
                 {
-                    blabla = true;
-                    model.setGaterMaterial((Material)control.selectedObject);
-                    this.IsMouseVisible = false;
+                    if (currentMouseState.RightButton != Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                    {
+                        if (control.selectedObjectMouseOnlyMove.GetType().BaseType == typeof(Material))
+                        {
+                            window.Cursor = cursors[1];
+
+                        }
+                        else
+                        {
+                            window.Cursor = cursors[2];
+
+                        }
+                    }
+                    else
+                    {
+                        window.Cursor = cursors[0];
+                    }
                 }
                 else
                 {
-                    this.IsMouseVisible = true;
-                    blabla = false;
-
-                }
+                    window.Cursor = cursors[0];
                 }
                 foreach (InteractiveModel model2 in models)
-                    { 
+                {
                     model.Intersect(model2);
-                    } 
+                }
             }
              
             
@@ -582,11 +607,6 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(240.0f, 140.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(350.0f, 140.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 140.0f), Color.Pink);
-            if(blabla)
-            { 
-            Vector2 textureCenter = new Vector2(cursor.Width / 2.0f, cursor.Height / 2.0f);
-            spriteBatch.Draw(cursor, position, null, Color.White, 0.0f, textureCenter, 1.0f, SpriteEffects.None, 0.0f);
-            }
             /*
           spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
           spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
