@@ -21,6 +21,7 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using Controlers;
 using Controlers.CursorEnum;
+using Logic.Triggers;
 namespace AntHill
 {
     /// <summary>
@@ -32,7 +33,7 @@ namespace AntHill
         List<InteractiveModel> models = new List<InteractiveModel>();
         List<InteractiveModel> inter = new List<InteractiveModel>(); 
         List<InteractiveModel> IModel = new List<InteractiveModel>();
-
+        List<TimeTrigger> timeTriggers = new List<TimeTrigger>();
         Logic.Control control;
 
         //ControlEnemy e= new ControlEnemy();
@@ -186,8 +187,12 @@ GraphicsDevice);
 
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice, light), 3000));
-        models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice,light), 5000));
-           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));      //
+            models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice,light), 5000));
+            models.Add(new Trigger(new LoadModel(Content.Load<Model>("Models/trigger"), new Vector3(0, 0, 0), Vector3.Up,new Vector3(0.3f),GraphicsDevice,light)));
+
+
+            timeTriggers.Add(new TimeTrigger(5));
+            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));      //
 
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
             // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
@@ -362,31 +367,53 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             #endregion
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 this.Exit();
+            #region timeTrigger
 
-            foreach (InteractiveModel model in models)
+            for (int i = 0; i < timeTriggers.Count;i++ )
             {
-                model.Update(gameTime);
-                model.Model.Update(gameTime);
-                if (control.selectedObject != null)
+                timeTriggers[i].Update(gameTime);
+                if(timeTriggers[i].used==true)
                 {
-                    if (control.selectedObject.GetType().BaseType == typeof(Material))
-                    {
-
-                        model.setGaterMaterial((Material)control.selectedObject);
-                    }
+                    timeTriggers.Remove(timeTriggers[i]);
                 }
-                if (control.selectedObjectMouseOnlyMove != null)
+
+            }
+            #endregion
+                foreach (InteractiveModel model in models)
                 {
-                    if (currentMouseState.RightButton != Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                    model.Update(gameTime);
+                    model.Model.Update(gameTime);
+
+                    if (control.selectedObject != null)
                     {
-                        if (control.selectedObjectMouseOnlyMove.GetType().BaseType == typeof(Material))
+                        if (control.selectedObject.GetType().BaseType == typeof(Material))
                         {
-                           // window.Cursor = cursors[1];
-                            MouseCursorController.stage = CursorStage.Attack;
+
+                            model.setGaterMaterial((Material)control.selectedObject);
+                        }
+                    }
+                    if (control.selectedObjectMouseOnlyMove != null)
+                    {
+                        if (currentMouseState.RightButton != Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                        {
+                            if (control.selectedObjectMouseOnlyMove.GetType().BaseType == typeof(Material))
+                            {
+                                // window.Cursor = cursors[1];
+                                MouseCursorController.stage = CursorStage.Attack;
+                            }
+                            else
+                            {
+                                MouseCursorController.stage = CursorStage.Attack;
+
+                            }
                         }
                         else
                         {
-                            MouseCursorController.stage = CursorStage.Go; 
+                            MouseCursorController.stage = CursorStage.Normal;
+                        }
+                        if(control.selectedObjectMouseOnlyMove.GetType()==typeof(Trigger))
+                        {
+                            MouseCursorController.stage = CursorStage.Go;
 
                         }
                     }
@@ -394,16 +421,11 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                     {
                         MouseCursorController.stage = CursorStage.Normal;
                     }
+                    foreach (InteractiveModel model2 in models)
+                    {
+                        model.Intersect(model2);
+                    }
                 }
-                else
-                {
-                    MouseCursorController.stage = CursorStage.Normal;
-                }
-                foreach (InteractiveModel model2 in models)
-                {
-                    model.Intersect(model2);
-                }
-            }
              
             
                  
@@ -424,7 +446,8 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                         }
 
                     
-                }              
+                }
+              
             quadTree.View = camera.View;
             quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
@@ -585,8 +608,8 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                         model.Draw((FreeCamera)camera);
                    
 
-                    //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                    //    new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
+                      BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                       new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
                      // BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     licznik++;
                 }
