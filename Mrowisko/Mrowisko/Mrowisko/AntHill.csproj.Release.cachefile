@@ -51,6 +51,7 @@ Content\Effects\Bilboarding.xnb
 Content\Effects\MultiTextured.xnb
 Content\Effects\Ground.xnb
 Content\Effects\Shadows.xnb
+Content\Effects\ParticleEffect.xnb
 Content\animacja_Anims.xnb
 Content\grasshopper_Anims.xnb
 Content\Models\stone2.fbm\stone2map_0.xnb
@@ -58,6 +59,9 @@ Content\Models\SkyDome\cloudMap_0.xnb
 Content\fire_0.xnb
 Content\grasshopperUVW_0.xnb
 Content\wingUVW_0.xnb
+Content\Textures\Particles\explosion.xnb
+Content\Textures\Particles\fire.xnb
+Content\Textures\Particles\smoke.xnb
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
 Content\Cursors\TronBusy.ani

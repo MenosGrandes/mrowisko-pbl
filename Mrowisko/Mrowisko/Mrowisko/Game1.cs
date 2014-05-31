@@ -21,7 +21,12 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using Controlers;
 using Controlers.CursorEnum;
+<<<<<<< .mine
+
+
+=======
 using Logic.Triggers;
+>>>>>>> .r141
 namespace AntHill
 {
     /// <summary>
@@ -67,10 +72,43 @@ namespace AntHill
         Effect hiDefShadowEffect;
 
         Matrix world = Matrix.CreateTranslation(Vector3.Zero);
+
+        Particles.ParticleSystem explosionParticles;
+        Particles.ParticleSystem explosionSmokeParticles;
+        Particles.ParticleSystem projectileTrailParticles;
+        Particles.ParticleSystem smokePlumeParticles;
+        Particles.ParticleSystem fireParticles;
+
+        List<Particles.Projectile> projectiles = new List<Particles.Projectile>();
+
+        TimeSpan timeToNextProjectile = TimeSpan.Zero;
+        Random random = new Random();
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            // Construct our particle system components.
+            explosionParticles = new Particles.ParticleSystems.ExplosionParticleSystem(this, Content);
+            explosionSmokeParticles = new Particles.ParticleSystems.ExplosionSmokeParticleSystem(this, Content);
+            projectileTrailParticles = new Particles.ParticleSystems.ProjectileTrailParticleSystem(this, Content);
+            smokePlumeParticles = new Particles.ParticleSystems.SmokePlumeParticleSystem(this, Content);
+            fireParticles = new Particles.ParticleSystems.FireParticleSystem(this, Content);
+
+            // Set the draw order so the explosions and fire
+            // will appear over the top of the smoke.
+            smokePlumeParticles.DrawOrder = 100;
+            explosionSmokeParticles.DrawOrder = 200;
+            projectileTrailParticles.DrawOrder = 300;
+            explosionParticles.DrawOrder = 400;
+            fireParticles.DrawOrder = 500;
+
+            // Register the particle system components.
+            Components.Add(explosionParticles);
+            Components.Add(explosionSmokeParticles);
+            Components.Add(projectileTrailParticles);
+            Components.Add(smokePlumeParticles);
+            Components.Add(fireParticles);
 
         }
 
@@ -304,7 +342,10 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
             kolizja = false;
 
             currentMouseState = Mouse.GetState();
-
+            UpdateFire();
+            UpdateSmokePlume();
+            UpdateExplosions(gameTime);
+            UpdateProjectiles(gameTime);
 
 
 
@@ -546,50 +587,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             shadow.setShadowMap();
             device.SetRenderTarget(null);
 
-            /*
-                hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowedScene"];
-                            
-                hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);
-                hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection * Matrix.Identity);
-                hiDefShadowEffect.Parameters["shadowTexture"].SetValue(shadow.ShadowMap);
-                foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
-                {
-
-                    pass.Apply();
-                    quadTree.basicDraw();
-                }
-            
-                foreach (InteractiveModel model in IModel)
-                {
-                    hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowedScene"];
-                    //hiDefShadowEffect.Parameters["Model"].SetValue(true);
-                    hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);
-                    
-                    // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
-                    //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
-                    //hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
-
-
-                    foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
-                    {
-                        // pass.Apply();
-                        // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
-                        //  {
-
-
-                        foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
-                        {
-                            hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection * Matrix.Identity * shadowCaster.World);
-                           
-                            pass.Apply();
-                            device.SetVertexBuffer(shadowCaster.VertexBuffer);
-                            device.Indices = shadowCaster.IndexBuffer;
-                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
-                        }
-                    }
-                }
-        */
-
+          
             water.DrawRefractionMap((FreeCamera)camera, quadTree);
 
             water.DrawReflectionMap((FreeCamera)camera, quadTree);
@@ -677,6 +675,12 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
             spriteBatch.End();
 
+            explosionParticles.SetCamera(camera.View, camera.Projection);
+            explosionSmokeParticles.SetCamera(camera.View, camera.Projection);
+            projectileTrailParticles.SetCamera(camera.View, camera.Projection);
+            smokePlumeParticles.SetCamera(camera.View, camera.Projection);
+            fireParticles.SetCamera(camera.View, camera.Projection);
+
             base.Draw(gameTime);
         }
 
@@ -693,6 +697,95 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             hiDefShadowEffect.Parameters["Model"].SetValue(false);
             //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
 
+        }
+
+        /// <summary>
+        /// Helper for updating the explosions effect.
+        /// </summary>
+        void UpdateExplosions(GameTime gameTime)
+        {
+            timeToNextProjectile -= gameTime.ElapsedGameTime;
+
+            if (timeToNextProjectile <= TimeSpan.Zero)
+            {
+                // Create a new projectile once per second. The real work of moving
+                // and creating particles is handled inside the Projectile class.
+                projectiles.Add(new Particles.Projectile(explosionParticles,
+                                               explosionSmokeParticles,
+                                               projectileTrailParticles));
+
+                timeToNextProjectile += TimeSpan.FromSeconds(1);
+            }
+        }
+
+
+        /// <summary>
+        /// Helper for updating the list of active projectiles.
+        /// </summary>
+        void UpdateProjectiles(GameTime gameTime)
+        {
+            int i = 0;
+
+            while (i < projectiles.Count)
+            {
+                if (!projectiles[i].Update(gameTime))
+                {
+                    // Remove projectiles at the end of their life.
+                    projectiles.RemoveAt(i);
+                }
+                else
+                {
+                    // Advance to the next projectile.
+                    i++;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Helper for updating the smoke plume effect.
+        /// </summary>
+        void UpdateSmokePlume()
+        {
+            // This is trivial: we just create one new smoke particle per frame.
+            smokePlumeParticles.AddParticle(Vector3.Zero, Vector3.Zero);
+        }
+
+
+        /// <summary>
+        /// Helper for updating the fire effect.
+        /// </summary>
+        void UpdateFire()
+        {
+            const int fireParticlesPerFrame = 80;
+
+            // Create a number of fire particles, randomly positioned around a circle.
+            for (int i = 0; i < fireParticlesPerFrame; i++)
+            {
+                fireParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
+            }
+
+            // Create one smoke particle per frmae, too.
+            smokePlumeParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
+        }
+
+
+        /// <summary>
+        /// Helper used by the UpdateFire method. Chooses a random location
+        /// around a circle, at which a fire particle will be created.
+        /// </summary>
+        Vector3 RandomPointOnCircle()
+        {
+            const float radius = 80;
+            const float height = 80;
+
+            double angle = random.NextDouble() * Math.PI * 2;
+
+
+            float x = (float)Math.Cos(angle);
+            float y = (float)Math.Sin(angle);
+
+            return new Vector3(x * radius, y * radius + height, 0);
         }
 
 

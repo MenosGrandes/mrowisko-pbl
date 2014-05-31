@@ -123,6 +123,10 @@
       <Project>{1a340602-b76b-4213-9f41-a777cc928fea}</Project>
       <Name>LightsAndShadows</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ParticleSystems\Particles.csproj">
+      <Project>{9b34963e-00e4-4ab2-9625-9ae8ef52481b}</Project>
+      <Name>Particles</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Player\Player.csproj">
       <Project>{80fbc0ee-2892-4ffe-805f-1c37d3981824}</Project>
       <Name>Player</Name>
