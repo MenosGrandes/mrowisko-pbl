@@ -100,7 +100,6 @@
     <Compile Include="Units\Ants\AntPeasant.cs" />
     <Compile Include="Units\Predators\Predator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TargetCamera.cs" />
     <Compile Include="Unit.cs" />
   </ItemGroup>
   <ItemGroup>

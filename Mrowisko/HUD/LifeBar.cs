@@ -6,6 +6,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using GameCamera;
 
 namespace HUD
 {
@@ -70,13 +71,13 @@ namespace HUD
 
            
        
-            public void healthDraw(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position)
+            public void healthDraw(FreeCamera camera)
         {
 
             bbEffect.Parameters["xWorld"].SetValue(Matrix.Identity);
-            bbEffect.Parameters["xView"].SetValue(currentViewMatrix);
-            bbEffect.Parameters["xProjection"].SetValue(projectionMatrix);
-            bbEffect.Parameters["xCamPos"].SetValue(position);
+            bbEffect.Parameters["xView"].SetValue(camera.View);
+            bbEffect.Parameters["xProjection"].SetValue(camera.Projection);
+            bbEffect.Parameters["xCamPos"].SetValue(camera.Position);
             bbEffect.Parameters["xAmbient"].SetValue(0);
             StaticHelpers.StaticHelper.Device.SetVertexBuffer(VertexBuffer);
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)

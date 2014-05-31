@@ -160,13 +160,16 @@ namespace Map
             BoundingSphere[] spheres2=new BoundingSphere[3];
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                if (mesh.Name.Contains("BoundingSphere") )
-                {   
-                    BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
+                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
+                if (mesh.Name.Contains("BoundingSphere"))
+                {
+                    
                     spheres2[d] = transformed;
-                sphere = BoundingSphere.CreateMerged(sphere, transformed);
-                  d++;
-                  Console.WriteLine(transformed);
+                    
+                    d++;
+                }
+                else {
+                    sphere = BoundingSphere.CreateMerged(sphere, transformed);
                 }
             }
             
@@ -303,10 +306,7 @@ namespace Map
                }
 
         }
-        public void UpdateBoundingSpheres()
-        {
 
-            }   
         
 
                          

@@ -1,4 +1,5 @@
-﻿using Map;
+﻿using GameCamera;
+using Map;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -22,5 +23,9 @@ namespace Logic.Meterials
        { }
        public Material(LoadModel model):base(model)
        { }
+       public override void Draw(FreeCamera camera)
+       {
+           model.Draw(camera.View, camera.Projection);
+       }
     }
 }

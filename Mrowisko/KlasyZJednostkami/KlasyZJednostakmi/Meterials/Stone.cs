@@ -16,9 +16,6 @@ namespace Logic.Meterials
         }
                 public Stone()
         { }
-        public override void Draw(Matrix View, Matrix Projection)
-        {
-            model.Draw(View, Projection);
-        }
+
     }
 }

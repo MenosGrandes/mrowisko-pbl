@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Materials", "Materials\Mate
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HUD", "HUD\HUD.csproj", "{5CCE79BA-5158-48FF-B1F6-885B21896993}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controlers", "Controlers\Controlers.csproj", "{B7349D8F-C3D3-47D3-8EFB-FBFF377DE804}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -99,6 +101,10 @@ Global
 		{5CCE79BA-5158-48FF-B1F6-885B21896993}.Debug|x86.Build.0 = Debug|x86
 		{5CCE79BA-5158-48FF-B1F6-885B21896993}.Release|x86.ActiveCfg = Release|x86
 		{5CCE79BA-5158-48FF-B1F6-885B21896993}.Release|x86.Build.0 = Release|x86
+		{B7349D8F-C3D3-47D3-8EFB-FBFF377DE804}.Debug|x86.ActiveCfg = Debug|x86
+		{B7349D8F-C3D3-47D3-8EFB-FBFF377DE804}.Debug|x86.Build.0 = Debug|x86
+		{B7349D8F-C3D3-47D3-8EFB-FBFF377DE804}.Release|x86.ActiveCfg = Release|x86
+		{B7349D8F-C3D3-47D3-8EFB-FBFF377DE804}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
