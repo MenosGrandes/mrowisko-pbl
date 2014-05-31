@@ -16,6 +16,9 @@ namespace Map
     /// <summary>
     /// Class responsible of loding and positioning model at the terrain.
     /// </summary>
+    ///     [Serializable]
+
+    [Serializable]
     public class LoadModel                                                                                      
     {
         public bool Collide;
@@ -23,12 +26,17 @@ namespace Map
         public Vector3 tempPosition { get; set; }
         public Vector3 Rotation { get; set; }
         public Vector3 Scale { get; set; }
-        public Model Model { get; private set; }
+        [NonSerialized]
+        public Model Model;
         public Boolean Selected;
         public Vector3 playerTarget;
         public ContentManager content;
+                    
+
         public SkinningData skinningData;
+        [NonSerialized]
         public AnimationPlayer Player;
+        [NonSerialized]
         public LightsAndShadows.Light light;
         public List<ShadowCasterObject> shadowCasters;
         private BoundingSphere[] spheres;
