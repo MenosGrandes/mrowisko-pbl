@@ -370,15 +370,12 @@
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="hammer_cursor.png">
-      <Name>hammer_cursor</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="Cursors\gam1232.ani">
+      <Name>gam1232</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Cursors\TronAlternate.ani">
       <Name>TronAlternate</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

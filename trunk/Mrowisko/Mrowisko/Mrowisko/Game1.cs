@@ -19,6 +19,8 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using Controlers;
+using Controlers.CursorEnum;
 namespace AntHill
 {
     /// <summary>
@@ -30,10 +32,7 @@ namespace AntHill
         List<InteractiveModel> models = new List<InteractiveModel>();
         List<InteractiveModel> inter = new List<InteractiveModel>(); 
         List<InteractiveModel> IModel = new List<InteractiveModel>();
-        #region KUROSRY
-        List<Cursor> cursors = new List<Cursor>();
-        Form window;
-        #endregion 
+
         Logic.Control control;
 
         //ControlEnemy e= new ControlEnemy();
@@ -95,21 +94,26 @@ namespace AntHill
         /// </summary>
         protected override void LoadContent()
         {
-            #region KURSORY
-            cursors.Add(StaticHelpers.NativeMethods.LoadCustomCursor(@"Content/Cursors/TronNormal.ani"));
-            cursors.Add(StaticHelpers.NativeMethods.LoadCustomCursor(@"Content/Cursors/TronBusy.ani"));
-            cursors.Add(StaticHelpers.NativeMethods.LoadCustomCursor(@"Content/Cursors/TronAlternate.ani"));
-            window= (Form)Form.FromHandle(this.Window.Handle);
-            window.Cursor = cursors[0];
+            #region KURSORY i okno
+            StaticHelpers.StaticHelper.DeviceManager = graphics;
+            WindowController.window = (Form)Form.FromHandle(this.Window.Handle);
+            MouseCursorController.LoadCustomCursor(@"Content/Cursors/TronNormal.ani");
+            MouseCursorController.LoadCustomCursor(@"Content/Cursors/TronBusy.ani");
+            MouseCursorController.LoadCustomCursor(@"Content/Cursors/TronAlternate.ani");
+            MouseCursorController.LoadCustomCursor(@"Content/Cursors/gam1232.ani");
+
+            MouseCursorController.stage = Controlers.CursorEnum.CursorStage.Normal;
             #endregion
 
-
+            #region Light Shadow
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(2048, 1200, 2048));
             shadow = new LightsAndShadows.Shadow();
+            #endregion
+            #region PresentationParameters
             PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
             pp.DepthStencilFormat = DepthFormat.Depth24Stencil8;
-            pp.BackBufferHeight = 600;
-            pp.BackBufferWidth = 800;
+
+            #endregion
 
 
             hiDefShadowEffect = Content.Load<Effect>("Effects/Shadows");
@@ -304,6 +308,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
             {
                 quadTree.Cull = !quadTree.Cull;
             }
+            #region wstepneBudowanie
             if (IModel[0].GetType() == typeof(BuildingPlace)) { 
             if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.J))
             {
@@ -340,6 +345,21 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                 models.Add(IModel[0]);
             }
             }
+            #endregion wstepneBudowanie
+            #region zmiany rozdzielczosci
+            if(keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
+            {
+            WindowController.setWindowSize(800, 600, false);
+                }
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
+            {
+                WindowController.setWindowSize(400, 250, false);
+            }
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D3))
+            {
+                WindowController.setWindowSize(700, 432, false);
+            }
+            #endregion
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 this.Exit();
 
@@ -361,23 +381,23 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                     {
                         if (control.selectedObjectMouseOnlyMove.GetType().BaseType == typeof(Material))
                         {
-                            window.Cursor = cursors[1];
-
+                           // window.Cursor = cursors[1];
+                            MouseCursorController.stage = CursorStage.Attack;
                         }
                         else
                         {
-                            window.Cursor = cursors[2];
+                            MouseCursorController.stage = CursorStage.Go; 
 
                         }
                     }
                     else
                     {
-                        window.Cursor = cursors[0];
+                        MouseCursorController.stage = CursorStage.Normal;
                     }
                 }
                 else
                 {
-                    window.Cursor = cursors[0];
+                    MouseCursorController.stage = CursorStage.Normal;
                 }
                 foreach (InteractiveModel model2 in models)
                 {
@@ -421,7 +441,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
             //e.gameTime = gameTime;
             //e.Update();
-
+            MouseCursorController.Update();
             camera.Update(gameTime);
           //  anim.Update(gameTime);
             base.Update(gameTime);
@@ -561,13 +581,14 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
+                   
+                        model.Draw((FreeCamera)camera);
+                   
 
-                    model.Draw(camera.View, camera.Projection, (FreeCamera)camera);
                     //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
                     //    new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
-                      BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                     // BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     licznik++;
-
                 }
             }
              

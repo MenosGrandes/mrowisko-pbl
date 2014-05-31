@@ -56,9 +56,8 @@ namespace Logic
         {
         }
 
-        public virtual void Draw(Matrix View, Matrix Projection, GameCamera.FreeCamera camera)
+        public virtual void Draw(GameCamera.FreeCamera camera)
          {
-
          }
         public virtual void gaterMaterial(Material material)
         {

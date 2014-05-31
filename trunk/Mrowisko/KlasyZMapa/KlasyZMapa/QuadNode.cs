@@ -79,7 +79,8 @@ namespace Map
 
             Bounds = new BoundingBox(_parentTree.Vertices[VertexTopLeft.Index].Position,
                         _parentTree.Vertices[VertexBottomRight.Index].Position);
-
+            Bounds.Min.Y = -1150f;
+            Bounds.Max.Y = 1150f;
          
 
             if (nodeSize >= 4)

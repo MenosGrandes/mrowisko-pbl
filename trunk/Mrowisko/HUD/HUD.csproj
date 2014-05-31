@@ -63,6 +63,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Camera\Camera\GameCamera.csproj">
+      <Project>{6cf85617-ff97-4e13-bd6b-11df8733dec7}</Project>
+      <Name>GameCamera</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StaticHelpers\StaticHelpers.csproj">
       <Project>{adb8cf44-88f0-42de-ae42-62e5b9704438}</Project>
       <Name>StaticHelpers</Name>

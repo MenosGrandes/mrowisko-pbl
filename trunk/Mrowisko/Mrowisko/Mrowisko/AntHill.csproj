@@ -103,6 +103,10 @@
       <Project>{6cf85617-ff97-4e13-bd6b-11df8733dec7}</Project>
       <Name>GameCamera</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Controlers\Controlers.csproj">
+      <Project>{b7349d8f-c3d3-47d3-8efb-fbff377de804}</Project>
+      <Name>Controlers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Debugger\Debugger.csproj">
       <Project>{0686462b-ec32-4394-89b1-c299d49bcae1}</Project>
       <Name>Debugger</Name>
