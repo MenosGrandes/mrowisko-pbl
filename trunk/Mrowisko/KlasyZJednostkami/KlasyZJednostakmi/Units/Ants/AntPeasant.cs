@@ -11,10 +11,15 @@ using System.Text;
 
 namespace Logic.Units.Ants
 {
+        [Serializable]
+
     public class AntPeasant:Ant
     {
+        [NonSerialized]
         private List<Material> materials = new List<Material>();
+             [NonSerialized]
         public  int wood2;
+             [NonSerialized]
         public  int rock2;
         private Material GaterMaterialObject;
         public Material  gaterMaterialObject;
@@ -38,6 +43,11 @@ namespace Logic.Units.Ants
             this.gaterTime = gaterTime;
             rock2 = 0;
             wood2 = 0;
+
+        }
+        public AntPeasant(LoadModel model)
+            : base(model)
+        {
 
         }
         public override void gaterMaterial(Material material)
@@ -78,7 +88,7 @@ namespace Logic.Units.Ants
         public override void Draw( GameCamera.FreeCamera camera)
         {
             model.Draw(camera.View, camera.Projection);
-            LifeBar.healthDraw(camera);
+           LifeBar.healthDraw(camera);
         }
         public override List<Material> releaseMaterial()
         {

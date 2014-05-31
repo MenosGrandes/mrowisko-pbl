@@ -29,7 +29,7 @@ namespace Logic.Triggers
 
             if (model.BoundingSphere.Intersects(interactive.Model.BoundingSphere))
             {
-                Console.WriteLine("Wlazło w pułapke");
+                //Console.WriteLine("Wlazło w pułapke");
             }
         }
     }

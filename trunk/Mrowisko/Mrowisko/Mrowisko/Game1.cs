@@ -128,7 +128,14 @@ namespace AntHill
 
             StaticHelpers.StaticHelper.Content = Content;
             StaticHelpers.StaticHelper.Device = device;
-
+            #region loadFromFile
+            /*
+            Controlers.LoadModelsFromFile.Load();
+            foreach (InteractiveModel i in LoadModelsFromFile.listOfAllInteractiveModelsFromFile)
+            {
+                models.Add(i);
+            }    */
+            #endregion
             #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
             //alphy do terenu
@@ -184,12 +191,15 @@ GraphicsDevice);
 
             water = new Water(device, Content, texture[4].Width, 1);
 
-
+           
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-           models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice, light), 3000));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(50, 0, 50), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(100, 0, 100), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+
+            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice, light), 3000));
             models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice,light), 5000));
             models.Add(new Trigger(new LoadModel(Content.Load<Model>("Models/trigger"), new Vector3(0, 0, 0), Vector3.Up,new Vector3(0.3f),GraphicsDevice,light)));
-
+            
 
             timeTriggers.Add(new TimeTrigger(5));
             // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));      //

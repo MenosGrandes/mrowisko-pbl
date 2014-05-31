@@ -14,6 +14,7 @@ using Logic.Meterials;
 
 namespace Logic
 {
+    [Serializable]
     public class InteractiveModel
     {
         protected ContentManager content;

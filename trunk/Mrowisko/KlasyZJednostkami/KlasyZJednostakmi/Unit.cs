@@ -14,6 +14,7 @@ using Map;
 
 namespace Logic
 {
+    [Serializable]
     public class Unit:InteractiveModel
     {
         //tutaj sa elementy ktore kazda jednostka bedzie miec. content po to zeby w konstruktorze 
@@ -67,7 +68,7 @@ namespace Logic
             get { return cost; }
             set { cost = value; }
         }
-
+        [NonSerialized]
         protected HUD.LifeBar lifeBar;
 
         public HUD.LifeBar LifeBar
@@ -92,8 +93,8 @@ namespace Logic
 
          public Unit(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model):base( model)
         {
-
             this.lifeBar = new HUD.LifeBar(2);
+
             this.hp = hp;
             this.armor = armor;
             this.strength = strength;
@@ -123,9 +124,15 @@ namespace Logic
         {
             this.model.Rotation = rotation;
         }
-        public Unit()
-        { }
+        public Unit():base()
+        {
+            this.lifeBar = new HUD.LifeBar(2);
 
+        }
+                            public Unit(LoadModel model):base(model)
+                            {
+                                this.lifeBar = new HUD.LifeBar(2);
 
+                            }
     }
 }

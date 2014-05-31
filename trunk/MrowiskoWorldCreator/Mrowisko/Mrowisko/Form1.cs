@@ -186,8 +186,8 @@ namespace AntHill
       
         private void button2_MouseClick(object sender, MouseEventArgs e)
         {
-            saveFileDialog1.ShowDialog();
-          //  Save();
+            //saveFileDialog1.ShowDialog();
+            Save();
         }
 
         private void button3_Click(object sender, EventArgs e)

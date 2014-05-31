@@ -3,6 +3,7 @@ Content\Models\stone2.xnb
 Content\Models\domek.xnb
 Content\Models\domek2.xnb
 Content\Models\buildingPlace.xnb
+Content\Models\trigger.xnb
 Content\HeighMaps\treeMap.xnb
 Content\Textures\Bilboard\tree.xnb
 Content\HeighMaps\terrain.xnb
@@ -57,7 +58,6 @@ Content\Models\SkyDome\cloudMap_0.xnb
 Content\fire_0.xnb
 Content\grasshopperUVW_0.xnb
 Content\wingUVW_0.xnb
-Content\Models\trigger.xnb
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
 Content\Cursors\TronBusy.ani
