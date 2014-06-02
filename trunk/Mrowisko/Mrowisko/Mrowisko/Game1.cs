@@ -37,7 +37,7 @@ namespace AntHill
         List<InteractiveModel> Enemys = new List<InteractiveModel>();
         List<TimeTrigger> timeTriggers = new List<TimeTrigger>();
         Logic.Control control;
-
+        Curve3D curee = new Curve3D();
         ControlEnemy e= new ControlEnemy();
 
         GraphicsDeviceManager graphics;
@@ -55,7 +55,7 @@ namespace AntHill
         int _total_frames = 0;
         float _elapsed_time = 0.0f;
         int _fps = 0;
-
+        float time = 0;
 
         MouseState currentMouseState;
         MouseState LastMouseState_2;
@@ -235,7 +235,7 @@ GraphicsDevice);
         //    models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(100, 0, 100), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
 
             models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice, light), 3000));
-            models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice,light), 5000));
+            models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice,light), 5000));
             models.Add(new Trigger(new LoadModel(Content.Load<Model>("Models/trigger"), new Vector3(0, 0, 0), Vector3.Up,new Vector3(0.3f),GraphicsDevice,light)));
            
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
@@ -345,10 +345,9 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
+            
             kolizja = false;
-
-            currentMouseState = Mouse.GetState();
+                currentMouseState = Mouse.GetState();
             UpdateFire();
             UpdateSmokePlume();
             UpdateExplosions(gameTime);
@@ -359,6 +358,10 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
 
             KeyboardState keyState = Keyboard.GetState();
             _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+           
+            
+            time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            IModel[1].Model.Position=curee.GetPointOnCurve(time);
 
             // 1 Second has passed
             if (_elapsed_time >= 1000.0f)
@@ -626,7 +629,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
                       BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
                        new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
-                     // BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                      BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     licznik++;
                 }
             }
@@ -796,7 +799,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             return new Vector3(x * radius, y * radius + height, 0);
         }
 
-
+       
 
 
     }

@@ -384,7 +384,7 @@ namespace Map
                 }
                 if(this.HasChildren==false)
                 {
-                    Console.WriteLine(Bounds.Min);
+                   // Console.WriteLine(Bounds.Min);
 
                     _isSplit = false;
                 }

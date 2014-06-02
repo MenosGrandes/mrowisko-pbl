@@ -62,6 +62,10 @@ Content\Models\SkyDome\cloudMap_0.xnb
 Content\fire_0.xnb
 Content\grasshopperUVW_0.xnb
 Content\wingUVW_0.xnb
+<<<<<<< .mine
+Content\Models\laser.xnb
+=======
+>>>>>>> .r145
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
 Content\Cursors\TronBusy.ani
