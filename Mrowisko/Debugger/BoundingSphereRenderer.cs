@@ -129,7 +129,7 @@ namespace Debugger
 
         }
 
-        public static void Render(BoundingSphere[] spheres,
+        public static void Render(List<BoundingSphere> spheres,
            GraphicsDevice graphicsDevice,
            Matrix view,
            Matrix projection,
@@ -137,7 +137,7 @@ namespace Debugger
             Color xzColor,
             Color yzColor)
         {
-            for (int i=0;i<spheres.Length;i++)
+            for (int i=0;i<spheres.Count;i++)
             {
                 Render(spheres[i], graphicsDevice, view, projection, xyColor, xzColor, yzColor);
             }
