@@ -72,31 +72,32 @@ namespace Logic
             selectedObjectMouseOnlyMove = SelectedObject(position3DMouseOnlyMove);
 
 
-            if(currentMouseState.LeftButton==ButtonState.Pressed)
+          /*  if(currentMouseState.LeftButton==ButtonState.Pressed)
             {
+                
                 position = new Vector2(currentMouseState.X, currentMouseState.Y);
                 position3d = CalculateMouse3DPosition(position);
                 selectedObject = SelectedObject(mouse3d2);
 
-            }
+            }*/
             if (currentMouseState.RightButton == ButtonState.Pressed && !mouseDown)
             {
                 SelectedModels.Clear();
                 
                 
-                mouseDown = true;
+
                 position = new Vector2(currentMouseState.X, currentMouseState.Y);
                 position3d = CalculateMouse3DPosition(position);
                 selectCorner = position;
                 selectRectangle = new Rectangle((int)position.X, (int)position.Y, 0, 0);
-                selectedObject = SelectedObject(mouse3d2);
+                //selectedObject = SelectedObject(mouse3d2);
                 //if ((mouse3d2.X > pozycja_X_lewo && mouse3d2.X < pozycja_X_prawo) && (mouse3d2.Z > pozycja_Z_dol && mouse3d2.Z < pozycja_Z_gora))
-                
+                mouseDown = true;
                 
             }
             else if (currentMouseState.RightButton == ButtonState.Pressed)  
             {
-
+                SelectedModels.Clear();
 
                 selectCorner = new Vector2(currentMouseState.X, currentMouseState.Y);
                 if (selectCorner.X > position.X)
@@ -119,32 +120,44 @@ namespace Logic
 
                 selectRectangle.Width = (int)Math.Abs(position.X - selectCorner.X);
                 selectRectangle.Height = (int)Math.Abs(position.Y - selectCorner.Y);
+
+
+
+
             }
             else
             {
-                Selected(startRectangle, endRectangle);
-                foreach (InteractiveModel ant in models)
-                    if (ant.Model.Selected)
-                    {
-                        if (ant.GetType().BaseType == typeof(Ant))
-                        { SelectedModels.Add(ant); 
+                if (mouseDown == true)
+                {
+                    Selected();
+                    foreach (InteractiveModel ant in models)
+                        if (ant.Model.Selected)
+                        {
+                            if (ant.GetType().BaseType == typeof(Ant))
+                            {
+                                SelectedModels.Add(ant);
+                            }
                         }
-                    }
-                        /*
-                    else
-                    {
-                        //f = 0;
-                        //SelectedModels.Clear();
-                    }
-                          */
+                    /*
+                else
+                {
+                    //f = 0;
+                    //SelectedModels.Clear();
+                }
+                      */
+                }
                 mouseDown = false;
             }
             
             //Console.WriteLine(f);
             if (currentMouseState.LeftButton == ButtonState.Pressed)
             {
+                position = new Vector2(currentMouseState.X, currentMouseState.Y);
+                position3d = CalculateMouse3DPosition(position);
+                selectedObject = SelectedObject(mouse3d2);
+
                 // This will give the player a target to go to.
-                foreach (var ant in SelectedModels)
+                foreach (InteractiveModel ant in SelectedModels)
                 {
                     ant.Model.playerTarget.X = mouse3d2.X;
                     ant.Model.playerTarget.Z = mouse3d2.Z;
@@ -169,20 +182,20 @@ namespace Logic
         {
             float Speed = (float)2.0f;
 
-            foreach (var ant in models)
+            foreach (InteractiveModel ant in models)
             {
                  if(ant.GetType().BaseType!=typeof(Ant))
                  {
-                     return;
+                     continue;
                  }
                 if (Math.Abs(ant.Model.Position.X - ant.Model.playerTarget.X) <= Speed && Math.Abs(ant.Model.Position.Z - ant.Model.playerTarget.Z) <= Speed)
-                {
-                    return;
+                { 
+                    continue;
                 }
 
                 if(ant.snared==true)
                 {
-                    return;
+                    continue;
                 }
 
 
@@ -380,18 +393,6 @@ namespace Logic
                    //         continue;
                    //     }
 
-                   
-
-
-
-
-
-
-
-
-
-                      
-
                         //wysokosc
                         float height = GetHeightAt(ant.Model.Position.X, ant.Model.Position.Z);
                         if (ant.Model.Position.Y < height)
@@ -446,60 +447,6 @@ namespace Logic
         }
 
         
-           
-
-
-
-        /*
-    private Vector3 Rotation(InteractiveModel ant, Vector3 oldPosition){
-
-            if (ant.Model.Position.X > ant.Model.playerTarget.X && ant.Model.Position.Z > ant.Model.playerTarget.Z)
-            {
-                return angle = new Vector3(0, 7, 0);//góra-lewo
-            } //ant.Model.playerTarget.X/100
-            else if (ant.Model.Position.X > ant.Model.playerTarget.X && ant.Model.Position.Z < ant.Model.playerTarget.Z)
-            {
-                return angle = new Vector3(0, (float)-1.2, 0);/////góra-prawo
-            }
-            else if (ant.Model.Position.X == ant.Model.playerTarget.X && ant.Model.Position.Z < ant.Model.playerTarget.Z)
-            {
-                return angle = new Vector3(0, (float)2.5, 0);//prawo
-            }
-            else if (ant.Model.Position.X == ant.Model.playerTarget.X && ant.Model.Position.Z > ant.Model.playerTarget.Z)
-            {
-                return angle = new Vector3(0, 4, 0);///////lewo
-            }
-            else if (ant.Model.Position.X < ant.Model.playerTarget.X && ant.Model.Position.Z < ant.Model.playerTarget.Z)
-            {
-                return angle = new Vector3(0, 5, 0);//////////dół-prawo
-            }
-            else if (ant.Model.Position.X < ant.Model.playerTarget.X && ant.Model.Position.Z > ant.Model.playerTarget.Z)
-            {
-                return angle = new Vector3(0, 2, 0);//dół-lewo
-            }
-            else if (ant.Model.Position.X < ant.Model.playerTarget.X && ant.Model.Position.Z == ant.Model.playerTarget.Z)
-            {
-                return angle = new Vector3(0, 7, 0);/////////dół
-            }
-            else if (ant.Model.Position.X > ant.Model.playerTarget.X && ant.Model.Position.Z == ant.Model.playerTarget.Z)
-            {
-                return angle = new Vector3(0, (float)-0.7, 0);//góra
-            }
-            else return angle;      
-            
-        }
-        */
-        private float Rotation(InteractiveModel ant, Vector3 oldPosition)
-        {
-            double angle = Math.Atan2(ant.Model.Position.Z - oldPosition.Z, ant.Model.Position.X - oldPosition.X);
-            //double angle = Math.Atan2(ant.Model.Position.Y - ant.Model.playerTarget.Y, ant.Model.Position.X - ant.Model.playerTarget.X);
-            
-            return (float)angle;
-
-            //Vector3 first = 
-            //Vector3 second = oldPosition.Normalize();
-            //return 1.0f;
-        }
 
         private float Vector3ToRadian(Vector3 direction)
         {
@@ -565,7 +512,7 @@ namespace Logic
             }
         }
 
-        private void Selected(Vector3 startRectangle, Vector3 endRectangle)
+        private void Selected()
         {
 
             startRectangle = CalculateMouse3DPosition(position);
@@ -625,7 +572,6 @@ namespace Logic
                     return IM;
                 }
             }
-            //to nie działa - nie wiem jeszcze czemu
             foreach (InteractiveModel ant in models)
             {
                 if (ant.Model.BoundingSphere.Intersects(ray) != null)
@@ -635,7 +581,6 @@ namespace Logic
                     return ant;
                 }
             }
-            //////////////////////////////////
             return null;
         }
 
