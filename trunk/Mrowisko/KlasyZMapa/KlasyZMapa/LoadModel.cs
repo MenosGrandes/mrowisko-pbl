@@ -39,17 +39,17 @@ namespace Map
         [NonSerialized]
         public LightsAndShadows.Light light;
         public List<ShadowCasterObject> shadowCasters;
-        private BoundingSphere[] spheres;
+        private List<BoundingSphere> spheres;
 
-        public BoundingSphere[] Spheres
+        public List<BoundingSphere> Spheres
         {
 
             get {
                 Matrix worldTransform = Matrix.CreateScale(Scale) *Matrix.CreateRotationX(Rotation.X) * Matrix.CreateRotationY(Rotation.Y) * Matrix.CreateRotationZ(Rotation.Z)* Matrix.CreateTranslation(Position) ;
-                BoundingSphere[] spheres2 =new  BoundingSphere[spheres.Length];
-                for (int i = 0; i < spheres2.Length;i++ )
+                List<BoundingSphere> spheres2 = new List<BoundingSphere>();
+                for (int i = 0; i < spheres.Count;i++ )
                 {
-                    spheres2[i] = spheres[i];
+                    spheres2.Add(spheres[i]);
                     spheres2[i] = spheres2[i].Transform(worldTransform);
                 }
                
@@ -163,18 +163,17 @@ namespace Map
         /// </summary>
         private void buildBoundingSphere()
         {
-            int d=0;
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
-            BoundingSphere[] spheres2=new BoundingSphere[3];
+            List<BoundingSphere> spheres2 = new List<BoundingSphere>();
+
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
                 if (mesh.Name.Contains("BoundingSphere"))
                 {
                     
-                    spheres2[d] = transformed;
+                    spheres2.Add(transformed);
                     
-                    d++;
                 }
                 else {
                     sphere = BoundingSphere.CreateMerged(sphere, transformed);

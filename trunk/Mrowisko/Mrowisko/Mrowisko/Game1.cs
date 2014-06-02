@@ -37,7 +37,6 @@ namespace AntHill
         List<InteractiveModel> Enemys = new List<InteractiveModel>();
         List<TimeTrigger> timeTriggers = new List<TimeTrigger>();
         Logic.Control control;
-        Curve3D curee = new Curve3D();
         ControlEnemy e= new ControlEnemy();
 
         GraphicsDeviceManager graphics;
@@ -239,7 +238,7 @@ GraphicsDevice);
             models.Add(new Trigger(new LoadModel(Content.Load<Model>("Models/trigger"), new Vector3(0, 0, 0), Vector3.Up,new Vector3(0.3f),GraphicsDevice,light)));
            
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-
+            models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0),new Vector3(0.3f),GraphicsDevice,light)),new Curve3D()));
             Enemys.Add(models[0]);
             Enemys.Add(models[1]);
             Enemys.Add(models[2]);
@@ -360,8 +359,8 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
             _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
            
             
-            time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            IModel[1].Model.Position=curee.GetPointOnCurve(time);
+           // time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+          //  IModel[1].Model.Position=curee.GetPointOnCurve(time);
 
             // 1 Second has passed
             if (_elapsed_time >= 1000.0f)

@@ -93,34 +93,34 @@ namespace Logic
             point.Z = curveZ.Evaluate(time);
             return point;
         }
-        void InitCurve()
+       public void InitCurve()
         {
             float time = 0;
-            this.AddPoint(new Vector3(75, 0, 450), time);
+            this.AddPoint(new Vector3(75, 40, 450), time);
             time += 2000;
-            this.AddPoint(new Vector3(30, 0, 360), time);
+            this.AddPoint(new Vector3(30, 40, 360), time);
             time += 2000;
-            this.AddPoint(new Vector3(120, 0, 300), time);
+            this.AddPoint(new Vector3(120, 40, 300), time);
             time += 2000;
-            this.AddPoint(new Vector3(30, 0, 240), time);
+            this.AddPoint(new Vector3(30, 40, 240), time);
             time += 2000;
-            this.AddPoint(new Vector3(120, 0, 180), time);
+            this.AddPoint(new Vector3(120, 40, 180), time);
             time += 2000;
-            this.AddPoint(new Vector3(750, 0, 120), time);
+            this.AddPoint(new Vector3(750, 40, 120), time);
             time += 2000;
-            this.AddPoint(new Vector3(60, 0, 60), time);
+            this.AddPoint(new Vector3(60, 40, 60), time);
             time += 3000;
-            this.AddPoint(new Vector3(270, 0, 60), time);
+            this.AddPoint(new Vector3(270, 40, 60), time);
             time += 3000;
-            this.AddPoint(new Vector3(60, 0, 210), time);
+            this.AddPoint(new Vector3(60, 40, 210), time);
             time += 2000;
-            this.AddPoint(new Vector3(750, 0, 270), time);
+            this.AddPoint(new Vector3(750, 40, 270), time);
             time += 2000;
-            this.AddPoint(new Vector3(210, 0, 210), time);
+            this.AddPoint(new Vector3(210, 40, 210), time);
             time += 3000;
-            this.AddPoint(new Vector3(420, 0, 60), time);
+            this.AddPoint(new Vector3(420, 40, 60), time);
             time += 3000;
-            this.AddPoint(new Vector3(210, 0, 60), time);
+            this.AddPoint(new Vector3(210, 40, 60), time);
 
             this.SetTangents();
         }
