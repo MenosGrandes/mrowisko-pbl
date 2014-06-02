@@ -40,8 +40,6 @@ namespace AntHill
 
         ControlEnemy e= new ControlEnemy();
 
-       // ControlEnemy e= new ControlEnemy();
-
         GraphicsDeviceManager graphics;
         public GraphicsDevice device;
         float x, y, z;
