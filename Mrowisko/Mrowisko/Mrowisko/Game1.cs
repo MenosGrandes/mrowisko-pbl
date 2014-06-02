@@ -38,6 +38,9 @@ namespace AntHill
         List<TimeTrigger> timeTriggers = new List<TimeTrigger>();
         Logic.Control control;
         ControlEnemy e= new ControlEnemy();
+        InteractiveModel spider;
+        //HUD.LifeBar hp = new HUD.LifeBar(5.0f);
+
 
         GraphicsDeviceManager graphics;
         public GraphicsDevice device;
@@ -237,14 +240,13 @@ GraphicsDevice);
             models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice,light), 5000));
             models.Add(new Trigger(new LoadModel(Content.Load<Model>("Models/trigger"), new Vector3(0, 0, 0), Vector3.Up,new Vector3(0.3f),GraphicsDevice,light)));
            
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
             models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0),new Vector3(0.3f),GraphicsDevice,light)),new Curve3D()));
             Enemys.Add(models[0]);
             Enemys.Add(models[1]);
             Enemys.Add(models[2]);
-          //  Enemys.Add(models[2]);
-          //  Enemys.Add(models[3]);
-          //  Enemys.Add(models[4]);
+            spider = new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10);
+      
             timeTriggers.Add(new TimeTrigger(5));
             // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));      //
 
@@ -304,10 +306,9 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
           
 
             e.Ant = models[0];
-            e.Enemy = models[6];
+            e.Enemy = spider;
             e.Ants = Enemys;
-            //e.Ant = models[0];
-            //e.Enemy = models[3];
+         
 
             
             //inter.Add(models[1]);
@@ -647,9 +648,8 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                 }
 
             }
-            
 
-
+            spider.Draw((FreeCamera)camera);
 
 
 

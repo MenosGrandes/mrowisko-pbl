@@ -83,7 +83,7 @@ namespace HUD
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                StaticHelpers.StaticHelper.Device.DrawPrimitives(PrimitiveType.TriangleList, 0, VertexBuffer.VertexCount / 3);
+           //     StaticHelpers.StaticHelper.Device.DrawPrimitives(PrimitiveType.TriangleList, 0, VertexBuffer.VertexCount / 3);
 
             }
         }
