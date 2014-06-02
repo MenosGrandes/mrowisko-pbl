@@ -205,11 +205,13 @@ namespace Map
                    * baseWorld;
                    foreach (ModelMeshPart meshPart in mesh.MeshParts)
                    {
+                      
                        BasicEffect effect = (BasicEffect)meshPart.Effect;
                        effect.World = localWorld;
                        effect.View = View;
                        effect.Projection = Projection;
                        effect.EnableDefaultLighting();
+                       effect.Alpha = 0.9f;
                            /*
                        effect.DirectionalLight0.Enabled = true;
                        effect.DirectionalLight0.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs(-1 * (float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f);

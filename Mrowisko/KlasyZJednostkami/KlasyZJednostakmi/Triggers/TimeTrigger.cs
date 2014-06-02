@@ -23,7 +23,7 @@ namespace Logic.Triggers
            timeToEngage += time.ElapsedGameTime;
            if(timeToEngage>TimeSpan.FromSeconds((double)secondsToEngage))
            {
-               Console.WriteLine("KABOOOMMMM");
+               //Console.WriteLine("KABOOOMMMM");
                used = true;
            }
        }
