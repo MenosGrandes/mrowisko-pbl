@@ -83,6 +83,7 @@
     <Compile Include="Building\AntBuildings\SeedFarms\DicentraFarm.cs" />
     <Compile Include="Building\AntBuildings\SeedFarms\HyacyntFarm.cs" />
     <Compile Include="Building\BuildingPlace.cs" />
+    <Compile Include="ControlEnemy.cs" />
     <Compile Include="Meterials\Chelidonium.cs" />
     <Compile Include="Meterials\Dicentra.cs" />
     <Compile Include="Meterials\Hyacynt.cs" />

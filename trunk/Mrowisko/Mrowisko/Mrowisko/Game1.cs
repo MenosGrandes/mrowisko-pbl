@@ -21,12 +21,8 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using Controlers;
 using Controlers.CursorEnum;
-<<<<<<< .mine
-
-
-=======
 using Logic.Triggers;
->>>>>>> .r141
+
 namespace AntHill
 {
     /// <summary>
@@ -38,10 +34,11 @@ namespace AntHill
         List<InteractiveModel> models = new List<InteractiveModel>();
         List<InteractiveModel> inter = new List<InteractiveModel>(); 
         List<InteractiveModel> IModel = new List<InteractiveModel>();
+        List<InteractiveModel> Enemys = new List<InteractiveModel>();
         List<TimeTrigger> timeTriggers = new List<TimeTrigger>();
         Logic.Control control;
 
-        //ControlEnemy e= new ControlEnemy();
+        ControlEnemy e= new ControlEnemy();
 
        // ControlEnemy e= new ControlEnemy();
 
@@ -230,15 +227,27 @@ GraphicsDevice);
             water = new Water(device, Content, texture[4].Width, 1);
 
            
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(0, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(50, 0, 50), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(100, 0, 100), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(150, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(350, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(450, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+            //  models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+          //  models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(350, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+        //    models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(50, 0, 50), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+        //    models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(100, 0, 100), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
 
             models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice, light), 3000));
             models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice,light), 5000));
             models.Add(new Trigger(new LoadModel(Content.Load<Model>("Models/trigger"), new Vector3(0, 0, 0), Vector3.Up,new Vector3(0.3f),GraphicsDevice,light)));
-            
+           
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
 
+            Enemys.Add(models[0]);
+            Enemys.Add(models[1]);
+            Enemys.Add(models[2]);
+          //  Enemys.Add(models[2]);
+          //  Enemys.Add(models[3]);
+          //  Enemys.Add(models[4]);
             timeTriggers.Add(new TimeTrigger(5));
             // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));      //
 
@@ -297,9 +306,9 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
             control = new Logic.Control(texture[11], quadTree);
           
 
-           // e.Ant = models[0];
-            //e.Enemy = models[3];
-
+            e.Ant = models[0];
+            e.Enemy = models[6];
+            e.Ants = Enemys;
             //e.Ant = models[0];
             //e.Enemy = models[3];
 
@@ -513,8 +522,9 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             control.Models_Colision = IModel;
 
 
-            //e.gameTime = gameTime;
-            //e.Update();
+            e.gameTime = gameTime;
+            e.Update();
+
             MouseCursorController.Update();
             camera.Update(gameTime);
           //  anim.Update(gameTime);
