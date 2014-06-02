@@ -167,8 +167,8 @@ namespace Logic
         }
         void updateAnt(GameTime gameTime)
         {
-            float Speed = (float)2.0;
-        
+            float Speed = (float)2.0f;
+
             foreach (var ant in models)
             {
                  if(ant.GetType().BaseType!=typeof(Ant))
@@ -179,6 +179,12 @@ namespace Logic
                 {
                     return;
                 }
+
+                if(ant.snared==true)
+                {
+                    return;
+                }
+
 
                 foreach (InteractiveModel modelsy in Models_Colision)
                 {
