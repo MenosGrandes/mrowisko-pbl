@@ -5,7 +5,7 @@ using System;
 using Microsoft.Xna.Framework;
 namespace Logic.Building
 {
-    
+    [Serializable]
     public class Building:InteractiveModel
     {
 
@@ -52,6 +52,8 @@ namespace Logic.Building
             this.buildingTime = _buildingTime;
         }
         public Building()
+        { }
+        public Building(LoadModel model):base(model)
         { }
          public override void Draw(Matrix View, Matrix Projection)
         {   }

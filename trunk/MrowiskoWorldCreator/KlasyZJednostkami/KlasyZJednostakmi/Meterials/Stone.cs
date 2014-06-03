@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Logic.Meterials
 {
+    [Serializable]
     public class Stone:Material
     {
 
@@ -16,9 +17,6 @@ namespace Logic.Meterials
         }
                 public Stone()
         { }
-        public override void Draw(Matrix View, Matrix Projection)
-        {
-            model.Draw(View, Projection);
-        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Map;
+﻿using GameCamera;
+using Map;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Text;
 
 namespace Logic.Meterials.MaterialCluster
 {
+[Serializable]
    public class Log:Material
     {
 
@@ -35,10 +37,7 @@ namespace Logic.Meterials.MaterialCluster
            }
            
        }
-       public override void Draw(Matrix View, Matrix Projection)
-       {
-           model.Draw(View, Projection);
-       }
+
        public void removeWood(int n)
        {
               wood.RemoveRange(0, 1); 

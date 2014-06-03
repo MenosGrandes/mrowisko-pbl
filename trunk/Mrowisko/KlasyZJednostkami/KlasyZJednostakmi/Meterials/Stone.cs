@@ -7,14 +7,16 @@ using System.Text;
 
 namespace Logic.Meterials
 {
-    public class Stone:Material
+    [Serializable]
+    public class Stone : Material
     {
 
-                public Stone(LoadModel model):base(model)
+        public Stone(LoadModel model)
+            : base(model)
         {
 
         }
-                public Stone()
+        public Stone()
         { }
 
     }

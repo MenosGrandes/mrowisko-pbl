@@ -164,12 +164,12 @@ namespace AntHill
             StaticHelpers.StaticHelper.Content = Content;
             StaticHelpers.StaticHelper.Device = device;
             #region loadFromFile
-            /*
+             /*
             Controlers.LoadModelsFromFile.Load();
             foreach (InteractiveModel i in LoadModelsFromFile.listOfAllInteractiveModelsFromFile)
             {
                 models.Add(i);
-            }    */
+            } */   
             #endregion
             #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
@@ -661,9 +661,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                  new Vector2(10.0f, 20.0f), Color.Tomato);
 
 
-            spriteBatch.DrawString(_spr_font, string.Format("kolizja? ={0}", kolizja), new Vector2(10.0f, 80.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("D m={0}", ((AntPeasant)models[0]).wood2), new Vector2(10.0f, 110.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("K m={0}", ((AntPeasant)models[0]).rock2), new Vector2(140.0f, 110.0f), Color.Pink);
+           
             spriteBatch.DrawString(_spr_font, string.Format("D g={0}", Player.wood), new Vector2(10.0f, 140.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 140.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(240.0f, 140.0f), Color.Pink);

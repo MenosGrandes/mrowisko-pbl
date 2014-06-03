@@ -67,7 +67,8 @@ namespace Logic
         {
             get { return cost; }
             set { cost = value; }
-        } 
+        }
+
 
 
 
@@ -85,7 +86,7 @@ namespace Logic
 
          public Unit(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model):base( model)
         {
-            
+
             this.hp = hp;
             this.armor = armor;
             this.strength = strength;
@@ -96,8 +97,7 @@ namespace Logic
             
 
         }
-         public Unit(LoadModel model):base(model)
-         { }
+
         public Vector3 getPosition()
          {
              return this.model.Position;
@@ -112,13 +112,17 @@ namespace Logic
             return this.model.Rotation;
         }
 
-        public void setRottation(Vector3 rotation)
+        public void setRotation(Vector3 rotation)
         {
             this.model.Rotation = rotation;
         }
-        public Unit()
-        { }
+        public Unit():base()
+        {
 
+        }
+                            public Unit(LoadModel model):base(model)
+                            {
 
+                            }
     }
 }

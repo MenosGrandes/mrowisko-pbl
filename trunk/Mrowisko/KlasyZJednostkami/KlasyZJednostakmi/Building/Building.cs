@@ -5,8 +5,8 @@ using System;
 using Microsoft.Xna.Framework;
 namespace Logic.Building
 {
-    
-    public class Building:InteractiveModel
+    [Serializable]
+    public class Building : InteractiveModel
     {
 
         protected float buildingTime;
@@ -43,20 +43,22 @@ namespace Logic.Building
 
 
 
-        public Building( LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime)
-            : base( model)
+        public Building(LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime)
+            : base(model)
         {
             this.model = model;
-            this.content = content;
             this.capacity = _capacity;
             this.cost = _cost;
             this.buildingTime = _buildingTime;
         }
         public Building()
         { }
-         public override void Draw(Matrix View, Matrix Projection)
-        {   }
-         public override void Update(GameTime gameTime)
-         { }
+        public Building(LoadModel model)
+            : base(model)
+        { }
+        public override void Draw(Matrix View, Matrix Projection)
+        { }
+        public override void Update(GameTime gameTime)
+        { }
     }
 }

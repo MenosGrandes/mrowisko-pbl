@@ -1,48 +1,42 @@
-﻿using Logic.Meterials;
+﻿using Logic.Building.AntBuildings.Granary;
+using Logic.Meterials;
 using Logic.Meterials.MaterialCluster;
 using Map;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 
 namespace Logic.Units.Ants
 {
-    [Serializable]
-    public class AntPeasant : Ant
+        [Serializable]
+
+    public class AntPeasant:Ant
     {
         [NonSerialized]
         private List<Material> materials = new List<Material>();
-         [NonSerialized]
-        public int wood2;
-         [NonSerialized]
-        public int rock2;
-
+             [NonSerialized]
+        public  int wood2;
+             [NonSerialized]
+        public  int rock2;
+        private Material GaterMaterialObject;
+        public Material  gaterMaterialObject;
         public int MaxCapacity { get { return maxCapacity; } }
-         [NonSerialized]
         private int maxCapacity;
-        public int Capacity
+        public int Capacity { 
+      get
         {
-            get
-            {
-                return capacity;
-            }
+            return capacity;
+      }
             set { }
         }
-         [NonSerialized]
         private int capacity;
-         [NonSerialized]
+
         public float gaterTime;
-         [NonSerialized]
         public float elapsedTime;
-        public AntPeasant(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, int maxCapacity, float gaterTime)
-            : base(hp, armor, strength, range, cost, buildingTime, model)
+        public AntPeasant(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model,int maxCapacity,float gaterTime):base(hp,armor,strength,range,cost,buildingTime,model)
         {
             this.maxCapacity = maxCapacity;
             this.capacity = 0;
@@ -51,47 +45,49 @@ namespace Logic.Units.Ants
             wood2 = 0;
 
         }
-        public AntPeasant(LoadModel model):base(model)
+        public AntPeasant(LoadModel model)
+            : base(model)
         {
 
         }
         public override void gaterMaterial(Material material)
         {
 
-            if (elapsedTime >= gaterTime)
-            {
-                if (material.Model.Scale.X > 0 && capacity < maxCapacity)
+            if (elapsedTime >= gaterTime) 
+            { 
+                if(material.Model.Scale.X >0 && capacity<maxCapacity)
                 {
 
                     switch (material.GetType().Name)
-                    {
+                   {
 
-                        case "Log": materials.Add(new Wood()); wood2++; ((Log)material).removeWood(1);
-                            ((Log)material).Model.Scale = new Vector3((float)((float)((Log)material).ClusterSize / (float)((Log)material).MaxClusterSize));
-
-                            break;
-                        case "Rock": materials.Add(new Stone()); rock2++; ((Rock)material).removeRock(1);
-                            ((Rock)material).Model.Scale = new Vector3((float)((float)((Rock)material).ClusterSize / (float)((Rock)material).MaxClusterSize));
-
-                            break;
-
-                    }
+                       case "Log": materials.Add(new Wood()); wood2++; ((Log)material).removeWood(1);
+                           ((Log)material).Model.Scale = new Vector3((float)((float)((Log)material).ClusterSize / (float)((Log)material).MaxClusterSize));
+     
+                           break;
+                       case "Rock": materials.Add(new Stone()); rock2++; ((Rock)material).removeRock(1);
+                           ((Rock)material).Model.Scale = new Vector3((float)((float)((Rock)material).ClusterSize / (float)((Rock)material).MaxClusterSize));
+     
+                           break;
+                     
+                   }
                     capacity++;
-
+                   
                 }
-
+                
             }
             elapsedTime = 0.0f;
-
+            
         }
         public override void Update(GameTime time)
         {
+          //  this.model.tempPosition = this.model.Position;
+            this.elapsedTime += time.ElapsedGameTime.Milliseconds ;
 
-            this.elapsedTime += time.ElapsedGameTime.Milliseconds;
         }
-        public override void Draw(Matrix View, Matrix Projection)
+        public override void Draw( GameCamera.FreeCamera camera)
         {
-            model.Draw(View, Projection);
+            model.Draw(camera.View, camera.Projection);
         }
         public override List<Material> releaseMaterial()
         {
@@ -104,9 +100,11 @@ namespace Logic.Units.Ants
         }
         public override string ToString()
         {
-            return this.GetType().Name + " " + model.Position + " ";
+            return model.Position + " " + this.GetType().Name;
         }
-
+       
+        }
+       
 
     }
-}
+

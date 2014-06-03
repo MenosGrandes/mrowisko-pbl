@@ -59,6 +59,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -116,7 +118,8 @@
             "AntPeasant",
             "Rock",
             "Log",
-            "Granary"});
+            "Granary",
+            "BuildingPlace"});
             this.checkedListBox1.Location = new System.Drawing.Point(810, 20);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(90, 109);
@@ -435,11 +438,31 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(707, 270);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(69, 20);
+            this.textBox1.TabIndex = 31;
+            this.textBox1.Text = "1000";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(711, 251);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(48, 13);
+            this.label13.TabIndex = 32;
+            this.label13.Text = "Capacity";
+            this.label13.Click += new System.EventHandler(this.label13_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(928, 573);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
@@ -520,5 +543,7 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label13;
     }
 }

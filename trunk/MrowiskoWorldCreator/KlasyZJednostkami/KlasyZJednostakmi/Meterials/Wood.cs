@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 
 namespace Logic.Meterials
-{
+{  [Serializable]
     public class Wood:Material
     {
         public Wood(LoadModel model):base(model)

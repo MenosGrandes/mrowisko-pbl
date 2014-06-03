@@ -7,9 +7,11 @@ using System.Text;
 
 namespace Logic.Meterials
 {
-    public class Wood:Material
+    [Serializable]
+    public class Wood : Material
     {
-        public Wood(LoadModel model):base(model)
+        public Wood(LoadModel model)
+            : base(model)
         {
 
         }
