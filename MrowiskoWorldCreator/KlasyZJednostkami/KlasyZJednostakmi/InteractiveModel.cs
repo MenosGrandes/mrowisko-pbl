@@ -13,10 +13,10 @@ using Map;
 using Logic.Meterials;
 
 namespace Logic
-{    [Serializable]
+{
+    [Serializable]
     public class InteractiveModel
     {
-        public bool selected = false;
 
 
         protected LoadModel model;
@@ -28,7 +28,7 @@ namespace Logic
             set { model = value; }
         }
 
-
+        public bool selected;
         protected int hp;
 
         public int Hp
@@ -37,7 +37,8 @@ namespace Logic
             set { hp = value; }
         }
 
-
+        public bool snared = false;
+        public float time_snared = 0.0f;
 
         public InteractiveModel( LoadModel model)
         {         
@@ -50,9 +51,16 @@ namespace Logic
          public virtual void Draw(Matrix View, Matrix Projection)
         {
         }
+
+        public virtual void Draw(GameCamera.FreeCamera camera)
+         {
+         }
         public virtual void gaterMaterial(Material material)
         {
         }
+        public virtual void Intersect(InteractiveModel interactive)
+    {
+    }
         public virtual List<Material> releaseMaterial()
         {
             return null;
@@ -64,9 +72,8 @@ namespace Logic
         }
         public virtual void Update(GameTime time)
         { }
-        public virtual void Save()
+        public virtual void setGaterMaterial(Material m)
         { }
-        public virtual InteractiveModel Load()
-        { return null; }
+
     }
 }

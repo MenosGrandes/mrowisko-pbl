@@ -144,20 +144,22 @@ namespace Map
             * Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
-                * baseWorld;
-                foreach (ModelMeshPart meshPart in mesh.MeshParts)
+                if (!mesh.Name.Contains("BoundingSphere"))
                 {
-                    BasicEffect effect = (BasicEffect)meshPart.Effect;
-                    effect.World = localWorld;
-                    effect.View = View;
-                    effect.Projection = Projection;
-                    effect.EnableDefaultLighting();
+                    Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
+                    * baseWorld;
+                    foreach (ModelMeshPart meshPart in mesh.MeshParts)
+                    {
+                        BasicEffect effect = (BasicEffect)meshPart.Effect;
+                        effect.World = localWorld;
+                        effect.View = View;
+                        effect.Projection = Projection;
+                        effect.EnableDefaultLighting();
+                    }
+
+                    mesh.Draw();
                 }
-
-                mesh.Draw();
             }
-
         }
         /// <summary>
         /// Method to Draw AnimatedModel
@@ -177,7 +179,9 @@ namespace Map
 
 
             foreach (ModelMesh mesh in Model.Meshes)
+            {   if(mesh.Name.Contains("BoundingSphere"))
             {
+           
                 Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
                * baseWorld;
                 foreach (SkinnedEffect effect in mesh.Effects)
@@ -195,7 +199,7 @@ namespace Map
 
                 mesh.Draw();
             }
-
+            }
         }
         /// <summary>
         /// Update metod for Animations

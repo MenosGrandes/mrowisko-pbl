@@ -82,6 +82,10 @@
     <Compile Include="Building\AntBuildings\SeedFarms\ChelidoniumFarm.cs" />
     <Compile Include="Building\AntBuildings\SeedFarms\DicentraFarm.cs" />
     <Compile Include="Building\AntBuildings\SeedFarms\HyacyntFarm.cs" />
+    <Compile Include="Building\BuildingPlace.cs" />
+    <Compile Include="Curve3D.cs" />
+    <Compile Include="ControlEnemy.cs" />
+    <Compile Include="Laser.cs" />
     <Compile Include="Meterials\Chelidonium.cs" />
     <Compile Include="Meterials\Dicentra.cs" />
     <Compile Include="Meterials\Hyacynt.cs" />
@@ -90,6 +94,8 @@
     <Compile Include="Meterials\MaterialCluster\Rock.cs" />
     <Compile Include="Meterials\Stone.cs" />
     <Compile Include="Meterials\Wood.cs" />
+    <Compile Include="Triggers\TimeTrigger.cs" />
+    <Compile Include="Triggers\Trigger.cs" />
     <Compile Include="Units\Allies\Allies.cs" />
     <Compile Include="Units\Ants\Ant.cs" />
     <Compile Include="Building\Building.cs" />
@@ -99,7 +105,6 @@
     <Compile Include="Units\Ants\AntPeasant.cs" />
     <Compile Include="Units\Predators\Predator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TargetCamera.cs" />
     <Compile Include="Unit.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +130,21 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Camera\Camera\GameCamera.csproj">
+      <Project>{6cf85617-ff97-4e13-bd6b-11df8733dec7}</Project>
+      <Name>GameCamera</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HUD\HUD.csproj">
+      <Project>{5cce79ba-5158-48ff-b1f6-885b21896993}</Project>
+      <Name>HUD</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\KlasyZMapa\KlasyZMapa\Map.csproj">
       <Project>{3ca21884-420f-46fd-84a1-a98bb1177b66}</Project>
       <Name>Map</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\StaticHelpers\StaticHelpers.csproj">
+      <Project>{adb8cf44-88f0-42de-ae42-62e5b9704438}</Project>
+      <Name>StaticHelpers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

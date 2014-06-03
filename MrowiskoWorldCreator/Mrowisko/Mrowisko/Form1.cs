@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Logic.Building;
 namespace AntHill
 {
     public partial class Form1 : Form
@@ -87,7 +88,19 @@ namespace AntHill
                          break; }
                  case "Log":
                      {
-                         Log p = new Log(new LoadModel(CreatorController.content.Load<Model>("Models/stone2"), new Vector3(200, 12, 42), Vector3.Zero, Vector3.One, CreatorController.device), 10000);
+                         Log p = new Log(new LoadModel(CreatorController.content.Load<Model>("Models/log"), new Vector3(200, 12, 42), Vector3.Zero, Vector3.One, CreatorController.device),Convert.ToInt16(textBox1.Text));
+                         model = p;
+                         break;
+                     }
+                 case "Rock":
+                     {
+                         Rock p = new Rock(new LoadModel(CreatorController.content.Load<Model>("Models/stone2"), new Vector3(200, 12, 42), Vector3.Zero, Vector3.One, CreatorController.device), Convert.ToInt16(textBox1.Text));
+                         model = p;
+                         break;
+                     }
+                 case "BuildingPlace":
+                     {
+                         BuildingPlace p = new BuildingPlace(new LoadModel(CreatorController.content.Load<Model>("Models//buildingPlace"), new Vector3(200, 12, 42), Vector3.Zero, Vector3.One, CreatorController.device));
                          model = p;
                          break;
                      }
@@ -209,28 +222,66 @@ namespace AntHill
         }
         public void Load()
         {
-
+            
             using (Stream stream = File.Open("dupa.bin", FileMode.Open))
             {
+
                 var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
                 List<InteractiveModel> salesman = (List<InteractiveModel>)bformatter.Deserialize(stream);
                 listBox2.DataSource = null;
-
+                if(salesman==CreatorController.models)
+                {
+                    return;
+                }
                 foreach(InteractiveModel model in salesman)
-            {
+                {
 
-                //CreatorController.models.Add(model);
-                 if(model.GetType().Name=="AntPeasant")
-                 {
-                     AntPeasant p = new AntPeasant(null);
+                switch(model.GetType().Name)
+                {   
+                    case "AntPeasant":
+                       AntPeasant p = new AntPeasant(null);
                      p.Model = new LoadModel(CreatorController.content.Load<Model>("Models/mrowka_01"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
                     
                      CreatorController.models.Add(p);
-                     _items.Add(p.ToString());
-                         
+                     _items.Add(p.ToString());     
+                        
+                        break;
+                    case "Log":
+                       
+                           Log g = new Log(null,((Log)model).ClusterSize);
+                     g.Model = new LoadModel(CreatorController.content.Load<Model>("Models/log"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
 
-                 }
+                     CreatorController.models.Add(g);
+                     _items.Add(g.ToString());
+
+                        break;
+                    case "Rock": 
+                        
+                           
+                           Rock q = new Rock(null,((Rock)model).ClusterSize);
+                           q.Model = new LoadModel(CreatorController.content.Load<Model>("Models/stone2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
+
+                     CreatorController.models.Add(q);
+                     _items.Add(q.ToString());
+
+                        
+                        
+                        break;
+                    case "BuildingPlace":
+
+
+                        BuildingPlace w = new BuildingPlace(null);
+                        w.Model = new LoadModel(CreatorController.content.Load<Model>("Models/buildingPlace"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
+
+                        CreatorController.models.Add(w);
+                        _items.Add(w.ToString());
+
+
+
+                        break;
+                }
+                
                   
             }
                 listBox2.DataSource = _items;
@@ -254,6 +305,11 @@ namespace AntHill
         }
 
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void label13_Click(object sender, System.EventArgs e)
         {
 
         }

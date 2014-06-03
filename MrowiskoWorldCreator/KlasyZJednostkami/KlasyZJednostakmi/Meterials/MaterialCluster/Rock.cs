@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Logic.Meterials.MaterialCluster
 {
+    [Serializable]
     public class Rock:Material
     {
 

@@ -9,7 +9,7 @@ using System.Text;
 namespace Logic.Building
 {
     [Serializable]
-    public class BuildingPlace : Building
+    public class BuildingPlace:Building
     {
         private Building building;
 
@@ -21,13 +21,11 @@ namespace Logic.Building
         public BuildingPlace(LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime)
             : base(model, _capacity, _durability, _cost, _buildingTime)
         {
-
+                                                    
         }
-        public BuildingPlace(LoadModel model)
-            : base(model)
+        public BuildingPlace(LoadModel model):base(model)
         { }
-        public BuildingPlace()
-            : base()
+        public BuildingPlace():base()
         {
 
         }
@@ -38,7 +36,7 @@ namespace Logic.Building
         public override void Draw(Matrix View, Matrix Projection)
         {
             model.Draw(View, Projection);
-            if (Building != null)
+            if(Building!=null)
             {
                 building.Model.Draw(View, Projection);
             }
