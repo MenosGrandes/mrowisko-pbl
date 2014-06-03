@@ -40,7 +40,11 @@ namespace Map
         public LightsAndShadows.Light light;
         public List<ShadowCasterObject> shadowCasters;
         private List<BoundingSphere> spheres;
-
+        public void switchAnimation(string nazwa)
+        {
+            AnimationClip clip = skinningData.AnimationClips[nazwa];//inne animacje to idle2 i run
+            Player.StartClip(clip);
+        }
         public List<BoundingSphere> Spheres
         {
 
