@@ -49,7 +49,7 @@ namespace AntHill
         public Camera camera;
         MouseState lastMouseState;
         Water water;
-        LoadModel anim;
+        LoadModel mrowka, krolowa, pajak, konik, silacz;
         QuadTree quadTree;
         //FPS COUNTER
         int licznik;
@@ -256,6 +256,16 @@ GraphicsDevice);
 
             IModel.Add(new BuildingPlace(new LoadModel(Content.Load<Model>("Models/BuildingPlace"),new Vector3(100,15,100),Vector3.Zero,new Vector3(1),device,light),0,0,0,0));
             models.Add(IModel[0]);
+            pajak = new LoadModel( Content.Load<Model>("spider"), new Vector3(100,80,70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
+            pajak.switchAnimation("Jump");
+            konik = new LoadModel(Content.Load<Model>("grasshopper"), new Vector3(250, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
+            konik.switchAnimation("Jump");
+            krolowa = new LoadModel(Content.Load<Model>("queen"), new Vector3(450, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
+            krolowa.switchAnimation("Idle");
+            mrowka = new LoadModel(Content.Load<Model>("animacja"), new Vector3(600, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
+            mrowka.switchAnimation("Idle1");
+            silacz = new LoadModel(Content.Load<Model>("strongAnt"), new Vector3(750, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
+            silacz.switchAnimation("Idle1");
             /*
             anim = new LoadModel(
  Content.Load<Model>("grasshopper"),
@@ -373,6 +383,42 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
             if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C) && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C))
             {
                 quadTree.Cull = !quadTree.Cull;
+            }
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.P))
+            {
+                pajak.switchAnimation("Jump");
+                konik.switchAnimation("Jump");
+                krolowa.switchAnimation("Idle");
+                mrowka.switchAnimation("Idle1");
+                silacz.switchAnimation("Idle1");
+            }
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.O))
+            {
+                pajak.switchAnimation("Death");
+                konik.switchAnimation("Idle1");
+                krolowa.switchAnimation("Atack");
+                mrowka.switchAnimation("Idle2");
+                silacz.switchAnimation("Death");
+            }
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.L))
+            {
+                pajak.switchAnimation("JumpForward");
+                konik.switchAnimation("Death");
+                krolowa.switchAnimation("Walk");
+                mrowka.switchAnimation("run");
+                silacz.switchAnimation("Atack1");
+            }
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.K))
+            {
+                pajak.switchAnimation("Atack1");
+                konik.switchAnimation("Kick");
+                krolowa.switchAnimation("Death");
+                silacz.switchAnimation("Atack2");
+            }
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.M))
+            {
+                pajak.switchAnimation("Walk");
+                silacz.switchAnimation("Walk");
             }
             #region wstepneBudowanie
             if (IModel[0].GetType() == typeof(BuildingPlace)) { 
@@ -528,6 +574,12 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
             MouseCursorController.Update();
             camera.Update(gameTime);
+            pajak.Update(gameTime);
+            krolowa.Update(gameTime);
+            konik.Update(gameTime);
+            silacz.Update(gameTime);
+            mrowka.Update(gameTime);
+
           //  anim.Update(gameTime);
             base.Update(gameTime);
 
@@ -617,6 +669,11 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
 
 
+            pajak.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
+            konik.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
+            krolowa.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
+            silacz.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
+            mrowka.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
 
          //   anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
             foreach (InteractiveModel model in models)
