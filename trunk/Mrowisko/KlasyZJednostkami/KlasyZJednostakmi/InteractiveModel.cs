@@ -54,12 +54,14 @@ namespace Logic
         public InteractiveModel()
         {           
         }
-         public virtual void Draw(Matrix View, Matrix Projection)
+        public virtual void Draw(GameCamera.FreeCamera camera,float time)
         {
+            model.Draw(camera, time);
         }
 
         public virtual void Draw(GameCamera.FreeCamera camera)
          {
+             model.Draw(camera);
          }
         public virtual void gaterMaterial(Material material)
         {

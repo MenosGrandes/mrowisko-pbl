@@ -14,10 +14,7 @@ namespace Logic.Building.AntBuildings.SeedFarms
         { 
         
         }
-         public override void  Draw(Matrix View, Matrix Projection)
-        {
-            model.Draw(View, Projection);
-        }
+
         public ChelidoniumFarm()
         { }
         public override Logic.Meterials.Material addCrop()

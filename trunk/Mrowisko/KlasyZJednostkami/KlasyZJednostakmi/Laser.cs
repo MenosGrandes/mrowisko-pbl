@@ -44,7 +44,7 @@ namespace Logic
         }
          public override void Draw( GameCamera.FreeCamera camera)
         {
-            model.Draw(camera.View, camera.Projection);
+            model.Draw(camera);
         }
          public override void Update(GameTime _time)
          {

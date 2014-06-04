@@ -147,7 +147,7 @@ namespace Map
             foreach (LoadModel model in models)
                 if (camera.BoundingVolumeIsInView(model.BoundingSphere))
                 {
-                    model.Draw(camera.View, camera.Projection);
+                    model.Draw(camera);
                      licznik++;
                 }
 

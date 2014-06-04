@@ -85,11 +85,7 @@ namespace Logic.Units.Ants
             this.elapsedTime += time.ElapsedGameTime.Milliseconds ;
             LifeBar.CreateBillboardVerticesFromList(this.Model.Position+new Vector3(0,10,0));
         }
-        public override void Draw( GameCamera.FreeCamera camera)
-        {
-            model.Draw(camera.View, camera.Projection);
-           LifeBar.healthDraw(camera);
-        }
+        
         public override List<Material> releaseMaterial()
         {
             List<Material> mat = new List<Material>(materials);

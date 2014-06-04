@@ -25,9 +25,6 @@ namespace Logic.Building.AntBuildings.Granary
         {
             //Console.WriteLine(this.GetType());
         }
-        public override void Draw(Matrix View, Matrix Projection)
-        {
-            model.Draw(View, Projection);
-        }
+
     }
 }

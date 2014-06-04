@@ -27,10 +27,7 @@ namespace Logic.Building.AntBuildings
 
         public SeedFarm()
         { }
-        public override void Draw(Matrix View, Matrix Projection)
-        {
-            model.Draw(View, Projection);
-        }
+
 
 
 

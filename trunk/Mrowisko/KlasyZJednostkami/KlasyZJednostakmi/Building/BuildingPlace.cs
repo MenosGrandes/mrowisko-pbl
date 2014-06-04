@@ -35,12 +35,12 @@ namespace Logic.Building
         {
             this.building = b;
         }
-        public override void Draw(Matrix View, Matrix Projection)
+        public override void Draw(GameCamera.FreeCamera camera)
         {
-            model.Draw(View, Projection);
+            model.Draw(camera);
             if (Building != null)
             {
-                building.Model.Draw(View, Projection);
+                building.Model.Draw(camera);
             }
         }
     }

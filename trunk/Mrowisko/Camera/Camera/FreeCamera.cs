@@ -10,7 +10,7 @@ namespace GameCamera
 {
     public class FreeCamera : Camera
     {
-
+        public bool Zoom;
         public float Yaw { get; set; }
         public float Pitch { get; set; }
         public Vector3 Position { get; set; }
@@ -28,6 +28,7 @@ namespace GameCamera
             translation = Vector3.Zero;
             
             Move(Position, 1.0f,Matrix.Identity);
+            Zoom = false;
         }
         public void Rotate(float YawChange, float PitchChange)
         {
@@ -42,10 +43,11 @@ namespace GameCamera
             
 
             Position = Vector3.Lerp(Position,translation, 0.1f);
+            if(Zoom==true)
+            Position = new Vector3(Position.X,100,Position.Z);
         }
         public override void Update(GameTime gameTime)
         {
-
             int scale = 11;
             MouseState mouseState = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
@@ -61,9 +63,9 @@ namespace GameCamera
 
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             float rotatate = 0;
-       
-            if (keyState.IsKeyDown(Keys.W)) translation += new Vector3(0, -1, 1) * MathHelper.ToRadians(Pitch) * scale;
-            if (keyState.IsKeyDown(Keys.S)) translation += new Vector3(0, 1, -1) * MathHelper.ToRadians(Pitch) * scale ;
+
+            if (keyState.IsKeyDown(Keys.W)) { translation += new Vector3(0, -1, 1) * MathHelper.ToRadians(Pitch) * scale; Zoom = false; }
+            if (keyState.IsKeyDown(Keys.S)) { translation += new Vector3(0, 1, -1) * MathHelper.ToRadians(Pitch) * scale;Zoom=false; }
             if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.Q)) rotatate += MathHelper.ToRadians(0.05f);
@@ -71,11 +73,12 @@ namespace GameCamera
             if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
             {
                translation+= Vector3.Lerp(translation, new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale,0.3f);
+               Zoom = true;
             }
             else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)
             {
                 translation += Vector3.Lerp(translation, new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1 * scale, 0.3f);
-
+                Zoom = true;
             }
             // Move 3 units per millisecond, independent of frame rate
            // translation *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
