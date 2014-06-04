@@ -111,8 +111,6 @@ namespace Map
             this.light = light;
             buildBoundingSphere();
 
-            Matrix[] bones = new Matrix[Model.Bones.Count];
-            Model.CopyAbsoluteBoneTransformsTo(bones);
 
             foreach (ModelMesh mesh in Model.Meshes)
             {
@@ -131,7 +129,7 @@ namespace Map
                                                     meshpart.NumVertices,
                                                     meshpart.StartIndex,
                                                     meshpart.PrimitiveCount,
-                                                    bones[mesh.ParentBone.Index]*Matrix.CreateTranslation(Position));
+                                                    modelTransforms[mesh.ParentBone.Index] * Matrix.CreateTranslation(Position));
                      this.shadowCasters.Add(shad);
                 }
             }
@@ -142,6 +140,8 @@ namespace Map
         Vector3 Scale, GraphicsDevice GraphicsDevice,
         ContentManager Content, LightsAndShadows.Light light)
         {
+            shadowCasters = new List<ShadowCasterObject>();
+
             this.Model = Model;
             this.graphicsDevice = GraphicsDevice;
             this.content = Content;
@@ -158,6 +158,28 @@ namespace Map
             this.skinningData = Model.Tag as SkinningData;
             Player = new AnimationPlayer(skinningData);
             buildBoundingSphere();
+
+            foreach (ModelMesh mesh in Model.Meshes)
+            {
+                if (!mesh.Name.Contains("BoundingSphere"))
+                    foreach (ModelMeshPart meshpart in mesh.MeshParts)
+                    {
+
+
+                        ShadowCasterObject shad = new ShadowCasterObject(
+                            //meshpart.VertexDeclaration,
+                                                       meshpart.VertexBuffer,
+                                                       meshpart.VertexOffset,
+                            //meshpart.VertexStride,
+                                                       meshpart.IndexBuffer,
+                            //meshpart.BaseVertex,
+                                                       meshpart.NumVertices,
+                                                       meshpart.StartIndex,
+                                                       meshpart.PrimitiveCount,
+                                                       modelTransforms[mesh.ParentBone.Index] * Matrix.CreateTranslation(Position));
+                        this.shadowCasters.Add(shad);
+                    }
+            }
 
         }
 
@@ -193,7 +215,7 @@ namespace Map
         /// </summary>
         /// <param name="View"></param>
         /// <param name="Projection"></param>
-        public void Draw(Matrix View, Matrix Projection)
+        public void Draw(GameCamera.FreeCamera camera)
         {
             
 
@@ -211,8 +233,8 @@ namespace Map
                       
                        BasicEffect effect = (BasicEffect)meshPart.Effect;
                        effect.World = localWorld;
-                       effect.View = View;
-                       effect.Projection = Projection;
+                       effect.View = camera.View;
+                       effect.Projection = camera.Projection;
                        effect.EnableDefaultLighting();
                        effect.Alpha = 0.9f;
                            /*
@@ -236,7 +258,7 @@ namespace Map
            /// <param name="View"></param>
            /// <param name="Projection"></param>
            /// <param name="CameraPosition"></param>
-           public void Draw(Matrix View, Matrix Projection, Vector3 CameraPosition, float time)
+           public void Draw(GameCamera.FreeCamera camera, float time)
            {
 
                Matrix[] bones = Player.GetSkinTransforms();
@@ -259,8 +281,8 @@ namespace Map
                        lightDir.Z *= -1;
                        effect.SetBoneTransforms(bones);
                        effect.World = localWorld;
-                       effect.View = View;
-                       effect.Projection = Projection;
+                       effect.View = camera.View;
+                       effect.Projection = camera.Projection;
 
                        effect.DirectionalLight0.Enabled = true;
                        effect.DirectionalLight0.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs(-1*(float)Math.Sin(MathHelper.ToRadians(time-1.58f))/light.LightPower)+1),0.3f,0.9f); // a red light

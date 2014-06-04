@@ -37,10 +37,7 @@ namespace Logic.Meterials.MaterialCluster
             }
 
         }
-        public override void Draw(Matrix View, Matrix Projection)
-        {
-            model.Draw(View, Projection);
-        }
+        
         public void removeRock(int n)
         {
             if (stone.Count != 0) { stone.RemoveRange(0, 1); }

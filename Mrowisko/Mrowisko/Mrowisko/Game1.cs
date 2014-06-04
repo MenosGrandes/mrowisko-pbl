@@ -227,7 +227,8 @@ GraphicsDevice);
             water = new Water(device, Content, texture[4].Width, 1);
 
            
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(150, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
+            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("queen"), new Vector3(150, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice,Content, light), 10000, 10));
+            models[0].Model.switchAnimation("Idle");
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(350, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
             models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(450, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
             //  models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
@@ -668,20 +669,22 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
 
 
-
+           /*
             pajak.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
             konik.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
             krolowa.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
             silacz.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
             mrowka.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
-
+              */
          //   anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
             foreach (InteractiveModel model in models)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
-                   
-                        model.Draw((FreeCamera)camera);
+                    if (model.Model.Player==null)
+                    { model.Draw((FreeCamera)camera); }
+                    else
+                    { model.Draw((FreeCamera)camera, time); }
                    
 
                       BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
@@ -698,8 +701,8 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                     // BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                     BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
 
-                    model.Draw(camera.View, camera.Projection);
-
+                   // model.Draw(((camera)));
+                    model.Draw((FreeCamera)camera);
 
 
                 }
@@ -719,11 +722,11 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
 
            
-            spriteBatch.DrawString(_spr_font, string.Format("D g={0}", Player.wood), new Vector2(10.0f, 140.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 140.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(240.0f, 140.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(350.0f, 140.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("D g={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(240.0f, 340.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(350.0f, 440.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 540.0f), Color.Pink);
             /*
           spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
           spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
