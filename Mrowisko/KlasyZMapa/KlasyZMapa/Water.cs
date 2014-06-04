@@ -24,17 +24,17 @@ namespace Map
         private Vector3 windDirection = new Vector3(0, 0, 1);
         public VertexBuffer waterVertexBuffer { get; set; }
 
-        public SkyDome sky;
-        public Water(GraphicsDevice device, ContentManager Content, float terrainLength,int scale)
+       public SkyDome sky;
+        public Water(GraphicsDevice device, ContentManager Content, float terrainLength, int scale)
         {
             this.effect = Content.Load<Effect>("Effects/MultiTextured");
             this.waterBumpMap = Content.Load<Texture2D>("Textures/Water/waterbump");
             this.Scale = scale;
             this.device = device;
-            this.waterHeight = 1 ;
-            this.terrainLength = terrainLength*Scale;
+            this.waterHeight = 6;
+            this.terrainLength = terrainLength * Scale;
             this.terrainWidth = this.terrainLength;
-           
+
 
             PresentationParameters pp = device.PresentationParameters;
 
@@ -76,27 +76,32 @@ namespace Map
             return finalPlane;
         }
 
-        public void DrawRefractionMap(FreeCamera camera,QuadTree tree)
+        public void DrawRefractionMap(GameCamera.FreeCamera camera, float time, LightsAndShadows.Shadow shadow, LightsAndShadows.Light light,QuadTree tree)
         {
             Plane refractionPlane = CreatePlane(waterHeight + 1.5f, new Vector3(0, -1, 0), camera.View, false);
 
+
+            //refractionPlane = CreatePlane(30.0045F, new Vector3(0, -1, 0), viewMatrix, false);
             effect.Parameters["ClipPlane0"].SetValue(new Vector4(refractionPlane.Normal, refractionPlane.D));
             effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
             device.SetRenderTarget(refractionRenderTarget);
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-            sky.DrawSkyDome(camera);
-           // tree.Draw(camera, 0);
-
+           // tree.Draw(camera, time, shadow, light);
             device.SetRenderTarget(null);
             effect.Parameters["Clipping"].SetValue(false);   // Make sure you turn it back off so the whole scene doesnt keep rendering as clipped
             refractionMap = refractionRenderTarget;
 
         }
 
-        public void DrawReflectionMap( FreeCamera camera,QuadTree tree)
+        public void DrawReflectionMap(FreeCamera camera)
         {
-            Plane reflectionPlane = CreatePlane(waterHeight - 0.5f , new Vector3(0, 1, 0), camera.reflectionViewMatrix, true);
+            Plane reflectionPlane = CreatePlane(waterHeight - 0.5f, new Vector3(0, -1, 0), camera.reflectionViewMatrix, true);
+            //device.ClipPlanes[0].Plane = reflectionPlane;
+            //device.ClipPlanes[0].IsEnabled = true;
+            //device.SetRenderTarget(0, reflectionRenderTarget);
+
             effect.Parameters["ClipPlane0"].SetValue(new Vector4(reflectionPlane.Normal, reflectionPlane.D));
+            //effect.Parameters["ClipPlane0"].SetValue(new Vector4(-reflectionPlane.Normal, -reflectionPlane.D));
 
             effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
             device.SetRenderTarget(reflectionRenderTarget);
@@ -104,18 +109,25 @@ namespace Map
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             sky.DrawSkyDome(camera);
-           // tree.Draw(camera, 0);
+            // DrawSkyDome(reflectionViewMatrix);
+          
+
+            //device.ClipPlanes[0].IsEnabled = false;
             effect.Parameters["Clipping"].SetValue(false);
 
+            //device.SetRenderTarget(0, null);
             device.SetRenderTarget(null);
 
             reflectionMap = reflectionRenderTarget;
+            //System.IO.Stream ss = System.IO.File.OpenWrite("C:\Test\Reflection.jpg");
+            //reflectionRenderTarget.SaveAsJpeg(ss, 500, 500);
+            //ss.Close();
         }
 
-        public void DrawWater(float time,FreeCamera camera)
+        public void DrawWater(float time, FreeCamera camera)
         {
-            
-            
+
+
             effect.CurrentTechnique = effect.Techniques["Water"];
             Matrix worldMatrix = Matrix.Identity;
             effect.Parameters["xWorld"].SetValue(worldMatrix);

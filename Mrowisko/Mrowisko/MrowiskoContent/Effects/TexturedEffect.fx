@@ -13,7 +13,6 @@ float xAmbient;
 float xOvercast;
 
 bool Clipping;
-float4 ClipPlane0;
 
 Texture xTexture;
 
@@ -45,7 +44,6 @@ TVertexToPixel TexturedVS(float4 inPos : POSITION, float3 inNormal : NORMAL, flo
 	float3 Normal = normalize(mul(normalize(inNormal), xWorld));
 		Output.LightingFactor = 1;
 
-	Output.clipDistances = dot(inPos, ClipPlane0); //MSS - Water Refactor added
 
 	return Output;
 }

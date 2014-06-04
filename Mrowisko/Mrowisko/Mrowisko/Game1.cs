@@ -41,7 +41,9 @@ namespace AntHill
         InteractiveModel spider;
         //HUD.LifeBar hp = new HUD.LifeBar(5.0f);
 
-
+        //-----------
+        float liczba = 0;
+        //-----------
         GraphicsDeviceManager graphics;
         public GraphicsDevice device;
         float x, y, z;
@@ -423,6 +425,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
                 pajak.switchAnimation("Walk");
                 silacz.switchAnimation("Walk");
             }
+           
             #region wstepneBudowanie
             if (IModel[0].GetType() == typeof(BuildingPlace)) { 
             if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.J))
@@ -595,6 +598,16 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             //rasterizerState.FillMode = FillMode.WireFrame;
             //GraphicsDevice.RasterizerState = rasterizerState;
 
+            explosionParticles.SetCamera(camera.View, camera.Projection);
+            explosionSmokeParticles.SetCamera(camera.View, camera.Projection);
+            projectileTrailParticles.SetCamera(camera.View, camera.Projection);
+            smokePlumeParticles.SetCamera(camera.View, camera.Projection);
+            fireParticles.SetCamera(camera.View, camera.Projection);
+
+
+
+
+
             device.SetRenderTarget(shadow.RenderTarget);
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
 
@@ -679,16 +692,16 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             }
             shadow.setShadowMap();
             device.SetRenderTarget(null);
+            water.DrawRefractionMap((FreeCamera)camera, time, shadow, light,quadTree);
 
-          
-            water.DrawRefractionMap((FreeCamera)camera, quadTree);
+            water.DrawReflectionMap(((FreeCamera)(camera)));
 
-            water.DrawReflectionMap((FreeCamera)camera, quadTree);
+
 
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-            water.sky.DrawSkyDome((FreeCamera)camera);
 
+            water.sky.DrawSkyDome((FreeCamera)camera);
 
             quadTree.Draw((FreeCamera)camera, time, shadow, light);
 
@@ -772,11 +785,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
             spriteBatch.End();
 
-            explosionParticles.SetCamera(camera.View, camera.Projection);
-            explosionSmokeParticles.SetCamera(camera.View, camera.Projection);
-            projectileTrailParticles.SetCamera(camera.View, camera.Projection);
-            smokePlumeParticles.SetCamera(camera.View, camera.Projection);
-            fireParticles.SetCamera(camera.View, camera.Projection);
+
 
             base.Draw(gameTime);
         }

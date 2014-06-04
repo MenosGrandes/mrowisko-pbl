@@ -43,8 +43,7 @@ namespace GameCamera
             
 
             Position = Vector3.Lerp(Position,translation, 0.1f);
-            if(Zoom==true)
-            Position = new Vector3(Position.X,100,Position.Z);
+         
         }
         public override void Update(GameTime gameTime)
         {
@@ -109,15 +108,15 @@ namespace GameCamera
 
 
             Vector3 reflCameraPosition = Position;
-            reflCameraPosition.Y = -Position.Y + 3 * 2;
-            Vector3 reflTargetPos = Position;
-            reflTargetPos.Y = -Target.Y + 3 * 2;
+            reflCameraPosition.Y = -Position.Y + 8 * 2;
+            Vector3 reflTargetPos = Target;
+            reflTargetPos.Y = -Target.Y + 8 * 2;
 
             Vector3 cameraRight = Vector3.Transform(new Vector3(1, 0, 0), rotation);
             Vector3 invUpVector = Vector3.Cross(cameraRight, reflTargetPos - reflCameraPosition);
 
             reflectionViewMatrix = Matrix.CreateLookAt(reflCameraPosition, reflTargetPos, invUpVector);
-                            
+                      
             lastMouseState = mouseState;
         }
 
