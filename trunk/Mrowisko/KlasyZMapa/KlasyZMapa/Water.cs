@@ -86,14 +86,14 @@ namespace Map
             effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
             device.SetRenderTarget(refractionRenderTarget);
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-           // tree.Draw(camera, time, shadow, light);
+            tree.Draw(camera, time, shadow, light);
             device.SetRenderTarget(null);
             effect.Parameters["Clipping"].SetValue(false);   // Make sure you turn it back off so the whole scene doesnt keep rendering as clipped
             refractionMap = refractionRenderTarget;
 
         }
 
-        public void DrawReflectionMap(FreeCamera camera)
+        public void DrawReflectionMap(GameCamera.FreeCamera camera, float time, LightsAndShadows.Shadow shadow, LightsAndShadows.Light light, QuadTree tree)
         {
             Plane reflectionPlane = CreatePlane(waterHeight - 0.5f, new Vector3(0, -1, 0), camera.reflectionViewMatrix, true);
             //device.ClipPlanes[0].Plane = reflectionPlane;
@@ -109,8 +109,7 @@ namespace Map
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             sky.DrawSkyDome(camera);
-            // DrawSkyDome(reflectionViewMatrix);
-          
+            tree.Draw(camera, time, shadow, light);
 
             //device.ClipPlanes[0].IsEnabled = false;
             effect.Parameters["Clipping"].SetValue(false);

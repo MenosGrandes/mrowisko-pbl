@@ -50,21 +50,16 @@ namespace GameCamera
             int scale = 11;
             MouseState mouseState = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
-            //Position=new Vector3();
 
 
 
-            // Determine how much the camera should turn
-            float deltaX = (float)lastMouseState.X - (float)mouseState.X;
-            float deltaY = (float)lastMouseState.Y - (float)mouseState.Y;
 
-           //Rotate(deltaX * .01f, -deltaY * .01f);
 
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             float rotatate = 0;
 
-            if (keyState.IsKeyDown(Keys.W)) { translation += new Vector3(0, -1, 1) * MathHelper.ToRadians(Pitch) * scale; Zoom = false; }
-            if (keyState.IsKeyDown(Keys.S)) { translation += new Vector3(0, 1, -1) * MathHelper.ToRadians(Pitch) * scale;Zoom=false; }
+            if (keyState.IsKeyDown(Keys.W)) { translation += new Vector3(0, (float)Math.Sin(-45), 1) * MathHelper.ToRadians(Pitch) * scale ;   Zoom = false; }
+            if (keyState.IsKeyDown(Keys.S)) { translation += new Vector3(0, (float)Math.Sin(45), -1) * MathHelper.ToRadians(Pitch) * scale; Zoom = false; }
             if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.Q)) rotatate += MathHelper.ToRadians(0.05f);
@@ -108,9 +103,9 @@ namespace GameCamera
 
 
             Vector3 reflCameraPosition = Position;
-            reflCameraPosition.Y = -Position.Y + 8 * 2;
+            reflCameraPosition.Y = -Position.Y +6 * 2;
             Vector3 reflTargetPos = Target;
-            reflTargetPos.Y = -Target.Y + 8 * 2;
+            reflTargetPos.Y = -Target.Y + 6 * 2;
 
             Vector3 cameraRight = Vector3.Transform(new Vector3(1, 0, 0), rotation);
             Vector3 invUpVector = Vector3.Cross(cameraRight, reflTargetPos - reflCameraPosition);
