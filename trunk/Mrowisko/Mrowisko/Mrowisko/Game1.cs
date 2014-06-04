@@ -80,6 +80,7 @@ namespace AntHill
 
         TimeSpan timeToNextProjectile = TimeSpan.Zero;
         Random random = new Random();
+        private Effect animHiDefShadowEffect;
 
         public Game1()
         {
@@ -153,6 +154,7 @@ namespace AntHill
 
 
             hiDefShadowEffect = Content.Load<Effect>("Effects/Shadows");
+            animHiDefShadowEffect = Content.Load<Effect>("Effects/AnimatedShadow");
             device = GraphicsDevice;
             device.DepthStencilState = DepthStencilState.Default;
             shadow.RenderTarget = new RenderTarget2D(device, 4096, 4096, false, pp.BackBufferFormat, DepthFormat.Depth24Stencil8);
@@ -611,7 +613,8 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             shadow.UpdateLightData(0.6f, light.lightPosChange(time), (FreeCamera)camera);
             shadow.setShadowMap();
             device.SetRenderTarget(shadow.RenderTarget);
-            PopulateShadowEffect("ShadowMap");
+            //PopulateShadowEffect("ShadowMap");
+            animHiDefShadowEffect.CurrentTechnique = animHiDefShadowEffect.Techniques["Technique1"];
 
             /*  foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
               {
@@ -626,25 +629,51 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                 //hiDefShadowEffect.Parameters["Model"].SetValue(true);
                 hiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
                 hiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
+                animHiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
+                animHiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
                 // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
                 //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
                 //hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
 
-
-                foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+                if (model.Model.Player == null)
                 {
-                    // pass.Apply();
-                    // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
-                    //  {
-
-
-                    foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
+                    foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
                     {
-                        hiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
-                        pass.Apply();
-                        device.SetVertexBuffer(shadowCaster.VertexBuffer);
-                        device.Indices = shadowCaster.IndexBuffer;
-                        device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
+                        // pass.Apply();
+                        // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                        //  {
+
+
+                        foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
+                        {
+                            hiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
+                            pass.Apply();
+                            device.SetVertexBuffer(shadowCaster.VertexBuffer);
+                            device.Indices = shadowCaster.IndexBuffer;
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
+                        }
+                    }
+                }
+                else
+                {
+                    
+                    foreach (EffectPass pass in animHiDefShadowEffect.CurrentTechnique.Passes)
+                    {
+                        // pass.Apply();
+                        // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                        //  {
+
+
+                        foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
+                        {
+                            
+                            animHiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
+                            animHiDefShadowEffect.Parameters["Bones"].SetValue(model.Model.Player.GetSkinTransforms());
+                            pass.Apply();
+                            device.SetVertexBuffer(shadowCaster.VertexBuffer);
+                            device.Indices = shadowCaster.IndexBuffer;
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
+                        }
                     }
                 }
             }
@@ -721,13 +750,13 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                  new Vector2(10.0f, 20.0f), Color.Tomato);
 
 
-           
+           /*
             spriteBatch.DrawString(_spr_font, string.Format("D g={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(240.0f, 340.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(350.0f, 440.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 540.0f), Color.Pink);
-            /*
+            
           spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
           spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
            
@@ -757,7 +786,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
         {
 
             hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowMap"];
-
+            
             hiDefShadowEffect.Parameters["xView"].SetValue(camera.View);
             hiDefShadowEffect.Parameters["xProjection"].SetValue(camera.Projection);
             hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);

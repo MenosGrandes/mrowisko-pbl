@@ -301,35 +301,45 @@ namespace Map
         /// Update metod for Animations
         /// </summary>
         /// <param name="gameTime"></param>
-        public void Update(GameTime gameTime)
-        {
-            // update world
-            Matrix world = Matrix.CreateScale(Scale) *
-   Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
-   Matrix.CreateTranslation(Position);
-            if (Player != null) { 
-         Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
-            }
-         if (shadowCasters != null)
-         {
+           public void Update(GameTime gameTime)
+           {
+               // update world
+               Matrix world = Matrix.CreateScale(Scale) *
+      Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
+      Matrix.CreateTranslation(Position);
+               if (shadowCasters != null)
+               {
+                   if (Player != null)
+                   {
+                       Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+                   }
 
-             foreach (ModelMesh mesh in Model.Meshes)
-             {
-                 if (!mesh.Name.Contains("BoundingSphere"))
-                     foreach (ModelMeshPart meshpart in mesh.MeshParts)
-                     {
 
-                         foreach (ShadowCasterObject sc in shadowCasters)
-                         {
-                             
-                             sc.World = modelTransforms[mesh.ParentBone.Index] * world;
-                         }
+                   foreach (ModelMesh mesh in Model.Meshes)
+                   {
+                       if (!mesh.Name.Contains("BoundingSphere"))
+                           foreach (ModelMeshPart meshpart in mesh.MeshParts)
+                           {
 
-                     }
-             }
-         }
+                               foreach (ShadowCasterObject sc in shadowCasters)
+                               {
+                                  
+                                       sc.World = modelTransforms[mesh.ParentBone.Index] * world;
+                                                                    
+                               }
 
-        }
+                           }
+                   }
+               }
+               else
+               {
+                   if (Player != null)
+                   {
+                       Player.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
+                   }
+
+               }
+           }
 
         public void basicDraw()
         {
