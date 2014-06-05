@@ -9,6 +9,14 @@ namespace Logic
 {
     public class Laser:InteractiveModel
     {
+
+        private bool canStart;
+
+        public bool CanStart
+        {
+            get { return canStart; }
+            set { canStart = value; }
+        }
         private Curve3D movementPath;
 
         public Curve3D MovementPath
@@ -24,6 +32,7 @@ namespace Logic
         public Laser(LoadModel model,Curve3D _movementPath):base(model)
         {
             movementPath = _movementPath;
+            canStart = false;
         }
 
         public override void Intersect(InteractiveModel interactive)
@@ -43,13 +52,20 @@ namespace Logic
                  }
         }
          public override void Draw( GameCamera.FreeCamera camera)
-        {
+        {  if(canStart==false)
+        { return; }
             model.Draw(camera);
         }
          public override void Update(GameTime _time)
          {
+             if (canStart == false)
+             { return; }
              time += (float)_time.ElapsedGameTime.TotalMilliseconds;
              model.Position = movementPath.GetPointOnCurve(time);
+         }
+        public void Start()
+         {
+             canStart = true;
          }
     }
 }

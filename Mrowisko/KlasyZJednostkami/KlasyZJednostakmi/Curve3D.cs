@@ -16,7 +16,7 @@ namespace Logic
         public Curve curveY = new Curve();
         public Curve curveZ = new Curve();
 
-        public Curve3D()
+        public Curve3D(List<PointInTime>points)
         {
             curveX.PostLoop = CurveLoopType.Oscillate;
             curveY.PostLoop = CurveLoopType.Oscillate;
@@ -25,7 +25,11 @@ namespace Logic
             curveX.PreLoop = CurveLoopType.Oscillate;
             curveY.PreLoop = CurveLoopType.Oscillate;
             curveZ.PreLoop = CurveLoopType.Oscillate;
-            InitCurve();
+           foreach(PointInTime point in points)
+           {
+               AddPoint(point);
+           }
+            this.SetTangents();
         }
         public void SetTangents()
         {
@@ -79,11 +83,11 @@ namespace Logic
             }
         }
 
-        public void AddPoint(Vector3 point, float time)
+        public void AddPoint(PointInTime point)
         {
-            curveX.Keys.Add(new CurveKey(time, point.X));
-            curveY.Keys.Add(new CurveKey(time, point.Y));
-            curveZ.Keys.Add(new CurveKey(time, point.Z));
+            curveX.Keys.Add(new CurveKey(point.time, point.point.X));
+            curveY.Keys.Add(new CurveKey(point.time, point.point.Y));
+            curveZ.Keys.Add(new CurveKey(point.time, point.point.Z));
         }
         public Vector3 GetPointOnCurve(float time)
         {
@@ -94,7 +98,7 @@ namespace Logic
             return point;
         }
        public void InitCurve()
-        {
+        {   /*
             float time = 0;
             this.AddPoint(new Vector3(75, 40, 450), time);
             time += 2000;
@@ -121,7 +125,7 @@ namespace Logic
             this.AddPoint(new Vector3(420, 40, 60), time);
             time += 3000;
             this.AddPoint(new Vector3(210, 40, 60), time);
-
+             */
             this.SetTangents();
         }
     }

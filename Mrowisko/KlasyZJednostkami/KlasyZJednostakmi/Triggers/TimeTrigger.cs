@@ -9,8 +9,8 @@ namespace Logic.Triggers
 {
    public class TimeTrigger
    {
-       TimeSpan timeToEngage;
-       int secondsToEngage;
+       protected TimeSpan timeToEngage;
+       protected int secondsToEngage;
        public bool used;
        public TimeTrigger(int secondsToEngage)
        {
@@ -18,14 +18,8 @@ namespace Logic.Triggers
             this.secondsToEngage = secondsToEngage;
             used = false;
        }
-       public  void Update(GameTime time)
-       {
-           timeToEngage += time.ElapsedGameTime;
-           if(timeToEngage>TimeSpan.FromSeconds((double)secondsToEngage))
-           {
-               //Console.WriteLine("KABOOOMMMM");
-               used = true;
-           }
-       }
+
+        public virtual void Update(GameTime time)
+        {}
     }
 }
