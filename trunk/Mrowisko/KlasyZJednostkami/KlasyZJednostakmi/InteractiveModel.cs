@@ -45,7 +45,6 @@ namespace Logic
 
         public bool snared = false;
         public float time_snared = 0.0f;
-
         public InteractiveModel( LoadModel model)
         {         
             this.model=model;

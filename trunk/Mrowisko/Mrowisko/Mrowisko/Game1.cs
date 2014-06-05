@@ -22,6 +22,7 @@ using System.Reflection;
 using Controlers;
 using Controlers.CursorEnum;
 using Logic.Triggers;
+using Logic.Player;
 
 namespace AntHill
 {
@@ -337,7 +338,7 @@ Content.Load<Model>("Models/domek"),
 new Vector3(600, 13, 300), Vector3.Zero,
 new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
             IModel.Add(gr);
-
+            models.Add(gr);
 
             control = new Logic.Control(texture[11], quadTree);
           
@@ -576,7 +577,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
                         {
                             if (((SeedFarm)model).timeElapsed > ((SeedFarm)model).CropTime)
                             {
-                                Player.addMaterial(model.addCrop());
+                                Logic.Player.Player.addMaterial(model.addCrop());
                                 ((SeedFarm)model).timeElapsed = 0;
                             }
                         }
@@ -789,20 +790,22 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
            
             spriteBatch.DrawString(_spr_font, string.Format("D g={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
-            /* spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
-             spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(240.0f, 340.0f), Color.Pink);
-             spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(350.0f, 440.0f), Color.Pink);
-             spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 540.0f), Color.Pink);
-            
-           spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
-           spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
+             spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
+             spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.wood), new Vector2(230.0f, 240.0f), Color.Pink);
+
+            spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(340.0f, 240.0f), Color.Pink);
+             spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(450.0f, 240.0f), Color.Pink);
+             spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 240.0f), Color.Pink);
+             /* 
+             spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
+             spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
            
-         spriteBatch.DrawString(_spr_font, string.Format("iloscMrowek={0}", models.Count), new Vector2(10.0f, 220.0f), Color.Pink);
-         spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
-         spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Yaw), new Vector2(10.0f, 150.0f), Color.Tomato);
-         spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
-         spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
-        */
+           spriteBatch.DrawString(_spr_font, string.Format("iloscMrowek={0}", models.Count), new Vector2(10.0f, 220.0f), Color.Pink);
+           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
+           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Yaw), new Vector2(10.0f, 150.0f), Color.Tomato);
+           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
+           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
+          */
             //spriteBatch.DrawString(_spr_font, string.Format("obrot ={0}", models[0].Model.Rotation), new Vector2(10.0f, 80.0f), Color.Pink);
            
             control.Draw(spriteBatch);
