@@ -76,36 +76,7 @@ namespace AntHill
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            selected = true;   
-             foreach (string name in checkedListBox1.CheckedItems)
-                {
-             switch(name)
-             {
-                 case "AntPeasant":
-                     {
-                         AntPeasant p = new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(CreatorController.content.Load<Model>("Models/mrowka_01"), CreatorController.MousePosition, new Vector3(0, 6, 0), new Vector3(0.5f), CreatorController.device), 10, 100);
-                         model = p;
-                         break; }
-                 case "Log":
-                     {
-                         Log p = new Log(new LoadModel(CreatorController.content.Load<Model>("Models/log"), new Vector3(200, 12, 42), Vector3.Zero, Vector3.One, CreatorController.device),Convert.ToInt16(textBox1.Text));
-                         model = p;
-                         break;
-                     }
-                 case "Rock":
-                     {
-                         Rock p = new Rock(new LoadModel(CreatorController.content.Load<Model>("Models/stone2"), new Vector3(200, 12, 42), Vector3.Zero, Vector3.One, CreatorController.device), Convert.ToInt16(textBox1.Text));
-                         model = p;
-                         break;
-                     }
-                 case "BuildingPlace":
-                     {
-                         BuildingPlace p = new BuildingPlace(new LoadModel(CreatorController.content.Load<Model>("Models//buildingPlace"), new Vector3(200, 12, 42), Vector3.Zero, Vector3.One, CreatorController.device));
-                         model = p;
-                         break;
-                     }
-             }
-             }
+            
             
             
         }
@@ -175,10 +146,13 @@ namespace AntHill
              {
                  model.selected = false;
              }
-             if (listBox2.SelectedIndex>=0)
+             if (listBox2.SelectedIndex >= 0)
+             {
                  (CreatorController.models.ElementAt(selectedIndex)).selected = true;
-
-
+               //  numericUpDown7.Value = (decimal)CreatorController.models.ElementAt(selectedIndex).Model.Position.X;
+               //  numericUpDown8.Value = (decimal)CreatorController.models.ElementAt(selectedIndex).Model.Position.Y;
+               //  numericUpDown9.Value = (decimal)CreatorController.models.ElementAt(selectedIndex).Model.Position.Z;
+             }
 
          }
 
@@ -196,12 +170,6 @@ namespace AntHill
          }
 
 
-      
-        private void button2_MouseClick(object sender, MouseEventArgs e)
-        {
-            //saveFileDialog1.ShowDialog();
-            Save();
-        }
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -298,21 +266,72 @@ namespace AntHill
 
         private void button1_Click(object sender, System.EventArgs e)
         {
-            numericUpDown7.Value = (decimal)CreatorController.models[selectedIndex].Model.Position.X;
-            numericUpDown8.Value = (decimal)CreatorController.models[selectedIndex].Model.Position.Y;
-            numericUpDown9.Value = (decimal)CreatorController.models[selectedIndex].Model.Position.Z;
+           
+        }
+
+
+
+        private void btnAdd_MouseClick(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine("asdasd");
+            selected = true;
+            foreach (string name in checkedListBox1.CheckedItems)
+            {
+                switch (name)
+                {
+                    case "AntPeasant":
+                        {
+                            AntPeasant p = new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(CreatorController.content.Load<Model>("Models/mrowka_01"), CreatorController.MousePosition, new Vector3(0, 6, 0), new Vector3(0.5f), CreatorController.device), 10, 100);
+                            model = p;
+                            break;
+                        }
+                    case "Log":
+                        {
+                            Log p = new Log(new LoadModel(CreatorController.content.Load<Model>("Models/log"), new Vector3(200, 12, 42), Vector3.Zero, Vector3.One, CreatorController.device), Convert.ToInt16(textBox1.Text));
+                            model = p;
+                            break;
+                        }
+                    case "Rock":
+                        {
+                            Rock p = new Rock(new LoadModel(CreatorController.content.Load<Model>("Models/stone2"), new Vector3(200, 12, 42), Vector3.Zero, Vector3.One, CreatorController.device), Convert.ToInt16(textBox1.Text));
+                            model = p;
+                            break;
+                        }
+                    case "BuildingPlace":
+                        {
+                            BuildingPlace p = new BuildingPlace(new LoadModel(CreatorController.content.Load<Model>("Models//buildingPlace"), new Vector3(200, 12, 42), Vector3.Zero, Vector3.One, CreatorController.device));
+                            model = p;
+                            break;
+                        }
+                }
+            }
+        }
+
+        private void button2_Click(object sender, System.EventArgs e)
+        {
+            Save();
+        }
+
+        private void button3_Click_1(object sender, System.EventArgs e)
+        {
+            Load();
+        }
+
+        private void button1_Click_1(object sender, System.EventArgs e)
+        {
+            
+            decimal d1 = (decimal)CreatorController.models[selectedIndex].Model.Position.Z;
+            decimal d2 = (decimal)CreatorController.models[selectedIndex].Model.Position.Y;
+            decimal d3 = (decimal)CreatorController.models[selectedIndex].Model.Position.X;
+            numericUpDown7.Value = d1;
+            numericUpDown8.Value = d2;
+            numericUpDown9.Value = d3;
             Console.WriteLine(numericUpDown7.Value);
         }
 
-        private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
-        {
 
-        }
 
-        private void label13_Click(object sender, System.EventArgs e)
-        {
 
-        }
 
 
 
