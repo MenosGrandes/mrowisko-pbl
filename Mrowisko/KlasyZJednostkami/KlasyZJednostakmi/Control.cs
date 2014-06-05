@@ -498,16 +498,16 @@ namespace Logic
             { // We're in the upper left triangle 
 
                 return
-                  MathHelper.Lerp(this.heights[x, z], this.heights[x + 1, z], fractionX) +
-                  (this.heights[x, z + 1] - this.heights[x, z]) * fractionZ;
+                (  MathHelper.Lerp(this.heights[x, z], this.heights[x + 1, z], fractionX) +
+                  (this.heights[x, z + 1] - this.heights[x, z]) * fractionZ)*2;
 
             }
             else
             { // We're in the lower right triangle 
 
                 return
-                  MathHelper.Lerp(this.heights[x, z + 1], this.heights[x + 1, z + 1], fractionX) +
-                  (this.heights[x + 1, z] - this.heights[x + 1, z + 1]) * (1.0f - fractionZ);
+                (MathHelper.Lerp(this.heights[x, z + 1], this.heights[x + 1, z + 1], fractionX) +
+                  (this.heights[x + 1, z] - this.heights[x + 1, z + 1]) * (1.0f - fractionZ))*2;
 
             }
         }

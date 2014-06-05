@@ -66,12 +66,12 @@ namespace GameCamera
             if (keyState.IsKeyDown(Keys.E)) rotatate -=MathHelper.ToRadians(0.05f);
             if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
             {
-               translation+= Vector3.Lerp(translation, new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale,0.3f);
+               translation+= Vector3.Lerp(translation, new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale,0.1f);
                Zoom = true;
             }
             else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)
             {
-                translation += Vector3.Lerp(translation, new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1 * scale, 0.3f);
+                translation += Vector3.Lerp(translation, new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1 * scale, 0.1f);
                 Zoom = true;
             }
             // Move 3 units per millisecond, independent of frame rate

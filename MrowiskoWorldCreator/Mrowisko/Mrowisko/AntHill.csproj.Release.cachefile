@@ -2,6 +2,9 @@ Content\Models\mrowka_01.xnb
 Content\Models\stone2.xnb
 Content\Models\domek.xnb
 Content\Models\domek2.xnb
+Content\Models\laser.xnb
+Content\Models\log.xnb
+Content\Models\buildingPlace.xnb
 Content\Textures\Ground\sand.xnb
 Content\Textures\Ground\snow.xnb
 Content\HeighMaps\treeMap.xnb
@@ -28,6 +31,3 @@ Content\animacja_Anims.xnb
 Content\stone2map_0.xnb
 Content\Models\SkyDome\cloudMap_0.xnb
 Content\fire_0.xnb
-Content\Models\laser.xnb
-Content\Models\log.xnb
-Content\Models\buildingPlace.xnb

@@ -191,21 +191,21 @@ namespace Map
            }
 
 
-           /*
+            /*
      
             
-          foreach (EnvModel pass1 in envModelList)
-          {
-              pass1.DrawModels(camera);
-          }
-           
-     */
-           foreach (EnvBilb pass in envBilbList)
+           foreach (EnvModel pass1 in envModelList)
            {
-               pass.DrawBillboards(camera.View, camera.Projection, camera.Position, time);
+               pass1.DrawModels(camera);
            }
-               
            
+    
+            foreach (EnvBilb pass in envBilbList)
+            {
+                pass.DrawBillboards(camera.View, camera.Projection, camera.Position, time);
+            }
+            */
+
 
         }
         internal void UpdateBuffer(int vIndex)

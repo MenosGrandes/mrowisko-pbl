@@ -86,7 +86,7 @@ namespace Map
             effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
             device.SetRenderTarget(refractionRenderTarget);
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-            tree.Draw(camera, time, shadow, light);
+         //   tree.Draw(camera, time, shadow, light);
             device.SetRenderTarget(null);
             effect.Parameters["Clipping"].SetValue(false);   // Make sure you turn it back off so the whole scene doesnt keep rendering as clipped
             refractionMap = refractionRenderTarget;
@@ -109,7 +109,7 @@ namespace Map
 
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             sky.DrawSkyDome(camera);
-            tree.Draw(camera, time, shadow, light);
+           // tree.Draw(camera, time, shadow, light);
 
             //device.ClipPlanes[0].IsEnabled = false;
             effect.Parameters["Clipping"].SetValue(false);
