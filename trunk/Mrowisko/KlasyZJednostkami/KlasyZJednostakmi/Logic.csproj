@@ -94,6 +94,8 @@
     <Compile Include="Meterials\MaterialCluster\Rock.cs" />
     <Compile Include="Meterials\Stone.cs" />
     <Compile Include="Meterials\Wood.cs" />
+    <Compile Include="PointInTime.cs" />
+    <Compile Include="Triggers\LaserTrigger.cs" />
     <Compile Include="Triggers\TimeTrigger.cs" />
     <Compile Include="Triggers\Trigger.cs" />
     <Compile Include="Units\Allies\Allies.cs" />

@@ -35,7 +35,9 @@ namespace AntHill
         List<InteractiveModel> inter = new List<InteractiveModel>(); 
         List<InteractiveModel> IModel = new List<InteractiveModel>();
         List<InteractiveModel> Enemys = new List<InteractiveModel>();
-        List<TimeTrigger> timeTriggers = new List<TimeTrigger>();
+        List<LaserTrigger> timeTriggers = new List<LaserTrigger>();
+        List<Curve3D> curvesForLaser = new List<Curve3D>();
+        List<List<PointInTime>> pointsForLasers = new List<List<PointInTime>>();
         Logic.Control control;
         ControlEnemy e= new ControlEnemy();
         InteractiveModel spider;
@@ -153,8 +155,22 @@ namespace AntHill
             pp.DepthStencilFormat = DepthFormat.Depth24Stencil8;
 
             #endregion
+            #region PointsForLaser
+            pointsForLasers.Add(new List<PointInTime>());
+            pointsForLasers[0].Add(new PointInTime(new Vector3(75, 40, 450), 0)) ;
+            pointsForLasers[0].Add(new PointInTime(new Vector3(30, 40, 360), 2000)) ;
+            pointsForLasers[0].Add(new PointInTime(new Vector3(120, 40, 300), 4000)) ;
+            pointsForLasers[0].Add(new PointInTime(new Vector3(30, 40, 240), 6000) );
+            pointsForLasers[0].Add(new PointInTime(new Vector3(120, 40, 180), 8000) );
+
+            pointsForLasers[0].Add(new PointInTime(new Vector3(750, 40, 120), 10000)) ;
+            pointsForLasers[0].Add(new PointInTime(new Vector3(60, 40, 60), 12000)) ;
 
 
+            #endregion
+            #region Curve
+            curvesForLaser.Add(new Curve3D(pointsForLasers[0]));
+            #endregion
             hiDefShadowEffect = Content.Load<Effect>("Effects/Shadows");
             animHiDefShadowEffect = Content.Load<Effect>("Effects/AnimatedShadow");
             device = GraphicsDevice;
@@ -246,13 +262,19 @@ GraphicsDevice);
             models.Add(new Trigger(new LoadModel(Content.Load<Model>("Models/trigger"), new Vector3(0, 0, 0), Vector3.Up,new Vector3(0.3f),GraphicsDevice,light)));
            
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-            models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0),new Vector3(0.3f),GraphicsDevice,light)),new Curve3D()));
+            models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0),new Vector3(0.3f),GraphicsDevice,light)),curvesForLaser[0]));
+          //  models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), new Curve3D()));
+          //  models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), new Curve3D()));
+
             Enemys.Add(models[0]);
             Enemys.Add(models[1]);
             Enemys.Add(models[2]);
             spider = new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10);
       
-            timeTriggers.Add(new TimeTrigger(5));
+            timeTriggers.Add(new LaserTrigger((Laser)models[6],20));
+            //timeTriggers.Add(new LaserTrigger((Laser)models[7], 20));
+       //     timeTriggers.Add(new LaserTrigger((Laser)models[8], 20));
+
             // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));      //
 
            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
@@ -484,6 +506,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
             for (int i = 0; i < timeTriggers.Count;i++ )
             {
+
                 timeTriggers[i].Update(gameTime);
                 if(timeTriggers[i].used==true)
                 {

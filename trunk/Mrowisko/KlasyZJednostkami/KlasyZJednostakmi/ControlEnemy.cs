@@ -54,7 +54,7 @@ namespace Logic
 
                 //         pozycja = new Vector3(x, Enemy.Model.Position.Y, z);
                 //    }
-                Console.WriteLine(count);
+                //Console.WriteLine(count);
                 if (spr <= (promien * promien))
                 {
                     pozycja = new Vector3(ants1.Model.Position.X, ants1.Model.Position.Y, ants1.Model.Position.Z);
