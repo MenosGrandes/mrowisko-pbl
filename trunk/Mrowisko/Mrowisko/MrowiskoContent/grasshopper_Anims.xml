@@ -19,7 +19,7 @@
         <EndFrame>30</EndFrame>
       </Item>
 	   <Item>
-        <ClipName>Idle1</ClipName>
+        <ClipName>Idle</ClipName>
         <StartFrame>31</StartFrame>
         <EndFrame>55</EndFrame>
       </Item>
@@ -29,9 +29,14 @@
         <EndFrame>75</EndFrame>
       </Item>
 	  <Item>
-        <ClipName>Kick</ClipName>
+        <ClipName>Atack</ClipName>
         <StartFrame>76</StartFrame>
         <EndFrame>100</EndFrame>
+      </Item>
+	  <Item>
+        <ClipName>Walk</ClipName>
+        <StartFrame>101</StartFrame>
+        <EndFrame>145</EndFrame>
       </Item>
     </ClipParts>
 
