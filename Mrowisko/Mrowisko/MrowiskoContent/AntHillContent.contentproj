@@ -381,6 +381,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ant.X">
+      <Name>ant</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimatedModelProcessor</Processor>
+    </Compile>
     <None Include="Cursors\gam1232.ani">
       <Name>gam1232</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -470,6 +475,13 @@
       <Name>AnimatedShadow</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ant_Anims.xml">
+      <Name>ant_Anims</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

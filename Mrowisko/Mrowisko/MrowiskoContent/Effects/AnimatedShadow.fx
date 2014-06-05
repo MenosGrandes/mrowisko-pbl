@@ -1,6 +1,6 @@
 
 
-float4x4 Bones[50];
+float4x4 Bones[60];
 
 float4x4 World;
 float4x4 LightView;

@@ -23,7 +23,8 @@ namespace Animations
         AnimationClip currentClipValue;
         TimeSpan currentTimeValue;
         int currentKeyframe;
-
+        public Boolean end = false;//true if animation end
+        public Boolean animationFlag = false;
         // Current animation transform matrices.
         Matrix[] boneTransforms;
         Matrix[] worldTransforms;
@@ -66,6 +67,7 @@ namespace Animations
         /// </summary>
         public void StartClip(AnimationClip clip)
         {
+            animationFlag = false;
             if (clip == null)
                 throw new ArgumentNullException("clip");
 
@@ -86,6 +88,9 @@ namespace Animations
             UpdateBoneTransforms(time, relativeToCurrentTime);
             UpdateWorldTransforms(rootTransform);
             UpdateSkinTransforms();
+            if (CurrentTime.TotalMilliseconds +30 > CurrentClip.Duration.TotalMilliseconds) end = true;
+            else end = false;
+            if (end) animationFlag = true;
         }
 
         /// <summary>

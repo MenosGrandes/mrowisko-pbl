@@ -14,7 +14,7 @@
 
       <!-- Each item is one of our new clips -->
       <Item>
-        <ClipName>Idle1</ClipName>
+        <ClipName>Idle</ClipName>
         <StartFrame>0</StartFrame>
         <EndFrame>30</EndFrame>
       </Item>
@@ -24,12 +24,12 @@
         <EndFrame>70</EndFrame>
       </Item>
 	  <Item>
-        <ClipName>Atack1</ClipName>
+        <ClipName>Jump</ClipName>
         <StartFrame>71</StartFrame>
         <EndFrame>110</EndFrame>
       </Item>
 	  <Item>
-        <ClipName>Atack2</ClipName>
+        <ClipName>Atack</ClipName>
         <StartFrame>111</StartFrame>
         <EndFrame>150</EndFrame>
       </Item>

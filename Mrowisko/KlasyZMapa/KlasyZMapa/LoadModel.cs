@@ -31,8 +31,7 @@ namespace Map
         public Boolean Selected;
         public Vector3 playerTarget;
         public ContentManager content;
-                    
-
+        public Boolean animationChange = false;//true oznacza ze został wciśniety guzik do zmiany animacji i można ją zmienić
         public SkinningData skinningData;
         [NonSerialized]
         public AnimationPlayer Player;
@@ -40,10 +39,29 @@ namespace Map
         public LightsAndShadows.Light light;
         public List<ShadowCasterObject> shadowCasters;
         private List<BoundingSphere> spheres;
+        AnimationClip list = null;//animacja oczekująca na zmiane;
         public void switchAnimation(string nazwa)
         {
-            AnimationClip clip = skinningData.AnimationClips[nazwa];//inne animacje to idle2 i run
-            Player.StartClip(clip);
+           if (animationChange == false) animationChange = true;
+            //if (animationFlag==true)
+            if (Player.CurrentClip == null)
+            {
+                AnimationClip clip = skinningData.AnimationClips[nazwa];//inne animacje to idle2 i run
+                Player.StartClip(clip);
+                animationChange = false;
+            }
+            else
+            {
+               if (Player.animationFlag)
+               {
+                   list = skinningData.AnimationClips[nazwa];
+                  
+                   //AnimationClip clip = skinningData.AnimationClips[nazwa];//inne animacje to idle2 i run
+                  // Player.StartClip(clip);
+                  // animationChange = false;
+               }
+            }
+            animationChange = false;   
         }
         public List<BoundingSphere> Spheres
         {
@@ -303,6 +321,13 @@ namespace Map
         /// <param name="gameTime"></param>
            public void Update(GameTime gameTime)
            {
+               if (list!=null && Player.end)
+               {
+                   Console.Out.WriteLine(Player.CurrentClip.Duration.TotalMilliseconds - Player.CurrentTime.TotalMilliseconds);
+                   Player.StartClip(list);
+                   list = null;
+                   animationChange = false;
+               }
                // update world
                Matrix world = Matrix.CreateScale(Scale) *
       Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
