@@ -261,22 +261,22 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 		float3 texture2 = tex2D(TextureSampler8, PSIn.TextureCoords * 2).rgb;
 		float3 color = lerp(texture1, texture2, alpha);
 		//Tekstura 2	
-		float3 texture3 = tex2D(TextureSampler9, PSIn.TextureCoords * 10).rgb;
+		float3 texture3 = tex2D(TextureSampler9, PSIn.TextureCoords / 10).rgb;
 		float3 color2 = lerp(color, texture3, alpha2);
 		//Tekstura 3	
-		float3 texture4 = tex2D(TextureSampler10, PSIn.TextureCoords * 10).rgb;
+		float3 texture4 = tex2D(TextureSampler10, PSIn.TextureCoords / 10).rgb;
 		float3 color3 = lerp(color2, texture4, alpha3);
 		//Tekstura 4	
-		float3 texture5 = tex2D(TextureSampler11, PSIn.TextureCoords * 10).rgb;
+		float3 texture5 = tex2D(TextureSampler11, PSIn.TextureCoords /10).rgb;
 		float3 color4 = lerp(color3, texture5, alpha4);
 		//Tekstura 5	
-		float3 texture6 = tex2D(TextureSampler12, PSIn.TextureCoords * 10).rgb;
+		float3 texture6 = tex2D(TextureSampler12, PSIn.TextureCoords/ 10).rgb;
 		float3 color5 = lerp(color4, texture6, alpha5);
 		//Tekstura 6	
-		float3 texture7 = tex2D(TextureSampler13, PSIn.TextureCoords * 10).rgb;
+		float3 texture7 = tex2D(TextureSampler13, PSIn.TextureCoords /10).rgb;
 		float3 color6 = lerp(color5, texture7, alpha6);
 		//Tekstura 7	
-		float3 texture8 = tex2D(TextureSampler14, PSIn.TextureCoords * 10).rgb;
+		float3 texture8 = tex2D(TextureSampler14, PSIn.TextureCoords / 10).rgb;
 		float3 color7 = lerp(color6, texture8, alpha7);
 
 
