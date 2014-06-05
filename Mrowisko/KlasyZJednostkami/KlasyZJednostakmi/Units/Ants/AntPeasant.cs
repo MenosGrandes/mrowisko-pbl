@@ -105,7 +105,7 @@ namespace Logic.Units.Ants
                            foreach(BoundingSphere b2 in interactive.Model.Spheres)
                            {
 
-
+                             //  Console.WriteLine(interactive.GetType().Name);
                              if (b.Intersects(b2))
                              {
                                  if(gaterMaterialObject==interactive)
@@ -121,8 +121,8 @@ namespace Logic.Units.Ants
                                  }
                                  else if(interactive.GetType()==typeof(AntGranary))
                                  {
-                                  //   Player.addMaterial(((AntPeasant)model2).releaseMaterial());
-
+                                   Logic.Player.Player.addMaterial(this.materials);
+                                   this.materials.Clear();
                                  }
                                  
                              }
@@ -139,6 +139,7 @@ namespace Logic.Units.Ants
                 Console.WriteLine(gaterMaterialObject.Model.Position);
             }
         }
+            
         }
 
     }

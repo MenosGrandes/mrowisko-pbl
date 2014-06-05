@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Logic.Meterials;
 using Logic.Meterials.MaterialCluster;
-namespace AntHill
+namespace Logic.Player
 {
    public static class  Player
    {   
