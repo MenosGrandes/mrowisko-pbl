@@ -205,13 +205,13 @@ namespace AntHill
             //0 - 6
 
             //tekstury terenu
-            texture.Add(Content.Load<Texture2D>("Textures/Ground/grass1")); //
-            texture.Add(Content.Load<Texture2D>("Textures/Ground/grass1"));  // to mo縩a wyci规
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/grass0")); //
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/grass"));  // to mo縩a wyci规
             texture.Add(Content.Load<Texture2D>("Textures/Ground/grass1")); // to mo縩a wyci规
             texture.Add(Content.Load<Texture2D>("Textures/Ground/sand"));  //
             texture.Add(Content.Load<Texture2D>("Textures/Ground/forest_cover")); //
             texture.Add(Content.Load<Texture2D>("Textures/Ground/rock"));  //
-            texture.Add(Content.Load<Texture2D>("Textures/Ground/rock"));  // to mo縩a wyci规
+            texture.Add(Content.Load<Texture2D>("Textures/Ground/dirt"));  // to mo縩a wyci规
             texture.Add(Content.Load<Texture2D>("Textures/Ground/rock"));  // to mo縩a wyci规
             //7 - 14
             //heighmapa terenu
@@ -363,6 +363,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
 
 
          //   models.Add(gr);
+            WindowController.setWindowSize(1366, 768, false);
 
         }
         
@@ -490,8 +491,8 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             #region zmiany rozdzielczosci
             if(keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
             {
-            WindowController.setWindowSize(800, 600, false);
-                }
+                WindowController.setWindowSize(1366, 768, false);
+            }
             if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
             {
                 WindowController.setWindowSize(400, 250, false);
