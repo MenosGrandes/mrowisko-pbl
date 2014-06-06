@@ -42,7 +42,7 @@ namespace SimpleStaticHelpers
            if (position != null)
            {
                MousePosition = pickRay.Position + pickRay.Direction * position.Value;
-               MousePosition.Y = 13f;
+               MousePosition.Y = 30f;
            }
            else
                MousePosition = new Vector3(0, 0, 0);

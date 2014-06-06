@@ -128,7 +128,7 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("Textures/select2"));
 
             camera = new FreeCamera(
-new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 10, texture[4].Width * 1 / 2),
+new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 3, texture[4].Width * 1 / 2),
 MathHelper.ToRadians(0), // Turned around 153 degrees
 MathHelper.ToRadians(-45), // Pitched up 13 degrees
 GraphicsDevice);

@@ -368,7 +368,9 @@
             this.numericUpDown4.Name = "numericUpDown4";
             this.numericUpDown4.Size = new System.Drawing.Size(46, 20);
             this.numericUpDown4.TabIndex = 44;
+            this.numericUpDown4.ValueChanged += new System.EventHandler(this.ChangedRotation);
             this.numericUpDown4.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ChangedRotation);
+            this.numericUpDown4.Click += new System.EventHandler(this.ChangedRotation);
             // 
             // numericUpDown5
             // 
@@ -387,7 +389,9 @@
             this.numericUpDown5.Name = "numericUpDown5";
             this.numericUpDown5.Size = new System.Drawing.Size(46, 20);
             this.numericUpDown5.TabIndex = 43;
+            this.numericUpDown5.ValueChanged += new System.EventHandler(this.ChangedRotation);
             this.numericUpDown5.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ChangedRotation);
+            this.numericUpDown5.Click += new System.EventHandler(this.ChangedRotation);
             // 
             // numericUpDown6
             // 
@@ -406,7 +410,9 @@
             this.numericUpDown6.Name = "numericUpDown6";
             this.numericUpDown6.Size = new System.Drawing.Size(46, 20);
             this.numericUpDown6.TabIndex = 42;
+            this.numericUpDown6.ValueChanged += new System.EventHandler(this.ChangedRotation);
             this.numericUpDown6.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ChangedRotation);
+            this.numericUpDown6.Click += new System.EventHandler(this.ChangedRotation);
             // 
             // label4
             // 
@@ -498,7 +504,7 @@
             "Log",
             "Granary",
             "BuildingPlace",
-            "Laser"});
+            "TownCenter"});
             this.checkedListBox1.Location = new System.Drawing.Point(108, 8);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(90, 109);

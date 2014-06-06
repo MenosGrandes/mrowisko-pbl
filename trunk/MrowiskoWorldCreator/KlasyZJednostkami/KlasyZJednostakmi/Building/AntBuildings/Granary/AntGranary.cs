@@ -21,6 +21,8 @@ namespace Logic.Building.AntBuildings.Granary
 
             this.materialsCapacity = _materialCapacity;
         }
+        public AntGranary(LoadModel model):base(model)
+        { }
         new public void Draw()
         {
             //Console.WriteLine(this.GetType());

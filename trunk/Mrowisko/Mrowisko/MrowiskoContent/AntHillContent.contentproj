@@ -153,25 +153,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="animacja.X">
-      <Name>animacja</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimatedModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\AnimacjaPipelineExtension\AnimacjaPipelineExtension.csproj">
       <Project>{c48d080e-13f0-4b71-b4e2-0376eec21ba2}</Project>
       <Name>AnimacjaPipelineExtension</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="animacja_Anims.xml">
-      <Name>animacja_Anims</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-      <SubType>Designer</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\stone2.fbx">
@@ -204,33 +189,6 @@
   <ItemGroup>
     <Compile Include="Textures\select2.png">
       <Name>select2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="grasshopper.X">
-      <Name>grasshopper</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimatedModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="grasshopper_Anims.xml">
-      <Name>grasshopper_Anims</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-      <SubType>Designer</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="grasshopperUVW.png">
-      <Name>grasshopperUVW</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="wingUVW.png">
-      <Name>wingUVW</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -417,40 +375,35 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="queen.X">
+    <Compile Include="Models\trawa.FBX">
+      <Name>trawa</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\antGranary.FBX">
+      <Name>antGranary</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\townCenter.FBX">
+      <Name>townCenter</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\queen_sfery.X">
+      <Name>queen_sfery</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimatedModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\strong_ant_sfery.X">
+      <Name>strong_ant_sfery</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimatedModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\queen.X">
       <Name>queen</Name>
       <Importer>XImporter</Importer>
       <Processor>AnimatedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="spider.X">
-      <Name>spider</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimatedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="strongAnt.X">
-      <Name>strongAnt</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimatedModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="queen_Anims.xml">
-      <Name>queen_Anims</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-      <SubType>Designer</SubType>
-    </Compile>
-    <Compile Include="spider_Anims.xml">
-      <Name>spider_Anims</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-      <SubType>Designer</SubType>
-    </Compile>
-    <Compile Include="strongAnt_Anims.xml">
-      <Name>strongAnt_Anims</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -478,12 +431,42 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ant_Anims.xml">
-      <Name>ant_Anims</Name>
+    <Compile Include="Models\body_diffuse.png">
+      <Name>body_diffuse</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\crownDiffuseMap.png">
+      <Name>crownDiffuseMap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\queen_Anims.xml">
+      <Name>queen_Anims</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\temp.png">
+      <Name>temp</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\mrowka_diffuse_map.png">
+      <Name>mrowka_diffuse_map</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\strongAnt_Anims.xml">
+      <Name>strongAnt_Anims</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
