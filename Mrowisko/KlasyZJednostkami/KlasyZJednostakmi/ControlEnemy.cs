@@ -90,10 +90,8 @@ namespace Logic
                     czas += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     if (czas > 2.0f)
                     {
-                        Console.WriteLine("atak");
                         if (hp > 0)
                             hp -= 10;
-                        Console.WriteLine(hp);
                         czas = 0;
                     }
                     break;

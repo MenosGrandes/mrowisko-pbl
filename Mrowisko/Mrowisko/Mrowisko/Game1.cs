@@ -150,6 +150,7 @@ namespace AntHill
             #region Light Shadow
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(2048, 1200, 2048));
             shadow = new LightsAndShadows.Shadow();
+            LoadModelsFromFile._light = light;
             #endregion
             #region PresentationParameters
             PresentationParameters pp = graphics.GraphicsDevice.PresentationParameters;
@@ -185,12 +186,12 @@ namespace AntHill
             StaticHelpers.StaticHelper.Content = Content;
             StaticHelpers.StaticHelper.Device = device;
             #region loadFromFile
-             /*
+             
             Controlers.LoadModelsFromFile.Load();
             foreach (InteractiveModel i in LoadModelsFromFile.listOfAllInteractiveModelsFromFile)
             {
                 models.Add(i);
-            } */   
+            }   
             #endregion
             #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
@@ -247,122 +248,19 @@ GraphicsDevice);
 
             water = new Water(device, Content, texture[4].Width, 2);
 
-           
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("ant"), new Vector3(150, 0, 0), new Vector3(0, 6, 0), new Vector3(0.4f), GraphicsDevice,Content, light), 10000, 10));
-            models[0].Model.switchAnimation("Idle");
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(350, 0, 0), new Vector3(0, 6, 0), new Vector3(0.25f), GraphicsDevice, light), 10000, 10));
-            models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(450, 0, 0), new Vector3(0, 6, 0), new Vector3(0.25f), GraphicsDevice, light), 10000, 10));
-            //  models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-          //  models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(350, 0, 0), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-        //    models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(50, 0, 50), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-        //    models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(100, 0, 100), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-
-            models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice, light), 3000));
-            models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice,light), 5000));
-            models.Add(new Trigger(new LoadModel(Content.Load<Model>("Models/trigger"), new Vector3(0, 0, 0), Vector3.Up,new Vector3(0.3f),GraphicsDevice,light)));
-           
-           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-            models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0),new Vector3(0.3f),GraphicsDevice,light)),curvesForLaser[0]));
-          //  models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), new Curve3D()));
-          //  models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), new Curve3D()));
-
-            Enemys.Add(models[0]);
-            Enemys.Add(models[1]);
-            Enemys.Add(models[2]);
-            spider = new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 12.0f, 250.0f), new Vector3(0, 6, 0), new Vector3(0.5f), GraphicsDevice, light), 10000, 10);
-      
-            timeTriggers.Add(new LaserTrigger((Laser)models[6],20));
-            //timeTriggers.Add(new LaserTrigger((Laser)models[7], 20));
-       //     timeTriggers.Add(new LaserTrigger((Laser)models[8], 20));
-
-            // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(250.0f, 0.0f, 250.0f), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));      //
-
-           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("Models/mrowka_01"), new Vector3(300, 12, 300), Vector3.Up, new Vector3(0.5f), GraphicsDevice, light), 10000, 10));
-            // models.Add(new Log(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-150, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 610));
-            ///  models.Add(new Rock(new LoadModel(Content.Load<Model>("Models/stone2"), new Vector3(-450, 14, -150), Vector3.Up, new Vector3(1), GraphicsDevice), 5000));
-
-            IModel.Add(new BuildingPlace(new LoadModel(Content.Load<Model>("Models/BuildingPlace"),new Vector3(100,15,100),Vector3.Zero,new Vector3(1),device,light),0,0,0,0));
-            models.Add(IModel[0]);
-            pajak = new LoadModel( Content.Load<Model>("spider"), new Vector3(100,80,70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
-            pajak.switchAnimation("Idle");
-            konik = new LoadModel(Content.Load<Model>("grasshopper"), new Vector3(250, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
-            konik.switchAnimation("Idle");
-            krolowa = new LoadModel(Content.Load<Model>("queen"), new Vector3(450, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
-            krolowa.switchAnimation("Idle");
-            mrowka = new LoadModel(Content.Load<Model>("ant"), new Vector3(600, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
-            mrowka.switchAnimation("Idle");
-            silacz = new LoadModel(Content.Load<Model>("strongAnt"), new Vector3(750, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
-            silacz.switchAnimation("Idle");
-            /*
-            anim = new LoadModel(
- Content.Load<Model>("grasshopper"),
- Vector3.Zero, Vector3.Up,
- new Vector3(1), GraphicsDevice, Content, light);
-            AnimationClip clip = anim.skinningData.AnimationClips["Jump"];//inne animacje to idle2 i run
-            anim.Player.StartClip(clip);
-            lastMouseState = Mouse.GetState();
-
-            BoundingSphereRenderer.InitializeGraphics(device, 33);
-            AntGranary gr = new AntGranary(new LoadModel(
-Content.Load<Model>("Models/domek"),
-new Vector3(600, 13, 300), Vector3.Zero,
-new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
 
 
-            HyacyntFarm hf = new HyacyntFarm(new LoadModel(
-Content.Load<Model>("Models/domek2"),
-new Vector3(100, 15, 100), Vector3.Up,
-new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 10);
-
-            DicentraFarm df = new DicentraFarm(new LoadModel(
-Content.Load<Model>("Models/domek2"),
-new Vector3(200, 15, 100), Vector3.Up,
-new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
-
-
-            ChelidoniumFarm hef = new ChelidoniumFarm(new LoadModel(
-Content.Load<Model>("Models/domek2"),
-new Vector3(300, 15, 100), Vector3.Up,
-new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30);
-             *             IModel.Add(hf);
-            IModel.Add(gr);
-            IModel.Add(df);
-            IModel.Add(hef);
-             *             inter.Add(models[0]);
-
-                  */
-    
-            AntGranary gr = new AntGranary(new LoadModel(
-Content.Load<Model>("Models/domek"),
-new Vector3(600, 13, 300), Vector3.Zero,
-new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
-            IModel.Add(gr);
-            models.Add(gr);
 
             control = new Logic.Control(texture[11], quadTree);
           
 
-            e.Ant = models[0];
-            e.Enemy = spider;
-            e.Ants = Enemys;
+            //e.Ant = models[0];
+           // e.Enemy = spider;
+          //  e.Ants = Enemys;
          
 
             
-            //inter.Add(models[1]);
-
-            //inter.Add(models[3]);
-            /*    
-                for (int i = 4; i < 16;i++ )
-                {
-                    inter.Add(models[i]);
-
-                } 
-                //models.Add(gr);
-                 */
-
-
-         //   models.Add(gr);
+           
             WindowController.setWindowSize(1366, 768, false);
 
         }
@@ -409,91 +307,9 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10);
                 _total_frames = 0;
                 _elapsed_time = 0;
             }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C) && !keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C))
-            {
-                quadTree.Cull = !quadTree.Cull;
-            }
-            //if (pajak.Player.end) Console.Out.WriteLine("casdasdad");
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.P))
-            {
-                pajak.switchAnimation("Jump");
-                konik.switchAnimation("Jump");
-                krolowa.switchAnimation("Jump");
-                mrowka.switchAnimation("Jump");
-                silacz.switchAnimation("Jump");
-                
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.O))
-            {
-                pajak.switchAnimation("Idle");
-                konik.switchAnimation("Idle");
-                krolowa.switchAnimation("Idle");
-                mrowka.switchAnimation("Idle");
-                silacz.switchAnimation("Idle");
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.L))
-            {
-                pajak.switchAnimation("Walk");
-                konik.switchAnimation("Walk");
-                krolowa.switchAnimation("Walk");
-                mrowka.switchAnimation("Walk");
-                silacz.switchAnimation("Walk");
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.K))
-            {
-                pajak.switchAnimation("Atack");
-                konik.switchAnimation("Atack");
-                krolowa.switchAnimation("Atack");
-                mrowka.switchAnimation("Atack");
-                silacz.switchAnimation("Atack");
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.M))
-            {
-                pajak.switchAnimation("Death");
-                konik.switchAnimation("Death");
-                krolowa.switchAnimation("Death");
-                mrowka.switchAnimation("Death");
-                silacz.switchAnimation("Death");
-            }
-           
-            #region wstepneBudowanie
-            if (IModel[0].GetType() == typeof(BuildingPlace)) { 
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.J))
-            {
-                Vector3 Pos = IModel[0].Model.Position;
-                models.Remove(IModel[0]);
-                IModel.Remove(IModel[0]);
-                IModel.Add( new AntGranary(new LoadModel(
-                    Content.Load<Model>("Models/domek"),
-                    Pos, Vector3.Zero,
-                    new Vector3(1), GraphicsDevice, light), 10, 10, 10, 10, 10));
-                models.Add(IModel[0]);
-
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.K))
-            {
-                Vector3 Pos = IModel[0].Model.Position;
-                models.Remove(IModel[0]);
-                IModel.Remove(IModel[0]);
-                IModel.Add(new HyacyntFarm(new LoadModel(
-Content.Load<Model>("Models/domek2"),
-new Vector3(100, 15, 100), Vector3.Up,
-new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 10));
-                models.Add(IModel[0]);
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.L))
-            {
-                Vector3 Pos = IModel[0].Model.Position;
-                models.Remove(IModel[0]);
-                IModel.Remove(IModel[0]);
-                IModel.Add(new ChelidoniumFarm(new LoadModel(
-Content.Load<Model>("Models/domek2"),
-new Vector3(300, 15, 100), Vector3.Up,
-new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
-                models.Add(IModel[0]);
-            }
-            }
+/*
             #endregion wstepneBudowanie
+            * */
             #region zmiany rozdzielczosci
             if(keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
             {
@@ -606,16 +422,12 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
             control.Models_Colision = IModel;
 
 
-            e.gameTime = gameTime;
-            e.Update();
+          //  e.gameTime = gameTime;
+          //  e.Update();
 
             MouseCursorController.Update();
             camera.Update(gameTime);
-            pajak.Update(gameTime);
-            krolowa.Update(gameTime);
-            konik.Update(gameTime);
-            silacz.Update(gameTime);
-            mrowka.Update(gameTime);
+           
 
           //  anim.Update(gameTime);
             base.Update(gameTime);
@@ -742,14 +554,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
 
 
-          
-            pajak.Draw((FreeCamera)camera, time);
-            konik.Draw((FreeCamera)camera, time);
-            krolowa.Draw((FreeCamera)camera, time);
-            silacz.Draw((FreeCamera)camera, time);
-            mrowka.Draw((FreeCamera)camera, time);
-            
-         //   anim.Draw(camera.View, camera.Projection, ((FreeCamera)camera).Position, time);
+
             foreach (InteractiveModel model in models)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
@@ -782,7 +587,7 @@ new Vector3(1), GraphicsDevice, light), 10, 10, 10, 5000, 30));
 
             }
 
-            spider.Draw((FreeCamera)camera);
+           // spider.Draw((FreeCamera)camera);
 
 
 

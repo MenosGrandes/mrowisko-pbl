@@ -164,6 +164,7 @@ namespace Map
             this.graphicsDevice = GraphicsDevice;
             this.content = Content;
             this.Position = Position;
+            this.playerTarget = Position;
             this.Rotation = Rotation;
             this.Scale = Scale;
             this.light = light;

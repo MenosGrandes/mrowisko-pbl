@@ -61,8 +61,8 @@ namespace Logic
         public void Update(GameTime gameTime)
         {
 
-            if(selectedObject!=null)
-            Console.WriteLine(selectedObject);
+            //if(selectedObject!=null)
+           // Console.WriteLine(selectedObject);
 
             currentMouseState = Mouse.GetState();
             Vector3 mouse3d2 = CalculateMouse3DPosition();
@@ -149,7 +149,6 @@ namespace Logic
                 mouseDown = false;
             }
             
-            //Console.WriteLine(f);
             if (currentMouseState.LeftButton == ButtonState.Pressed)
             {
                 position = new Vector2(currentMouseState.X, currentMouseState.Y);
@@ -409,7 +408,7 @@ namespace Logic
                         
                     //if (!ant.Model.playerTarget.Equals(ant.Model.Position))
                         //{
-                          //  Console.WriteLine(ant.Model.playerTarget - ant.Model.Position);
+                          
                           //   ant.Model.Rotation = new Vector3(0, Vector3ToRadian(direction), 0);
                            //ant.Model.Rotation=new Vector3(0,(float)Rotation(ant, oldPosition),0);
                        // }
@@ -518,9 +517,6 @@ namespace Logic
             startRectangle = CalculateMouse3DPosition(position);
             endRectangle = CalculateMouse3DPosition(selectCorner);
 
-            //Console.WriteLine("START RECTANGLE"+startRectangle);
-            //Console.WriteLine("END RECTANGLE" + endRectangle);
-            //Console.WriteLine("ANT" + models[0].Position);
             Vector3 minRectangle;
             Vector3 maxRectangle;
 
@@ -576,7 +572,7 @@ namespace Logic
             {
                 if (ant.Model.BoundingSphere.Intersects(ray) != null)
                 {
-                    Console.WriteLine(ant);
+                   // Console.WriteLine(ant);
                     SelectedModels.Add(ant); 
                     return ant;
                 }

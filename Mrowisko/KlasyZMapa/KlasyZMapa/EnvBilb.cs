@@ -163,7 +163,6 @@ namespace Map
             bbEffect.Parameters["xCamPos"].SetValue(position);
             bbEffect.Parameters["xAmbient"].SetValue(light.lightPosChangeBilb(time));
             device.SetVertexBuffer(VertexBuffer);
-            //Console.WriteLine(light.lightPosChangeBilb(time));
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();

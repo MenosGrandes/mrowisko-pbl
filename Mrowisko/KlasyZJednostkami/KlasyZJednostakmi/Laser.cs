@@ -47,7 +47,7 @@ namespace Logic
 
 
                          if (b.Intersects(b2))
-                         { Console.WriteLine("Laser!!!"); }
+                         { }
                      }
                  }
         }

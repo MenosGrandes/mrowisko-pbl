@@ -107,7 +107,7 @@ namespace Map
 
 
             LoadHeightData(texture,color);
-            SetUpvertices(1);
+            SetUpvertices(2);
             SetUpTerrainIndices();
             CalculateNormals();
 
