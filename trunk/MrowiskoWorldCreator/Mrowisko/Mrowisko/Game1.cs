@@ -16,6 +16,7 @@ using Logic.Meterials.MaterialCluster;
 using Logic.Building;
 using Logic.Building.AntBuildings;
 using SimpleStaticHelpers;
+using Logic.EnviroModel;
 
 namespace AntHill
 {
@@ -45,7 +46,6 @@ namespace AntHill
         int _total_frames = 0;
         float _elapsed_time = 0.0f;
         int _fps = 0;
-
 
         MouseState currentMouseState;
         MouseState LastMouseState_2;
@@ -138,17 +138,6 @@ GraphicsDevice);
             quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24Stencil8);
             water = new Water(device, Content, texture[4].Width, 1);
 
-            
-            //inter = quadTree.ants.Models;
-
-            // GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            // GraphicsDevice.BlendFactor = Color.Yellow;
-
-
-            //animacja CHYBA dzia³a (nie wiem jak zrobiæ ¿eby by³o j¹ widaæ)
-            //na starszych wersjach repozytorium dzia³a bez problemu (pliki x)
-            //plik xml jest potrzebny ¿eby dzia³a³o prze³¹czanie, nie wiem czemu ale jak jest w folderze models to nie dzia³a 
-
             lastMouseState = Mouse.GetState();
 
             BoundingSphereRenderer.InitializeGraphics(device, 33);
@@ -156,6 +145,9 @@ GraphicsDevice);
             CreatorController.content = Content;
             CreatorController.device = device;
             CreatorController.models.AddRange(models);
+            
+
+           // CreatorController.models.Add(m);
         }
 
         /// <summary>w
@@ -267,7 +259,6 @@ GraphicsDevice);
                    BoundingSphereRenderer.Render(model.Model.BoundingSphere, CreatorController.device, camera.View, camera.Projection, Color.Red,Color.Beige,Color.Gainsboro);
                }
            }
-
 
 
 

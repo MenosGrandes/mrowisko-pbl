@@ -17,7 +17,6 @@ namespace Map
     public class QuadTree
     {
 
-        public LoadModel model;
         private QuadNode _activeNode;
         public int MinimumDepth = 7;
         public int IndexCount { get; private set; }
@@ -57,8 +56,8 @@ namespace Map
 
         public bool Cull { get; set; }
 
-        public List<EnvModel> envModelList = new List<EnvModel>();
-        public List<EnvBilb> envBilbList = new List<EnvBilb>();
+      //  public List<EnviroModels> envModelList = new List<EnviroModels>();
+       public List<EnvBilb> envBilbList = new List<EnvBilb>();
         /// <summary>
         /// Create terrain at <paramref name="position"/>
         /// </summary>
@@ -74,8 +73,8 @@ namespace Map
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(513, 100, 513));
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
-            Model model = Content.Load<Model>("Models/stone2");
-            this.model = new LoadModel(model, Vector3.One, Vector3.Up, new Vector3(1), device);
+         //  Model model = Content.Load<Model>("Models/stone2");
+          //  this.model = new LoadModel(model, Vector3.One, Vector3.Up, new Vector3(1), device);
             this.textures = textures;
             effect = Content.Load<Effect>("Effects/MultiTextured");
             effect2 = Content.Load<Effect>("Effects/Shadows");
@@ -92,21 +91,24 @@ namespace Map
             //Construct an array large enough to hold all of the indices we'll need.
             Indices = _vertices.indices;
 
-
+           
             envBilbList.Add(new EnvBilb(textures[6], textures[5], device, Content, scale));
-            envModelList.Add(new EnvModel(textures[6], model, device, Content, scale));
-            foreach (EnvBilb pass in envBilbList)
+             foreach (EnvBilb pass in envBilbList)
             {
                 pass.GenerateObjPositions(_vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
                 pass.CreateBillboardVerticesFromList();
             }
 
-            foreach (EnvModel pass1 in envModelList)
+            /*
+            envModelList.Add(new EnvModel(textures[6], model, device, Content, scale));
+
+               foreach (EnvModel pass1 in envModelList)
             {
                 pass1.GenerateObjPositions(_vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
                 pass1.CreateModelFromList();
             }
-
+             * */
+            
             
        effect.Parameters["xTexture0"].SetValue(textures[1]);
        effect.Parameters["xTexture1"].SetValue(textures[0]);
@@ -140,14 +142,7 @@ namespace Map
 
        
             IndexCount = 0;
-           // _rootNode.Merge();
-            /*
-            _activeNode = _rootNode.DeepestNodeWithPoint(Vector3.Transform(CameraPosition,CameraRotation));
-           
-            if (_activeNode != null)
-            {
-                _activeNode.Split();
-            }   */
+
             _rootNode.SetActiveVertices();
 
             _buffers.UpdateIndexBuffer(Indices, IndexCount);
@@ -159,27 +154,20 @@ namespace Map
 
 
             this.Device.SetRenderTarget(shadow.RenderTarget);
-            //this.Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
 
             this.CameraPosition = camera.Position;
             this.View = camera.View;
             this.Projection = camera.Projection;
-           // this.CameraRotation = Matrix.CreateFromYawPitchRoll(camera.Yaw,camera.Pitch,0);
             ViewFrustrum.Matrix = camera.View * camera.Projection;
              
             this.Device.SetVertexBuffer(_buffers.VertexBuffer);
             this.Device.Indices = _buffers.IndexBuffer;
-          //  this.x+=1;
 
-          //  this.model.Position = light.lightPosChange(time);
             effect.Parameters["xLightPos"].SetValue(light.lightPosChange(time));
 
 
             shadow.UpdateLightData(0.4f, 0.6f, light.lightPosChange(time), camera);
-          //  Console.WriteLine("pozycja " + this.model.Position);
-        //  Console.WriteLine("pozycja mnozenie " + light.lightPosChange(time*100));
-           
-
+        
           effect.Parameters["xView"].SetValue(camera.View);
           effect.Parameters["xProjection"].SetValue(camera.Projection);
              effect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix);
@@ -193,19 +181,7 @@ namespace Map
              Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
              effect2.CurrentTechnique = effect2.Techniques["ShadowMap"];
              
-          // foreach (EffectPass pass2 in effect2.CurrentTechnique.Passes)
-         //  {
-         //      pass2.Apply();
-
-        //           if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
-             
-        
-
-        //   }
-          
-        //   Device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-          // effect.CurrentTechnique = effect.Techniques["ShadowedScene"];
-         //  effect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
+         
             
            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
           {
@@ -214,19 +190,11 @@ namespace Map
            }
 
 
-
-             /*
-           foreach (EnvModel pass1 in envModelList)
-           {
-               pass1.DrawModels(camera);
-           }
-           
-      
            foreach (EnvBilb pass in envBilbList)
-           {
-               pass.DrawBillboards(camera.View, camera.Projection, camera.Position, time / 10);
-           }
-           */ 
+          {
+              pass.DrawBillboards(camera.View, camera.Projection, camera.Position, time / 10);
+          }
+          
            
 
         }

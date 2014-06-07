@@ -10,7 +10,7 @@ namespace Logic.Building.AntBuildings
     {
         public TownCenter():base()
         { }
-        public TownCenter(Map.LoadModel model)
+        public TownCenter(LoadModel model)
             : base(model)
         {
         

@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Animations;
-namespace Map
+namespace Logic 
 {
     /// <summary>
     /// Class responsible of loding and positioning model at the terrain.
