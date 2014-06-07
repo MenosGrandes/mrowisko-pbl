@@ -86,7 +86,15 @@ namespace Logic.Units.Ants
         {
           //  this.model.tempPosition = this.model.Position;
             this.elapsedTime += time.ElapsedGameTime.Milliseconds ;
-            LifeBar.CreateBillboardVerticesFromList(this.Model.Position+new Vector3(0,10,0));
+            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/LifeBar"));
+
+        }
+
+        public override void Draw(GameCamera.FreeCamera camera)
+        {
+            model.Draw(camera);
+            LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 10, 0));
+            LifeBar.healthDraw(camera);
         }
         
         public override List<Material> releaseMaterial()

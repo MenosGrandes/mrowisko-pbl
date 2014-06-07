@@ -18,7 +18,7 @@ namespace Particles
 
 
         // How long these particles will last.
-        public TimeSpan Duration = TimeSpan.FromSeconds(1);
+        public TimeSpan Duration = TimeSpan.FromSeconds(5);
 
 
         // If greater than zero, some particles will last a shorter time than others.

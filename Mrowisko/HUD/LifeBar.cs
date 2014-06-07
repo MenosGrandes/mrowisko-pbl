@@ -33,12 +33,10 @@ namespace HUD
         private Effect bbEffect;
         public LifeBar(float scale)
         {
-           
+            this.bbEffect = StaticHelpers.StaticHelper.Content.Load<Effect>("Effects/HUD");
             this.scale = scale;
             
-            this.bbEffect = StaticHelpers.StaticHelper.Content.Load<Effect>("Effects/Bilboarding");
-            
-           
+                       
             bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
             bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
             bbEffect.Parameters["xScale"].SetValue(this.scale);
@@ -83,7 +81,7 @@ namespace HUD
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-           //     StaticHelpers.StaticHelper.Device.DrawPrimitives(PrimitiveType.TriangleList, 0, VertexBuffer.VertexCount / 3);
+                StaticHelpers.StaticHelper.Device.DrawPrimitives(PrimitiveType.TriangleList, 0, VertexBuffer.VertexCount / 3);
 
             }
         }

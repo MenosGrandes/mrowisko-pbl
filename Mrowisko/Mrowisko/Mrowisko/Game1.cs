@@ -98,6 +98,8 @@ namespace AntHill
             smokePlumeParticles = new Particles.ParticleSystems.SmokePlumeParticleSystem(this, Content);
             fireParticles = new Particles.ParticleSystems.FireParticleSystem(this, Content);
 
+            fireParticles.Interval = 2.5f;
+
             // Set the draw order so the explosions and fire
             // will appear over the top of the smoke.
             smokePlumeParticles.DrawOrder = 100;
@@ -285,10 +287,13 @@ GraphicsDevice);
             
             kolizja = false;
                 currentMouseState = Mouse.GetState();
-            UpdateFire();
-            UpdateSmokePlume();
-            UpdateExplosions(gameTime);
-            UpdateProjectiles(gameTime);
+                if (timeTriggers.Count<1)
+                {
+                    UpdateFire();
+                    UpdateSmokePlume();
+                    UpdateExplosions(gameTime);
+                    UpdateProjectiles(gameTime);
+                }
 
 
 
@@ -441,8 +446,8 @@ GraphicsDevice);
             //rasterizerState.FillMode = FillMode.WireFrame;
             //GraphicsDevice.RasterizerState = rasterizerState;
 
-            explosionParticles.SetCamera(camera.View, camera.Projection);
-            explosionSmokeParticles.SetCamera(camera.View, camera.Projection);
+            //explosionParticles.SetCamera(camera.View, camera.Projection);
+            //explosionSmokeParticles.SetCamera(camera.View, camera.Projection);
             projectileTrailParticles.SetCamera(camera.View, camera.Projection);
             smokePlumeParticles.SetCamera(camera.View, camera.Projection);
             fireParticles.SetCamera(camera.View, camera.Projection);
@@ -701,12 +706,12 @@ GraphicsDevice);
         /// </summary>
         void UpdateFire()
         {
-            const int fireParticlesPerFrame = 80;
+            const int fireParticlesPerFrame = 50;
 
             // Create a number of fire particles, randomly positioned around a circle.
             for (int i = 0; i < fireParticlesPerFrame; i++)
             {
-                fireParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
+                fireParticles.AddParticle(RandomPointOnCircle(), Vector3.One);
             }
 
             // Create one smoke particle per frmae, too.
@@ -720,16 +725,17 @@ GraphicsDevice);
         /// </summary>
         Vector3 RandomPointOnCircle()
         {
-            const float radius = 80;
-            const float height = 80;
+            const float radius = 10;
+            const float height = 10;
 
             double angle = random.NextDouble() * Math.PI * 2;
+            double angle2 = random.NextDouble() * Math.PI;
 
+            float x = (float)Math.Cos(angle)*(float)Math.Sin(angle2);
+            float y = (float)Math.Sin(angle)*(float)Math.Sin(angle2);
+            float z = (float)Math.Cos(angle2);
 
-            float x = (float)Math.Cos(angle);
-            float y = (float)Math.Sin(angle);
-
-            return new Vector3(x * radius, y * radius + height, 0);
+            return new Vector3(models[6].Model.Position.X + x * radius, models[6].Model.Position.Y - (y * radius + height), models[6].Model.Position.Z + z * radius);
         }
 
        
