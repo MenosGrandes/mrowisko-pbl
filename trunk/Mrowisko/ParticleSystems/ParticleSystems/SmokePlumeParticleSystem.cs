@@ -23,7 +23,7 @@ namespace Particles.ParticleSystems
             settings.MinHorizontalVelocity = 0;
             settings.MaxHorizontalVelocity = 15;
 
-            settings.MinVerticalVelocity = 10;
+            settings.MinVerticalVelocity = 5;
             settings.MaxVerticalVelocity = 20;
 
             // Create a wind effect by tilting the gravity vector sideways.
@@ -35,9 +35,9 @@ namespace Particles.ParticleSystems
             settings.MaxRotateSpeed = 1;
 
             settings.MinStartSize = 4;
-            settings.MaxStartSize = 7;
+            settings.MaxStartSize = 70;
 
-            settings.MinEndSize = 35;
+            settings.MinEndSize = 350;
             settings.MaxEndSize = 140;
         }
     }

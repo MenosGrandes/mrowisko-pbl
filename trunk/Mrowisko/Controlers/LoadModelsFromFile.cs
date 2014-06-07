@@ -1,8 +1,10 @@
 ﻿using Logic;
 using Logic.Building;
 using Logic.Building.AntBuildings.Granary;
+using Logic.EnviroModel;
 using Logic.Meterials.MaterialCluster;
 using Logic.Units.Ants;
+using Logic.Units.Predators;
 using Map;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -47,7 +49,10 @@ namespace Controlers
                }
            }
             */
-           using (Stream stream = File.Open("dupa.bin", FileMode.Open))
+           System.Windows.Forms.OpenFileDialog a = new System.Windows.Forms.OpenFileDialog();
+           if (a.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+           { 
+           using (Stream stream = File.Open(a.FileName, FileMode.Open))
            {
 
                var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
@@ -118,13 +123,50 @@ namespace Controlers
                             listOfAllInteractiveModelsFromFile.Add(ad);
 
                             break;
+
+                       case "Spider":
+
+
+                            Spider s = new Spider(null);
+                            s.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//spider"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,StaticHelpers.StaticHelper.Content,_light);
+                            s.Model.switchAnimation("Jump");
+                            listOfAllInteractiveModelsFromFile.Add(s);
+
+
+
+
+                            break;
+                       case "Tree":
+
+
+                            Tree t = new Tree(null);
+                            t.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//tree1"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,_light);
+
+                            listOfAllInteractiveModelsFromFile.Add(t);
+
+
+
+
+                            break;
+                       case "Tree2":
+
+
+                            Tree2 t2 = new Tree2(null);
+                            t2.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//tree2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,_light);
+
+                            listOfAllInteractiveModelsFromFile.Add(t2);
+
+
+
+
+                            break;
                                     
                    }
 
 
                }
            }
-
+           }
        }
 
     }

@@ -405,6 +405,21 @@
       <Importer>XImporter</Importer>
       <Processor>AnimatedModelProcessor</Processor>
     </Compile>
+    <Compile Include="Models\spider.X">
+      <Name>spider</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimatedModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\tree1.FBX">
+      <Name>tree1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\tree2.FBX">
+      <Name>tree2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\Particles\explosion.png">
@@ -466,7 +481,65 @@
       <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
-
+  <ItemGroup>
+    <Compile Include="Models\spiderUVW.png">
+      <Name>spiderUVW</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\spider_Anims.xml">
+      <Name>spider_Anims</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\treetex\h2_tex.jpg">
+      <Name>h2_tex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\treetex\Hodowla_alpha_bump.jpg">
+      <Name>Hodowla_alpha_bump</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\treetex\Hodowla_alpha_tex.jpg">
+      <Name>Hodowla_alpha_tex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\treetex\Hodowla_alpha_tex1.jpg">
+      <Name>Hodowla_alpha_tex1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\treetex\kopiecmieszkalny_tex.jpg">
+      <Name>kopiecmieszkalny_tex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\treetex\kopiecmieszkalny_texBump.jpg">
+      <Name>kopiecmieszkalny_texBump</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\treetex\Kopiec_beta_texSheme.jpg">
+      <Name>Kopiec_beta_texSheme</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\treetex\tree2_tex.jpg">
+      <Name>tree2_tex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\treetex\tree_tex.jpg">
+      <Name>tree_tex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -80,8 +80,6 @@
   <ItemGroup>
     <Compile Include="BufferManager.cs" />
     <Compile Include="EnvBilb.cs" />
-    <Compile Include="EnvModel.cs" />
-    <Compile Include="LoadModel.cs" />
     <Compile Include="MapRender.cs" />
     <Compile Include="NodeTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
