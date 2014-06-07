@@ -17,7 +17,6 @@ namespace Map
     public class QuadTree
     {
 
-        public LoadModel model;
 
         public int MinimumDepth = 7;
         public int IndexCount { get; private set; }
@@ -56,7 +55,6 @@ namespace Map
         public bool Cull { get; set; }
         private QuadNode _activeNode;
 
-        public List<EnvModel> envModelList = new List<EnvModel>();
         public List<EnvBilb> envBilbList = new List<EnvBilb>();
         /// <summary>
         /// Create terrain at <paramref name="position"/>
@@ -73,8 +71,6 @@ namespace Map
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(513, 100, 513));
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
-            Model model = Content.Load<Model>("Models/stone2");
-           // this.model = new LoadModel(model, Vector3.One, Vector3.Up, new Vector3(1), device);
             this.textures = textures;
             effect = Content.Load<Effect>("Effects/MultiTextured");
            
@@ -94,18 +90,13 @@ namespace Map
 
 
             envBilbList.Add(new EnvBilb(textures[6], textures[18], device, Content, scale, light));
-           // envModelList.Add(new EnvModel(textures[6], model, device, Content, scale));
             foreach (EnvBilb pass in envBilbList)
             {
                 pass.GenerateObjPositions(_vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
                 pass.CreateBillboardVerticesFromList();
             }
 
-          /*  foreach (EnvModel pass1 in envModelList)
-            {
-                pass1.GenerateObjPositions(_vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
-                pass1.CreateModelFromList();
-            }*/
+         
 
 
             
@@ -193,11 +184,7 @@ namespace Map
 
             /*
      
-            
-           foreach (EnvModel pass1 in envModelList)
-           {
-               pass1.DrawModels(camera);
-           }
+         
            
     
             foreach (EnvBilb pass in envBilbList)
