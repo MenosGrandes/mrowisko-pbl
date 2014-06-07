@@ -137,6 +137,13 @@ namespace Particles
 
         // Shared random number generator.
         static Random random = new Random();
+        private float interval = 1.0f;
+
+        public float Interval
+        {
+            get { return interval; }
+            set { interval = value; }
+        }
 
 
         #endregion
@@ -300,7 +307,7 @@ namespace Particles
         /// </summary>
         void RetireActiveParticles()
         {
-            float particleDuration = (float)settings.Duration.TotalSeconds;
+            float particleDuration = (float)settings.Duration.TotalSeconds/interval;
 
             while (firstActiveParticle != firstNewParticle)
             {

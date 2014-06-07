@@ -26,7 +26,7 @@ namespace Particles
         {
             this.particleSystem = particleSystem;
 
-            timeBetweenParticles = 1.0f / particlesPerSecond;
+            timeBetweenParticles =  1.0f / particlesPerSecond;
 
             previousPosition = initialPosition;
         }
