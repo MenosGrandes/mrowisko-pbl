@@ -11,84 +11,86 @@ using System.Text;
 
 namespace Logic.Units.Ants
 {
-        [Serializable]
+    [Serializable]
 
-    public class AntPeasant:Ant
+    public class AntPeasant : Ant
     {
         [NonSerialized]
         private List<Material> materials = new List<Material>();
-             [NonSerialized]
-        public  int wood2;
-             [NonSerialized]
-        public  int rock2;
+        [NonSerialized]
+        public int wood2;
+        [NonSerialized]
+        public int rock2;
         private Material GaterMaterialObject;
-        public Material  gaterMaterialObject;
+        public Material gaterMaterialObject;
         public int MaxCapacity { get { return maxCapacity; } }
         private int maxCapacity;
-        public int Capacity { 
-      get
+        public int Capacity
         {
-            return capacity;
-      }
+            get
+            {
+                return capacity;
+            }
             set { }
         }
         private int capacity;
 
         public float gaterTime;
         public float elapsedTime;
-        public AntPeasant(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model,int maxCapacity,float gaterTime):base(hp,armor,strength,range,cost,buildingTime,model)
+        public AntPeasant(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, int maxCapacity, float gaterTime)
+            : base(hp, armor, strength, range, cost, buildingTime, model)
         {
             this.maxCapacity = maxCapacity;
             this.capacity = 0;
             this.gaterTime = gaterTime;
             rock2 = 0;
             wood2 = 0;
-
         }
         public AntPeasant(LoadModel model)
             : base(model)
         {
-
+            this.maxCapacity = 100;
+            this.capacity = 0;
+            this.gaterTime = 10;
+            rock2 = 0;
+            wood2 = 0;
         }
         public override void gaterMaterial(Material material)
         {
+            if (elapsedTime >= gaterTime)
+            {
 
-            if (elapsedTime >= gaterTime) 
-            { 
-                if(material.Model.Scale.X >0 && capacity<maxCapacity)
+                if (material.Model.Scale.X > 0 && capacity < maxCapacity)
                 {
 
                     switch (material.GetType().Name)
-                   {
+                    {
 
-                       case "Log": materials.Add(new Wood()); wood2++; ((Log)material).removeWood(1);
-                           ((Log)material).Model.Scale = new Vector3((float)((float)((Log)material).ClusterSize / (float)((Log)material).MaxClusterSize));
-     
-                           break;
-                       case "Rock": materials.Add(new Stone()); rock2++; ((Rock)material).removeRock(1);
-                           ((Rock)material).Model.Scale = new Vector3((float)((float)((Rock)material).ClusterSize / (float)((Rock)material).MaxClusterSize));
-     
-                           break;
-                     
-                   }
+                        case "Log": materials.Add(new Wood()); wood2++; ((Log)material).removeWood(1);
+                            ((Log)material).Model.Scale = new Vector3((float)((float)((Log)material).ClusterSize / (float)((Log)material).MaxClusterSize)) * material.Model.Scale;
+
+                            break;
+                        case "Rock": materials.Add(new Stone()); rock2++; ((Rock)material).removeRock(1);
+                            ((Rock)material).Model.Scale = new Vector3((float)((float)((Rock)material).ClusterSize / (float)((Rock)material).MaxClusterSize)) * material.Model.Scale;
+
+                            break;
+
+                    }
                     capacity++;
-                   
+
                 }
-                
+
             }
             elapsedTime = 0.0f;
-            
+
         }
         public override void Update(GameTime time)
         {
-          //  this.model.tempPosition = this.model.Position;
-            this.elapsedTime += time.ElapsedGameTime.Milliseconds ;
+            //  this.model.tempPosition = this.model.Position;
+            this.elapsedTime += time.ElapsedGameTime.Milliseconds;
+            LifeBar.CreateBillboardVerticesFromList(this.Model.Position + new Vector3(0, 10, 0));
+        }
 
-        }
-        public override void Draw( GameCamera.FreeCamera camera)
-        {
-            model.Draw(camera.View, camera.Projection);
-        }
         public override List<Material> releaseMaterial()
         {
             List<Material> mat = new List<Material>(materials);
@@ -98,13 +100,52 @@ namespace Logic.Units.Ants
             materials.Clear();
             return mat;
         }
-        public override string ToString()
+        public override void Intersect(InteractiveModel interactive)
         {
-            return model.Position + " " + this.GetType().Name;
+            if (this == interactive)
+            { return; }
+            foreach (BoundingSphere b in model.Spheres)
+            {
+
+                foreach (BoundingSphere b2 in interactive.Model.Spheres)
+                {
+
+                    if (b.Intersects(b2))
+                    {
+                        if (gaterMaterialObject == interactive)
+                        {
+                            if (interactive.GetType().BaseType == typeof(Material))
+                            {
+                                if (gaterTime < elapsedTime)
+                                {
+                                    gaterMaterial((Material)interactive);
+
+                                }
+                            }
+                        }
+                        else if (interactive.GetType() == typeof(AntGranary))
+                        {
+                            Console.WriteLine("Oddaje");
+                            AntHill.Player.addMaterial(releaseMaterial());
+                            this.materials.Clear();
+                            Console.WriteLine(Capacity);
+                        }
+
+                    }
+
+                }
+            }
         }
-       
+        public override void setGaterMaterial(Material m)
+        {
+            if (m != gaterMaterialObject)
+            {
+                gaterMaterialObject = m;
+
+            }
         }
-       
 
     }
+
+}
 
