@@ -115,7 +115,7 @@ namespace Logic.Units.Ants
                                  if(interactive.GetType().BaseType==typeof(Material))
                                  {
                                      if (gaterTime < elapsedTime)
-                                     {
+                                     {    
                                          gaterMaterial((Material)interactive);
                                          
                                      }

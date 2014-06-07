@@ -50,7 +50,8 @@ namespace Logic
                 return transformed;
             }
         }
-        public BoundingSphere[] spheres
+        private List<BoundingSphere> spheres;
+        public List<BoundingSphere> Spheres
         {
 
             get
@@ -65,7 +66,7 @@ namespace Logic
 
                 }
 
-                return spheres.ToArray();
+                return spheres;
             }
             set{}
         }
@@ -129,7 +130,7 @@ namespace Logic
                      spheres.Add(transformed);
                 sphere = BoundingSphere.CreateMerged(sphere, transformed);
             }
-            this.spheres=spheres.ToArray(); 
+            this.spheres=spheres;
             this.boundingSphere = sphere;
                
         }
