@@ -1,7 +1,6 @@
 ﻿using Logic;
 using Logic.Meterials.MaterialCluster;
 using Logic.Units.Ants;
-using Map;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SimpleStaticHelpers;
@@ -16,12 +15,10 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using Logic.Building;
 using Logic.Building.AntBuildings.Granary;
+using Logic.Units.Predators;
+using Logic.EnviroModel;
 namespace AntHill
 {
     public partial class Form1 : Form
@@ -177,12 +174,12 @@ namespace AntHill
         private void button3_Click(object sender, EventArgs e)
         {
 
-            Load();
+           // Load();
         }
-        public  void Save()
+        public void Save(string fileName)
         {
 
-            using (Stream stream = File.Open("dupa.bin", FileMode.Create))
+            using (Stream stream = File.Open(fileName, FileMode.Create))
             {
                 var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
@@ -191,10 +188,10 @@ namespace AntHill
 
 
         }
-        public void Load()
+        public void Load(string fileName)
         {
-            
-            using (Stream stream = File.Open("dupa.bin", FileMode.Open))
+
+            using (Stream stream = File.Open(fileName, FileMode.Open))
             {
 
                 var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
@@ -276,8 +273,42 @@ namespace AntHill
 
 
                         break;
+                    case "Spider":
 
 
+                        Spider s = new Spider(null);
+                        s.Model = new LoadModel(CreatorController.content.Load<Model>("Models//pajak_sfery2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
+
+                        CreatorController.models.Add(s);
+                        _items.Add(s.ToString());
+
+
+
+                        break;
+                    case "Tree":
+
+
+                        Tree t = new Tree(null);
+                        t.Model = new LoadModel(CreatorController.content.Load<Model>("Models//tree1"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
+
+                        CreatorController.models.Add(t);
+                        _items.Add(t.ToString());
+
+
+
+                        break;
+                    case "Tree2":
+
+
+                        Tree2 t2 = new Tree2(null);
+                        t2.Model = new LoadModel(CreatorController.content.Load<Model>("Models//tree2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
+
+                        CreatorController.models.Add(t2);
+                        _items.Add(t2.ToString());
+
+
+
+                        break;
 
                 }
                 
@@ -346,18 +377,44 @@ namespace AntHill
                             model = p;
                             break;
                         }
+                    case "Spider":
+                        {
+                            Spider p = new Spider(new LoadModel(CreatorController.content.Load<Model>("Models//pajak_sfery2"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
+                            model = p;
+                            break;
+                        }
+                    case "Tree":
+                        {
+                            Tree p = new Tree(new LoadModel(CreatorController.content.Load<Model>("Models//tree1"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
+                            model = p;
+                            break;
+                        }
+                    case "Tree2":
+                        {
+                            Tree2 p = new Tree2(new LoadModel(CreatorController.content.Load<Model>("Models//tree2"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
+                            model = p;
+                            break;
+                        }
                 }
             }
         }
 
         private void button2_Click(object sender, System.EventArgs e)
         {
-            Save();
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Save(fileDialog.FileName);
+            }
         }
 
         private void button3_Click_1(object sender, System.EventArgs e)
         {
-            Load();
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Load(fileDialog.FileName);
+            } 
         }
 
         private void button1_Click_1(object sender, System.EventArgs e)
