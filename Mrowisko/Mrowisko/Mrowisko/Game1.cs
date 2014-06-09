@@ -24,6 +24,7 @@ using Controlers.CursorEnum;
 using Logic.Triggers;
 using Logic.Player;
 using Microsoft.Xna.Framework.Audio;
+using SoundController;
 
 namespace AntHill
 {
@@ -45,8 +46,7 @@ namespace AntHill
         InteractiveModel spider;
         //HUD.LifeBar hp = new HUD.LifeBar(5.0f);
 
-        List<SoundEffect> sounds = new List<SoundEffect>();
-        List<SoundEffectInstance> s_instance = new List<SoundEffectInstance>();
+
         //-----------
         float liczba = 0;
         //-----------
@@ -151,13 +151,7 @@ namespace AntHill
 
             MouseCursorController.stage = Controlers.CursorEnum.CursorStage.Normal;
             #endregion
-            #region dzwiek
-            sounds.Add(Content.Load<SoundEffect>("Sounds/s1"));
-            foreach(SoundEffect se in sounds)
-            {
-                s_instance.Add(se.CreateInstance());
-            }
-            #endregion
+            
             #region Light Shadow
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(2048, 1200, 2048));
             shadow = new LightsAndShadows.Shadow();
@@ -283,6 +277,12 @@ GraphicsDevice);
             WindowController.setWindowSize(1366, 768, false);
             //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
+            models.Add(new AntSplitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
+            List<String> aa = new List<string>();
+            aa.Add("s1");
+            aa.Add("s2");
+            SoundController.SoundController.content = Content;
+           SoundController.SoundController.Initialize(aa);
         }
         
 
@@ -336,7 +336,8 @@ GraphicsDevice);
             #region zmiany rozdzielczosci
             if(keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
             {
-                WindowController.setWindowSize(1366, 768, false);
+               // WindowController.setWindowSize(1366, 768, false);
+                models[8].Attack(models[3]);
             }
             if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
             {
@@ -609,10 +610,7 @@ GraphicsDevice);
                 switch (control.selectedObjectMouseOnlyMove.GetType().BaseType.Name)
                 {
                     case "Material":
-                        if (s_instance[0].State == SoundState.Stopped)
-                        {
-                            s_instance[0].Play();
-                        }
+                        SoundController.SoundController.Play(SoundEnum.SelectedMaterial);
                         break;
                 }
             }

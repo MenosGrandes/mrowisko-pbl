@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controlers", "Controlers\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Particles", "ParticleSystems\Particles.csproj", "{9B34963E-00E4-4AB2-9625-9AE8EF52481B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundController", "SoundController\SoundController.csproj", "{59D45815-FE5E-439F-97D5-B95710B6D2A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -111,6 +113,10 @@ Global
 		{9B34963E-00E4-4AB2-9625-9AE8EF52481B}.Debug|x86.Build.0 = Debug|x86
 		{9B34963E-00E4-4AB2-9625-9AE8EF52481B}.Release|x86.ActiveCfg = Release|x86
 		{9B34963E-00E4-4AB2-9625-9AE8EF52481B}.Release|x86.Build.0 = Release|x86
+		{59D45815-FE5E-439F-97D5-B95710B6D2A1}.Debug|x86.ActiveCfg = Debug|x86
+		{59D45815-FE5E-439F-97D5-B95710B6D2A1}.Debug|x86.Build.0 = Debug|x86
+		{59D45815-FE5E-439F-97D5-B95710B6D2A1}.Release|x86.ActiveCfg = Release|x86
+		{59D45815-FE5E-439F-97D5-B95710B6D2A1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

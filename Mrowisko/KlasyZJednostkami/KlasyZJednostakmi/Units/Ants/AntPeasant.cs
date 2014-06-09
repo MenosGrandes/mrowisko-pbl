@@ -35,14 +35,15 @@ namespace Logic.Units.Ants
         private int capacity;
 
         public float gaterTime;
-        public float elapsedTime;
-        public AntPeasant(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model,int maxCapacity,float gaterTime):base(hp,armor,strength,range,cost,buildingTime,model)
+        public AntPeasant(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, int maxCapacity, float gaterTime, float atackInterval)
+            : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
         {
             this.maxCapacity = maxCapacity;
             this.capacity = 0;
             this.gaterTime = gaterTime;
             rock2 = 0;
             wood2 = 0;
+            base.elapsedTime = 0;
         }
         public AntPeasant(LoadModel model)
             : base(model)
@@ -52,6 +53,7 @@ namespace Logic.Units.Ants
             this.gaterTime = 10;
             rock2 = 0;
             wood2 = 0;
+           elapsedTime = 0;
         }
         public override void gaterMaterial(Material material)
         {
@@ -85,9 +87,9 @@ namespace Logic.Units.Ants
         public override void Update(GameTime time)
         {
           //  this.model.tempPosition = this.model.Position;
-            this.elapsedTime += time.ElapsedGameTime.Milliseconds ;
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
-
+            base.Update(time);
+            //Console.WriteLine(elapsedTime);
         }
 
         public override void Draw(GameCamera.FreeCamera camera)

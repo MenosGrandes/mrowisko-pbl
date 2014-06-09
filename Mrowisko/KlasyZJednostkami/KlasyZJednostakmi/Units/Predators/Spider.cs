@@ -15,8 +15,8 @@ namespace Logic.Units.Predators
        {
 
        }
-       public Spider(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model)
-           : base(hp, armor, strength, range, cost, buildingTime, model)
+       public Spider(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model,float atackInterval)
+           : base(hp, armor, strength, range, cost, buildingTime, model,atackInterval)
        { }
     }
 }

@@ -111,6 +111,7 @@
     <Compile Include="Destructible.cs" />
     <Compile Include="InteractiveModel.cs" />
     <Compile Include="Units\Ants\AntPeasant.cs" />
+    <Compile Include="Units\Ants\AntSputter.cs" />
     <Compile Include="Units\Predators\Predator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit.cs" />
@@ -158,6 +159,10 @@
     <ProjectReference Include="..\..\LightsAndShadows\LightsAndShadows\LightsAndShadows.csproj">
       <Project>{1a340602-b76b-4213-9f41-a777cc928fea}</Project>
       <Name>LightsAndShadows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SoundController\SoundController.csproj">
+      <Project>{59d45815-fe5e-439f-97d5-b95710b6d2a1}</Project>
+      <Name>SoundController</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\StaticHelpers\StaticHelpers.csproj">
       <Project>{adb8cf44-88f0-42de-ae42-62e5b9704438}</Project>
