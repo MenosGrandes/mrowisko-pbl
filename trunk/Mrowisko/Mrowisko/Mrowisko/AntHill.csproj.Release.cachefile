@@ -54,7 +54,6 @@ Content\Models\temp.xnb
 Content\Models\mrowka_diffuse_map.xnb
 Content\Models\SkyDome\dome.xnb
 Content\ant.xnb
-Content\Models\queen_sfery.xnb
 Content\Models\strong_ant_sfery.xnb
 Content\Models\queen.xnb
 Content\Fonts\FPS.xnb
@@ -91,6 +90,10 @@ Content\Textures\treetex\tree2_tex_0.xnb
 Content\Models\spiderUVW_0.xnb
 Content\Models\spider.xnb
 Content\Models\spider_Anims.xnb
+Content\Sounds\s1.xnb
+Content\Effects\HUD.xnb
+Content\Textures\HudTextures\elipsa.xnb
+Content\Textures\HudTextures\health_bar.xnb
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
 Content\Cursors\TronBusy.ani

@@ -41,15 +41,15 @@ namespace Logic
 
 
         //private Texture2D texture;
-        Vector2 position,positionMouseOnlyMove;
+        Vector2 position, positionMouseOnlyMove;
         Vector3 position3d, position3DMouseOnlyMove;
         MouseState currentMouseState;
         int f = 0;
         private bool mouseDown;
         private Vector3 startRectangle;
         private Vector3 endRectangle;
-        
-         public Control(Texture2D _texture, QuadTree quad)
+
+        public Control(Texture2D _texture, QuadTree quad)
         {
             this.texture = _texture;
             this.heights = quad.Vertices.heightData;
@@ -62,7 +62,7 @@ namespace Logic
         {
 
             //if(selectedObject!=null)
-           // Console.WriteLine(selectedObject);
+            // Console.WriteLine(selectedObject);
 
             currentMouseState = Mouse.GetState();
             Vector3 mouse3d2 = CalculateMouse3DPosition();
@@ -70,21 +70,21 @@ namespace Logic
             positionMouseOnlyMove = new Vector2(currentMouseState.X, currentMouseState.Y);
             position3DMouseOnlyMove = CalculateMouse3DPosition(positionMouseOnlyMove);
             selectedObjectMouseOnlyMove = SelectedObject(position3DMouseOnlyMove);
+          //  Console.WriteLine(position3DMouseOnlyMove);
 
-
-          /*  if(currentMouseState.LeftButton==ButtonState.Pressed)
-            {
+              if(currentMouseState.LeftButton==ButtonState.Pressed)
+              {
                 
-                position = new Vector2(currentMouseState.X, currentMouseState.Y);
-                position3d = CalculateMouse3DPosition(position);
-                selectedObject = SelectedObject(mouse3d2);
+                  position = new Vector2(currentMouseState.X, currentMouseState.Y);
+                  position3d = CalculateMouse3DPosition(position);
+                  selectedObject = SelectedObject(mouse3d2);
 
-            }*/
+              }
             if (currentMouseState.RightButton == ButtonState.Pressed && !mouseDown)
             {
                 SelectedModels.Clear();
-                
-                
+
+
 
                 position = new Vector2(currentMouseState.X, currentMouseState.Y);
                 position3d = CalculateMouse3DPosition(position);
@@ -93,9 +93,9 @@ namespace Logic
                 //selectedObject = SelectedObject(mouse3d2);
                 //if ((mouse3d2.X > pozycja_X_lewo && mouse3d2.X < pozycja_X_prawo) && (mouse3d2.Z > pozycja_Z_dol && mouse3d2.Z < pozycja_Z_gora))
                 mouseDown = true;
-                
+
             }
-            else if (currentMouseState.RightButton == ButtonState.Pressed)  
+            else if (currentMouseState.RightButton == ButtonState.Pressed)
             {
                 SelectedModels.Clear();
 
@@ -109,7 +109,7 @@ namespace Logic
                     selectRectangle.X = (int)selectCorner.X;
                 }
 
-                if(selectCorner.Y > position.Y)
+                if (selectCorner.Y > position.Y)
                 {
                     selectRectangle.Y = (int)position.Y;
                 }
@@ -148,7 +148,7 @@ namespace Logic
                 }
                 mouseDown = false;
             }
-            
+
             if (currentMouseState.LeftButton == ButtonState.Pressed)
             {
                 position = new Vector2(currentMouseState.X, currentMouseState.Y);
@@ -162,7 +162,7 @@ namespace Logic
                     ant.Model.playerTarget.Z = mouse3d2.Z;
                 }
             }
-           
+
             updateAnt(gameTime);
         }
 
@@ -183,16 +183,16 @@ namespace Logic
 
             foreach (InteractiveModel ant in models)
             {
-                 if(ant.GetType().BaseType!=typeof(Ant))
-                 {
-                     continue;
-                 }
+                if (ant.GetType().BaseType != typeof(Ant))
+                {
+                    continue;
+                }
                 if (Math.Abs(ant.Model.Position.X - ant.Model.playerTarget.X) <= Speed && Math.Abs(ant.Model.Position.Z - ant.Model.playerTarget.Z) <= Speed)
-                { 
+                {
                     continue;
                 }
 
-                if(ant.snared==true)
+                if (ant.snared == true)
                 {
                     continue;
                 }
@@ -373,46 +373,46 @@ namespace Logic
 
                 {
 
-                   // ant.Model.tempPosition = ant.Model.Position;
-/*                    if (FloatEquals(ant.Model.Position.X, ant.Model.playerTarget.X) && FloatEquals(ant.Model.Position.Z, ant.Model.playerTarget.Z))
-                    //if (ant.Selected)
-                    {
+                    // ant.Model.tempPosition = ant.Model.Position;
+                    /*                    if (FloatEquals(ant.Model.Position.X, ant.Model.playerTarget.X) && FloatEquals(ant.Model.Position.Z, ant.Model.playerTarget.Z))
+                                        //if (ant.Selected)
+                                        {
 
-                        //ant.Selected = false;
-                        return;
-                    }
-                    */
+                                            //ant.Selected = false;
+                                            return;
+                                        }
+                                        */
                     ////////////////////////////////////////////////////////////////////////////////////////////
                     //poruszanie się pod kątem 90 lub 45 stopni
 
-                      //  if (FloatEquals(ant.Model.Position.X, ant.Model.playerTarget.X) && FloatEquals(ant.Model.Position.Z, ant.Model.playerTarget.Z ))//|| ant.Model.Collide==true)
+                    //  if (FloatEquals(ant.Model.Position.X, ant.Model.playerTarget.X) && FloatEquals(ant.Model.Position.Z, ant.Model.playerTarget.Z ))//|| ant.Model.Collide==true)
 
-                     //   {
-                            //ant.Selected = false;
-                   //         continue;
-                   //     }
+                    //   {
+                    //ant.Selected = false;
+                    //         continue;
+                    //     }
 
-                        //wysokosc
-                        float height = GetHeightAt(ant.Model.Position.X, ant.Model.Position.Z);
-                        if (ant.Model.Position.Y < height)
-                        {
-                            ant.Model.Position += Vector3.Up;
-                        }
-                        if (ant.Model.Position.Y > height)
-                        {
-                            ant.Model.Position += Vector3.Down;
-                        }
+                    //wysokosc
+                    float height = GetHeightAt(ant.Model.Position.X, ant.Model.Position.Z);
+                    if (ant.Model.Position.Y < height)
+                    {
+                        ant.Model.Position += Vector3.Up;
+                    }
+                    if (ant.Model.Position.Y > height)
+                    {
+                        ant.Model.Position += Vector3.Down;
+                    }
 
-                    
-                      //  Vector3 direction = ant.Model.tempPosition - ant.Model.Position;
-                        
+
+                    //  Vector3 direction = ant.Model.tempPosition - ant.Model.Position;
+
                     //if (!ant.Model.playerTarget.Equals(ant.Model.Position))
-                        //{
-                          
-                          //   ant.Model.Rotation = new Vector3(0, Vector3ToRadian(direction), 0);
-                           //ant.Model.Rotation=new Vector3(0,(float)Rotation(ant, oldPosition),0);
-                       // }
-                    
+                    //{
+
+                    //   ant.Model.Rotation = new Vector3(0, Vector3ToRadian(direction), 0);
+                    //ant.Model.Rotation=new Vector3(0,(float)Rotation(ant, oldPosition),0);
+                    // }
+
 
 
                     /*
@@ -436,16 +436,16 @@ namespace Logic
                         ant.Model.Position += Vector3.Up;
                     }
                     */
-                    }
                 }
             }
+        }
 
         public static bool FloatEquals(float f1, float f2)
         {
             return Math.Abs(f1 - f2) < 2;
         }
 
-        
+
 
         private float Vector3ToRadian(Vector3 direction)
         {
@@ -464,7 +464,7 @@ namespace Logic
                 x = 0;
                 fractionX = 0.0f;
             }
-            else    if (worldX >= (float)(this.width - 1))
+            else if (worldX >= (float)(this.width - 1))
             {
                 x = this.width - 2;
                 fractionX = 1.0f;
@@ -497,8 +497,8 @@ namespace Logic
             { // We're in the upper left triangle 
 
                 return
-                (  MathHelper.Lerp(this.heights[x, z], this.heights[x + 1, z], fractionX) +
-                  (this.heights[x, z + 1] - this.heights[x, z]) * fractionZ)*2;
+                (MathHelper.Lerp(this.heights[x, z], this.heights[x + 1, z], fractionX) +
+                  (this.heights[x, z + 1] - this.heights[x, z]) * fractionZ) * 2;
 
             }
             else
@@ -506,7 +506,7 @@ namespace Logic
 
                 return
                 (MathHelper.Lerp(this.heights[x, z + 1], this.heights[x + 1, z + 1], fractionX) +
-                  (this.heights[x + 1, z] - this.heights[x + 1, z + 1]) * (1.0f - fractionZ))*2;
+                  (this.heights[x + 1, z] - this.heights[x + 1, z + 1]) * (1.0f - fractionZ)) * 2;
 
             }
         }
@@ -556,7 +556,7 @@ namespace Logic
         }
 
 
-        public InteractiveModel SelectedObject( Vector3 position)
+        public InteractiveModel SelectedObject(Vector3 position)
         {
 
             ray.Position = position;
@@ -570,10 +570,12 @@ namespace Logic
             }
             foreach (InteractiveModel ant in models)
             {
+              //   Console.WriteLine(ant.Model.Position);
+
                 if (ant.Model.BoundingSphere.Intersects(ray) != null)
                 {
-                   // Console.WriteLine(ant);
-                    SelectedModels.Add(ant); 
+                 
+                    SelectedModels.Add(ant);
                     return ant;
                 }
             }
