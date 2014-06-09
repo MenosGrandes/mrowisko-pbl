@@ -11,7 +11,7 @@ namespace Map
     /// </summary>
     public class QuadNode
     {
-        bool _isSplit;
+        bool _isSpit;
         QuadNode _parent;
         QuadTree _parentTree;
         int _positionIndex;
@@ -50,12 +50,12 @@ namespace Map
         public BoundingBox Bounds;
 
         public NodeType NodeType;
-        public bool IsSplit { get { return _isSplit; } }
+        public bool IsSpit { get { return _isSpit; } }
 
         /// <summary>
-        /// Returns true of the node contains enough vertices to split
+        /// Returns true of the node contains enough vertices to Spit
         /// </summary>
-        public bool CanSplit { get { return (_nodeSize >= 2); } }
+        public bool CanSpit { get { return (_nodeSize >= 2); } }
 
         ///<summary>
         /// Parent node reference
@@ -300,7 +300,7 @@ namespace Map
            
             if (_parentTree.Cull && !IsInView)
                 return;
-            if (_isSplit && this.HasChildren)
+            if (_isSpit && this.HasChildren)
             {
                 ChildTopLeft.SetActiveVertices();
                 ChildTopRight.SetActiveVertices();
@@ -375,7 +375,7 @@ namespace Map
             {
                 if (this.HasChildren)
                 {
-                    _isSplit = true;
+                    _isSpit = true;
 
                     ChildTopLeft.EnforceMinimumDepth();
                     ChildTopRight.EnforceMinimumDepth();
@@ -385,7 +385,7 @@ namespace Map
                 if(this.HasChildren==false)
                 {
 
-                    _isSplit = false;
+                    _isSpit = false;
                 }
 
                 return;
@@ -394,7 +394,7 @@ namespace Map
             if (_nodeDepth == _parentTree.MinimumDepth || (_nodeDepth < _parentTree.MinimumDepth && !this.HasChildren))
             {
                 this.Activate();
-                _isSplit = false;
+                _isSpit = false;
             }
         }
         public bool Contains(BoundingFrustum boundingFrustrum)

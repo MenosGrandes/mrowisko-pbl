@@ -92,6 +92,7 @@ namespace Logic
         public LoadModel(Model Model, Vector3 Position, Vector3 Rotation,
         Vector3 Scale, GraphicsDevice graphicsDevice, LightsAndShadows.Light light)
         {
+            Console.WriteLine(Position);
             this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)
             * Matrix.CreateTranslation(Position);
@@ -139,7 +140,7 @@ namespace Logic
         ContentManager Content, LightsAndShadows.Light light)
         {
             shadowCasters = new List<ShadowCasterObject>();
-
+            Console.WriteLine(Position);
             this.Model = Model;
             this.graphicsDevice = GraphicsDevice;
             this.content = Content;
@@ -156,7 +157,7 @@ namespace Logic
                     ("This model does not contain a SkinningData tag.");
             this.skinningData = Model.Tag as SkinningData;
             Player = new AnimationPlayer(skinningData);
-            buildBoundingSphere();
+            buildBoundingSphereAnimated();
 
             foreach (ModelMesh mesh in Model.Meshes)
             {
@@ -186,6 +187,31 @@ namespace Logic
         /// Method to create BoudingSphere at the model.
         /// This metod gather all Mesh from model creates bounding sphere for each of theme, then combine all and create one big. 
         /// </summary>
+        
+        private void buildBoundingSphereAnimated()
+        {
+              BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
+            List<BoundingSphere> spheres2 = new List<BoundingSphere>();
+
+            foreach (ModelMesh mesh in Model.Meshes)
+            {
+                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
+                
+                spheres2.Add(new BoundingSphere(transformed.Center- new Vector3(transformed.Radius / 6 , 0, 6*transformed.Radius / 6),transformed.Radius/3));
+                spheres2.Add(new BoundingSphere(transformed.Center - new Vector3( spheres2[0].Center.X / 2, 0,  spheres2[0].Center.Z / 2), transformed.Radius / 3));
+                spheres2.Add(new BoundingSphere(transformed.Center - new Vector3( spheres2[1].Center.X / 2, 0, spheres2[1].Center.Z / 2), transformed.Radius / 3));
+                spheres2.Add(new BoundingSphere(transformed.Center - new Vector3( spheres2[2].Center.X / 2, 0,  spheres2[2].Center.Z / 2), transformed.Radius / 3));
+
+
+               sphere = BoundingSphere.CreateMerged(sphere, transformed);
+               
+            }
+            
+             
+            this.boundingSphere = sphere;
+            this.spheres=spheres2;
+        }
+
         private void buildBoundingSphere()
         {
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);

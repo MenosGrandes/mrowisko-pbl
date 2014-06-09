@@ -7,30 +7,30 @@ using System.Text;
 
 namespace Logic.Units.Ants
 {
-    public class AntSplitter : Ant
+    public class AntSpitter : Ant
     {
-        private List<SplitMissle> bullets = new List<SplitMissle>();
+        private List<SpitMissle> bullets = new List<SpitMissle>();
 
-        public List<SplitMissle> Bullets
+        public List<SpitMissle> Bullets
         {
             get { return bullets; }
             set { bullets = value; }
         }
-        public AntSplitter()
+        public AntSpitter()
             : base()
         {
-            bullets = new List<SplitMissle>();
+            bullets = new List<SpitMissle>();
         }
-        public AntSplitter(LoadModel model)
+        public AntSpitter(LoadModel model)
             : base(model)
         {
-            bullets = new List<SplitMissle>();
+            bullets = new List<SpitMissle>();
 
         }
-        public AntSplitter(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
+        public AntSpitter(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
         {
-            bullets = new List<SplitMissle>();
+            bullets = new List<SpitMissle>();
 
         }
         public override void Update(GameTime time)
@@ -52,7 +52,7 @@ namespace Logic.Units.Ants
         {
             if (elapsedTime >= atackInterval)
             {
-                bullets.Add(new SplitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/trigger"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), a.Model.Position));
+                bullets.Add(new SpitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/trigger"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), a.Model.Position));
                 Console.WriteLine("ATACK!!!!");
             }
         }
@@ -60,7 +60,7 @@ namespace Logic.Units.Ants
         {
             if (this == interactive)
             { return; }
-            foreach (SplitMissle sm in bullets)
+            foreach (SpitMissle sm in bullets)
             {
                 sm.Intersect(interactive);
             }
@@ -80,20 +80,20 @@ namespace Logic.Units.Ants
         public override void Draw(GameCamera.FreeCamera camera)
         {
             model.Draw(camera);
-            foreach (SplitMissle sm in bullets)
+            foreach (SpitMissle sm in bullets)
             {
                 sm.Draw(camera);
             }
         }
-        #region SplitMissle
-        public class SplitMissle : InteractiveModel
+        #region SpitMissle
+        public class SpitMissle : InteractiveModel
         {
             public bool hit = false;
             public float time_ = 0;
             public List<PointInTime> points = new List<PointInTime>();
             public Curve3D trajectory;
             public Vector3 targetPos;
-            public SplitMissle(LoadModel model, Vector3 targtPosition)
+            public SpitMissle(LoadModel model, Vector3 targtPosition)
                 : base(model)
             {
                 float distance = Math.Abs(model.Position.X - targtPosition.Y) + Math.Abs(model.Position.X - targtPosition.Y);
@@ -102,7 +102,7 @@ namespace Logic.Units.Ants
                 points.Add(new PointInTime(targtPosition, 20*distance/10));
                 trajectory = new Curve3D(points);
             }
-            public SplitMissle()
+            public SpitMissle()
                 : base()
             { }
             public override void Intersect(InteractiveModel interactive)
@@ -139,6 +139,6 @@ namespace Logic.Units.Ants
                 model.Draw(camera);
             }
         }
-        #endregion SplitMissle
+        #endregion SpitMissle
     }
 }
