@@ -101,7 +101,7 @@ namespace Logic
         public Unit(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
             : base(model)
         {
-            this.lifeBar = new HUD.LifeBar(2);
+            this.lifeBar = new HUD.LifeBar(1);
 
             this.hp = hp;
             this.armor = armor;
@@ -115,12 +115,12 @@ namespace Logic
         }
         public Unit(): base()
         {
-            this.lifeBar = new HUD.LifeBar(2);
+            this.lifeBar = new HUD.LifeBar(1);
             base.elapsedTime = 0;
         }
         public Unit(LoadModel model):base(model)
         {
-            this.lifeBar = new HUD.LifeBar(2);
+            this.lifeBar = new HUD.LifeBar(1);
             base.elapsedTime = 0;
         }
         public Vector3 getPosition()

@@ -95,6 +95,10 @@ namespace Logic.Units.Ants
         public override void Draw(GameCamera.FreeCamera camera)
         {
             model.Draw(camera);
+            
+        }
+        public override void DrawSelected(GameCamera.FreeCamera camera)
+        {
             LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 10, 0));
             LifeBar.healthDraw(camera);
         }
