@@ -28,6 +28,14 @@ namespace HUD
             set { scale = value; }
         }
 
+        private float lifeLength=10;
+
+        public float LifeLength
+        {
+            get { return lifeLength; }
+            set { lifeLength = value; }
+        }
+
 
         private VertexBuffer VertexBuffer;
         private Effect bbEffect;
@@ -45,6 +53,7 @@ namespace HUD
 
         public void update(Texture2D bilboardTexture)
         {
+            bbEffect.Parameters["xScaleX"].SetValue(this.lifeLength);
             bbEffect.Parameters["xBillboardTexture"].SetValue(bilboardTexture);
         }
 

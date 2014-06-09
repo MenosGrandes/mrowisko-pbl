@@ -45,6 +45,7 @@ namespace Logic.Units.Ants
                     bullets.RemoveAt(i);
                 }
             }
+            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
 
 
         }
@@ -85,8 +86,19 @@ namespace Logic.Units.Ants
                 sm.Draw(camera);
             }
         }
+<<<<<<< .mine
+
+        public override void DrawSelected(GameCamera.FreeCamera camera)
+        {
+            LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 10, 0));
+            LifeBar.healthDraw(camera);
+        }
+        #region SplitMissle
+        public class SplitMissle : InteractiveModel
+=======
         #region SpitMissle
         public class SpitMissle : InteractiveModel
+>>>>>>> .r167
         {
             public bool hit = false;
             public float time_ = 0;

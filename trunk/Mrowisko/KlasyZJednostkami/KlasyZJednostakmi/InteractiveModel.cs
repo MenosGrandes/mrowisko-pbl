@@ -97,5 +97,10 @@ namespace Logic
             Console.WriteLine("Attack!!");
         }
 
+        public virtual void DrawSelected(GameCamera.FreeCamera camera)
+        {
+            
+        }
+
     }
 }

@@ -650,6 +650,11 @@ GraphicsDevice);
 
 
             base.Draw(gameTime);
+            foreach (InteractiveModel selected in control.SelectedModels)
+            {
+                selected.DrawSelected((FreeCamera)camera);
+            }
+            
         }
 
 
