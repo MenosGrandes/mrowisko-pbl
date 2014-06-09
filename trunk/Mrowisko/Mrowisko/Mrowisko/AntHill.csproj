@@ -111,6 +111,10 @@
       <Project>{0686462b-ec32-4394-89b1-c299d49bcae1}</Project>
       <Name>Debugger</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\GUI\GUI.csproj">
+      <Project>{9e09aba0-7c5b-4e04-88ae-de0ea4015dcd}</Project>
+      <Name>GUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\KlasyZJednostkami\KlasyZJednostakmi\Logic.csproj">
       <Project>{b398f88c-483b-457f-aaec-a71d70280724}</Project>
       <Name>Logic</Name>

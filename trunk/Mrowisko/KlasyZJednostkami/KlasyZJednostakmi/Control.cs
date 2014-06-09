@@ -69,8 +69,9 @@ namespace Logic
 
             positionMouseOnlyMove = new Vector2(currentMouseState.X, currentMouseState.Y);
             position3DMouseOnlyMove = CalculateMouse3DPosition(positionMouseOnlyMove);
-            selectedObjectMouseOnlyMove = SelectedObject(position3DMouseOnlyMove);
-          //  Console.WriteLine(position3DMouseOnlyMove);
+            selectedObjectMouseOnlyMove = SelectedObjectOnMouseMove(position3DMouseOnlyMove);
+            if(selectedObjectMouseOnlyMove!=null)
+            Console.WriteLine(selectedObjectMouseOnlyMove);
 
               if(currentMouseState.LeftButton==ButtonState.Pressed)
               {
@@ -555,10 +556,8 @@ namespace Logic
             }
         }
 
-
-        public InteractiveModel SelectedObject(Vector3 position)
+        public InteractiveModel SelectedObjectOnMouseMove(Vector3 position)
         {
-
             ray.Position = position;
             Vector3 a = new Vector3(0, 0, 0);
             foreach (InteractiveModel IM in IModel)
@@ -570,15 +569,39 @@ namespace Logic
             }
             foreach (InteractiveModel ant in models)
             {
-              //   Console.WriteLine(ant.Model.Position);
+                //   Console.WriteLine(ant.Model.Position);
 
                 if (ant.Model.BoundingSphere.Intersects(ray) != null)
                 {
-                 
-                    SelectedModels.Add(ant);
+
                     return ant;
                 }
             }
+            return null;
+        }
+        public InteractiveModel SelectedObject(Vector3 position)
+        {
+      
+                ray.Position = position;
+                Vector3 a = new Vector3(0, 0, 0);
+                foreach (InteractiveModel IM in IModel)
+                {
+                    if (IM.Model.BoundingSphere.Intersects(ray) != null)
+                    {
+                        return IM;
+                    }
+                }
+                foreach (InteractiveModel ant in models)
+                {
+                    //   Console.WriteLine(ant.Model.Position);
+
+                    if (ant.Model.BoundingSphere.Intersects(ray) != null)
+                    {
+
+                        SelectedModels.Add(ant);
+                        return ant;
+                    }
+                }
             return null;
         }
 

@@ -28,7 +28,7 @@ namespace HUD
             set { scale = value; }
         }
 
-        private float lifeLength=10;
+        private float lifeLength=300;
 
         public float LifeLength
         {
@@ -53,7 +53,6 @@ namespace HUD
 
         public void update(Texture2D bilboardTexture)
         {
-            bbEffect.Parameters["xScaleX"].SetValue(this.lifeLength);
             bbEffect.Parameters["xBillboardTexture"].SetValue(bilboardTexture);
         }
 
@@ -86,6 +85,7 @@ namespace HUD
             bbEffect.Parameters["xProjection"].SetValue(camera.Projection);
             bbEffect.Parameters["xCamPos"].SetValue(camera.Position);
             bbEffect.Parameters["xAmbient"].SetValue(0);
+            bbEffect.Parameters["xScaleX"].SetValue(this.lifeLength);
             StaticHelpers.StaticHelper.Device.SetVertexBuffer(VertexBuffer);
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
             {
