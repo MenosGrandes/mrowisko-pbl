@@ -131,6 +131,10 @@
       <Project>{80fbc0ee-2892-4ffe-805f-1c37d3981824}</Project>
       <Name>Player</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\SoundController\SoundController.csproj">
+      <Project>{59d45815-fe5e-439f-97d5-b95710b6d2a1}</Project>
+      <Name>SoundController</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\StaticHelpers\StaticHelpers.csproj">
       <Project>{adb8cf44-88f0-42de-ae42-62e5b9704438}</Project>
       <Name>StaticHelpers</Name>

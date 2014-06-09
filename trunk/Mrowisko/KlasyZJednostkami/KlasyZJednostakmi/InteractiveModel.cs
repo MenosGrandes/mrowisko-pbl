@@ -42,12 +42,20 @@ namespace Logic
             get { return hp; }
             set { hp = value; }
         }
+        public float ElapsedTime;
 
+        protected float elapsedTime
+        {
+            get { return ElapsedTime; }
+            set { ElapsedTime = value; }
+        }
+            
         public bool snared = false;
         public float time_snared = 0.0f;
         public InteractiveModel( LoadModel model)
         {         
             this.model=model;
+            this.elapsedTime = 0;
         }
 
         public InteractiveModel()
@@ -78,9 +86,16 @@ namespace Logic
             return null;
         }
         public virtual void Update(GameTime time)
-        { }
+        {
+            this.elapsedTime += time.ElapsedGameTime.Milliseconds;
+
+        }
         public virtual void setGaterMaterial(Material m)
         { }
+        public virtual void Attack(InteractiveModel a)
+        {
+            Console.WriteLine("Attack!!");
+        }
 
     }
 }

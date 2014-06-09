@@ -16,7 +16,7 @@ using Logic.Building;
 using Logic.Building.AntBuildings;
 namespace Logic
 {
-    public class ControlEnemy
+    public class    ControlEnemy
     {
 
         private int promien = 100;

@@ -77,7 +77,14 @@ namespace Logic
             set { lifeBar = value; }
         }
 
+        protected float atackInterval;
 
+        public float AtackInterval
+        {
+            get { return atackInterval; }
+            set { atackInterval = value; }
+        }
+        
 
        /*
         protected List<Skill> skillsList;
@@ -88,10 +95,11 @@ namespace Logic
             set { skillsList = value; }
         }
        */
-        
-       
 
-         public Unit(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model):base( model)
+
+
+        public Unit(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
+            : base(model)
         {
             this.lifeBar = new HUD.LifeBar(2);
 
@@ -101,11 +109,20 @@ namespace Logic
             this.range = range;
             this.cost = cost;
             this.buildingTime = buildingTime;
-
-            
+            this.atackInterval = atackInterval;
+            base.elapsedTime = 0; 
 
         }
-
+        public Unit(): base()
+        {
+            this.lifeBar = new HUD.LifeBar(2);
+            base.elapsedTime = 0;
+        }
+        public Unit(LoadModel model):base(model)
+        {
+            this.lifeBar = new HUD.LifeBar(2);
+            base.elapsedTime = 0;
+        }
         public Vector3 getPosition()
          {
              return this.model.Position;
@@ -124,15 +141,6 @@ namespace Logic
         {
             this.model.Rotation = rotation;
         }
-        public Unit():base()
-        {
-            this.lifeBar = new HUD.LifeBar(2);
-
-        }
-                            public Unit(LoadModel model):base(model)
-                            {
-                                this.lifeBar = new HUD.LifeBar(2);
-
-                            }
+       
     }
 }
