@@ -415,7 +415,7 @@ namespace Particles
                     else
                     {
                         // If the active particle range wraps past the end of the queue
-                        // back to the start, we must split them over two draw calls.
+                        // back to the start, we must Spit them over two draw calls.
                         device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
                                                      firstActiveParticle * 4, (settings.MaxParticles - firstActiveParticle) * 4,
                                                      firstActiveParticle * 6, (settings.MaxParticles - firstActiveParticle) * 2);
@@ -458,7 +458,7 @@ namespace Particles
             else
             {
                 // If the new particle range wraps past the end of the queue
-                // back to the start, we must split them over two upload calls.
+                // back to the start, we must Spit them over two upload calls.
                 vertexBuffer.SetData(firstNewParticle * stride * 4, particles,
                                      firstNewParticle * 4,
                                      (settings.MaxParticles - firstNewParticle) * 4,
