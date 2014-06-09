@@ -20,17 +20,23 @@ namespace Logic.Units.Ants
             : base()
         {
             bullets = new List<SpitMissle>();
+            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+
         }
         public AntSpitter(LoadModel model)
             : base(model)
         {
             bullets = new List<SpitMissle>();
-
+            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+            hp = 100;
+            range = 100;
+            atackInterval = 60*4;
         }
         public AntSpitter(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
         {
             bullets = new List<SpitMissle>();
+            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
 
         }
         public override void Update(GameTime time)
@@ -45,16 +51,17 @@ namespace Logic.Units.Ants
                     bullets.RemoveAt(i);
                 }
             }
-            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
 
 
         }
         public override void Attack(InteractiveModel a)
         {
+            if (range <= Math.Abs(model.Position.X - a.Model.Position.Y) + Math.Abs(model.Position.X - a.Model.Position.Y))
             if (elapsedTime >= atackInterval)
             {
                 bullets.Add(new SpitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/trigger"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), a.Model.Position));
                 Console.WriteLine("ATACK!!!!");
+                elapsedTime = 0;
             }
         }
         public override void Intersect(InteractiveModel interactive)
@@ -86,33 +93,33 @@ namespace Logic.Units.Ants
                 sm.Draw(camera);
             }
         }
-<<<<<<< .mine
+
 
         public override void DrawSelected(GameCamera.FreeCamera camera)
         {
             LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 10, 0));
             LifeBar.healthDraw(camera);
         }
-        #region SplitMissle
-        public class SplitMissle : InteractiveModel
-=======
+
         #region SpitMissle
         public class SpitMissle : InteractiveModel
->>>>>>> .r167
         {
+            public float speed=10000;
             public bool hit = false;
             public float time_ = 0;
+            public float time_to_point;
             public List<PointInTime> points = new List<PointInTime>();
             public Curve3D trajectory;
             public Vector3 targetPos;
             public SpitMissle(LoadModel model, Vector3 targtPosition)
                 : base(model)
             {
-                float distance = Math.Abs(model.Position.X - targtPosition.Y) + Math.Abs(model.Position.X - targtPosition.Y);
-
+                float distance = Math.Abs(model.Position.Y - targtPosition.Y) - Math.Abs(targtPosition.X - model.Position.X);
+                time_to_point =  distance/speed;
                 points.Add(new PointInTime(model.Position, 0));
-                points.Add(new PointInTime(targtPosition, 20*distance/10));
+                points.Add(new PointInTime(targtPosition,time_to_point));
                 trajectory = new Curve3D(points);
+                
             }
             public SpitMissle()
                 : base()
@@ -134,8 +141,9 @@ namespace Logic.Units.Ants
             }
             public void Hit(InteractiveModel b)
             {
-                // b.Hp -= 10;
+                b.Hp -= 1;
                 Console.WriteLine("Dostałą z kulki!");
+                ((Unit)b).LifeBar.LifeLength -= 1;
                 SoundController.SoundController.Play(SoundController.SoundEnum.RangeHit);
             }
             public override void Update(GameTime time)

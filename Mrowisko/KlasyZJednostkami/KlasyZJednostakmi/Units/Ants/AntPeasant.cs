@@ -44,6 +44,8 @@ namespace Logic.Units.Ants
             rock2 = 0;
             wood2 = 0;
             base.elapsedTime = 0;
+            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+
         }
         public AntPeasant(LoadModel model)
             : base(model)
@@ -54,6 +56,8 @@ namespace Logic.Units.Ants
             rock2 = 0;
             wood2 = 0;
            elapsedTime = 0;
+           LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+
         }
         public override void gaterMaterial(Material material)
         {
@@ -87,7 +91,6 @@ namespace Logic.Units.Ants
         public override void Update(GameTime time)
         {
           //  this.model.tempPosition = this.model.Position;
-            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             base.Update(time);
             //Console.WriteLine(elapsedTime);
         }

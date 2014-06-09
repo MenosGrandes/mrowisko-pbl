@@ -25,6 +25,7 @@ using Logic.Triggers;
 using Logic.Player;
 using Microsoft.Xna.Framework.Audio;
 using SoundController;
+using GUI;
 
 namespace AntHill
 {
@@ -44,8 +45,7 @@ namespace AntHill
         Logic.Control control;
         ControlEnemy e= new ControlEnemy();
         InteractiveModel spider;
-        //HUD.LifeBar hp = new HUD.LifeBar(5.0f);
-
+        MainGUI gui;
 
         //-----------
         float liczba = 0;
@@ -197,7 +197,7 @@ namespace AntHill
             foreach (InteractiveModel i in LoadModelsFromFile.listOfAllInteractiveModelsFromFile)
             {
                // Console.WriteLine(models.GetType().BaseType.Name);
-                if(i.GetType().BaseType==typeof(Building) ||i.GetType().BaseType==typeof(Material))
+                if(i.GetType().BaseType==typeof(Building) )
                 {
                     IModel.Add(i);
                 }else
@@ -283,6 +283,8 @@ GraphicsDevice);
             aa.Add("s2");
             SoundController.SoundController.content = Content;
            SoundController.SoundController.Initialize(aa);
+
+           gui = new MainGUI(StaticHelpers.StaticHelper.Content);
         }
         
 
@@ -302,7 +304,7 @@ GraphicsDevice);
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            
+            gui.Update(gameTime);
             kolizja = false;
                 currentMouseState = Mouse.GetState();
                 if (timeTriggers.Count<1)
@@ -363,22 +365,22 @@ GraphicsDevice);
 
             }
             #endregion
-                foreach (InteractiveModel model in models)
+            for (int i = 0; i < models.Count;i++ )
                 {
-                    model.Update(gameTime);
-                    model.Model.Update(gameTime);
+                    models[i].Update(gameTime);
+                    models[i].Model.Update(gameTime);
 
                     if (control.selectedObject != null)
                     {
                         if (control.selectedObject.GetType().BaseType == typeof(Material))
                         {
 
-                            model.setGaterMaterial((Material)control.selectedObject);
+                            models[i].setGaterMaterial((Material)control.selectedObject);
                         }
                     }
                     if (control.selectedObjectMouseOnlyMove != null)
                     {
-                       // Console.WriteLine(control.selectedObjectMouseOnlyMove);
+                        // Console.WriteLine(control.selectedObjectMouseOnlyMove);
                         if (currentMouseState.RightButton != Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                         {
                             if (control.selectedObjectMouseOnlyMove.GetType().BaseType == typeof(Material))
@@ -392,7 +394,7 @@ GraphicsDevice);
                         {
                             MouseCursorController.stage = CursorStage.Normal;
                         }
-                        if(control.selectedObjectMouseOnlyMove.GetType().BaseType==typeof(Building))
+                        if (control.selectedObjectMouseOnlyMove.GetType().BaseType == typeof(Building))
                         {
                             MouseCursorController.stage = CursorStage.Go;
 
@@ -402,9 +404,17 @@ GraphicsDevice);
                     {
                         MouseCursorController.stage = CursorStage.Normal;
                     }
-                    foreach (InteractiveModel model2 in models)
+                    //foreach (InteractiveModel model2 in models)
+                    for (int j = 0; j < models.Count;j++ )
                     {
-                        model.Intersect(model2);
+                        models[i].Intersect(models[j]);
+                    }
+                    if(models[i].Hp<=0 && models[i].GetType().BaseType.BaseType==typeof(Unit))
+                    {
+                        models[i].Model.switchAnimation("Death");
+                        //models.RemoveAt(i);
+                        
+                        Console.WriteLine(models[i].GetType().Name);
                     }
                 }
              
@@ -615,8 +625,14 @@ GraphicsDevice);
                 }
             }
 
-
-
+            foreach (InteractiveModel selected in control.SelectedModels)
+            {
+                selected.DrawSelected((FreeCamera)camera);
+            }
+            if (control.selectedObjectMouseOnlyMove != null)
+            {
+                control.selectedObjectMouseOnlyMove.DrawSelected((FreeCamera)camera);
+            }
             spriteBatch.Begin();
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                  new Vector2(10.0f, 20.0f), Color.Tomato);
@@ -644,16 +660,13 @@ GraphicsDevice);
             //spriteBatch.DrawString(_spr_font, string.Format("obrot ={0}", models[0].Model.Rotation), new Vector2(10.0f, 80.0f), Color.Pink);
            
             control.Draw(spriteBatch);
-
+            gui.Draw(spriteBatch);
             spriteBatch.End();
-
+            
 
 
             base.Draw(gameTime);
-            foreach (InteractiveModel selected in control.SelectedModels)
-            {
-                selected.DrawSelected((FreeCamera)camera);
-            }
+
             
         }
 
