@@ -60,29 +60,27 @@ namespace Controlers
                List<InteractiveModel> salesman = (List<InteractiveModel>)bformatter.Deserialize(stream);
                foreach (InteractiveModel model in salesman)
                {
-                   Console.WriteLine(model.GetType().Name);
+                    Console.WriteLine(model.GetType().BaseType.Name);
                    switch (model.GetType().Name)
                    {
                        case "AntPeasant":
-                           AntPeasant p = new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
+                           AntPeasant p = new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
 
-                         //  p.Model.switchAnimation("Atack");
+                           p.Model.switchAnimation("Atack");
                            listOfAllInteractiveModelsFromFile.Add(p);
                           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("queen"), new Vector3(150, 0, 0), new Vector3(0, 6, 0), new Vector3(0.4f), GraphicsDevice,Content, light), 10000, 10))
                            break; 
                        case "Log":
 
-                           Log g = new Log(null, ((Log)model).ClusterSize);
-                           g.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/log"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light);
-
+                           Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//log"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
+                          
                            listOfAllInteractiveModelsFromFile.Add(g);
 
                            break;
                        case "Rock":
 
 
-                           Rock q = new Rock(null, ((Rock)model).ClusterSize);
-                           q.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/stone2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light);
+                           Rock q = new Rock(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//stone2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Rock)model).ClusterSize);
                            listOfAllInteractiveModelsFromFile.Add(q);
 
 
@@ -92,8 +90,8 @@ namespace Controlers
                        case "BuildingPlace":
 
 
-                           BuildingPlace w = new BuildingPlace(null);
-                           w.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/buildingPlace"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light);
+                           BuildingPlace w = new BuildingPlace( new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//buildingPlace"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
+                           
 
                            listOfAllInteractiveModelsFromFile.Add(w);
 
@@ -105,8 +103,7 @@ namespace Controlers
                        case "AntGranary":
 
 
-                           AntGranary ag = new AntGranary(null);
-                           ag.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/antGranary"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light);
+                           AntGranary ag = new AntGranary(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//antGranary"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
 
                            listOfAllInteractiveModelsFromFile.Add(ag);
                             
@@ -117,8 +114,8 @@ namespace Controlers
                        case "TownCenter":
 
 
-                            Logic.Building.AntBuildings.TownCenter ad = new Logic.Building.AntBuildings.TownCenter(null);
-                            ad.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/townCenter"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light);
+                            Logic.Building.AntBuildings.TownCenter ad = new Logic.Building.AntBuildings.TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//townCenter"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
+                            
 
                             listOfAllInteractiveModelsFromFile.Add(ad);
 
@@ -127,8 +124,8 @@ namespace Controlers
                        case "Spider":
 
 
-                            Spider s = new Spider(null);
-                            s.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//spider"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,StaticHelpers.StaticHelper.Content,_light);
+                            Spider s = new Spider(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//spider"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,StaticHelpers.StaticHelper.Content,_light));
+                            
                             s.Model.switchAnimation("Jump");
                             listOfAllInteractiveModelsFromFile.Add(s);
 

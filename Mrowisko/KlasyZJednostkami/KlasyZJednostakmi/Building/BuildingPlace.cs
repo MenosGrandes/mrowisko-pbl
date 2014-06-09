@@ -21,7 +21,7 @@ namespace Logic.Building
         public BuildingPlace(LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime)
             : base(model, _capacity, _durability, _cost, _buildingTime)
         {
-
+                 
         }
         public BuildingPlace(LoadModel model)
             : base(model)

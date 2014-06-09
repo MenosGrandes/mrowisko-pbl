@@ -390,18 +390,13 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Models\queen_sfery.X">
-      <Name>queen_sfery</Name>
+    <Compile Include="Models\queen.X">
+      <Name>queen</Name>
       <Importer>XImporter</Importer>
       <Processor>AnimatedModelProcessor</Processor>
     </Compile>
     <Compile Include="Models\strong_ant_sfery.X">
       <Name>strong_ant_sfery</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimatedModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Models\queen.X">
-      <Name>queen</Name>
       <Importer>XImporter</Importer>
       <Processor>AnimatedModelProcessor</Processor>
     </Compile>
@@ -536,6 +531,32 @@
     </Compile>
     <Compile Include="Textures\treetex\tree_tex.jpg">
       <Name>tree_tex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sounds\s1.mp3">
+      <Name>s1</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Effects\HUD.fx">
+      <Name>HUD</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\HudTextures\elipsa.png">
+      <Name>elipsa</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\HudTextures\health_bar.png">
+      <Name>health_bar</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

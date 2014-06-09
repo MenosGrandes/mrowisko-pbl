@@ -50,17 +50,27 @@ namespace Logic.Building
             this.capacity = _capacity;
             this.cost = _cost;
             this.buildingTime = _buildingTime;
+            model.CreateBoudingBox();
         }
         public Building()
-        { }
+        {
+            this.model = model;
+
+            model.CreateBoudingBox();
+        }
         public Building(LoadModel model)
             : base(model)
-        { }
+        {
+            this.model = model;
+
+            model.CreateBoudingBox();
+        }
         public override void Draw(GameCamera.FreeCamera camera)
         {
             model.Draw(camera);
         }
         public override void Update(GameTime gameTime)
         { }
+
     }
 }

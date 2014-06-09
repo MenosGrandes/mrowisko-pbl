@@ -86,7 +86,7 @@ namespace Logic.Units.Ants
         {
           //  this.model.tempPosition = this.model.Position;
             this.elapsedTime += time.ElapsedGameTime.Milliseconds ;
-            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/LifeBar"));
+            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
 
         }
 

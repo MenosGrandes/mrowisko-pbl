@@ -23,6 +23,7 @@ using Controlers;
 using Controlers.CursorEnum;
 using Logic.Triggers;
 using Logic.Player;
+using Microsoft.Xna.Framework.Audio;
 
 namespace AntHill
 {
@@ -44,6 +45,8 @@ namespace AntHill
         InteractiveModel spider;
         //HUD.LifeBar hp = new HUD.LifeBar(5.0f);
 
+        List<SoundEffect> sounds = new List<SoundEffect>();
+        List<SoundEffectInstance> s_instance = new List<SoundEffectInstance>();
         //-----------
         float liczba = 0;
         //-----------
@@ -92,28 +95,28 @@ namespace AntHill
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             // Construct our particle system components.
-            explosionParticles = new Particles.ParticleSystems.ExplosionParticleSystem(this, Content);
-            explosionSmokeParticles = new Particles.ParticleSystems.ExplosionSmokeParticleSystem(this, Content);
-            projectileTrailParticles = new Particles.ParticleSystems.ProjectileTrailParticleSystem(this, Content);
-            smokePlumeParticles = new Particles.ParticleSystems.SmokePlumeParticleSystem(this, Content);
-            fireParticles = new Particles.ParticleSystems.FireParticleSystem(this, Content);
-
-            fireParticles.Interval = 2.5f;
+           // explosionParticles = new Particles.ParticleSystems.ExplosionParticleSystem(this, Content);
+           // explosionSmokeParticles = new Particles.ParticleSystems.ExplosionSmokeParticleSystem(this, Content);
+            //projectileTrailParticles = new Particles.ParticleSystems.ProjectileTrailParticleSystem(this, Content);
+            //smokePlumeParticles = new Particles.ParticleSystems.SmokePlumeParticleSystem(this, Content);
+            //fireParticles = new Particles.ParticleSystems.FireParticleSystem(this, Content);
+            
+            //fireParticles.Interval = 2.5f;
 
             // Set the draw order so the explosions and fire
             // will appear over the top of the smoke.
-            smokePlumeParticles.DrawOrder = 100;
-            explosionSmokeParticles.DrawOrder = 200;
-            projectileTrailParticles.DrawOrder = 300;
-            explosionParticles.DrawOrder = 400;
-            fireParticles.DrawOrder = 500;
+         //   smokePlumeParticles.DrawOrder = 100;
+          //  explosionSmokeParticles.DrawOrder = 200;
+           // projectileTrailParticles.DrawOrder = 300;
+            //explosionParticles.DrawOrder = 400;
+           // fireParticles.DrawOrder = 500;
 
             // Register the particle system components.
-            Components.Add(explosionParticles);
-            Components.Add(explosionSmokeParticles);
-            Components.Add(projectileTrailParticles);
-            Components.Add(smokePlumeParticles);
-            Components.Add(fireParticles);
+            //Components.Add(explosionParticles);
+            //Components.Add(explosionSmokeParticles);
+            //Components.Add(projectileTrailParticles);
+            //Components.Add(smokePlumeParticles);
+            //Components.Add(fireParticles);
 
         }
 
@@ -148,7 +151,13 @@ namespace AntHill
 
             MouseCursorController.stage = Controlers.CursorEnum.CursorStage.Normal;
             #endregion
-
+            #region dzwiek
+            sounds.Add(Content.Load<SoundEffect>("Sounds/s1"));
+            foreach(SoundEffect se in sounds)
+            {
+                s_instance.Add(se.CreateInstance());
+            }
+            #endregion
             #region Light Shadow
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(2048, 1200, 2048));
             shadow = new LightsAndShadows.Shadow();
@@ -187,14 +196,22 @@ namespace AntHill
 
             StaticHelpers.StaticHelper.Content = Content;
             StaticHelpers.StaticHelper.Device = device;
+            
             #region loadFromFile
              
             Controlers.LoadModelsFromFile.Load();
             foreach (InteractiveModel i in LoadModelsFromFile.listOfAllInteractiveModelsFromFile)
             {
-                models.Add(i);
-            }   
-            #endregion
+               // Console.WriteLine(models.GetType().BaseType.Name);
+                if(i.GetType().BaseType==typeof(Building) ||i.GetType().BaseType==typeof(Material))
+                {
+                    IModel.Add(i);
+                }else
+                {
+                    models.Add(i);
+                }
+            }
+            #endregion   
             #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
             //alphy do terenu
@@ -245,10 +262,10 @@ MathHelper.ToRadians(0), // Turned around 153 degrees
 MathHelper.ToRadians(-45), // Pitched up 13 degrees
 GraphicsDevice);
 
-            quadTree = new QuadTree(Vector3.Zero, texture, device, 2, Content, (FreeCamera)camera);
+            quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
             quadTree.Cull = true;
 
-            water = new Water(device, Content, texture[4].Width, 2);
+            water = new Water(device, Content, texture[4].Width, 1);
 
 
 
@@ -264,7 +281,8 @@ GraphicsDevice);
             
            
             WindowController.setWindowSize(1366, 768, false);
-
+            //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
+           // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
         }
         
 
@@ -289,10 +307,10 @@ GraphicsDevice);
                 currentMouseState = Mouse.GetState();
                 if (timeTriggers.Count<1)
                 {
-                    UpdateFire();
-                    UpdateSmokePlume();
-                    UpdateExplosions(gameTime);
-                    UpdateProjectiles(gameTime);
+                    //UpdateFire();
+                    //UpdateSmokePlume();
+                    //UpdateExplosions(gameTime);
+                    //UpdateProjectiles(gameTime);
                 }
 
 
@@ -359,24 +377,21 @@ GraphicsDevice);
                     }
                     if (control.selectedObjectMouseOnlyMove != null)
                     {
+                       // Console.WriteLine(control.selectedObjectMouseOnlyMove);
                         if (currentMouseState.RightButton != Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                         {
                             if (control.selectedObjectMouseOnlyMove.GetType().BaseType == typeof(Material))
                             {
                                 // window.Cursor = cursors[1];
-                                MouseCursorController.stage = CursorStage.Attack;
+                                MouseCursorController.stage = CursorStage.Gater;
                             }
-                            else
-                            {
-                                MouseCursorController.stage = CursorStage.Attack;
 
-                            }
                         }
                         else
                         {
                             MouseCursorController.stage = CursorStage.Normal;
                         }
-                        if(control.selectedObjectMouseOnlyMove.GetType()==typeof(Trigger))
+                        if(control.selectedObjectMouseOnlyMove.GetType().BaseType==typeof(Building))
                         {
                             MouseCursorController.stage = CursorStage.Go;
 
@@ -394,7 +409,7 @@ GraphicsDevice);
              
             
                  
-                foreach (Building model in IModel)
+                foreach (InteractiveModel model in IModel)
                 {
                   
                         model.Update(gameTime);
@@ -424,7 +439,7 @@ GraphicsDevice);
             control.models = models;
             control.device = device;
             control.Update(gameTime);
-            control.Models_Colision = IModel;
+            control.Models_Colision =IModel;
 
 
           //  e.gameTime = gameTime;
@@ -448,9 +463,9 @@ GraphicsDevice);
 
             //explosionParticles.SetCamera(camera.View, camera.Projection);
             //explosionSmokeParticles.SetCamera(camera.View, camera.Projection);
-            projectileTrailParticles.SetCamera(camera.View, camera.Projection);
-            smokePlumeParticles.SetCamera(camera.View, camera.Projection);
-            fireParticles.SetCamera(camera.View, camera.Projection);
+    //        projectileTrailParticles.SetCamera(camera.View, camera.Projection);
+      //      smokePlumeParticles.SetCamera(camera.View, camera.Projection);
+        //    fireParticles.SetCamera(camera.View, camera.Projection);
 
 
 
@@ -470,76 +485,71 @@ GraphicsDevice);
 
             _total_frames++;
 
-
-            shadow.UpdateLightData(0.6f, light.lightPosChange(time), (FreeCamera)camera);
-            shadow.setShadowMap();
-            device.SetRenderTarget(shadow.RenderTarget);
-            //PopulateShadowEffect("ShadowMap");
-            animHiDefShadowEffect.CurrentTechnique = animHiDefShadowEffect.Techniques["Technique1"];
-
-            /*  foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
-              {
-
-                  pass.Apply();
-                  quadTree.basicDraw();
-              }*/
-
-            foreach (InteractiveModel model in models)
-            {
-                hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["Technique1"];
-                //hiDefShadowEffect.Parameters["Model"].SetValue(true);
-                hiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
-                hiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
-                animHiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
-                animHiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
-                // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
-                //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
-                //hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
-
-                if (model.Model.Player == null)
-                {
-                    foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
-                    {
-                        // pass.Apply();
-                        // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
-                        //  {
+          
+             shadow.UpdateLightData(0.6f, light.lightPosChange(time), (FreeCamera)camera);
+             shadow.setShadowMap();
+             device.SetRenderTarget(shadow.RenderTarget);
+             //PopulateShadowEffect("ShadowMap");
+             animHiDefShadowEffect.CurrentTechnique = animHiDefShadowEffect.Techniques["Technique1"];
 
 
-                        foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
-                        {
-                            hiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
-                            pass.Apply();
-                            device.SetVertexBuffer(shadowCaster.VertexBuffer);
-                            device.Indices = shadowCaster.IndexBuffer;
-                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
-                        }
-                    }
-                }
-                else
-                {
+             foreach (InteractiveModel model in models)
+             {
+                 hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["Technique1"];
+                 //hiDefShadowEffect.Parameters["Model"].SetValue(true);
+                 hiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
+                 hiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
+                 animHiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
+                 animHiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
+                 // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
+                 //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
+                 //hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
+
+                 if (model.Model.Player == null)
+                 {
+                     foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+                     {
+                         // pass.Apply();
+                         // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                         //  {
+
+
+                         foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
+                         {
+                             hiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
+                             pass.Apply();
+                             device.SetVertexBuffer(shadowCaster.VertexBuffer);
+                             device.Indices = shadowCaster.IndexBuffer;
+                             device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
+                         }
+                     }
+                 }
+                 else
+                 {
                     
-                    foreach (EffectPass pass in animHiDefShadowEffect.CurrentTechnique.Passes)
-                    {
-                        // pass.Apply();
-                        // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
-                        //  {
+                     foreach (EffectPass pass in animHiDefShadowEffect.CurrentTechnique.Passes)
+                     {
+                         // pass.Apply();
+                         // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                         //  {
 
 
-                        foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
-                        {
+                         foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
+                         {
                             
-                            animHiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
-                            animHiDefShadowEffect.Parameters["Bones"].SetValue(model.Model.Player.GetSkinTransforms());
-                            pass.Apply();
-                            device.SetVertexBuffer(shadowCaster.VertexBuffer);
-                            device.Indices = shadowCaster.IndexBuffer;
-                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
-                        }
-                    }
-                }
-            }
-            shadow.setShadowMap();
+                             animHiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
+                             animHiDefShadowEffect.Parameters["Bones"].SetValue(model.Model.Player.GetSkinTransforms());
+                             pass.Apply();
+                             device.SetVertexBuffer(shadowCaster.VertexBuffer);
+                             device.Indices = shadowCaster.IndexBuffer;
+                             device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
+                         }
+                     }
+                 }
+             }
+             shadow.setShadowMap();   
             device.SetRenderTarget(null);
+          
             #region Odbicie i rozproszenie wody
             water.DrawRefractionMap((FreeCamera)camera, time, shadow, light,quadTree);
 
@@ -571,8 +581,8 @@ GraphicsDevice);
                    
 
                       BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                       new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f), new Color(0.3f, 0.4f, 0.2f));
-                      BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                       Color.Green, Color.Aquamarine, Color.White);
+                      BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
                     licznik++;
                 }
             }
@@ -593,9 +603,19 @@ GraphicsDevice);
             }
 
            // spider.Draw((FreeCamera)camera);
-
-
-
+            if (control.selectedObjectMouseOnlyMove != null)
+            {
+               // Console.WriteLine(control.selectedObjectMouseOnlyMove);
+                switch (control.selectedObjectMouseOnlyMove.GetType().BaseType.Name)
+                {
+                    case "Material":
+                        if (s_instance[0].State == SoundState.Stopped)
+                        {
+                            s_instance[0].Play();
+                        }
+                        break;
+                }
+            }
 
 
 
@@ -603,8 +623,9 @@ GraphicsDevice);
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                  new Vector2(10.0f, 20.0f), Color.Tomato);
 
+            spriteBatch.DrawString(_spr_font, string.Format("D g={0}", (control.selectedObjectMouseOnlyMove)), new Vector2(10.0f, 140.0f), Color.Pink);
 
-           
+           /* 
             spriteBatch.DrawString(_spr_font, string.Format("D g={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
              spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
              spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.wood), new Vector2(230.0f, 240.0f), Color.Pink);
@@ -612,7 +633,7 @@ GraphicsDevice);
             spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(340.0f, 240.0f), Color.Pink);
              spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(450.0f, 240.0f), Color.Pink);
              spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 240.0f), Color.Pink);
-             /* 
+             
              spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
              spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
            
@@ -693,11 +714,12 @@ GraphicsDevice);
 
         /// <summary>
         /// Helper for updating the smoke plume effect.
-        /// </summary>
+        /// </summary>                                                                               \
+        /// ] ,l-p
         void UpdateSmokePlume()
         {
             // This is trivial: we just create one new smoke particle per frame.
-            smokePlumeParticles.AddParticle(Vector3.Zero, Vector3.Zero);
+          //  smokePlumeParticles.AddParticle(Vector3.Zero, Vector3.Zero);
         }
 
 
@@ -711,11 +733,11 @@ GraphicsDevice);
             // Create a number of fire particles, randomly positioned around a circle.
             for (int i = 0; i < fireParticlesPerFrame; i++)
             {
-                fireParticles.AddParticle(RandomPointOnCircle(), Vector3.One);
+                //fireParticles.AddParticle(RandomPointOnCircle(), Vector3.One);
             }
 
             // Create one smoke particle per frmae, too.
-            smokePlumeParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
+         //   smokePlumeParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
         }
 
 
