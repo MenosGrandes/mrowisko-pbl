@@ -68,14 +68,7 @@ namespace Logic
             get { return cost; }
             set { cost = value; }
         }
-        [NonSerialized]
-        protected HUD.LifeBar lifeBar;
-
-        public HUD.LifeBar LifeBar
-        {
-            get { return lifeBar; }
-            set { lifeBar = value; }
-        }
+        
 
         protected float atackInterval;
 
@@ -101,7 +94,7 @@ namespace Logic
         public Unit(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
             : base(model)
         {
-            this.lifeBar = new HUD.LifeBar(1);
+           
 
             this.hp = hp;
             this.armor = armor;
@@ -115,12 +108,11 @@ namespace Logic
         }
         public Unit(): base()
         {
-            this.lifeBar = new HUD.LifeBar(1);
             base.elapsedTime = 0;
         }
         public Unit(LoadModel model):base(model)
         {
-            this.lifeBar = new HUD.LifeBar(1);
+            
             base.elapsedTime = 0;
         }
         public Vector3 getPosition()

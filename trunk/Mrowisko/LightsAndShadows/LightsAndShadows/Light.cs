@@ -42,7 +42,7 @@ namespace LightsAndShadows
        public Vector3 lightPosChange(float time)
         {
            // (xLightPos.x/**sin(radians(xTime2))*/, abs(xLightPos.y/**sin(radians(xTime2))*/), xLightPos.z/**sin(radians(xTime2))*/)
-            return new Vector3(this.LightPos.X * (float)Math.Sin(MathHelper.ToRadians(time)), this.LightPos.Y , this.LightPos.Z * (float)Math.Sin(MathHelper.ToRadians(time)));
+            return new Vector3(this.LightPos.X /* (float)Math.Sin(MathHelper.ToRadians(time)) * 1.2f*/, this.LightPos.Y, this.LightPos.Z /** (float)Math.Cos(MathHelper.ToRadians(time)) * 2.0f*/);
         }
         public float lightPosChangeBilb(float time)
        {

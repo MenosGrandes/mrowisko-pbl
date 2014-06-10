@@ -10,7 +10,7 @@ using GameCamera;
 
 namespace HUD
 {
-    public class LifeBar
+    public class Circle
     {
         private Texture2D healthTexture;
 
@@ -28,7 +28,7 @@ namespace HUD
             set { scale = value; }
         }
 
-        private float lifeLength=300;
+        private float lifeLength = 300;
 
         public float LifeLength
         {
@@ -39,46 +39,46 @@ namespace HUD
 
         private VertexBuffer VertexBuffer;
         private Effect bbEffect;
-        public LifeBar(float scale)
+       
+        public Circle()
         {
-            this.bbEffect = StaticHelpers.StaticHelper.Content.Load<Effect>("Effects/HUD");
-            this.scale = scale;
-            
-                       
+            this.bbEffect = StaticHelpers.StaticHelper.Content.Load<Effect>("Effects/HUD2");
+            this.scale = 8;
+            lifeLength = 1;
+
             bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
             bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
             bbEffect.Parameters["xScale"].SetValue(this.scale);
-           
+
         }
-        
 
         public void update(Texture2D bilboardTexture)
         {
             bbEffect.Parameters["xBillboardTexture"].SetValue(bilboardTexture);
         }
 
-          public void CreateBillboardVerticesFromList(Vector3 currentV3)
+        public void CreateBillboardVerticesFromList(Vector3 currentV3)
         {
 
             VertexPositionTexture[] billboardVertices = new VertexPositionTexture[6];
-           
-           
-                billboardVertices[0] = new VertexPositionTexture(currentV3, new Vector2(0 , 0));
-                billboardVertices[1] = new VertexPositionTexture(currentV3, new Vector2(1 , 1));
-                billboardVertices[2] = new VertexPositionTexture(currentV3, new Vector2(0, 1));
 
-                billboardVertices[3] = new VertexPositionTexture(currentV3, new Vector2(0, 0));
-                billboardVertices[4] = new VertexPositionTexture(currentV3, new Vector2(1, 0));
-                billboardVertices[5] = new VertexPositionTexture(currentV3, new Vector2(1, 1));
 
-           
+            billboardVertices[0] = new VertexPositionTexture(currentV3, new Vector2(0, 0));
+            billboardVertices[1] = new VertexPositionTexture(currentV3, new Vector2(1, 1));
+            billboardVertices[2] = new VertexPositionTexture(currentV3, new Vector2(0, 1));
+
+            billboardVertices[3] = new VertexPositionTexture(currentV3, new Vector2(0, 0));
+            billboardVertices[4] = new VertexPositionTexture(currentV3, new Vector2(1, 0));
+            billboardVertices[5] = new VertexPositionTexture(currentV3, new Vector2(1, 1));
+
+
             VertexBuffer = new VertexBuffer(StaticHelpers.StaticHelper.Device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
             VertexBuffer.SetData(billboardVertices);
         }
 
-           
-       
-            public void healthDraw(FreeCamera camera)
+
+
+        public void healthDraw(FreeCamera camera)
         {
 
             bbEffect.Parameters["xWorld"].SetValue(Matrix.Identity);

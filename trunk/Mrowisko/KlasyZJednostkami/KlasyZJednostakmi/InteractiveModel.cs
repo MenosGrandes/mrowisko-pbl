@@ -54,6 +54,23 @@ namespace Logic
             get { return ElapsedTime; }
             set { ElapsedTime = value; }
         }
+
+        [NonSerialized]
+        protected HUD.LifeBar lifeBar;
+
+        public HUD.LifeBar LifeBar
+        {
+            get { return lifeBar; }
+            set { lifeBar = value; }
+        }
+
+        protected HUD.Circle circle;
+
+        public HUD.Circle Circle
+        {
+            get { return circle; }
+            set { circle = value; }
+        }
             
         public bool snared = false;
         public float time_snared = 0.0f;
@@ -61,10 +78,14 @@ namespace Logic
         {         
             this.model=model;
             this.elapsedTime = 0;
+            this.lifeBar = new HUD.LifeBar(1);
+            this.circle = new HUD.Circle();
         }
 
         public InteractiveModel()
-        {           
+        {
+            this.lifeBar = new HUD.LifeBar(1);
+            this.circle = new HUD.Circle();
         }
         public virtual void Draw(GameCamera.FreeCamera camera,float time)
         {
@@ -115,6 +136,11 @@ namespace Logic
         public virtual void DrawSelected(GameCamera.FreeCamera camera)
         {
             
+        }
+
+        public virtual void DrawSelectedCircle(GameCamera.FreeCamera camera)
+        {
+
         }
         public bool CheckRayIntersection(Ray ray)
         {
