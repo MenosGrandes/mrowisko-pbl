@@ -17,6 +17,11 @@ namespace Logic
     [Serializable]
     public class InteractiveModel
     {
+
+        public bool hasBeenHit=false;
+        public float tim_to_Show_Hit=4;
+        public float temp_time;
+
         protected ContentManager content;
 
         public ContentManager Content
@@ -88,13 +93,23 @@ namespace Logic
         public virtual void Update(GameTime time)
         {
             this.elapsedTime += time.ElapsedGameTime.Milliseconds;
+            if (hasBeenHit == true) {
 
+                temp_time += (float)time.ElapsedGameTime.Milliseconds / 1000;
+            if (temp_time > tim_to_Show_Hit)
+            {
+
+                temp_time = 0.0f;
+                hasBeenHit = false;
+                this.model.Hit = false;
+            }
+            }
         }
         public virtual void setGaterMaterial(Material m)
         { }
         public virtual void Attack(InteractiveModel a)
         {
-            Console.WriteLine("Attack!!");
+           // Console.WriteLine("Attack!!");
         }
 
         public virtual void DrawSelected(GameCamera.FreeCamera camera)

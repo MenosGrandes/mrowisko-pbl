@@ -46,6 +46,9 @@ namespace Map
          
 
       // private GraphicsDevice device;
+        private int Scale;
+        private int terrainWidth2;
+        private int terrainLength2;
 
        private int terrainWidth;
 
@@ -66,7 +69,11 @@ namespace Map
            get;
            set;
        }
-
+       public float[,] heightDataToControl
+       {
+           get;
+           set;
+       }
 
        //private VertexBuffer terrainVertexBuffer;
        //private IndexBuffer terrainIndexBuffer;
@@ -102,15 +109,15 @@ namespace Map
     public MapRender (Texture2D texture,int Scale)    
     {
 
-
-
-            LoadHeightData(texture);
-            SetUpvertices(Scale);
+        this.Scale = Scale;
+        Texture2D tex = StaticHelpers.StaticHelper.Content.Load<Texture2D>("HeighMaps/ter2");
+            LoadHeightData(texture,tex);
+            SetUpvertices(3);
             SetUpTerrainIndices();
             CalculateNormals();
+ 
 
-            
-
+         
 
         }
 
@@ -119,22 +126,23 @@ namespace Map
                                         ///             Loading informations about heigh from texture.
                                         /// </summary>
                                         /// <param name="heightMap">Heigh Map image</param>
-    private void LoadHeightData(Texture2D heightMap)
+    private void LoadHeightData(Texture2D heightMap,Texture2D heightMap2)
         {
             float minimumHeight = float.MaxValue;
             float maximumHeight = float.MinValue;
 
 
-
+            terrainWidth2 = heightMap2.Width;
+            terrainLength2 = heightMap2.Height;
             terrainWidth = heightMap.Width;
             terrainLength = heightMap.Height;
 
             Color[] heightMapColors = new Color[terrainWidth * terrainLength];
             heightMap.GetData(heightMapColors);
-
+            Color[] heightMapColors2 = new Color[terrainWidth2 * terrainLength2];
+            heightMap2.GetData(heightMapColors2);
           
             heightData = new float[terrainWidth, terrainLength];
-
             for (int x = 0; x < terrainWidth; x++)
                 for (int y = 0; y < terrainLength ; y++)
                 {
@@ -148,6 +156,24 @@ namespace Map
                 for (int y = 0; y < terrainLength; y++)
                 {
                     heightData[x, y] = (heightData[x, y] - minimumHeight) / (maximumHeight - minimumHeight) * 20.0f;
+
+                }
+
+
+            heightDataToControl = new float[terrainWidth2, terrainLength2];
+            for (int x = 0; x < terrainWidth2; x++)
+                for (int y = 0; y < terrainLength2; y++)
+                {
+                    heightDataToControl[x, y] = heightMapColors2[x + y * terrainWidth2].R;
+                    if (heightDataToControl[x, y] < minimumHeight) minimumHeight = heightDataToControl[x, y];
+                    if (heightDataToControl[x, y] > maximumHeight) maximumHeight = heightDataToControl[x, y];
+
+                                  }
+
+            for (int x = 0; x < terrainWidth2; x++)
+                for (int y = 0; y < terrainLength2; y++)
+                {
+                    heightDataToControl[x, y] = (heightDataToControl[x, y] - minimumHeight) / (maximumHeight - minimumHeight) * 30.0f;
 
                 }
         }
@@ -164,15 +190,15 @@ namespace Map
             {
                 for (int y = 0; y < terrainLength; y++)
                 {
-                    vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, y * Scale);
+                    vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, y * Scale);                               
                     vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 5.0f;
                     vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 5.0f;
-                 
-                  
+                   
                    
                 }
             }
-
+           
+            
         }
 /// <summary>
 ///                    Create indices of terrain.

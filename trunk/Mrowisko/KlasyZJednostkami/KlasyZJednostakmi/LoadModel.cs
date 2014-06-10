@@ -22,6 +22,7 @@ namespace Logic
     [Serializable]
     public class LoadModel                                                                                      
     {
+        public bool Hit=false;
         public BoundingBox B_Box;
         public bool Collide;
         public Vector3 Position { get; set; }
@@ -278,8 +279,12 @@ namespace Logic
                        effect.Projection = camera.Projection;
                        effect.EnableDefaultLighting();
                        effect.Alpha = 0.9f;
-                       if (Selected) { 
-                       effect.AmbientLightColor = new Vector3(255, 255, 255);    }
+                       if (Hit) { 
+                       effect.AmbientLightColor = new Vector3(255, 0, 0);    }
+                       else
+                       {
+                           effect.AmbientLightColor = new Vector3(0, 0, 0);
+                       }
                            /*
                        effect.DirectionalLight0.Enabled = true;
                        effect.DirectionalLight0.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs(-1 * (float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f);
@@ -331,7 +336,14 @@ namespace Logic
                        effect.DirectionalLight0.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs(-1*(float)Math.Sin(MathHelper.ToRadians(time-1.58f))/light.LightPower)+1),0.3f,0.9f); // a red light
                        effect.DirectionalLight0.Direction = lightDir;  // coming along the x-axis
                        effect.DirectionalLight0.SpecularColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs((float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f); ; // with green highlights
-
+                       if(Hit==true)
+                       {
+                           effect.AmbientLightColor = new Vector3(255, 0, 0);
+                       }
+                       else
+                       {
+                           effect.AmbientLightColor = new Vector3(0, 0, 0);
+                       }
                        //effect.SpecularColor = new Vector3(0.25f);
                        //effect.SpecularPower = 16;
                    }
