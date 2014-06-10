@@ -101,6 +101,12 @@ namespace Logic
         {
             
         }
+        public bool CheckRayIntersection(Ray ray)
+        {
 
+                if (ray.Intersects(model.BoundingSphere) != null) return true;
+            
+            return false;
+        }
     }
 }

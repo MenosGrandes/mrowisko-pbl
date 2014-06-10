@@ -27,7 +27,7 @@ namespace Logic
         public List<InteractiveModel> Models_Colision = new List<InteractiveModel>();
         public InteractiveModel selectedObject, selectedObjectMouseOnlyMove;
         private Vector3 poprzedni = Vector3.Zero;
-        public Ray ray;
+        public Ray ray,mouseRay;
         public Vector3 angle = new Vector3(0, 0, 0);
         //private Vector3 playerTarget;
         private Vector2 selectCorner;
@@ -64,12 +64,43 @@ namespace Logic
             //if(selectedObject!=null)
             // Console.WriteLine(selectedObject);
 
+
+
+
+
+
             currentMouseState = Mouse.GetState();
+            mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
             Vector3 mouse3d2 = CalculateMouse3DPosition();
 
-            positionMouseOnlyMove = new Vector2(currentMouseState.X, currentMouseState.Y);
-            position3DMouseOnlyMove = CalculateMouse3DPosition(positionMouseOnlyMove);
-            selectedObjectMouseOnlyMove = SelectedObjectOnMouseMove(position3DMouseOnlyMove);
+            selectedObjectMouseOnlyMove = null;
+            for (int i = 0; i < models.Count; i++)
+                if (models[i].CheckRayIntersection(mouseRay))
+                {
+                    //Console.WriteLine(models[i].GetType() + " adad");
+                    if (currentMouseState.LeftButton == ButtonState.Pressed)
+                    {
+                        selectedObject = models[i];
+                    }
+                    else
+                    selectedObjectMouseOnlyMove = models[i];
+                    break;
+                }
+
+            for (int i = 0; i < Models_Colision.Count; i++)
+                if (Models_Colision[i].CheckRayIntersection(mouseRay))
+                {
+                    if (currentMouseState.LeftButton == ButtonState.Pressed)
+                    {
+                        selectedObject = Models_Colision[i];
+                    }
+                    else
+                        selectedObjectMouseOnlyMove = Models_Colision[i];
+                    break;
+                }
+
+
+          
             if(selectedObjectMouseOnlyMove!=null)
             Console.WriteLine(selectedObjectMouseOnlyMove);
 
@@ -695,8 +726,18 @@ namespace Logic
 
 
         }
+        public Ray GetMouseRay(Vector2 mousePosition)
+        {
+            Vector3 near = new Vector3(mousePosition, 0);
+            Vector3 far = new Vector3(mousePosition, 1);
 
+            near = device.Viewport.Unproject(near, this.Projection, this.View, Matrix.Identity);
+            far = device.Viewport.Unproject(far, this.Projection, this.View, Matrix.Identity);
 
+            return new Ray(near, Vector3.Normalize(far - near));
+        }
+
+       
     }
 }
 
