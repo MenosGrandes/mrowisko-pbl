@@ -125,6 +125,10 @@
       <Project>{1a340602-b76b-4213-9f41-a777cc928fea}</Project>
       <Name>LightsAndShadows</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\StaticHelpers\StaticHelpers.csproj">
+      <Project>{adb8cf44-88f0-42de-ae42-62e5b9704438}</Project>
+      <Name>StaticHelpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

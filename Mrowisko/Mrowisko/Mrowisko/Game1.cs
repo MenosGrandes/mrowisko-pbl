@@ -95,28 +95,28 @@ namespace AntHill
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             // Construct our particle system components.
-           // explosionParticles = new Particles.ParticleSystems.ExplosionParticleSystem(this, Content);
-           // explosionSmokeParticles = new Particles.ParticleSystems.ExplosionSmokeParticleSystem(this, Content);
-            //projectileTrailParticles = new Particles.ParticleSystems.ProjectileTrailParticleSystem(this, Content);
-            //smokePlumeParticles = new Particles.ParticleSystems.SmokePlumeParticleSystem(this, Content);
-            //fireParticles = new Particles.ParticleSystems.FireParticleSystem(this, Content);
-            
-            //fireParticles.Interval = 2.5f;
+            explosionParticles = new Particles.ParticleSystems.ExplosionParticleSystem(this, Content);
+            explosionSmokeParticles = new Particles.ParticleSystems.ExplosionSmokeParticleSystem(this, Content);
+            projectileTrailParticles = new Particles.ParticleSystems.ProjectileTrailParticleSystem(this, Content);
+            smokePlumeParticles = new Particles.ParticleSystems.SmokePlumeParticleSystem(this, Content);
+            fireParticles = new Particles.ParticleSystems.FireParticleSystem(this, Content);
+
+            fireParticles.Interval = 2.5f;
 
             // Set the draw order so the explosions and fire
             // will appear over the top of the smoke.
-         //   smokePlumeParticles.DrawOrder = 100;
-          //  explosionSmokeParticles.DrawOrder = 200;
-           // projectileTrailParticles.DrawOrder = 300;
-            //explosionParticles.DrawOrder = 400;
-           // fireParticles.DrawOrder = 500;
+            smokePlumeParticles.DrawOrder = 100;
+            explosionSmokeParticles.DrawOrder = 200;
+           projectileTrailParticles.DrawOrder = 300;
+            explosionParticles.DrawOrder = 400;
+            fireParticles.DrawOrder = 500;
 
             // Register the particle system components.
-            //Components.Add(explosionParticles);
-            //Components.Add(explosionSmokeParticles);
-            //Components.Add(projectileTrailParticles);
-            //Components.Add(smokePlumeParticles);
-            //Components.Add(fireParticles);
+            Components.Add(explosionParticles);
+            Components.Add(explosionSmokeParticles);
+            Components.Add(projectileTrailParticles);
+            Components.Add(smokePlumeParticles);
+            Components.Add(fireParticles);
 
         }
 
@@ -177,6 +177,9 @@ namespace AntHill
             #endregion
             #region Curve
             curvesForLaser.Add(new Curve3D(pointsForLasers[0]));
+            #endregion
+            #region Laser
+
             #endregion
             hiDefShadowEffect = Content.Load<Effect>("Effects/Shadows");
             animHiDefShadowEffect = Content.Load<Effect>("Effects/AnimatedShadow");
@@ -278,7 +281,7 @@ GraphicsDevice);
             WindowController.setWindowSize(1366, 768, false);
             //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
-            models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
+            models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), new Vector3(0,30,0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
             List<String> aa = new List<string>();
             aa.Add("s1");
             aa.Add("s2");
@@ -290,6 +293,7 @@ GraphicsDevice);
 
 
 
+           timeTriggers.Add(new LaserTrigger(new Laser(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/trigger"), Vector3.Zero, Vector3.Zero, Vector3.One, StaticHelpers.StaticHelper.Device, light), curvesForLaser[0]), 10));
 
          
         }
@@ -316,10 +320,10 @@ GraphicsDevice);
                 currentMouseState = Mouse.GetState();
                 if (timeTriggers.Count<1)
                 {
-                    //UpdateFire();
-                    //UpdateSmokePlume();
-                    //UpdateExplosions(gameTime);
-                    //UpdateProjectiles(gameTime);
+                    UpdateFire();
+                    UpdateSmokePlume();
+                    UpdateExplosions(gameTime);
+                    UpdateProjectiles(gameTime);
                 }
 
 
@@ -346,7 +350,7 @@ GraphicsDevice);
             if(keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
             {
                // WindowController.setWindowSize(1366, 768, false);
-                models[8].Attack(models[3]);
+                models[13].Attack(models[3]);
             }
             if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
             {
@@ -365,6 +369,7 @@ GraphicsDevice);
             {
 
                 timeTriggers[i].Update(gameTime);
+                Console.WriteLine(timeTriggers[i].laser.Model.Position);
                 if(timeTriggers[i].used==true)
                 {
                     timeTriggers.Remove(timeTriggers[i]);
@@ -466,7 +471,7 @@ GraphicsDevice);
 
             MouseCursorController.Update();
             camera.Update(gameTime);
-           
+             
 
           //  anim.Update(gameTime);
             base.Update(gameTime);
@@ -480,11 +485,11 @@ GraphicsDevice);
             //rasterizerState.FillMode = FillMode.WireFrame;
             //GraphicsDevice.RasterizerState = rasterizerState;
 
-            //explosionParticles.SetCamera(camera.View, camera.Projection);
-            //explosionSmokeParticles.SetCamera(camera.View, camera.Projection);
-    //        projectileTrailParticles.SetCamera(camera.View, camera.Projection);
-      //      smokePlumeParticles.SetCamera(camera.View, camera.Projection);
-        //    fireParticles.SetCamera(camera.View, camera.Projection);
+            explosionParticles.SetCamera(camera.View, camera.Projection);
+            explosionSmokeParticles.SetCamera(camera.View, camera.Projection);
+            projectileTrailParticles.SetCamera(camera.View, camera.Projection);
+            smokePlumeParticles.SetCamera(camera.View, camera.Projection);
+            fireParticles.SetCamera(camera.View, camera.Projection);
 
 
 
@@ -569,6 +574,9 @@ GraphicsDevice);
              shadow.setShadowMap();   
             device.SetRenderTarget(null);
           
+          //  device.SetRenderTarget()
+
+
             #region Odbicie i rozproszenie wody
             water.DrawRefractionMap((FreeCamera)camera, time, shadow, light,quadTree);
 
@@ -743,7 +751,7 @@ GraphicsDevice);
         void UpdateSmokePlume()
         {
             // This is trivial: we just create one new smoke particle per frame.
-          //  smokePlumeParticles.AddParticle(Vector3.Zero, Vector3.Zero);
+            smokePlumeParticles.AddParticle(Vector3.Zero, Vector3.Zero);
         }
 
 
@@ -757,11 +765,11 @@ GraphicsDevice);
             // Create a number of fire particles, randomly positioned around a circle.
             for (int i = 0; i < fireParticlesPerFrame; i++)
             {
-                //fireParticles.AddParticle(RandomPointOnCircle(), Vector3.One);
+                fireParticles.AddParticle(RandomPointOnCircle(), Vector3.One);
             }
 
             // Create one smoke particle per frmae, too.
-         //   smokePlumeParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
+            smokePlumeParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
         }
 
 

@@ -55,8 +55,8 @@ BBPixelToFrame BillboardPS(BBVertexToPixel PSIn) : COLOR0
 	BBPixelToFrame Output = (BBPixelToFrame)0;
 	Output.Color = tex2D(textureSampler, PSIn.TexCoord);
 	Output.Color += xAmbient;
-	Output.Color.g *= xScaleX / 10;
-	Output.Color.r /= xScaleX / 10;
+	Output.Color.g *= xScaleX / 100;
+	Output.Color.r /= xScaleX / 100;
 
 	clip(Output.Color.w - 0.7843f);
 

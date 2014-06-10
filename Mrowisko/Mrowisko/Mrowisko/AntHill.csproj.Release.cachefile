@@ -133,6 +133,8 @@ Content\Textures\Button\runOutButton.xnb
 Content\Textures\Button\saveButton.xnb
 Content\Textures\Button\saveTButton.xnb
 Content\Textures\Button\upButton.xnb
+Content\Models\shoot.xnb
+Content\HeighMaps\ter2.xnb
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
 Content\Cursors\TronBusy.ani

@@ -52,7 +52,7 @@ namespace Logic
         public Control(Texture2D _texture, QuadTree quad)
         {
             this.texture = _texture;
-            this.heights = quad.Vertices.heightData;
+            this.heights = quad.Vertices.heightDataToControl;
             double a = Math.Sqrt(heights.Length);
             this.width = (int)a;
             this.length = (int)a;
@@ -409,6 +409,7 @@ namespace Logic
                     //     }
 
                     //wysokosc
+
                     float height = GetHeightAt(ant.Model.Position.X, ant.Model.Position.Z);
                     if (ant.Model.Position.Y < height)
                     {
@@ -418,6 +419,8 @@ namespace Logic
                     {
                         ant.Model.Position += Vector3.Down;
                     }
+                   
+       
 
 
                     //  Vector3 direction = ant.Model.tempPosition - ant.Model.Position;

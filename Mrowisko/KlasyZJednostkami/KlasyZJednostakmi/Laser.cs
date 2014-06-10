@@ -1,5 +1,6 @@
 ﻿using Map;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace Logic
     public class Laser:InteractiveModel
     {
 
+        RenderTarget2D laserMap;
         private bool canStart;
 
         public bool CanStart
