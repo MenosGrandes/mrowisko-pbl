@@ -101,18 +101,7 @@ namespace Logic
 
 
           
-            if(selectedObjectMouseOnlyMove!=null)
-            Console.WriteLine(selectedObjectMouseOnlyMove);
-
-              if(currentMouseState.LeftButton==ButtonState.Pressed)
-              {
-                
-                  position = new Vector2(currentMouseState.X, currentMouseState.Y);
-                  position3d = CalculateMouse3DPosition(position);
-                  selectedObject = SelectedObject(mouse3d2);
-
-              }
-            if (currentMouseState.RightButton == ButtonState.Pressed && !mouseDown)
+           if (currentMouseState.RightButton == ButtonState.Pressed && !mouseDown)
             {
                 SelectedModels.Clear();
 
@@ -183,11 +172,6 @@ namespace Logic
 
             if (currentMouseState.LeftButton == ButtonState.Pressed)
             {
-                position = new Vector2(currentMouseState.X, currentMouseState.Y);
-                position3d = CalculateMouse3DPosition(position);
-                selectedObject = SelectedObject(mouse3d2);
-
-                // This will give the player a target to go to.
                 foreach (InteractiveModel ant in SelectedModels)
                 {
                     ant.Model.playerTarget.X = mouse3d2.X;
