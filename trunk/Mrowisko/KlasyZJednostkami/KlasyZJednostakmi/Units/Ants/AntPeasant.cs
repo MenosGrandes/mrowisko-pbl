@@ -45,6 +45,7 @@ namespace Logic.Units.Ants
             wood2 = 0;
             base.elapsedTime = 0;
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+           this.Model.switchAnimation("Atack");
 
         }
         public AntPeasant(LoadModel model)
@@ -66,7 +67,7 @@ namespace Logic.Units.Ants
               
                 if(material.Model.Scale.X >0 && capacity<maxCapacity)
                 {
-                   
+                    Console.WriteLine(material.GetType().Name);
                     switch (material.GetType().Name)
                    {
 

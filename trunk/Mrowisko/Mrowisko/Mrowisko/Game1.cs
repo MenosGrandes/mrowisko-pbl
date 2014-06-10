@@ -192,10 +192,12 @@ namespace AntHill
             StaticHelpers.StaticHelper.Device = device;
             
             #region loadFromFile
-             
+           
             Controlers.LoadModelsFromFile.Load();
             foreach (InteractiveModel i in LoadModelsFromFile.listOfAllInteractiveModelsFromFile)
             {
+                i.Model.Position += new Vector3(0, 20, 0);
+                i.Model.Scale = new Vector3(1f);
                // Console.WriteLine(models.GetType().BaseType.Name);
                 if(i.GetType().BaseType==typeof(Building) )
                 {
@@ -204,7 +206,7 @@ namespace AntHill
                 {
                     models.Add(i);
                 }
-            }
+            }    
             #endregion   
             #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
@@ -256,10 +258,10 @@ MathHelper.ToRadians(0), // Turned around 153 degrees
 MathHelper.ToRadians(-45), // Pitched up 13 degrees
 GraphicsDevice);
 
-            quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
+            quadTree = new QuadTree(Vector3.Zero, texture, device,5, Content, (FreeCamera)camera);
             quadTree.Cull = true;
 
-            water = new Water(device, Content, texture[4].Width, 1);
+            water = new Water(device, Content, texture[4].Width, 5);
 
 
 
@@ -285,6 +287,12 @@ GraphicsDevice);
            SoundController.SoundController.Initialize(aa);
 
            gui = new MainGUI(StaticHelpers.StaticHelper.Content);
+
+
+
+
+
+         
         }
         
 
@@ -370,11 +378,12 @@ GraphicsDevice);
                     models[i].Update(gameTime);
                     models[i].Model.Update(gameTime);
 
+
                     if (control.selectedObject != null)
                     {
                         if (control.selectedObject.GetType().BaseType == typeof(Material))
                         {
-
+                           // Console.WriteLine(control.selectedObject);
                             models[i].setGaterMaterial((Material)control.selectedObject);
                         }
                     }
@@ -414,7 +423,7 @@ GraphicsDevice);
                         models[i].Model.switchAnimation("Death");
                         //models.RemoveAt(i);
                         
-                        Console.WriteLine(models[i].GetType().Name);
+                        //Console.WriteLine(models[i].GetType().Name);
                     }
                 }
              

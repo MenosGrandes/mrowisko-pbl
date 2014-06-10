@@ -42,7 +42,20 @@ namespace Logic
         public List<ShadowCasterObject> shadowCasters;
         private List<BoundingSphere> spheres;
         AnimationClip list = null;//animacja oczekująca na zmiane;
-        
+                public Matrix baseWorld;
+                public Matrix LocalWorld
+                {
+                    get
+                    {
+                        return localWorld;
+                    }
+                    set
+                    {
+                        localWorld = value;
+                    }
+                }
+        private Matrix localWorld;
+
         public List<BoundingSphere> Spheres
         {
 
@@ -62,7 +75,6 @@ namespace Logic
             
         }
 
-        public Matrix baseWorld;
 
         public Matrix[] modelTransforms;
         private GraphicsDevice graphicsDevice;
@@ -139,6 +151,9 @@ namespace Logic
         Vector3 Scale, GraphicsDevice GraphicsDevice,
         ContentManager Content, LightsAndShadows.Light light)
         {
+            this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(
+           Rotation.Y, Rotation.X, Rotation.Z)
+           * Matrix.CreateTranslation(Position);
             shadowCasters = new List<ShadowCasterObject>();
             Console.WriteLine(Position);
             this.Model = Model;
@@ -244,15 +259,16 @@ namespace Logic
         {
             
 
-            Matrix baseWorld = Matrix.CreateScale(Scale)* Matrix.CreateFromYawPitchRoll(
+             baseWorld = Matrix.CreateScale(Scale)* Matrix.CreateFromYawPitchRoll(
             Rotation.Y, Rotation.X, Rotation.Z)
             * Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 if (!mesh.Name.Contains("BoundingSphere"))
                 { 
-                   Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
+                    Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
                    * baseWorld;
+                    this.localWorld = localWorld;
                    foreach (ModelMeshPart meshPart in mesh.MeshParts)
                    {
                       
