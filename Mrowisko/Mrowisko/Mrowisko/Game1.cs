@@ -196,8 +196,7 @@ namespace AntHill
             Controlers.LoadModelsFromFile.Load();
             foreach (InteractiveModel i in LoadModelsFromFile.listOfAllInteractiveModelsFromFile)
             {
-                i.Model.Position += new Vector3(0, 20, 0);
-                i.Model.Scale = new Vector3(1f);
+          
                // Console.WriteLine(models.GetType().BaseType.Name);
                 if(i.GetType().BaseType==typeof(Building) )
                 {
@@ -258,10 +257,10 @@ MathHelper.ToRadians(0), // Turned around 153 degrees
 MathHelper.ToRadians(-45), // Pitched up 13 degrees
 GraphicsDevice);
 
-            quadTree = new QuadTree(Vector3.Zero, texture, device,5, Content, (FreeCamera)camera);
+            quadTree = new QuadTree(Vector3.Zero, texture, device,3, Content, (FreeCamera)camera);
             quadTree.Cull = true;
 
-            water = new Water(device, Content, texture[4].Width, 5);
+            water = new Water(device, Content, texture[4].Width, 3);
 
 
 
