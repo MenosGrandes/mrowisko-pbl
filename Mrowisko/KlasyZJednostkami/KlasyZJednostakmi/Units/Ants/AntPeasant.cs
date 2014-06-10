@@ -62,28 +62,29 @@ namespace Logic.Units.Ants
         }
         public override void gaterMaterial(Material material)
         {
-            if (elapsedTime >= gaterTime) 
-            {
+
               
-                if(material.Model.Scale.X >0 && capacity<maxCapacity)
+                if(capacity<maxCapacity)
                 {
                     Console.WriteLine(material.GetType().Name);
                     switch (material.GetType().Name)
                    {
 
-                       case "Log": materials.Add(new Wood()); wood2++; ((Log)material).removeWood(1);
-                           ((Log)material).Model.Scale = new Vector3((float)((float)((Log)material).ClusterSize / (float)((Log)material).MaxClusterSize)) * material.Model.Scale;
+                       case "Log": ((Log)material).removeWood(1);
+                                     materials.Add(new Wood());
+                                    wood2++; ;
+                          // ((Log)material).Model.Scale = new Vector3((float)((float)((Log)material).ClusterSize / (float)((Log)material).MaxClusterSize)) * material.Model.Scale;
      
                            break;
                        case "Rock": materials.Add(new Stone()); rock2++; ((Rock)material).removeRock(1);
-                           ((Rock)material).Model.Scale = new Vector3((float)((float)((Rock)material).ClusterSize / (float)((Rock)material).MaxClusterSize))*material.Model.Scale;
+                          // ((Rock)material).Model.Scale = new Vector3((float)((float)((Rock)material).ClusterSize / (float)((Rock)material).MaxClusterSize))*material.Model.Scale;
      
                            break;
                      
                    }
                     capacity++;
                    
-                }
+              
                 
             }
             elapsedTime = 0.0f;
@@ -91,6 +92,8 @@ namespace Logic.Units.Ants
         }
         public override void Update(GameTime time)
         {
+            if(gaterMaterialObject!=null)
+                Console.WriteLine(gaterMaterialObject);
           //  this.model.tempPosition = this.model.Position;
             base.Update(time);
             //Console.WriteLine(elapsedTime);
@@ -120,34 +123,40 @@ namespace Logic.Units.Ants
         {
             if(this==interactive)
             { return ; }
+
+
+            if (model.BoundingSphere.Intersects(interactive.Model.BoundingSphere))
+            {
+                if (gaterMaterialObject == interactive)
+                {
+                    if (interactive.GetType().BaseType == typeof(Material))
+                    {
+                        if (gaterTime < elapsedTime)
+                        {
+                            gaterMaterial((Material)interactive);
+
+                        }
+                    }
+                }
+                else if (interactive.GetType() == typeof(AntGranary))
+                {
+                    Logic.Player.Player.addMaterial(releaseMaterial());
+                    this.materials.Clear();
+                    Console.WriteLine(Capacity);
+                }
+            }
+
                     foreach(BoundingSphere b in model.Spheres)
                     {
 
                            foreach(BoundingSphere b2 in interactive.Model.Spheres)
                            {
 
-                             if (b.Intersects(b2))
+                             if (b.Intersects(b2)  )
                              {
-                                 if(gaterMaterialObject==interactive)
-                                 {
-                                 if(interactive.GetType().BaseType==typeof(Material))
-                                 {
-                                     if (gaterTime < elapsedTime)
-                                     {    
-                                         gaterMaterial((Material)interactive);
-                                         
-                                     }
-                                 }
-                                 }
-                                 else if(interactive.GetType()==typeof(AntGranary))
-                                 {                                                          
-                                     Console.WriteLine("Oddaje");
-                                     Logic.Player.Player.addMaterial(releaseMaterial());
-                                     this.materials.Clear();
-                                     Console.WriteLine(Capacity);
-                                 }
-                                 
+                                  
                              }
+ 
 
                            }
                    }

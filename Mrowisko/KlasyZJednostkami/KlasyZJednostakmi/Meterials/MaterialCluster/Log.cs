@@ -14,10 +14,11 @@ namespace Logic.Meterials.MaterialCluster
 
         private List<Wood> wood = new List<Wood>();
 
-        new public int ClusterSize
+         new public int ClusterSize
         {
             get
             {
+                Console.WriteLine(wood.Count);
                 return wood.Count;
             }
             set
@@ -41,10 +42,14 @@ namespace Logic.Meterials.MaterialCluster
 
         public void removeWood(int n)
         {
-            wood.RemoveRange(0, 1);
-
+            if (wood.Count != 0) { wood.RemoveRange(0, 1); }
+           // Console.WriteLine(wood.Count);
         }
 
+        public override string ToString()
+        {
+            return this.GetType().Name + " " + model.Position + " " + ClusterSize;
+        }
     }
 
 }
