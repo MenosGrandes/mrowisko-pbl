@@ -45,6 +45,7 @@ namespace Logic.Units.Ants
             wood2 = 0;
             base.elapsedTime = 0;
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+            circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
            this.Model.switchAnimation("Atack");
 
         }
@@ -58,6 +59,7 @@ namespace Logic.Units.Ants
             wood2 = 0;
            elapsedTime = 0;
            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+           circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
 
         }
         public override void gaterMaterial(Material material)
@@ -108,6 +110,13 @@ namespace Logic.Units.Ants
         {
             LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 10, 0));
             LifeBar.healthDraw(camera);
+            
+        }
+
+        public override void DrawSelectedCircle(GameCamera.FreeCamera camera)
+        {
+            circle.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 20, 0));
+            circle.healthDraw(camera);
         }
         
         public override List<Material> releaseMaterial()

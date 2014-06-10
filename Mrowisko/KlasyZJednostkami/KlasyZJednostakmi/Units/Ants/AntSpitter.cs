@@ -21,6 +21,7 @@ namespace Logic.Units.Ants
         {
             bullets = new List<SpitMissle>();
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+            circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
 
         }
         public AntSpitter(LoadModel model)
@@ -28,6 +29,7 @@ namespace Logic.Units.Ants
         {
             bullets = new List<SpitMissle>();
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+            circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             hp = 100;
             range = 1000;
             atackInterval = 60;
@@ -37,6 +39,7 @@ namespace Logic.Units.Ants
         {
             bullets = new List<SpitMissle>();
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+            circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
 
         }
         public override void Update(GameTime time)
@@ -98,6 +101,12 @@ namespace Logic.Units.Ants
         {
             LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 10, 0));
             LifeBar.healthDraw(camera);
+           
+        }
+        public override void DrawSelectedCircle(GameCamera.FreeCamera camera)
+        {
+            circle.CreateBillboardVerticesFromList(model.Position + new Vector3(0, -10, 0));
+            circle.healthDraw(camera);
         }
 
         #region SpitMissle

@@ -74,8 +74,8 @@ namespace LightsAndShadows
             //lightPos = new Vector3(-18, 5, -2);
             //lightPower = 1.0f;
 
-             lightsView = Matrix.CreateLookAt(lightPos, /*camera.Target*/ new Vector3(256,0,256), new Vector3(0, 1, 0));
-             lightsProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.Pi/9, 1.333333f, 1f, 10000f);
+             lightsView = Matrix.CreateLookAt(lightPos, /*camera.Target*/ new Vector3(2048,-1000,2048), new Vector3(0, 1, 0));
+             lightsProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.Pi/9, 1.333333f, 1f, 50000f);
 
             lightsViewProjectionMatrix = lightsView * lightsProjection;
             woldsViewProjection = camera.View * camera.Projection;
