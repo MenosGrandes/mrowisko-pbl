@@ -266,7 +266,7 @@ GraphicsDevice);
 
 
             control = new Logic.Control(texture[11], quadTree);
-          
+            Console.WriteLine(GraphicsDevice.Viewport.Bounds);
 
             //e.Ant = models[0];
            // e.Enemy = spider;

@@ -29,10 +29,7 @@ namespace Logic.Meterials
         {
             model.Draw(camera);
         }
-        public override string ToString()
-        {
-            return this.GetType().Name + " " + model.Position + " " + ClusterSize;
-        }
+
     }
 }
  

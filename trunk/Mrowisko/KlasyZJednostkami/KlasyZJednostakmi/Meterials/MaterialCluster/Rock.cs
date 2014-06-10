@@ -13,10 +13,11 @@ namespace Logic.Meterials.MaterialCluster
 
         private List<Stone> stone = new List<Stone>();
 
-        public int ClusterSize
+       new public int ClusterSize
         {
             get
             {
+                Console.WriteLine(stone.Count);
                 return stone.Count;
             }
             set
@@ -43,5 +44,10 @@ namespace Logic.Meterials.MaterialCluster
             if (stone.Count != 0) { stone.RemoveRange(0, 1); }
 
         }
+        public override string ToString()
+        {
+            return this.GetType().Name + " " + model.Position + " " + ClusterSize;
+        }
+
     }
 }

@@ -108,5 +108,12 @@ namespace Logic
             
             return false;
         }
+        public bool CheckFrustumIntersection(BoundingFrustum boundingFrustum)
+        {
+  
+                ContainmentType con = boundingFrustum.Contains(model.BoundingSphere);
+                if (con == ContainmentType.Contains || con == ContainmentType.Intersects) return true;
+                return false;
+        }
     }
 }
