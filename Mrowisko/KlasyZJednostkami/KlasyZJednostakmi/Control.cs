@@ -176,6 +176,8 @@ namespace Logic
                 {
                     ant.Model.playerTarget.X = mouse3d2.X;
                     ant.Model.playerTarget.Z = mouse3d2.Z;
+                    ant.Model.switchAnimation("Walk");
+                    ant.ImMoving = true;
                 }
             }
 
@@ -195,7 +197,7 @@ namespace Logic
         }
         void updateAnt(GameTime gameTime)
         {
-            float Speed = (float)2.0f;
+            float Speed = (float)0.5f;
 
             foreach (InteractiveModel ant in models)
             {
@@ -203,8 +205,15 @@ namespace Logic
                 {
                     continue;
                 }
+                if(ant.ImMoving==false)
+                {
+                    continue;
+                }
                 if (Math.Abs(ant.Model.Position.X - ant.Model.playerTarget.X) <= Speed && Math.Abs(ant.Model.Position.Z - ant.Model.playerTarget.Z) <= Speed)
                 {
+                 
+                   ant.Model.switchAnimation("Idle");
+                   ant.ImMoving = false;
                     continue;
                 }
 
