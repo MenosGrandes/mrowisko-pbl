@@ -117,7 +117,7 @@ namespace Logic
 
             this.Position = Position;
             this.Rotation = Rotation;
-            this.playerTarget = this.Position;
+            this.playerTarget = Vector3.Zero;
             this.Scale = Scale;
             this.graphicsDevice = graphicsDevice;
             this.light = light;
@@ -161,7 +161,7 @@ namespace Logic
             this.graphicsDevice = GraphicsDevice;
             this.content = Content;
             this.Position = Position;
-            this.playerTarget = Position;
+            this.playerTarget = Vector3.Zero;
             this.Rotation = Rotation;
             this.Scale = Scale;
             this.light = light;

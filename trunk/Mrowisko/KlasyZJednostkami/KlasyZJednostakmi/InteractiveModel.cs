@@ -17,7 +17,7 @@ namespace Logic
     [Serializable]
     public class InteractiveModel
     {
-
+        public bool ImMoving = false;
         public bool hasBeenHit=false;
         public float tim_to_Show_Hit=4;
         public float temp_time;
