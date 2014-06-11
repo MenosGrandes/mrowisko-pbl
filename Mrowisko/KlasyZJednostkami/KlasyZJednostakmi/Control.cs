@@ -197,7 +197,7 @@ namespace Logic
         }
         void updateAnt(GameTime gameTime)
         {
-            float Speed = (float)0.5f;
+            float Speed = (float)2.5f*(float)gameTime.ElapsedGameTime.TotalMilliseconds/100;
 
             foreach (InteractiveModel ant in models)
             {
@@ -225,10 +225,11 @@ namespace Logic
 
                 foreach (InteractiveModel modelsy in Models_Colision)
                 {
-                    if ((modelsy.Model.BoundingSphere.Contains(ant.Model.playerTarget) == ContainmentType.Contains))
+                    modelsy.Model.B_Box=modelsy.Model.updateBoundingBox();
+                    if ((modelsy.Model.B_Box.Contains(ant.Model.playerTarget) == ContainmentType.Contains))
                     {
-                        ant.Model.playerTarget.X = modelsy.Model.BoundingSphere.Center.X + modelsy.Model.BoundingSphere.Radius;
-                        ant.Model.playerTarget.Z = modelsy.Model.BoundingSphere.Center.Z + modelsy.Model.BoundingSphere.Radius;
+                        ant.Model.playerTarget.X = modelsy.Model.B_Box.Max.X + modelsy.Model.B_Box.Max.X - modelsy.Model.B_Box.Min.X;//modelsy.Model.BoundingSphere.Center.X + modelsy.Model.BoundingSphere.Radius;
+                        ant.Model.playerTarget.Z = modelsy.Model.B_Box.Max.Y+modelsy.Model.B_Box.Max.Y-modelsy.Model.B_Box.Min.Y;//modelsy.Model.BoundingSphere.Center.Z + modelsy.Model.BoundingSphere.Radius;
                         break;
                     }
 
@@ -253,21 +254,21 @@ namespace Logic
 
                 foreach (InteractiveModel model in Models_Colision)
                 {
-                    if ((model.Model.BoundingSphere.Contains(lewo) == ContainmentType.Contains))
+                    if ((model.Model.B_Box.Contains(lewo) == ContainmentType.Contains))
                         czylewo = true;
-                    if ((model.Model.BoundingSphere.Contains(prawo) == ContainmentType.Contains))
+                    if ((model.Model.B_Box.Contains(prawo) == ContainmentType.Contains))
                         czyprawo = true;
-                    if ((model.Model.BoundingSphere.Contains(gora) == ContainmentType.Contains))
+                    if ((model.Model.B_Box.Contains(gora) == ContainmentType.Contains))
                         czygora = true;
-                    if ((model.Model.BoundingSphere.Contains(dol) == ContainmentType.Contains))
+                    if ((model.Model.B_Box.Contains(dol) == ContainmentType.Contains))
                         czydol = true;
-                    if ((model.Model.BoundingSphere.Contains(lewy_gorny) == ContainmentType.Contains))
+                    if ((model.Model.B_Box.Contains(lewy_gorny) == ContainmentType.Contains))
                         czylewy_gorny = true;
-                    if ((model.Model.BoundingSphere.Contains(lewy_dolny) == ContainmentType.Contains))
+                    if ((model.Model.B_Box.Contains(lewy_dolny) == ContainmentType.Contains))
                         czylewy_dolny = true;
-                    if ((model.Model.BoundingSphere.Contains(prawy_dolny) == ContainmentType.Contains))
+                    if ((model.Model.B_Box.Contains(prawy_dolny) == ContainmentType.Contains))
                         czyprawy_dolny = true;
-                    if ((model.Model.BoundingSphere.Contains(prawy_gorny) == ContainmentType.Contains))
+                    if ((model.Model.B_Box.Contains(prawy_gorny) == ContainmentType.Contains))
                         czyprawy_gorny = true;
                 }
 

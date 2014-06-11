@@ -23,7 +23,13 @@ namespace Logic
     public class LoadModel                                                                                      
     {
         public bool Hit=false;
-        public BoundingBox B_Box;
+        private BoundingBox b_box;
+        public BoundingBox B_Box
+        {
+            get { return b_box; }
+            set {b_box=value;}
+        }
+         
         public bool Collide;
         public Vector3 Position { get; set; }
         public Vector3 tempPosition { get; set; }
@@ -438,15 +444,18 @@ namespace Logic
             }
             animationChange = false;
         }
-            public void CreateBoudingBox()
+   public BoundingBox CreateBoudingBox()
     {
 
         foreach (ModelMesh mesh in Model.Meshes)
         {  if(!mesh.Name.Contains("BoundingSphere")){
             Matrix meshTransform = modelTransforms[mesh.ParentBone.Index];
-            B_Box=BuildBoundingBox(mesh, meshTransform);
+            b_box=BuildBoundingBox(mesh, meshTransform);
+           
+            return b_box;
         }
         }
+        return new BoundingBox();
 }
         private BoundingBox BuildBoundingBox(ModelMesh mesh, Matrix meshTransform)
         {
@@ -482,8 +491,42 @@ namespace Logic
 
             // Create the bounding box
             BoundingBox box = new BoundingBox(meshMin, meshMax);
+            
             return box;
-        }          
+        }
+        public BoundingBox updateBoundingBox()
+        {
+            // Initialize minimum and maximum corners of the bounding box to max and min values
+            Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+            // For each mesh of the model
+            foreach (ModelMesh mesh in Model.Meshes)
+            {
+                foreach (ModelMeshPart meshPart in mesh.MeshParts)
+                {
+                    // Vertex buffer parameters
+                    int vertexStride = meshPart.VertexBuffer.VertexDeclaration.VertexStride;
+                    int vertexBufferSize = meshPart.NumVertices * vertexStride;
+
+                    // Get vertex data as float
+                    float[] vertexData = new float[vertexBufferSize / sizeof(float)];
+                    meshPart.VertexBuffer.GetData<float>(vertexData);
+
+                    // Iterate through vertices (possibly) growing bounding box, all calculations are done in world space
+                    for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
+                    {
+                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), baseWorld);
+
+                        min = Vector3.Min(min, transformedPosition);
+                        max = Vector3.Max(max, transformedPosition);
+                    }
+                }
+            }
+
+            // Create and return bounding box
+            return new BoundingBox(min, max);
+        }
 
     }
 }
