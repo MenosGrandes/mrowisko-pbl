@@ -72,6 +72,22 @@ namespace Logic.Units.Ants
                 elapsedTime = 0;
             }
         }
+
+        public override bool spitter()
+        {
+            return true;
+        }
+
+        public override List<Vector3> spitPos()
+        {
+            List<Vector3> bulletsPos = new List<Vector3>();
+            foreach(SpitMissle bullet in bullets)
+            {
+                bulletsPos.Add(bullet.Model.Position);
+            }
+
+            return bulletsPos;
+        }
         public override void Intersect(InteractiveModel interactive)
         {
             if (this == interactive)

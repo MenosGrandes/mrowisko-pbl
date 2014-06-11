@@ -71,6 +71,11 @@ namespace Logic
             get { return circle; }
             set { circle = value; }
         }
+
+        public virtual List<Vector3> spitPos()
+        {
+            return null;
+        }
             
         public bool snared = false;
         public float time_snared = 0.0f;
@@ -131,6 +136,11 @@ namespace Logic
         public virtual void Attack(InteractiveModel a)
         {
            // Console.WriteLine("Attack!!");
+        }
+
+        public virtual bool spitter()
+        {
+            return false;
         }
 
         public virtual void DrawSelected(GameCamera.FreeCamera camera)
