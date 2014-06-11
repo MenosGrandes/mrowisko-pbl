@@ -322,10 +322,11 @@ GraphicsDevice);
                 if (timeTriggers.Count<1)
                 {
                     UpdateFire();
-                    UpdateSmokePlume();
+                   
                     UpdateExplosions(gameTime);
                     UpdateProjectiles(gameTime);
                 }
+
 
 
 
@@ -430,6 +431,15 @@ GraphicsDevice);
                         
                         //Console.WriteLine(models[i].GetType().Name);
                     }
+
+                if(models[i].spitter())
+                {
+                    foreach(Vector3 pos in models[i].spitPos())
+                    {
+                        UpdateSmokePlume(pos);
+                    }
+                }
+
                 }
              
             
@@ -757,10 +767,10 @@ GraphicsDevice);
         /// Helper for updating the smoke plume effect.
         /// </summary>                                                                               \
         /// ] ,l-p
-        void UpdateSmokePlume()
+        void UpdateSmokePlume(Vector3 pos)
         {
             // This is trivial: we just create one new smoke particle per frame.
-            smokePlumeParticles.AddParticle(Vector3.Zero, Vector3.Zero);
+            smokePlumeParticles.AddParticle(pos, Vector3.Zero);
         }
 
 
@@ -801,6 +811,7 @@ GraphicsDevice);
             return new Vector3(models[6].Model.Position.X + x * radius, models[6].Model.Position.Y - (y * radius + height), models[6].Model.Position.Z + z * radius);
         }
 
+     
        
 
 
