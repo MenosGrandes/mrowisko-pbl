@@ -22,6 +22,8 @@ namespace Logic.Units.Ants
             bullets = new List<SpitMissle>();
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
+            LifeBar.LifeLength = model.Scale.X * 100;
+            circle.Scale = this.model.Scale.Y * 120;
 
         }
         public AntSpitter(LoadModel model)
@@ -33,6 +35,8 @@ namespace Logic.Units.Ants
             hp = 100;
             range = 1000;
             atackInterval = 60;
+            LifeBar.LifeLength = model.Scale.X * 100;
+            circle.Scale = this.model.Scale.Y * 120;
         }
         public AntSpitter(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
@@ -40,6 +44,8 @@ namespace Logic.Units.Ants
             bullets = new List<SpitMissle>();
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
+            LifeBar.LifeLength = model.Scale.X * 100;
+            circle.Scale = this.model.Scale.Y * 120;
 
         }
         public override void Update(GameTime time)
@@ -99,15 +105,17 @@ namespace Logic.Units.Ants
 
         public override void DrawSelected(GameCamera.FreeCamera camera)
         {
-            LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 10, 0));
+            LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 1, 0) * model.Scale * 50);
             LifeBar.healthDraw(camera);
-           
+
         }
+
         public override void DrawSelectedCircle(GameCamera.FreeCamera camera)
         {
-            circle.CreateBillboardVerticesFromList(model.Position + new Vector3(0, -10, 0));
+            circle.CreateBillboardVerticesFromList(model.Position + new Vector3(-2, 0.1f, -0.1f) * model.Scale * 50);
             circle.healthDraw(camera);
         }
+        
 
         #region SpitMissle
         public class SpitMissle : InteractiveModel

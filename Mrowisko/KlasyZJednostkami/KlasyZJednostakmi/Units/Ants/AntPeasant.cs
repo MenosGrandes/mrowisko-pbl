@@ -45,7 +45,9 @@ namespace Logic.Units.Ants
             wood2 = 0;
             base.elapsedTime = 0;
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+            LifeBar.LifeLength =model.Scale.X;
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
+            circle.Scale = model.Scale.X * 10;
            this.Model.switchAnimation("Atack");
 
         }
@@ -58,6 +60,8 @@ namespace Logic.Units.Ants
             rock2 = 0;
             wood2 = 0;
            elapsedTime = 0;
+           LifeBar.LifeLength = model.Scale.X*100;
+           circle.Scale = this.model.Scale.Y * 120;
            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
            circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
 
@@ -108,14 +112,14 @@ namespace Logic.Units.Ants
         }
         public override void DrawSelected(GameCamera.FreeCamera camera)
         {
-            LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 10, 0));
+            LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0,1,0)*model.Scale*50);
             LifeBar.healthDraw(camera);
             
         }
 
         public override void DrawSelectedCircle(GameCamera.FreeCamera camera)
         {
-            circle.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 20, 0));
+            circle.CreateBillboardVerticesFromList(model.Position + new Vector3(-2, 0.1f, -0.1f) * model.Scale * 50);
             circle.healthDraw(camera);
         }
         

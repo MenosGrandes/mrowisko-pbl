@@ -28,7 +28,7 @@ namespace HUD
             set { scale = value; }
         }
 
-        private float lifeLength=300;
+        private float lifeLength;
 
         public float LifeLength
         {

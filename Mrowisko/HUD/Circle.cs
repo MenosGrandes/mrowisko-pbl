@@ -12,14 +12,7 @@ namespace HUD
 {
     public class Circle
     {
-        private Texture2D healthTexture;
-
-        public Texture2D HealthTexture
-        {
-            get { return healthTexture; }
-            set { healthTexture = value; }
-        }
-
+     
         private float scale;
 
         public float Scale
@@ -28,14 +21,7 @@ namespace HUD
             set { scale = value; }
         }
 
-        private float lifeLength = 300;
-
-        public float LifeLength
-        {
-            get { return lifeLength; }
-            set { lifeLength = value; }
-        }
-
+     
 
         private VertexBuffer VertexBuffer;
         private Effect bbEffect;
@@ -44,11 +30,11 @@ namespace HUD
         {
             this.bbEffect = StaticHelpers.StaticHelper.Content.Load<Effect>("Effects/HUD2");
             this.scale = 8;
-            lifeLength = 1;
+            
 
             bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
-            bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
-            bbEffect.Parameters["xScale"].SetValue(this.scale);
+            bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(1, 0, 0));
+            
 
         }
 
@@ -80,13 +66,12 @@ namespace HUD
 
         public void healthDraw(FreeCamera camera)
         {
-
+            bbEffect.Parameters["xScale"].SetValue(this.scale);
             bbEffect.Parameters["xWorld"].SetValue(Matrix.Identity);
             bbEffect.Parameters["xView"].SetValue(camera.View);
             bbEffect.Parameters["xProjection"].SetValue(camera.Projection);
             bbEffect.Parameters["xCamPos"].SetValue(camera.Position);
             bbEffect.Parameters["xAmbient"].SetValue(0);
-            bbEffect.Parameters["xScaleX"].SetValue(this.lifeLength);
             StaticHelpers.StaticHelper.Device.SetVertexBuffer(VertexBuffer);
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
             {
