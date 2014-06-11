@@ -57,6 +57,7 @@ Content\Models\spiderUVW.xnb
 Content\Models\uzi_diffuse.xnb
 Content\Models\wingUVW.xnb
 Content\Models\ant_diffuse.xnb
+Content\HeighMaps\ter2.xnb
 Content\Models\SkyDome\dome.xnb
 Content\Models\ant.xnb
 Content\Models\grasshopper.xnb
@@ -84,6 +85,7 @@ Content\Models\antGranary.xnb
 Content\Models\townCenter.xnb
 Content\Models\tree1.xnb
 Content\Models\tree2.xnb
+Content\Models\shoot.xnb
 Content\Sounds\s1.xnb
 Content\Sounds\s2.xnb
 Content\Models\grasshopper_Anims.xnb
@@ -133,8 +135,6 @@ Content\Textures\Button\runOutButton.xnb
 Content\Textures\Button\saveButton.xnb
 Content\Textures\Button\saveTButton.xnb
 Content\Textures\Button\upButton.xnb
-Content\Models\shoot.xnb
-Content\HeighMaps\ter2.xnb
 Content\Effects\HUD2.xnb
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
