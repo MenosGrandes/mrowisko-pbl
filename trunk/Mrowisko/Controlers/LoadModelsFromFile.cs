@@ -74,7 +74,7 @@ namespace Controlers
                        case "Log":
 
                            Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//log"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
-                          
+                           g.Model.CreateBoudingBox();
                            listOfAllInteractiveModelsFromFile.Add(g);
 
                            break;
@@ -82,6 +82,7 @@ namespace Controlers
 
 
                            Rock q = new Rock(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//stone2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Rock)model).ClusterSize);
+                           q.Model.CreateBoudingBox();
                            listOfAllInteractiveModelsFromFile.Add(q);
 
 
@@ -92,7 +93,7 @@ namespace Controlers
 
 
                            BuildingPlace w = new BuildingPlace( new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//buildingPlace"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
-                           
+                           w.Model.CreateBoudingBox();
 
                            listOfAllInteractiveModelsFromFile.Add(w);
 
@@ -105,7 +106,7 @@ namespace Controlers
 
 
                            AntGranary ag = new AntGranary(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//antGranary"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
-
+                           ag.Model.CreateBoudingBox();
                            listOfAllInteractiveModelsFromFile.Add(ag);
                             
                             break;
@@ -116,7 +117,7 @@ namespace Controlers
 
 
                             Logic.Building.AntBuildings.TownCenter ad = new Logic.Building.AntBuildings.TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//townCenter"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
-                            
+                            ad.Model.CreateBoudingBox();
 
                             listOfAllInteractiveModelsFromFile.Add(ad);
 
