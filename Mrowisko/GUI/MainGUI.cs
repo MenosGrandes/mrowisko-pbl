@@ -8,11 +8,23 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Logic;
+using Logic.Building;
 
 namespace GUI
 {
     public class MainGUI
     {
+
+        public InteractiveModel selectedModel;
+        public List<InteractiveModel> selectedModels;
+        private Control control;
+        public Control Control
+        {
+            get { return control; }
+            set { control = value; }
+        }
+
         enum BState
         {
             HOVER,
@@ -56,10 +68,10 @@ namespace GUI
         double frame_time;
 
 
-        bool menuON = false;
+        bool unitMenuON = true;
         bool buildMenuON = false;
         bool maxMenu = false;
-
+        bool mainMenuOn = false;
 
 
         const int NUMBER_OF_BARS = 12,
@@ -80,12 +92,13 @@ namespace GUI
         Rectangle[] itf_rectangle = new Rectangle[NUMBER_OF_BARS];
         Texture2D[] itf_texture = new Texture2D[NUMBER_OF_BARS];
 
-        public MainGUI(ContentManager content)
+        public MainGUI(ContentManager content, Control c)
         {
             Initialize();
             LoadContent(content);
-
+            this.control = c;
         }
+
        public void Initialize()
         {
 
@@ -322,7 +335,24 @@ namespace GUI
         {
 
             ///interface --------------------------------------------------------------------------------
+            if (control.selectedObject != null) { 
+            selectedModel = control.selectedObject;
+                if(selectedModel.GetType().IsSubclassOf(typeof(Ant)))
+                {
+                     unitMenuON=true;
+                     buildMenuON = false;
+                }
+                else if (selectedModel.GetType().IsSubclassOf(typeof(Building)))
+                {
+                 buildMenuON=true;
+                 unitMenuON = false;
 
+                }
+
+            }
+            if (control.SelectedModels.Count > 0) { 
+            selectedModels = control.SelectedModels;
+            }
 
             // get elapsed frame time in seconds
             frame_time = gameTime.ElapsedGameTime.Milliseconds / 1000.0;
@@ -342,24 +372,34 @@ namespace GUI
 
            
             /* tutaj popoprawiaæ*/
-            for (int i = 0; i <= B_BAR_IDX; i++)
-            {
-                spriteBatch.Draw(itf_texture[i], itf_rectangle[i], itf_color[i]);
-            }
 
+            for (int i = SAVE_BUTTON_IDX; i <= PLAY_BUTTON_IDX; i++)
+                spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
             spriteBatch.Draw(itf_texture[MINI_MAP], itf_rectangle[MINI_MAP], itf_color[MINI_MAP]);
 
             spriteBatch.Draw(button_texture[MENU_BUTTON_IDX], button_rectangle[MENU_BUTTON_IDX], button_color[MENU_BUTTON_IDX]);
-            for (int i = ATTACK_ANT_BUTTON_IDX; i <= PLAY_BUTTON_IDX; i++)
-                spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
-            if (menuON)
+
+            if (unitMenuON)
             {
+                for (int i = 0; i <= U_BAR_IDX; i++)
+                {
+                    spriteBatch.Draw(itf_texture[i], itf_rectangle[i], itf_color[i]);
+                }
+                for (int i = ATTACK_ANT_BUTTON_IDX; i <= RUN_ANT_BUTTON_IDX; i++)
+                    spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
+               
+            }
+            if(buildMenuON)
+            {
+                for (int i = 0; i <= B_BAR_IDX; i++)
+                {
+                    spriteBatch.Draw(itf_texture[i], itf_rectangle[i], itf_color[i]);
+                }
                 for (int i = B1_BUTTON_IDX; i <= B3_BUTTON_IDX; i++)
                     spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
             }
 
-
-            if (menuON)
+            if (mainMenuOn)
             {
                 spriteBatch.Draw(itf_texture[PAUSE_MENU_BACK], itf_rectangle[PAUSE_MENU_BACK], itf_color[PAUSE_MENU_BACK]);
                 for (int i = RESUME_T_BUTTON_IDX; i < NUMBER_OF_BUTTONS; i++)
@@ -475,27 +515,33 @@ namespace GUI
             switch (i)
             {
                 case MENU_BUTTON_IDX:
-                    menuON = true;
+                    mainMenuOn = true;
                     //zatrzymaj grê
                     //wyrysuj obrazek
                     //w³¹cz menu
                     break;
-
+                   
                 case ATTACK_ANT_BUTTON_IDX:
-                    //sytrategia ataku
-                    break;
+Console.WriteLine("attack!!@");                    break;
                 case DEFENCE_ANT_BUTTON_IDX:
-                    //sytrategia obrony
+                    Console.WriteLine("attack!!@"); 
                     break;
                 case RUN_ANT_BUTTON_IDX:
-                    //sytrategia ucieczki wys³aæ jednostki do "wioski"
+                    Console.WriteLine("run!!@"); 
                     break;
-
+                  
                 case B1_BUTTON_IDX:
+                    ((BuildingPlace)selectedModel).Build1();
                     break;
                 case B2_BUTTON_IDX:
+                    ((BuildingPlace)selectedModel).BuildHyacyntFarm();
+
+
                     break;
                 case B3_BUTTON_IDX:
+                    ((BuildingPlace)selectedModel).BuildDicentraFarm();
+
+
                     break;
 
                 case SAVE_BUTTON_IDX:
@@ -506,7 +552,7 @@ namespace GUI
                     break;
 
                 case RESUME_T_BUTTON_IDX:
-                    menuON = false;
+                    mainMenuOn = false;
                     break;
                 case SAVE_T_BUTTON_IDX:
                     break;

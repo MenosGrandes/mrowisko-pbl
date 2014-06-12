@@ -299,7 +299,7 @@ MTPixelToFrame MultiTexturedPS(MTVertexToPixel PSIn)
 		}
 	}
 	
-
+		//Output.Color += tex2Dproj(TextureSampler14, PSIn.TextureWeights);
 	  if (Clipping)
 	   clip(PSIn.clipDistances);  //MSS - Water Refactor added
 	return Output;

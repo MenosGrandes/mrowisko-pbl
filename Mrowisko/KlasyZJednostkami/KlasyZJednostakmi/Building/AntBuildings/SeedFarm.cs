@@ -10,19 +10,12 @@ namespace Logic.Building.AntBuildings
 {
     public class SeedFarm:Building
     {
-        protected float cropTime;
-
-        public float CropTime
-        {
-            get { return cropTime; }
-            set { cropTime = value; }
-        }
-        public float timeElapsed;
+        
 
         public SeedFarm(LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime, float cropTime)
             : base( model,_capacity,_durability,_cost,_buildingTime)
         {
-            this.cropTime = cropTime;
+            base.cropTime = cropTime;
         }
 
         public SeedFarm()
@@ -32,8 +25,9 @@ namespace Logic.Building.AntBuildings
 
 
         public override void Update(GameTime gameTime)
-        {   
-            timeElapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+        {
+            ElapsedTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds/10;
+           // timeElapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
         }
 
        

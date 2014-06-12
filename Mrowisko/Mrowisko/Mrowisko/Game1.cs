@@ -26,6 +26,7 @@ using Logic.Player;
 using Microsoft.Xna.Framework.Audio;
 using SoundController;
 using GUI;
+using System.IO;
 
 namespace AntHill
 {
@@ -35,6 +36,7 @@ namespace AntHill
     public class Game1 : Microsoft.Xna.Framework.Game
     {
 
+        RenderTarget2D circle;
         List<InteractiveModel> models = new List<InteractiveModel>();
         List<InteractiveModel> inter = new List<InteractiveModel>(); 
         List<InteractiveModel> IModel = new List<InteractiveModel>();
@@ -75,7 +77,7 @@ namespace AntHill
         public LightsAndShadows.Shadow shadow;
         public LightsAndShadows.Light light;
         Effect hiDefShadowEffect;
-
+        Stream stream;
         Matrix world = Matrix.CreateTranslation(Vector3.Zero);
 
         Particles.ParticleSystem explosionParticles;
@@ -90,6 +92,8 @@ namespace AntHill
         Random random = new Random();
         private Effect animHiDefShadowEffect;
 
+
+        Texture2D circleTexture;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -201,14 +205,15 @@ namespace AntHill
             {
           
                // Console.WriteLine(models.GetType().BaseType.Name);
-                if(i.GetType().BaseType==typeof(Building) )
+                if (i.GetType().BaseType == typeof(Building) || i.GetType().BaseType == typeof(Material))
                 {
                     IModel.Add(i);
                 }else
                 {
                     models.Add(i);
                 }
-            }    
+            }
+            ((BuildingPlace)IModel[1]).BuildDicentraFarm();
             #endregion   
             #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
@@ -252,6 +257,7 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("HeighMaps/trawaMap"));
             texture.Add(Content.Load<Texture2D>("HeighMaps/kzak1Map"));
             //23 - 25
+            texture.Add(Content.Load<Texture2D>("Textures/circle"));
             #endregion
 
             camera = new FreeCamera(
@@ -282,21 +288,23 @@ GraphicsDevice);
             //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
             models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), new Vector3(0,30,0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
-            models[13].Model.switchAnimation("Idle");
+            models[models.Count-1].Model.switchAnimation("Idle");
             List<String> aa = new List<string>();
             aa.Add("s1");
             aa.Add("s2");
             SoundController.SoundController.content = Content;
            SoundController.SoundController.Initialize(aa);
 
-           gui = new MainGUI(StaticHelpers.StaticHelper.Content);
+           gui = new MainGUI(StaticHelpers.StaticHelper.Content,control);
 
 
 
+           models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
 
-           timeTriggers.Add(new LaserTrigger(new Laser(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/trigger"), Vector3.Zero, Vector3.Zero, Vector3.One, StaticHelpers.StaticHelper.Device, light), curvesForLaser[0]), 10));
+           timeTriggers.Add(new LaserTrigger((Laser)models[models.Count - 1], 1));
+           circle = new RenderTarget2D(device, 4096, 4096, false, pp.BackBufferFormat, DepthFormat.Depth24Stencil8);
+          stream = File.Create("dupa.png");
 
-         
         }
         
 
@@ -352,7 +360,7 @@ GraphicsDevice);
             if(keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
             {
                // WindowController.setWindowSize(1366, 768, false);
-                models[13].Attack(models[3]);
+                models[models.Count-2].Attack(models[3]);
             }
             if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
             {
@@ -442,7 +450,7 @@ GraphicsDevice);
 
                 }
              
-            
+                 
                  
                 foreach (InteractiveModel model in IModel)
                 {
@@ -450,16 +458,27 @@ GraphicsDevice);
                         model.Update(gameTime);
                         model.Model.Update(gameTime);
 
-
-                        if (model.GetType().BaseType == typeof(SeedFarm))
+                     if(model.GetType().IsSubclassOf(typeof(Building)))
+                     {
+                         if(model.GetType()==typeof(TownCenter))
+                         {
+                             continue;
+                         }
+                         if (((BuildingPlace)model).House!=null)
                         {
-                            if (((SeedFarm)model).timeElapsed > ((SeedFarm)model).CropTime)
+                            ((BuildingPlace)model).House.Update(gameTime);
+                            if (((BuildingPlace)model).House.GetType().BaseType == typeof(SeedFarm))
                             {
-                                Logic.Player.Player.addMaterial(model.addCrop());
-                                ((SeedFarm)model).timeElapsed = 0;
+                                //if((((BuildingPlace)model).(SeedFarm)Building).timeElapsed > (((BuildingPlace)model).(SeedFarm)Building).CropTime))
+                                if (((BuildingPlace)model).House.ElapsedTime >  (((BuildingPlace)model).House.CropTime))
+                                   
+                                {
+                                    Logic.Player.Player.addMaterial(((BuildingPlace)model).House.addCrop());
+                                    ((BuildingPlace)model).House.ElapsedTime = 0;
+                                }
                             }
                         }
-
+                     }
                     
                 }
               
@@ -495,6 +514,7 @@ GraphicsDevice);
             //RasterizerState rasterizerState = new RasterizerState();
             //rasterizerState.FillMode = FillMode.WireFrame;
             //GraphicsDevice.RasterizerState = rasterizerState;
+                       float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
             explosionParticles.SetCamera(camera.View, camera.Projection);
             explosionSmokeParticles.SetCamera(camera.View, camera.Projection);
@@ -503,6 +523,20 @@ GraphicsDevice);
             fireParticles.SetCamera(camera.View, camera.Projection);
 
 
+            device.SetRenderTarget(circle);
+            foreach (InteractiveModel model in control.SelectedModels)
+            {
+                 //model.Draw((FreeCamera)camera, time); 
+                  
+            }
+            device.SetRenderTarget(null);
+            if (control.SelectedModels.Count > 1)
+            {
+                circleTexture= (Texture2D)circle;
+                circleTexture.SaveAsPng(stream, 1024, 1024);
+                
+            }
+                
 
 
 
@@ -513,7 +547,6 @@ GraphicsDevice);
 
 
             licznik = 0;
-            float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
             RasterizerState rs = new RasterizerState();
             rs.CullMode = CullMode.None;
@@ -674,7 +707,7 @@ GraphicsDevice);
             
             spriteBatch.DrawString(_spr_font, string.Format("D g={0}", (control.selectedObjectMouseOnlyMove)), new Vector2(10.0f, 140.0f), Color.Pink);
             
-             /* 
+           
               spriteBatch.DrawString(_spr_font, string.Format("D g={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
                spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
                spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.wood), new Vector2(230.0f, 240.0f), Color.Pink);
@@ -682,18 +715,18 @@ GraphicsDevice);
               spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(340.0f, 240.0f), Color.Pink);
                spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(450.0f, 240.0f), Color.Pink);
                spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 240.0f), Color.Pink);
-             
-               spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
-               spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
+               /* 
+             spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
+             spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
            
-             spriteBatch.DrawString(_spr_font, string.Format("iloscMrowek={0}", models.Count), new Vector2(10.0f, 220.0f), Color.Pink);
-             spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
-             spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Yaw), new Vector2(10.0f, 150.0f), Color.Tomato);
-             spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
-             spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
+           spriteBatch.DrawString(_spr_font, string.Format("iloscMrowek={0}", models.Count), new Vector2(10.0f, 220.0f), Color.Pink);
+           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
+           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Yaw), new Vector2(10.0f, 150.0f), Color.Tomato);
+           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
+           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
           
-              //spriteBatch.DrawString(_spr_font, string.Format("obrot ={0}", models[0].Model.Rotation), new Vector2(10.0f, 80.0f), Color.Pink);
-             */
+            //spriteBatch.DrawString(_spr_font, string.Format("obrot ={0}", models[0].Model.Rotation), new Vector2(10.0f, 80.0f), Color.Pink);
+           */
              control.Draw(spriteBatch);
             gui.Draw(spriteBatch);
             spriteBatch.End();

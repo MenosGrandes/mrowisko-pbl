@@ -124,11 +124,13 @@ namespace Map
 
        effect.Parameters["xTexture12"].SetValue(textures[12]);
        effect.Parameters["xTexture13"].SetValue(textures[13]);
-       effect.Parameters["xTexture14"].SetValue(textures[14]);
+   effect.Parameters["xTexture14"].SetValue(textures[14]);
+       #endregion
+       #region Proj
+     //  effect.Parameters["xTexture14"].SetValue(textures[26]);
        #endregion
 
-
-   _rootNode.EnforceMinimumDepth();
+       _rootNode.EnforceMinimumDepth();
 
         }
         public void Update(GameTime gameTime)
