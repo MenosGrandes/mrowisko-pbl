@@ -17,6 +17,16 @@ namespace Logic
     [Serializable]
     public class InteractiveModel
     {
+
+        protected float cropTime;
+
+        public float CropTime
+        {
+            get { return cropTime; }
+            set { cropTime = value; }
+        }
+        
+        
         public bool ImMoving = false;
         public bool hasBeenHit=false;
         public float tim_to_Show_Hit=4;

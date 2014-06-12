@@ -70,7 +70,11 @@ namespace Logic.Building
             model.Draw(camera);
         }
         public override void Update(GameTime gameTime)
-        { }
+        {
+
+            base.Update(gameTime);
+        
+        }
 
     }
 }

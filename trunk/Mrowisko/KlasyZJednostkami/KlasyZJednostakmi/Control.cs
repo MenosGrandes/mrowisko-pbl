@@ -81,6 +81,7 @@ namespace Logic
                     if (currentMouseState.LeftButton == ButtonState.Pressed)
                     {
                         selectedObject = models[i];
+                        Console.WriteLine(selectedObject);
                     }
                     else
                     selectedObjectMouseOnlyMove = models[i];
@@ -93,6 +94,7 @@ namespace Logic
                     if (currentMouseState.LeftButton == ButtonState.Pressed)
                     {
                         selectedObject = Models_Colision[i];
+
                     }
                     else
                         selectedObjectMouseOnlyMove = Models_Colision[i];
@@ -119,7 +121,7 @@ namespace Logic
             else if (currentMouseState.RightButton == ButtonState.Pressed)
             {
                 SelectedModels.Clear();
-
+                selectedObject = null;
                 selectCorner = new Vector2(currentMouseState.X, currentMouseState.Y);
                 if (selectCorner.X > position.X)
                 {

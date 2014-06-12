@@ -11,8 +11,9 @@ namespace Logic.Building.AntBuildings.SeedFarms
     {
     
         public ChelidoniumFarm( LoadModel model, int _capacity, int _durability, int _cost, float _buildingTime,float cropTime):base( model,_capacity,_durability,_cost,_buildingTime,cropTime)
-        { 
-        
+        {
+            base.cropTime = cropTime;
+
         }
 
         public ChelidoniumFarm()
@@ -23,7 +24,8 @@ namespace Logic.Building.AntBuildings.SeedFarms
         }
         public override void Update(GameTime gameTime)
         {
-            timeElapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds/100;
+            base.Update(gameTime);
+            base.ElapsedTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds / 100;
         }
 
     }
