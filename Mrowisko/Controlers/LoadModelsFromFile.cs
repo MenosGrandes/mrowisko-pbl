@@ -75,6 +75,7 @@ namespace Controlers
 
                            Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//log"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
                            g.Model.CreateBoudingBox();
+                           g.Model.BuildBoundingSphereMaterial();
                            listOfAllInteractiveModelsFromFile.Add(g);
 
                            break;
@@ -82,7 +83,8 @@ namespace Controlers
 
 
                            Rock q = new Rock(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//stone2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Rock)model).ClusterSize);
-                           q.Model.CreateBoudingBox();
+                           q.Model.CreateBoudingBox(); 
+                            q.Model.BuildBoundingSphereMaterial()  ;
                            listOfAllInteractiveModelsFromFile.Add(q);
 
 
@@ -94,6 +96,7 @@ namespace Controlers
 
                            BuildingPlace w = new BuildingPlace( new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//buildingPlace"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
                            w.Model.CreateBoudingBox();
+                           w.Model.BuildBoundingSphereMaterial();
 
                            listOfAllInteractiveModelsFromFile.Add(w);
 
@@ -107,6 +110,8 @@ namespace Controlers
 
                            AntGranary ag = new AntGranary(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//antGranary"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
                            ag.Model.CreateBoudingBox();
+                           ag.Model.BuildBoundingSphereMaterial();
+
                            listOfAllInteractiveModelsFromFile.Add(ag);
                             
                             break;
@@ -118,6 +123,7 @@ namespace Controlers
 
                             Logic.Building.AntBuildings.TownCenter ad = new Logic.Building.AntBuildings.TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//townCenter"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
                             ad.Model.CreateBoudingBox();
+                            ad.Model.BuildBoundingSphereMaterial();
 
                             listOfAllInteractiveModelsFromFile.Add(ad);
 
@@ -141,6 +147,7 @@ namespace Controlers
 
                             Tree t = new Tree(null);
                             t.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//tree1"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,_light);
+                            t.Model.BuildBoundingSphereMaterial();
 
                             listOfAllInteractiveModelsFromFile.Add(t);
 
@@ -153,6 +160,7 @@ namespace Controlers
 
                             Tree2 t2 = new Tree2(null);
                             t2.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//tree2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,_light);
+                            t2.Model.BuildBoundingSphereMaterial();
 
                             listOfAllInteractiveModelsFromFile.Add(t2);
 

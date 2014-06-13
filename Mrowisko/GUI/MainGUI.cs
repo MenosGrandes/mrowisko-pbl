@@ -372,10 +372,9 @@ namespace GUI
 
            
             /* tutaj popoprawiaæ*/
-
-            for (int i = SAVE_BUTTON_IDX; i <= PLAY_BUTTON_IDX; i++)
-                spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
-            spriteBatch.Draw(itf_texture[MINI_MAP], itf_rectangle[MINI_MAP], itf_color[MINI_MAP]);
+        
+           
+       
 
             spriteBatch.Draw(button_texture[MENU_BUTTON_IDX], button_rectangle[MENU_BUTTON_IDX], button_color[MENU_BUTTON_IDX]);
 
@@ -418,7 +417,9 @@ namespace GUI
                 spriteBatch.Draw(button_texture[DOWN_BUTTON_IDX], button_rectangle[DOWN_BUTTON_IDX], button_color[DOWN_BUTTON_IDX]);
             }
 
-
+            spriteBatch.Draw(itf_texture[MINI_MAP], itf_rectangle[MINI_MAP], itf_color[MINI_MAP]);
+            for (int i = SAVE_BUTTON_IDX; i <= PLAY_BUTTON_IDX; i++)
+                spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
 
         }
         // wrapper for hit_image_alpha taking Rectangle and Texture
@@ -531,14 +532,17 @@ Console.WriteLine("attack!!@");                    break;
                     break;
                   
                 case B1_BUTTON_IDX:
+                    if ((selectedModel.GetType()==typeof(BuildingPlace)))
                     ((BuildingPlace)selectedModel).Build1();
                     break;
                 case B2_BUTTON_IDX:
+                    if ((selectedModel.GetType()==typeof(BuildingPlace)))
                     ((BuildingPlace)selectedModel).BuildHyacyntFarm();
 
 
                     break;
                 case B3_BUTTON_IDX:
+                  if ((selectedModel.GetType()==typeof(BuildingPlace)))
                     ((BuildingPlace)selectedModel).BuildDicentraFarm();
 
 

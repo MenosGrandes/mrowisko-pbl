@@ -213,7 +213,6 @@ namespace AntHill
                     models.Add(i);
                 }
             }
-            ((BuildingPlace)IModel[1]).BuildDicentraFarm();
             #endregion   
             #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
@@ -392,7 +391,6 @@ GraphicsDevice);
                     models[i].Update(gameTime);
                     models[i].Model.Update(gameTime);
 
-
                     if (control.selectedObject != null)
                     {
                         if (control.selectedObject.GetType().BaseType == typeof(Material))
@@ -439,14 +437,18 @@ GraphicsDevice);
                         
                         //Console.WriteLine(models[i].GetType().Name);
                     }
-
-                if(models[i].spitter())
-                {
-                    foreach(Vector3 pos in models[i].spitPos())
+                    for (int j = 0; j < IModel.Count;j++ )
                     {
-                        UpdateSmokePlume(pos);
+                        models[i].Intersect(IModel[j]);
+
                     }
-                }
+                        if (models[i].spitter())
+                        {
+                            foreach (Vector3 pos in models[i].spitPos())
+                            {
+                                UpdateSmokePlume(pos);
+                            }
+                        }
 
                 }
              
@@ -523,19 +525,8 @@ GraphicsDevice);
             fireParticles.SetCamera(camera.View, camera.Projection);
 
 
-            device.SetRenderTarget(circle);
-            foreach (InteractiveModel model in control.SelectedModels)
-            {
-                 //model.Draw((FreeCamera)camera, time); 
-                  
-            }
-            device.SetRenderTarget(null);
-            if (control.SelectedModels.Count > 1)
-            {
-                circleTexture= (Texture2D)circle;
-                circleTexture.SaveAsPng(stream, 1024, 1024);
-                
-            }
+        
+          
                 
 
 
@@ -708,9 +699,9 @@ GraphicsDevice);
             spriteBatch.DrawString(_spr_font, string.Format("D g={0}", (control.selectedObjectMouseOnlyMove)), new Vector2(10.0f, 140.0f), Color.Pink);
             
            
-              spriteBatch.DrawString(_spr_font, string.Format("D g={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
-               spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
-               spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.wood), new Vector2(230.0f, 240.0f), Color.Pink);
+             // spriteBatch.DrawString(_spr_font, string.Format("D g={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
+             //  spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
+              // spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.wood), new Vector2(230.0f, 240.0f), Color.Pink);
 
               spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(340.0f, 240.0f), Color.Pink);
                spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(450.0f, 240.0f), Color.Pink);
