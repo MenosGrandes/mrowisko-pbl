@@ -72,7 +72,7 @@ namespace Logic.Units.Ants
               
                 if(capacity<maxCapacity)
                 {
-                    Console.WriteLine(material.GetType().Name);
+                  //  Console.WriteLine(material.GetType().Name);
                     switch (material.GetType().Name)
                    {
 
@@ -99,7 +99,6 @@ namespace Logic.Units.Ants
         public override void Update(GameTime time)
         {
             if(gaterMaterialObject!=null)
-                Console.WriteLine(gaterMaterialObject);
           //  this.model.tempPosition = this.model.Position;
             base.Update(time);
             //Console.WriteLine(elapsedTime);
@@ -137,8 +136,11 @@ namespace Logic.Units.Ants
             if(this==interactive)
             { return ; }
 
-
-            if (model.BoundingSphere.Intersects(interactive.Model.BoundingSphere))
+            if(gaterMaterialObject!=null)
+            {
+                //Console.WriteLine(gaterMaterialObject);
+            }
+            if (model.BoundingSphere.Intersects(interactive.Model.Spheres[0]))
             {
                 if (gaterMaterialObject == interactive)
                 {
@@ -155,7 +157,7 @@ namespace Logic.Units.Ants
                 {
                     Logic.Player.Player.addMaterial(releaseMaterial());
                     this.materials.Clear();
-                    Console.WriteLine(Capacity);
+                  //  Console.WriteLine(Capacity);
                 }
             }
 

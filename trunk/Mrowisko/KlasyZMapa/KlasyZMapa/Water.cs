@@ -23,7 +23,7 @@ namespace Map
         private Texture2D waterBumpMap;
         private Vector3 windDirection = new Vector3(0, 0, 1);
         public VertexBuffer waterVertexBuffer { get; set; }
-
+        public Plane waterPlane;
        public SkyDome sky;
         public Water(GraphicsDevice device, ContentManager Content, float terrainLength, int scale)
         {
@@ -78,11 +78,10 @@ namespace Map
 
         public void DrawRefractionMap(GameCamera.FreeCamera camera, float time, LightsAndShadows.Shadow shadow, LightsAndShadows.Light light,QuadTree tree)
         {
-            Plane refractionPlane = CreatePlane(waterHeight + 1.5f, new Vector3(0, -1, 0), camera.View, false);
-
+            waterPlane = CreatePlane(waterHeight + 1.5f, new Vector3(0, -1, 0), camera.View, false);
 
             //refractionPlane = CreatePlane(30.0045F, new Vector3(0, -1, 0), viewMatrix, false);
-            effect.Parameters["ClipPlane0"].SetValue(new Vector4(refractionPlane.Normal, refractionPlane.D));
+            effect.Parameters["ClipPlane0"].SetValue(new Vector4(waterPlane.Normal, waterPlane.D));
             effect.Parameters["Clipping"].SetValue(true);    // Allows the geometry to be clipped for the purpose of creating a refraction map
             device.SetRenderTarget(refractionRenderTarget);
             device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);

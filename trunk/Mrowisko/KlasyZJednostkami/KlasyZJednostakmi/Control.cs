@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Map;
 using GameCamera;
+using Logic.Building;
 
 
 namespace Logic
@@ -93,11 +94,47 @@ namespace Logic
                 {
                     if (currentMouseState.LeftButton == ButtonState.Pressed)
                     {
-                        selectedObject = Models_Colision[i];
+                        if(Models_Colision[i].GetType()==typeof(BuildingPlace))
+                        {
+                            if(((BuildingPlace)Models_Colision[i]).House!=null)
+                            {
+                                selectedObject = ((BuildingPlace)Models_Colision[i]).House;
+                            }
+                            else
+                            {
+                                selectedObject = Models_Colision[i];
+
+                            }
+
+                        }
+                        else
+                        {
+                            selectedObject = Models_Colision[i];
+
+                        }
+                      
 
                     }
                     else
-                        selectedObjectMouseOnlyMove = Models_Colision[i];
+
+                        if (Models_Colision[i].GetType() == typeof(BuildingPlace))
+                        {
+                            if (((BuildingPlace)Models_Colision[i]).House != null)
+                            {
+                                selectedObjectMouseOnlyMove = ((BuildingPlace)Models_Colision[i]).House;
+                            }
+                            else
+                            {
+                                selectedObjectMouseOnlyMove = Models_Colision[i];
+
+                            }
+                        }
+                        else
+                        {
+                            selectedObjectMouseOnlyMove = Models_Colision[i];
+
+                        }
+                       
                     break;
                 }
 
@@ -230,8 +267,8 @@ namespace Logic
                     modelsy.Model.B_Box=modelsy.Model.updateBoundingBox();
                     if ((modelsy.Model.B_Box.Contains(ant.Model.playerTarget) == ContainmentType.Contains))
                     {
-                        ant.Model.playerTarget.X = modelsy.Model.B_Box.Max.X + modelsy.Model.B_Box.Max.X - modelsy.Model.B_Box.Min.X;//modelsy.Model.BoundingSphere.Center.X + modelsy.Model.BoundingSphere.Radius;
-                        ant.Model.playerTarget.Z = modelsy.Model.B_Box.Max.Y+modelsy.Model.B_Box.Max.Y-modelsy.Model.B_Box.Min.Y;//modelsy.Model.BoundingSphere.Center.Z + modelsy.Model.BoundingSphere.Radius;
+                       // ant.Model.playerTarget.X = modelsy.Model.B_Box.Max.X + modelsy.Model.B_Box.Max.X - modelsy.Model.B_Box.Min.X;//modelsy.Model.BoundingSphere.Center.X + modelsy.Model.BoundingSphere.Radius;
+                       // ant.Model.playerTarget.Z = modelsy.Model.B_Box.Max.Y+modelsy.Model.B_Box.Max.Y-modelsy.Model.B_Box.Min.Y;//modelsy.Model.BoundingSphere.Center.Z + modelsy.Model.BoundingSphere.Radius;
                         break;
                     }
 
