@@ -16,9 +16,9 @@ namespace Particles.ParticleSystems
         {
             settings.TextureName = "Textures/Particles/smoke";
 
-            settings.MaxParticles = 1000;
+            settings.MaxParticles = 5000;
 
-            settings.Duration = TimeSpan.FromSeconds(3);
+            settings.Duration = TimeSpan.FromSeconds(1);
 
             settings.DurationRandomness = 1.5f;
 
@@ -39,8 +39,8 @@ namespace Particles.ParticleSystems
             settings.MinStartSize = 1;
             settings.MaxStartSize = 3;
 
-            settings.MinEndSize = 4;
-            settings.MaxEndSize = 11;
+            settings.MinEndSize = 5;
+            settings.MaxEndSize = 13;
         }
     }
 }
