@@ -384,7 +384,6 @@ namespace Map
                 }
                 if(this.HasChildren==false)
                 {
-
                     _isSpit = false;
                 }
 
@@ -395,6 +394,8 @@ namespace Map
             {
                 this.Activate();
                 _isSpit = false;
+               // QuadNodeController.QuadNodeList.Add(this);
+
             }
         }
         public bool Contains(BoundingFrustum boundingFrustrum)

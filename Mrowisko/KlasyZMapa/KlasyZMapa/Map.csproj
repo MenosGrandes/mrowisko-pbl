@@ -84,6 +84,7 @@
     <Compile Include="NodeTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuadNode.cs" />
+    <Compile Include="QuadNodeController.cs" />
     <Compile Include="QuadNodeVertex.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="ShadowCasterObject.cs" />

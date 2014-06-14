@@ -13,6 +13,7 @@ using Controlers.CursorEnum;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Map;
 
 namespace Controlers
 {
@@ -40,12 +41,17 @@ namespace Controlers
         {
                switch (stage )
             {
-                case CursorStage.Attack: WindowController.window.Cursor = cursors[0]; break;
+                case CursorStage.   Attack: WindowController.window.Cursor = cursors[0]; break;
                 case CursorStage.Go: WindowController.window.Cursor = cursors[1]; break;
                 case CursorStage.Gater: WindowController.window.Cursor = cursors[2]; break;
                 case CursorStage.Normal: WindowController.window.Cursor = cursors[3]; break;
             }
         }
     }
+    public static class QuadNodeHelper
+{
+        public static List<QuadNode> quadNodeList;
+
+}
     
 }

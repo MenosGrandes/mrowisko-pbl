@@ -155,7 +155,9 @@ namespace Logic
 
         public virtual void DrawSelected(GameCamera.FreeCamera camera)
         {
-            
+
+            LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 1, 0) * model.Scale * 50);
+            LifeBar.healthDraw(camera);
         }
 
         public virtual void DrawSelectedCircle(GameCamera.FreeCamera camera)

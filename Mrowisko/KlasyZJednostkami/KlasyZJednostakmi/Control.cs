@@ -17,6 +17,7 @@ namespace Logic
 {
     public class Control
     {
+        public float cameraYaw, cameraPitch;
         public Matrix View;
         public Matrix Projection;
         public GraphicsDevice device;
@@ -72,8 +73,7 @@ namespace Logic
 
             currentMouseState = Mouse.GetState();
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
-            Vector3 mouse3d2 = CalculateMouse3DPosition();
-
+            Vector3 mouse3d2 = CalculateMouse3DPosition(currentMouseState.X,currentMouseState.Y);
             selectedObjectMouseOnlyMove = null;
             for (int i = 0; i < models.Count; i++)
                 if (models[i].CheckRayIntersection(mouseRay))
@@ -82,7 +82,7 @@ namespace Logic
                     if (currentMouseState.LeftButton == ButtonState.Pressed)
                     {
                         selectedObject = models[i];
-                        Console.WriteLine(selectedObject);
+                        //Console.WriteLine(selectedObject);
                     }
                     else
                     selectedObjectMouseOnlyMove = models[i];
@@ -675,7 +675,7 @@ namespace Logic
 
         private Vector3 CalculateMouse3DPosition()
         {
-            Plane GroundPlane = new Plane(0, 1, 0, 0); // x - lewo prawo Z- gora dol
+            Plane GroundPlane = new Plane(0, 30, 0, 30); // x - lewo prawo Z- gora dol
             int mouseX = Mouse.GetState().X;
             int mouseY = Mouse.GetState().Y;
 
@@ -735,30 +735,18 @@ namespace Logic
         }
         private Vector3 CalculateMouse3DPosition(int X, int Y)
         {
-            Plane GroundPlane = new Plane(0, 1, 0, 0); // x - lewo prawo Z- gora dol
             int mouseX = X;
             int mouseY = Y;
+            Vector3 nearScreenPoint = new Vector3(mouseX, mouseY, 0);
+            Vector3 farScreenPoint = new Vector3(mouseX, mouseY, 1);
+            Vector3 nearWorldPoint = device.Viewport.Unproject(nearScreenPoint, this.Projection,this.View, Matrix.Identity);
+            Vector3 farWorldPoint = device.Viewport.Unproject(farScreenPoint, this.Projection, this.View, Matrix.Identity);
 
-            Vector3 nearsource = new Vector3((float)mouseX, (float)mouseY, 0f);
-            Vector3 farsource = new Vector3((float)mouseX, (float)mouseY, 1f);
-
-            Matrix world = Matrix.CreateTranslation(0, 0, 0);
-
-            Vector3 nearPoint = device.Viewport.Unproject(nearsource,
-                this.Projection, this.View, Matrix.Identity);
-
-            Vector3 farPoint = device.Viewport.Unproject(farsource,
-                this.Projection, this.View, Matrix.Identity);
-
-            Vector3 direction = farPoint - nearPoint;
+            Vector3 direction = farWorldPoint - nearWorldPoint;
             direction.Normalize();
-            Ray pickRay = new Ray(nearPoint, direction);
-            float? position = pickRay.Intersects(GroundPlane);
-
-            if (position != null)
-                return pickRay.Position + pickRay.Direction * position.Value;
-            else
-                return new Vector3(0, 0, 0);
+            float zFactor = -nearWorldPoint.Y / direction.Y;
+            Vector3 zeroWorldPoint = nearWorldPoint + direction * zFactor;
+            return zeroWorldPoint;
 
 
         }
