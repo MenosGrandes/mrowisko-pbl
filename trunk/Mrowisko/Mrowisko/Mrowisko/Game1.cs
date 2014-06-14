@@ -61,6 +61,7 @@ namespace AntHill
         Water water;
         LoadModel mrowka, krolowa, pajak, konik, silacz;
         QuadTree quadTree;
+        MapRender mapR;
         //FPS COUNTER
         int licznik;
         SpriteFont _spr_font;
@@ -277,6 +278,11 @@ GraphicsDevice);
 
 
             control = new Logic.Control(texture[11], quadTree);
+
+/////////////// nie wiem czy to powinno byæ czy nie wiêc zakomentowa³em tylko
+//
+//            mapR = new MapRender(texture[15], 3);
+//            Console.WriteLine(GraphicsDevice.Viewport.Bounds);
 
             //e.Ant = models[0];
            // e.Enemy = spider;
@@ -553,6 +559,8 @@ GraphicsDevice);
             control.cameraPitch = ((FreeCamera)camera).Pitch;
             control.models = models;
             control.device = device;
+            control.heightsa = mapR.TerrainWidth*mapR.TerrainLength;
+            control.vertices = mapR.Vertices;
             control.Update(gameTime);
             control.Models_Colision =IModel;
 
@@ -792,7 +800,8 @@ GraphicsDevice);
            spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
            spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
           
-            //spriteBatch.DrawString(_spr_font, string.Format("obrot ={0}", models[0].Model.Rotation), new Vector2(10.0f, 80.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("mouse3d ={0}", control.mouse3d2), new Vector2(10.0f, 80.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("position3d ={0}", control.position3d), new Vector2(10.0f, 120.0f), Color.Pink);
            */
              control.Draw(spriteBatch);
             gui.Draw(spriteBatch);
@@ -931,11 +940,8 @@ GraphicsDevice);
             float y = (float)Math.Sin(angle)*(float)Math.Sin(angle2);
             float z = (float)Math.Cos(angle2);
 
-<<<<<<< .mine
-            return new Vector3(models[models.Count - 1].Model.Position.X + x * radius, models[models.Count - 1].Model.Position.Y - (y * radius + height), models[models.Count - 1].Model.Position.Z + z * radius);
-=======
+
             return new Vector3(models[0].Model.Position.X + x * radius, models[0].Model.Position.Y - (y * radius + height), models[0].Model.Position.Z + z * radius);
->>>>>>> .r183
         }
 
      
