@@ -396,7 +396,7 @@
     <Compile Include="Models\grasshopper.X">
       <Name>grasshopper</Name>
       <Importer>XImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+      <Processor>AnimatedModelProcessor</Processor>
     </Compile>
     <Compile Include="Models\queen.X">
       <Name>queen</Name>
@@ -411,7 +411,7 @@
     <Compile Include="Models\strongAnt.X">
       <Name>strongAnt</Name>
       <Importer>XImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+      <Processor>AnimatedModelProcessor</Processor>
     </Compile>
     <Compile Include="Models\shoot.FBX">
       <Name>shoot</Name>
@@ -437,6 +437,16 @@
       <Name>mainKopiec</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\beetle.X">
+      <Name>beetle</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimatedModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\plujka.X">
+      <Name>plujka</Name>
+      <Importer>XImporter</Importer>
+      <Processor>AnimatedModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -794,6 +804,18 @@
       <Name>circle</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\beetle_Anims.xml">
+      <Name>beetle_Anims</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\plujka_Anims.xml">
+      <Name>plujka_Anims</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

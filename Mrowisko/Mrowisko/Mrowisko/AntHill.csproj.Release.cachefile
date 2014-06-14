@@ -95,6 +95,8 @@ Content\Models\grasshopper.xnb
 Content\Models\queen.xnb
 Content\Models\spider.xnb
 Content\Models\strongAnt.xnb
+Content\Models\beetle.xnb
+Content\Models\plujka.xnb
 Content\Fonts\FPS.xnb
 Content\Effects\TexturedEffect.xnb
 Content\Effects\Bilboarding.xnb
@@ -129,6 +131,8 @@ Content\Models\queen_Anims.xnb
 Content\Models\spider_Anims.xnb
 Content\Models\strongAnt_Anims.xnb
 Content\Models\ant_Anims.xnb
+Content\Models\beetle_Anims.xnb
+Content\Models\plujka_Anims.xnb
 Content\Models\SkyDome\cloudMap_0.xnb
 Content\Models\ant_diffuse_0.xnb
 Content\Models\grasshopperUVW_0.xnb
@@ -138,6 +142,9 @@ Content\Models\body_diffuse_0.xnb
 Content\Models\crownDiffuseMap_0.xnb
 Content\Models\spiderUVW_0.xnb
 Content\Models\mrowka_diffuse_map_0.xnb
+Content\Models\beetlediffuse_0.xnb
+Content\Models\plujka_diffuse_0.xnb
+Content\Models\uzi_diffuse_0.xnb
 Content\Models\stone2.fbm\stone2map_0.xnb
 Content\Textures\treetex\tree_tex_0.xnb
 Content\Textures\treetex\tree2_tex_0.xnb

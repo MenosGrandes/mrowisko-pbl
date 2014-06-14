@@ -437,8 +437,19 @@ namespace Logic
         }
 
 
-        public void switchAnimation(string nazwa)
+        public void switchAnimation(string nazwa, int howManyTimesPlay=-1)
         {
+            if (howManyTimesPlay < 1)
+            {
+                Player.timesToPlay = -1;
+                Player.looped = true;
+            }
+            else
+            {
+                Player.timesToPlay = howManyTimesPlay;
+                Player.looped = false;
+            }
+            Player.howManyTimesPlayed = 0;
             if (animationChange == false) animationChange = true;
             //if (animationFlag==true)
             if (Player.CurrentClip == null)

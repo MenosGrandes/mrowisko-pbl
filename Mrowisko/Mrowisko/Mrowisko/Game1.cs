@@ -286,10 +286,20 @@ GraphicsDevice);
            
             WindowController.setWindowSize(1366, 768, false);
             Console.WriteLine(GraphicsDevice.Viewport.Bounds);
-
+            pajak = new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(100, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
+            pajak.switchAnimation("Idle");
+            konik = new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(250, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
+            konik.switchAnimation("Idle");
+            krolowa = new LoadModel(Content.Load<Model>("Models/queen"), new Vector3(450, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
+            krolowa.switchAnimation("Idle");
+            mrowka = new LoadModel(Content.Load<Model>("Models/ant"), new Vector3(600, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
+            mrowka.switchAnimation("Idle");
+            silacz = new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(750, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
+            silacz.switchAnimation("Idle");
             //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
             models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), new Vector3(0,30,0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
+          //  models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
             models[models.Count-1].Model.switchAnimation("Idle");
             List<String> aa = new List<string>();
             aa.Add("s1");
@@ -372,6 +382,47 @@ GraphicsDevice);
                 WindowController.setWindowSize(700, 432, false);
             }
             #endregion
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.P))
+            {
+                pajak.switchAnimation("Jump");
+                konik.switchAnimation("Jump");
+                krolowa.switchAnimation("Jump");
+                mrowka.switchAnimation("Jump");
+                silacz.switchAnimation("Jump");
+
+            }
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.O))
+            {
+                pajak.switchAnimation("Idle");
+                konik.switchAnimation("Idle");
+                krolowa.switchAnimation("Idle");
+                mrowka.switchAnimation("Idle");
+                silacz.switchAnimation("Idle");
+            }
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.L))
+            {
+                pajak.switchAnimation("Walk");
+                konik.switchAnimation("Walk");
+                krolowa.switchAnimation("Walk");
+                mrowka.switchAnimation("Walk");
+                silacz.switchAnimation("Walk");
+            }
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.K))
+            {
+                pajak.switchAnimation("Atack");
+                konik.switchAnimation("Atack");
+                krolowa.switchAnimation("Atack");
+                mrowka.switchAnimation("Atack");
+                silacz.switchAnimation("Atack");
+            }
+            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.M))
+            {
+                pajak.switchAnimation("Death",1);
+                konik.switchAnimation("Death", 1);
+                krolowa.switchAnimation("Death", 1);
+                mrowka.switchAnimation("Death", 1);
+                silacz.switchAnimation("Death", 1);
+            }
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 this.Exit();
             #region timeTrigger
@@ -500,11 +551,13 @@ GraphicsDevice);
 
             MouseCursorController.Update();
             camera.Update(gameTime);
-             
 
-          //  anim.Update(gameTime);
             base.Update(gameTime);
-
+            pajak.Update(gameTime);
+            krolowa.Update(gameTime);
+            konik.Update(gameTime);
+            silacz.Update(gameTime);
+            mrowka.Update(gameTime);
         }
 
 
@@ -522,10 +575,9 @@ GraphicsDevice);
             fireParticles.SetCamera(camera.View, camera.Projection);
 
 
-        
-          
-                
 
+
+    
 
 
             device.SetRenderTarget(shadow.RenderTarget);
@@ -633,6 +685,11 @@ GraphicsDevice);
             water.DrawWater(time, (FreeCamera)camera);
 
 
+            pajak.Draw((FreeCamera)camera, time);
+            konik.Draw((FreeCamera)camera, time);
+            krolowa.Draw((FreeCamera)camera, time);
+            silacz.Draw((FreeCamera)camera, time);
+            mrowka.Draw((FreeCamera)camera, time);   
 
 
 
@@ -840,7 +897,7 @@ GraphicsDevice);
             float y = (float)Math.Sin(angle)*(float)Math.Sin(angle2);
             float z = (float)Math.Cos(angle2);
 
-            return new Vector3(models[6].Model.Position.X + x * radius, models[6].Model.Position.Y - (y * radius + height), models[6].Model.Position.Z + z * radius);
+            return new Vector3(models[0].Model.Position.X + x * radius, models[0].Model.Position.Y - (y * radius + height), models[0].Model.Position.Z + z * radius);
         }
 
      
