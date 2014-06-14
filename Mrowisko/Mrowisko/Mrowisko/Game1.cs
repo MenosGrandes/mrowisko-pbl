@@ -105,13 +105,14 @@ namespace AntHill
             smokePlumeParticles = new Particles.ParticleSystems.SmokePlumeParticleSystem(this, Content);
             fireParticles = new Particles.ParticleSystems.FireParticleSystem(this, Content);
 
-            fireParticles.Interval = 2.5f;
+            fireParticles.Interval = 0.5f;
+            projectileTrailParticles.Interval = 2.5f;
 
             // Set the draw order so the explosions and fire
             // will appear over the top of the smoke.
             smokePlumeParticles.DrawOrder = 100;
             explosionSmokeParticles.DrawOrder = 200;
-           projectileTrailParticles.DrawOrder = 300;
+            projectileTrailParticles.DrawOrder = 300;
             explosionParticles.DrawOrder = 400;
             fireParticles.DrawOrder = 500;
 
@@ -335,15 +336,18 @@ GraphicsDevice);
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+            
             gui.Update(gameTime);
             kolizja = false;
                 currentMouseState = Mouse.GetState();
                 if (timeTriggers.Count<1)
                 {
                     UpdateFire();
+                  //  UpdateExplosions(gameTime);
+
+                  //  UpdateProjectiles(gameTime);
                    
-                    UpdateExplosions(gameTime);
-                    UpdateProjectiles(gameTime);
                 }
 
 
@@ -488,11 +492,18 @@ GraphicsDevice);
                         models[i].Intersect(IModel[j]);
 
                     }
-                        if (models[i].spitter())
+                        if (models[i].GetType() ==  typeof(AntSpitter))
                         {
-                            foreach (Vector3 pos in models[i].spitPos())
+                            foreach (Vector4 pos in models[i].spitPos())
                             {
-                                UpdateSmokePlume(pos);
+                               // if()
+                                Vector3 tmpPos = new Vector3(pos.X,pos.Y,pos.Z);
+                               if(pos.W == 0)
+                                UpdateSpit(tmpPos,false);
+                                else
+                                 UpdateSpit(tmpPos, true);
+                               
+                                //UpdateSmokePlume(pos);
                             }
                         }
 
@@ -818,13 +829,36 @@ GraphicsDevice);
 
             if (timeToNextProjectile <= TimeSpan.Zero)
             {
-                // Create a new projectile once per second. The real work of moving
-                // and creating particles is handled inside the Projectile class.
-                projectiles.Add(new Particles.Projectile(explosionParticles,
-                                               explosionSmokeParticles,
-                                               projectileTrailParticles));
+            // Create a new projectile once per second. The real work of moving
+            // and creating particles is handled inside the Projectile class.
+            projectiles.Add(new Particles.Projectile(explosionParticles,
+                                           explosionSmokeParticles,
+                                           projectileTrailParticles));
 
-                timeToNextProjectile += TimeSpan.FromSeconds(1);
+             timeToNextProjectile += TimeSpan.FromSeconds(1);
+             }
+        }
+
+        void UpdateSpit(Vector3 pos, bool explode)
+        {
+            int amountPerFrame = 30;
+            if(explode)
+            {
+                for (int i = 0; i < amountPerFrame; i++)
+                {
+                    explosionParticles.AddParticle(pos, Vector3.Zero);
+                }
+                for (int i = 0; i < amountPerFrame/2; i++)
+                {
+                    smokePlumeParticles.AddParticle(pos, Vector3.Zero);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < amountPerFrame+15; i++)
+                {
+                    projectileTrailParticles.AddParticle(pos+new Vector3(0,5,0), new Vector3(1,0,1));
+                }
             }
         }
 
@@ -897,7 +931,11 @@ GraphicsDevice);
             float y = (float)Math.Sin(angle)*(float)Math.Sin(angle2);
             float z = (float)Math.Cos(angle2);
 
+<<<<<<< .mine
+            return new Vector3(models[models.Count - 1].Model.Position.X + x * radius, models[models.Count - 1].Model.Position.Y - (y * radius + height), models[models.Count - 1].Model.Position.Z + z * radius);
+=======
             return new Vector3(models[0].Model.Position.X + x * radius, models[0].Model.Position.Y - (y * radius + height), models[0].Model.Position.Z + z * radius);
+>>>>>>> .r183
         }
 
      

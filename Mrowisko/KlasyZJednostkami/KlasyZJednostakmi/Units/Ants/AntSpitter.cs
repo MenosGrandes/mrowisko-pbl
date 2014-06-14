@@ -78,12 +78,15 @@ namespace Logic.Units.Ants
             return true;
         }
 
-        public override List<Vector3> spitPos()
+        public override List<Vector4> spitPos()
         {
-            List<Vector3> bulletsPos = new List<Vector3>();
+            List<Vector4> bulletsPos = new List<Vector4>();
             foreach(SpitMissle bullet in bullets)
             {
-                bulletsPos.Add(bullet.Model.Position);
+                if(!bullet.hit)
+                bulletsPos.Add(new Vector4(bullet.Model.Position.X, bullet.Model.Position.Y, bullet.Model.Position.Z, 0));
+                else
+                bulletsPos.Add(new Vector4(bullet.Model.Position.X, bullet.Model.Position.Y, bullet.Model.Position.Z, 1));
             }
 
             return bulletsPos;

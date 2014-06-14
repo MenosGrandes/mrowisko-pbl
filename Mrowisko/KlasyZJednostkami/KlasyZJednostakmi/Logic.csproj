@@ -105,6 +105,7 @@
     <Compile Include="Triggers\TimeTrigger.cs" />
     <Compile Include="Triggers\Trigger.cs" />
     <Compile Include="Units\Allies\Allies.cs" />
+    <Compile Include="Units\Allies\Beetle.cs" />
     <Compile Include="Units\Ants\Ant.cs" />
     <Compile Include="Building\Building.cs" />
     <Compile Include="Control.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="Units\Predators\Spider.cs" />
+    <Compile Include="Units\Predators\SunDew.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

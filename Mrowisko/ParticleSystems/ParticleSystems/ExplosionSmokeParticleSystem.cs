@@ -16,7 +16,7 @@ namespace Particles.ParticleSystems
         {
             settings.TextureName = "Textures/Particles/smoke";
 
-            settings.MaxParticles = 200;
+            settings.MaxParticles = 300;
 
             settings.Duration = TimeSpan.FromSeconds(4);
 

@@ -82,7 +82,7 @@ namespace Logic
             set { circle = value; }
         }
 
-        public virtual List<Vector3> spitPos()
+        public virtual List<Vector4> spitPos()
         {
             return null;
         }

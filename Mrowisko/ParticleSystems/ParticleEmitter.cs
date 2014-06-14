@@ -39,7 +39,7 @@ namespace Particles
         public void Update(GameTime gameTime, Vector3 newPosition)
         {
 
-            /*
+            
             if (gameTime == null)
                 throw new ArgumentNullException("gameTime");
 
@@ -72,7 +72,7 @@ namespace Particles
                     Vector3 position = Vector3.Lerp(previousPosition, newPosition, mu);
 
                     // Create the particle.
-                    sparticleSystem.AddParticle(position, velocity);
+                    particleSystem.AddParticle(position, velocity);
                 }
 
                 // Store any time we didn't use, so it can be part of the next update.
@@ -80,7 +80,7 @@ namespace Particles
             }
 
             previousPosition = newPosition;
-                     */
+                     
         }
      
     }
