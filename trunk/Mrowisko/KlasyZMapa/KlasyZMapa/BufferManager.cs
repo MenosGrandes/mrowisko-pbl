@@ -30,8 +30,8 @@ namespace Map
 
             _IndexBuffers = new IndexBuffer[]
                     {
-                            new IndexBuffer(_device, IndexElementSize.ThirtyTwoBits, 1000000, BufferUsage.WriteOnly),
-                            new IndexBuffer(_device, IndexElementSize.ThirtyTwoBits, 1000000, BufferUsage.WriteOnly)
+                            new IndexBuffer(_device, IndexElementSize.ThirtyTwoBits,  1000000, BufferUsage.WriteOnly),
+                            new IndexBuffer(_device, IndexElementSize.ThirtyTwoBits,  1000000, BufferUsage.WriteOnly)
                     };
 
         }

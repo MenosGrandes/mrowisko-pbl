@@ -17,7 +17,7 @@ namespace Logic.Meterials.MaterialCluster
         {
             get
             {
-                Console.WriteLine(stone.Count);
+                //Console.WriteLine(stone.Count);
                 return stone.Count;
             }
             set

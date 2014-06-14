@@ -67,6 +67,7 @@ namespace Controlers
                            AntPeasant p = new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
                            p.AtackInterval = 10;
                            p.Hp =300;
+                           p.gaterTime = 1000;
                            p.Model.switchAnimation("Atack");
                            listOfAllInteractiveModelsFromFile.Add(p);
                           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("queen"), new Vector3(150, 0, 0), new Vector3(0, 6, 0), new Vector3(0.4f), GraphicsDevice,Content, light), 10000, 10))
@@ -134,8 +135,9 @@ namespace Controlers
 
                             Spider s = new Spider(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//spider"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,StaticHelpers.StaticHelper.Content,_light));
                             s.AtackInterval = 10;
-                            s.Hp = 100;
-                            s.Model.switchAnimation("Jump");
+                            s.Hp = 1000;
+
+                            s.Model.switchAnimation("Idle");
                             listOfAllInteractiveModelsFromFile.Add(s);
 
 

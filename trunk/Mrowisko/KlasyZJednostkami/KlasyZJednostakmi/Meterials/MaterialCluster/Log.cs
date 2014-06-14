@@ -18,7 +18,7 @@ namespace Logic.Meterials.MaterialCluster
         {
             get
             {
-                Console.WriteLine(wood.Count);
+                //Console.WriteLine(wood.Count);
                 return wood.Count;
             }
             set

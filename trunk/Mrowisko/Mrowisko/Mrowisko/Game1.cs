@@ -259,6 +259,8 @@ namespace AntHill
             texture.Add(Content.Load<Texture2D>("Textures/circle"));
             #endregion
 
+
+
             camera = new FreeCamera(
 new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 20, texture[4].Width * 1 / 2),
 MathHelper.ToRadians(0), // Turned around 153 degrees
@@ -274,7 +276,6 @@ GraphicsDevice);
 
 
             control = new Logic.Control(texture[11], quadTree);
-            Console.WriteLine(GraphicsDevice.Viewport.Bounds);
 
             //e.Ant = models[0];
            // e.Enemy = spider;
@@ -284,6 +285,8 @@ GraphicsDevice);
             
            
             WindowController.setWindowSize(1366, 768, false);
+            Console.WriteLine(GraphicsDevice.Viewport.Bounds);
+
             //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
             models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), new Vector3(0,30,0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
@@ -301,9 +304,8 @@ GraphicsDevice);
            models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
 
            timeTriggers.Add(new LaserTrigger((Laser)models[models.Count - 1], 1));
-           circle = new RenderTarget2D(device, 4096, 4096, false, pp.BackBufferFormat, DepthFormat.Depth24Stencil8);
-          stream = File.Create("dupa.png");
 
+          Console.WriteLine("QuadNode: "+QuadNodeController.QuadNodeList.Count);
         }
         
 
@@ -378,7 +380,7 @@ GraphicsDevice);
             {
 
                 timeTriggers[i].Update(gameTime);
-                Console.WriteLine(timeTriggers[i].laser.Model.Position);
+                //Console.WriteLine(timeTriggers[i].laser.Model.Position);
                 if(timeTriggers[i].used==true)
                 {
                     timeTriggers.Remove(timeTriggers[i]);
@@ -391,14 +393,7 @@ GraphicsDevice);
                     models[i].Update(gameTime);
                     models[i].Model.Update(gameTime);
 
-                    if (control.selectedObject != null)
-                    {
-                        if (control.selectedObject.GetType().BaseType == typeof(Material))
-                        {
-                           // Console.WriteLine(control.selectedObject);
-                            models[i].setGaterMaterial((Material)control.selectedObject);
-                        }
-                    }
+
                     if (control.selectedObjectMouseOnlyMove != null)
                     {
                         // Console.WriteLine(control.selectedObjectMouseOnlyMove);
@@ -492,6 +487,8 @@ GraphicsDevice);
 
             control.View = camera.View;
             control.Projection = camera.Projection;
+            control.cameraYaw = ((FreeCamera)camera).Yaw;
+            control.cameraPitch = ((FreeCamera)camera).Pitch;
             control.models = models;
             control.device = device;
             control.Update(gameTime);
@@ -649,9 +646,9 @@ GraphicsDevice);
                     { model.Draw((FreeCamera)camera, time); }
                    
 
-                      BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                       Color.Green, Color.Aquamarine, Color.White);
-                      BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
+                //      BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                   //    Color.Green, Color.Aquamarine, Color.White);
+                  //    BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
                     licznik++;
                 }
             }
@@ -661,7 +658,7 @@ GraphicsDevice);
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
                     // BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
-                    BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                  //  BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
 
                    // model.Draw(((camera)));
                     model.Draw((FreeCamera)camera);
@@ -674,12 +671,15 @@ GraphicsDevice);
            // spider.Draw((FreeCamera)camera);
             if (control.selectedObjectMouseOnlyMove != null)
             {
+                control.selectedObjectMouseOnlyMove.DrawSelected((FreeCamera)camera);
+
                // Console.WriteLine(control.selectedObjectMouseOnlyMove);
                 switch (control.selectedObjectMouseOnlyMove.GetType().BaseType.Name)
                 {
                     case "Material":
                         SoundController.SoundController.Play(SoundEnum.SelectedMaterial);
                         break;
+                  
                 }
             }
 
@@ -687,6 +687,14 @@ GraphicsDevice);
             {
                 selected.DrawSelected((FreeCamera)camera);
                 selected.DrawSelectedCircle((FreeCamera)camera);
+                if (control.selectedObject != null)
+                {
+                    if (control.selectedObject.GetType().BaseType == typeof(Material))
+                    {
+                        // Console.WriteLine(control.selectedObject);
+                        selected.setGaterMaterial((Material)control.selectedObject);
+                    }
+                }
             }
             if (control.selectedObjectMouseOnlyMove != null)
             {
