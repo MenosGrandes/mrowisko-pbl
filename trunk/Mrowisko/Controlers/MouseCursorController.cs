@@ -51,7 +51,19 @@ namespace Controlers
     public static class QuadNodeHelper
 {
         public static List<QuadNode> quadNodeList;
+        public static Vector3 getIntersectedQuadNode(Ray intersected)
+        {
 
+            foreach (QuadNode q in QuadNodeController.QuadNodeList)
+            {
+                if ((intersected.Intersects(q.Bounds)) != null)
+                {
+                    return q.Bounds.Min + (q.Bounds.Max - q.Bounds.Min) / 2;
+                }
+            }
+
+            return Vector3.Zero;
+        }
 }
     
 }

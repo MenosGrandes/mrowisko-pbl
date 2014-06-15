@@ -392,48 +392,7 @@ GraphicsDevice);
                 WindowController.setWindowSize(700, 432, false);
             }
             #endregion
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.P))
-            {
-                pajak.switchAnimation("Jump");
-                konik.switchAnimation("Jump");
-                krolowa.switchAnimation("Jump");
-                mrowka.switchAnimation("Jump");
-                silacz.switchAnimation("Jump");
-
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.O))
-            {
-                pajak.switchAnimation("Idle");
-                konik.switchAnimation("Idle");
-                krolowa.switchAnimation("Idle");
-                mrowka.switchAnimation("Idle");
-                silacz.switchAnimation("Idle");
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.L))
-            {
-                pajak.switchAnimation("Walk");
-                konik.switchAnimation("Walk");
-                krolowa.switchAnimation("Walk");
-                mrowka.switchAnimation("Walk");
-                silacz.switchAnimation("Walk");
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.K))
-            {
-                pajak.switchAnimation("Atack");
-                konik.switchAnimation("Atack");
-                krolowa.switchAnimation("Atack");
-                mrowka.switchAnimation("Atack");
-                silacz.switchAnimation("Atack");
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.M))
-            {
-                pajak.switchAnimation("Death",1);
-                konik.switchAnimation("Death", 1);
-                krolowa.switchAnimation("Death", 1);
-                mrowka.switchAnimation("Death", 1);
-                silacz.switchAnimation("Death", 1);
-            }
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                      if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 this.Exit();
             #region timeTrigger
 
@@ -488,10 +447,9 @@ GraphicsDevice);
                     }
                     if(models[i].Hp<=0 && models[i].GetType().BaseType.BaseType==typeof(Unit))
                     {
-                        models[i].Model.switchAnimation("Death");
-                        //models.RemoveAt(i);
+                        models[i].Model.switchAnimation("Death",1);
+                        models.RemoveAt(i);
                         
-                        //Console.WriteLine(models[i].GetType().Name);
                     }
                     for (int j = 0; j < IModel.Count;j++ )
                     {
@@ -559,8 +517,8 @@ GraphicsDevice);
             control.cameraPitch = ((FreeCamera)camera).Pitch;
             control.models = models;
             control.device = device;
-            control.heightsa = mapR.TerrainWidth*mapR.TerrainLength;
-            control.vertices = mapR.Vertices;
+           // control.heightsa = mapR.TerrainWidth*mapR.TerrainLength;
+            //control.vertices = mapR.Vertices;
             control.Update(gameTime);
             control.Models_Colision =IModel;
 
@@ -572,11 +530,7 @@ GraphicsDevice);
             camera.Update(gameTime);
 
             base.Update(gameTime);
-            pajak.Update(gameTime);
-            krolowa.Update(gameTime);
-            konik.Update(gameTime);
-            silacz.Update(gameTime);
-            mrowka.Update(gameTime);
+
         }
 
 
@@ -612,7 +566,7 @@ GraphicsDevice);
 
             _total_frames++;
 
-          
+            
              shadow.UpdateLightData(0.6f, light.lightPosChange(time), (FreeCamera)camera);
              shadow.setShadowMap();
              device.SetRenderTarget(shadow.RenderTarget);
@@ -683,7 +637,7 @@ GraphicsDevice);
              shadow.setShadowMap();   
             device.SetRenderTarget(null);
 
-            
+          
           //  device.SetRenderTarget()
 
 

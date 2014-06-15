@@ -394,7 +394,7 @@ namespace Map
             {
                 this.Activate();
                 _isSpit = false;
-               // QuadNodeController.QuadNodeList.Add(this);
+                QuadNodeController.QuadNodeList.Add(this);
 
             }
         }
