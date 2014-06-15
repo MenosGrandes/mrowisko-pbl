@@ -17,20 +17,20 @@ namespace Map
 {
     public class EnvBilb
     {
-        
+
         private VertexBuffer VertexBuffer;
         private Effect bbEffect;
         private Texture2D envBilbTexture;
         private GraphicsDevice device;
         private List<Vector3> envBilbList;
         private LightsAndShadows.Light light;
-    
+
         private int scale;
         private ContentManager content;
         private Texture2D objMap;
-         /// <summary>
-         /// 
-         /// </summary>
+        /// <summary>
+        /// 
+        /// </summary>
         public List<Vector3> EnvBilbList
         {
             get { return envBilbList; }
@@ -56,23 +56,22 @@ namespace Map
             bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
             bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
             bbEffect.Parameters["xScale"].SetValue((float)this.scale);
-            bbEffect.Parameters["xBillboardTexture"].SetValue(envBilbTexture);
 
 
         }
-   /// <summary>
-   /// 
-   /// </summary>
-   /// <param name="objMap"></param>
-   /// <param name="terrainVertices"></param>
-   /// <param name="terrainWidth"></param>
-   /// <param name="terrainLength"></param>
-   /// <param name="heightData"></param>
-        public void GenerateObjPositions(VertexMultitextured[] terrainVertices, int terrainWidth, int terrainLength, float[,] heightData)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objMap"></param>
+        /// <param name="terrainVertices"></param>
+        /// <param name="terrainWidth"></param>
+        /// <param name="terrainLength"></param>
+        /// <param name="heightData"></param>
+        public void GenerateObjPositions(int terrainWidth, int terrainLength, float[,] heightData)
         {
             Color[] objMapColors = new Color[objMap.Width * objMap.Height];
             objMap.GetData(objMapColors);
-                                                                            
+
             int[,] noiseData = new int[objMap.Width, objMap.Height];
             for (int x = 0; x < objMap.Width; x++)
                 for (int y = 0; y < objMap.Height; y++)
@@ -87,14 +86,14 @@ namespace Map
                 for (int y = 0; y < terrainLength; y++)
                 {
                     float terrainHeight = heightData[x, y];
-                    if ((terrainHeight > 1) && (terrainHeight <30))
+                    if ((terrainHeight > 1) && (terrainHeight < 30))
                     {
-                       
-                        float flatness = Vector3.Dot(terrainVertices[x + y * terrainWidth].Normal, new Vector3(0, -1, 0));
+
+                        float flatness = (float)random.NextDouble();//Vector3.Dot(terrainVertices[x + y * terrainWidth].Normal, new Vector3(0, -1, 0));
                         float minFlatness = (float)Math.Cos(MathHelper.ToRadians(15));
                         if (flatness > minFlatness)
                         {
-                           
+
                             float relx = (float)x / (float)terrainWidth;
                             float rely = (float)y / (float)terrainLength;
 
@@ -114,20 +113,20 @@ namespace Map
                                 float rand1 = (float)random.Next(1000000) / 10000000.0f;
                                 float rand2 = (float)random.Next(1000000) / 10000000.0f;
                                 Vector3 position = new Vector3((float)x - rand1, 0, (float)y - rand2);
-                                position.Y = heightData[x, y];
-                                envBilbList.Add(position );
+                                position.Y = heightData[x, y] * 2;
+                                envBilbList.Add(position);
                             }
                         }
                     }
                 }
             }
 
-           
-            
+
+
         }
-/// <summary>
-/// 
-/// </summary>
+        /// <summary>
+        /// 
+        /// </summary>
         public void CreateBillboardVerticesFromList()
         {
 
@@ -135,8 +134,8 @@ namespace Map
             int i = 0;
             foreach (Vector3 currentV3 in envBilbList)
             {
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0 , 0));
-                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1 , 1));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 0));
+                billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(1, 1));
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 1));
 
                 billboardVertices[i++] = new VertexPositionTexture(currentV3, new Vector2(0, 0));
@@ -147,15 +146,16 @@ namespace Map
             VertexBuffer = new VertexBuffer(device, VertexPositionTexture.VertexDeclaration, billboardVertices.Length, BufferUsage.WriteOnly);
             VertexBuffer.SetData(billboardVertices);
         }
- /// <summary>
- /// 
-/// </summary>
- /// <param name="currentViewMatrix"></param>
- /// <param name="projectionMatrix"></param>
- /// <param name="position"></param>
-        public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position,float time)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="currentViewMatrix"></param>
+        /// <param name="projectionMatrix"></param>
+        /// <param name="position"></param>
+        public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position, float time)
         {
-            
+
+            bbEffect.Parameters["xBillboardTexture"].SetValue(envBilbTexture);
 
             bbEffect.Parameters["xWorld"].SetValue(Matrix.Identity);
             bbEffect.Parameters["xView"].SetValue(currentViewMatrix);

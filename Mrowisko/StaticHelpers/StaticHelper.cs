@@ -16,7 +16,10 @@ namespace StaticHelpers
         public static ContentManager Content;
         public static GraphicsDevice Device;
         public static GraphicsDeviceManager DeviceManager;
-        public static float GetHeightAt(float worldX, float worldZ, int width, int length, float[,] heights)
+        public static float [,] heights;
+        public static int length;
+        public static int width;
+        public static float GetHeightAt(float worldX, float worldZ)
         {
             int x, z; // Cell coordinates in the height array 
             float fractionX = 0.0f, fractionZ = 0.0f; // Fractional coordinates within the quad 
