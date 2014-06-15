@@ -18,6 +18,7 @@ namespace Logic
 {
     public class Control
     {
+        public InteractiveModel modelos;
         public float cameraYaw, cameraPitch;
         public Matrix View;
         public Matrix Projection;
@@ -62,7 +63,7 @@ namespace Logic
             StaticHelpers.StaticHelper.heights=quad.Vertices.heightDataToControl;
             StaticHelpers.StaticHelper.width = (int)Math.Sqrt(quad.Vertices.heightDataToControl.Length);
             StaticHelpers.StaticHelper.length = (int)Math.Sqrt(quad.Vertices.heightDataToControl.Length);
-            
+            modelos = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), Vector3.Zero, Vector3.One, Vector3.One, StaticHelpers.StaticHelper.Device, null)); 
 
         }
         public void Update(GameTime gameTime)
@@ -80,9 +81,9 @@ namespace Logic
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
 
             // Vector3 mouse3d2 = CalculateMouse3DPosition(currentMouseState.X,currentMouseState.Y);
-
+            
             Vector3 mouse3d2 = QuadNodeController.getIntersectedQuadNode(mouseRay);
-
+            modelos.Model.Position = new Vector3(mouse3d2.X, 30, mouse3d2.Z);
 
             selectedObjectMouseOnlyMove = null;
             for (int i = 0; i < models.Count; i++)
@@ -249,8 +250,9 @@ namespace Logic
             updateAnt(gameTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch,FreeCamera camera)
         {
+            //modelos.Draw(camera);
             if (mouseDown)
             {
                 //spriteBatch.Draw(texture[11], selectRectangle, new Color(255, 255, 255, 180));
@@ -711,20 +713,13 @@ namespace Logic
             Vector3 nearWorldPoint = device.Viewport.Unproject(nearScreenPoint, this.Projection, this.View, Matrix.Identity);
             Vector3 farWorldPoint = device.Viewport.Unproject(farScreenPoint, this.Projection, this.View, Matrix.Identity);
 
-
-            Vector3 nearSource = new Vector3((float)mouseX, (float)mouseY, 0.0f);
-            Vector3 farSource = new Vector3((float)mouseX, (float)mouseY, 1.0f);
-
-            //Matrix world = Matrix.CreateTranslation(0, 0, 0);
-
-            Vector3 nearPoint = device.Viewport.Unproject(nearSource, this.Projection, this.View, Matrix.Identity);
-            Vector3 farPoint = device.Viewport.Unproject(farSource, this.Projection, this.View, Matrix.Identity);
-
-            Vector3 direction = farPoint - nearPoint;
+            Vector3 direction = farWorldPoint - nearWorldPoint;
             direction.Normalize();
-            // return new Ray(nearPoint, direction);
+            float zFactor = -nearWorldPoint.Y / direction.Y;
+            Vector3 zeroWorldPoint = nearWorldPoint + direction * zFactor;
+            return zeroWorldPoint;
 
-                return new Vector3(0, 0, 0);
+
         }
         public Ray GetMouseRay(Vector2 mousePosition)
         {
