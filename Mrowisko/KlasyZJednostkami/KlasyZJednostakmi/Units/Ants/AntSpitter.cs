@@ -19,17 +19,17 @@ namespace Logic.Units.Ants
         public AntSpitter()
             : base()
         {
-            bullets = new List<SpitMissle>();
+            this.armor = 20; bullets = new List<SpitMissle>();
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
-
+            this.armorAfterBuff = armor * 2;
         }
         public AntSpitter(LoadModel model)
             : base(model)
         {
-            bullets = new List<SpitMissle>();
+            this.armor = 20; bullets = new List<SpitMissle>();
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             hp = 100;
@@ -37,15 +37,17 @@ namespace Logic.Units.Ants
             atackInterval = 60;
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
+            this.armorAfterBuff = armor * 2;
         }
         public AntSpitter(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
         {
-            bullets = new List<SpitMissle>();
+            this.armor = 20; bullets = new List<SpitMissle>();
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
+            this.armorAfterBuff = armor * 2;
 
         }
         public override void Update(GameTime time)
@@ -134,7 +136,10 @@ namespace Logic.Units.Ants
             circle.CreateBillboardVerticesFromList(model.Position + new Vector3(-2, 0.1f, -0.1f) * model.Scale * 50);
             circle.healthDraw(camera);
         }
-        
+        public override string ToString()
+        {
+            return this.GetType().Name + " " + armor;
+        }
 
         #region SpitMissle
         public class SpitMissle : InteractiveModel

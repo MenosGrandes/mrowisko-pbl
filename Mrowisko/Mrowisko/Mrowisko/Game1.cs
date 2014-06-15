@@ -27,6 +27,7 @@ using Microsoft.Xna.Framework.Audio;
 using SoundController;
 using GUI;
 using System.IO;
+using Logic.Units.Allies;
 
 namespace AntHill
 {
@@ -317,6 +318,8 @@ GraphicsDevice);
            gui = new MainGUI(StaticHelpers.StaticHelper.Content,control);
 
 
+           models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/beetle"),new Vector3(0,40,100),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
+           models[models.Count - 1].Model.switchAnimation("Idle");
 
            models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
 
@@ -374,25 +377,7 @@ GraphicsDevice);
                 _total_frames = 0;
                 _elapsed_time = 0;
             }
-/*
-            #endregion wstepneBudowanie
-            * */
-            #region zmiany rozdzielczosci
-            if(keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D1))
-            {
-               // WindowController.setWindowSize(1366, 768, false);
-                models[models.Count-2].Attack(models[3]);
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D2))
-            {
-                WindowController.setWindowSize(400, 250, false);
-            }
-            if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D3))
-            {
-                WindowController.setWindowSize(700, 432, false);
-            }
-            #endregion
-                      if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 this.Exit();
             #region timeTrigger
 
@@ -658,13 +643,6 @@ GraphicsDevice);
             water.DrawWater(time, (FreeCamera)camera);
 
 
-            pajak.Draw((FreeCamera)camera, time);
-            konik.Draw((FreeCamera)camera, time);
-            krolowa.Draw((FreeCamera)camera, time);
-            silacz.Draw((FreeCamera)camera, time);
-            mrowka.Draw((FreeCamera)camera, time);   
-
-
 
             foreach (InteractiveModel model in models)
             {
@@ -682,7 +660,8 @@ GraphicsDevice);
                     licznik++;
                 }
             }
-             
+
+            device.BlendState = BlendState.Opaque;
             foreach (InteractiveModel model in IModel)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
@@ -761,7 +740,15 @@ GraphicsDevice);
             gui.Draw(spriteBatch);
             spriteBatch.End();
             
+           foreach(InteractiveModel model in models)
+           {
+               if(model.GetType()!=typeof(Beetle))
+               {
+                   continue;
+               }
+               model.DrawOpaque((FreeCamera)camera, 0.1f, ((Beetle)model).sfereModel.Model);
 
+           }
 
             base.Draw(gameTime);
             

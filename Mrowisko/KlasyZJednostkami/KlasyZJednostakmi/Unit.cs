@@ -19,8 +19,17 @@ namespace Logic
     {
         //tutaj sa elementy ktore kazda jednostka bedzie miec. content po to zeby w konstruktorze 
         //kazdej dziedziczacej klasy przypisac odpowiedni model na stale
-    
-      
+
+
+
+        protected float armorAfterBuff;
+
+        public float ArmorAfterBuff
+        {
+            get { return armorAfterBuff; }
+            set { armorAfterBuff = value; }
+        }
+
         protected float armor;
 
         public float Armor
@@ -103,17 +112,20 @@ namespace Logic
             this.cost = cost;
             this.buildingTime = buildingTime;
             this.atackInterval = atackInterval;
-            base.elapsedTime = 0; 
+            base.elapsedTime = 0;
+            this.armorAfterBuff = armor * 2;
 
         }
         public Unit(): base()
         {
             base.elapsedTime = 0;
+            this.armorAfterBuff = armor * 2;
         }
         public Unit(LoadModel model):base(model)
         {
             
             base.elapsedTime = 0;
+            this.armorAfterBuff = armor * 2;
         }
         public Vector3 getPosition()
          {
@@ -133,6 +145,17 @@ namespace Logic
         {
             this.model.Rotation = rotation;
         }
-       
+        public override void Update(GameTime time)
+        {
+            base.Update(time);
+            if (ArmorBuff)
+            {
+                armor = armorAfterBuff;
+            }
+            else
+            {
+                armor = armorAfterBuff/2;
+            }
+        }
     }
 }
