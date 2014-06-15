@@ -34,6 +34,8 @@ namespace Particles
         EffectParameter effectProjectionParameter;
         EffectParameter effectViewportScaleParameter;
         EffectParameter effectTimeParameter;
+        EffectParameter effectCameraForward;
+        EffectParameter effectParticleDistance;
 
 
         // An array of particles, treated as a circular queue.
@@ -241,6 +243,8 @@ namespace Particles
             // Look up shortcuts for parameters that change every frame.
             effectViewParameter = parameters["View"];
             effectProjectionParameter = parameters["Projection"];
+            effectCameraForward = parameters["camForward"];
+            effectParticleDistance = parameters["camPosition"];
             effectViewportScaleParameter = parameters["ViewportScale"];
             effectTimeParameter = parameters["CurrentTime"];
 
@@ -408,6 +412,7 @@ namespace Particles
                     {
                         // If the active particles are all in one consecutive range,
                         // we can draw them all in a single call.
+                       // if()
                         device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
                                                      firstActiveParticle * 4, (firstFreeParticle - firstActiveParticle) * 4,
                                                      firstActiveParticle * 6, (firstFreeParticle - firstActiveParticle) * 2);
@@ -450,6 +455,7 @@ namespace Particles
             {
                 // If the new particles are all in one consecutive range,
                 // we can upload them all in a single call.
+                
                 vertexBuffer.SetData(firstNewParticle * stride * 4, particles,
                                      firstNewParticle * 4,
                                      (firstFreeParticle - firstNewParticle) * 4,
@@ -486,10 +492,12 @@ namespace Particles
         /// Sets the camera view and projection matrices
         /// that will be used to draw this particle system.
         /// </summary>
-        public void SetCamera(Matrix view, Matrix projection)
+        public void SetCamera(GameCamera.FreeCamera camera)
         {
-            effectViewParameter.SetValue(view);
-            effectProjectionParameter.SetValue(projection);
+            effectViewParameter.SetValue(camera.View);
+            effectProjectionParameter.SetValue(camera.Projection);
+            effectCameraForward.SetValue(camera.View.Forward);
+            effectParticleDistance.SetValue(camera.Position);
         }
 
 
@@ -498,6 +506,7 @@ namespace Particles
         /// </summary>
         public void AddParticle(Vector3 position, Vector3 velocity)
         {
+           
             // Figure out where in the circular queue to allocate the new particle.
             int nextFreeParticle = firstFreeParticle + 1;
 

@@ -16,9 +16,11 @@ namespace Particles.ParticleSystems
         {
             settings.TextureName = "Textures/Particles/smoke";
 
-            settings.MaxParticles = 450;
+            settings.MaxParticles = 2000;
 
-            settings.Duration = TimeSpan.FromSeconds(5);
+            settings.Duration = TimeSpan.FromSeconds(4);
+
+            settings.DurationRandomness = 1;
 
             settings.MinHorizontalVelocity = 0;
             settings.MaxHorizontalVelocity = 15;
@@ -27,7 +29,10 @@ namespace Particles.ParticleSystems
             settings.MaxVerticalVelocity = 20;
 
             // Create a wind effect by tilting the gravity vector sideways.
-            settings.Gravity = new Vector3(-20, -5, 0);
+            settings.Gravity = new Vector3(-20, -8, 0);
+
+            settings.MinColor = new Color(64, 96, 128, 64);
+            settings.MaxColor = new Color(64, 64, 64, 8);
 
             settings.EndVelocity = 0.75f;
 
@@ -35,10 +40,10 @@ namespace Particles.ParticleSystems
             settings.MaxRotateSpeed = 1;
 
             settings.MinStartSize = 4;
-            settings.MaxStartSize = 40;
+            settings.MaxStartSize = 10;
 
-            settings.MinEndSize = 100;
-            settings.MaxEndSize = 60;
+            settings.MinEndSize = 80;
+            settings.MaxEndSize = 120;
         }
     }
 }

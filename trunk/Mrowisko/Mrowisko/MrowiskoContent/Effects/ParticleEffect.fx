@@ -4,7 +4,8 @@
 float4x4 View;
 float4x4 Projection;
 float2 ViewportScale;
-
+float3 camForward;
+float3 camPosition;
 
 // The current time, in seconds.
 float CurrentTime;
@@ -25,6 +26,7 @@ float4 MaxColor;
 float2 RotateSpeed;
 float2 StartSize;
 float2 EndSize;
+
 
 
 // Particle texture and sampler.
@@ -144,7 +146,6 @@ float2x2 ComputeParticleRotation(float randomValue, float age)
 	return float2x2(c, -s, s, c);
 }
 
-
 // Custom vertex shader animates particles entirely on the GPU.
 VertexShaderOutput ParticleVertexShader(VertexShaderInput input)
 {
@@ -165,8 +166,15 @@ VertexShaderOutput ParticleVertexShader(VertexShaderInput input)
 
 	float size = ComputeParticleSize(input.Random.y, normalizedAge);
 	float2x2 rotation = ComputeParticleRotation(input.Random.w, age);
-
-		output.Position.xy += mul(input.Corner, rotation) * size * ViewportScale;
+		float3 WorldNormal = camPosition - input.Position;
+		//WorldNormal = mul(WorldNormal, Projection);
+	//WorldNormal = normalize(WorldNormal);
+	float distanceToCamera = dot(camForward, WorldNormal);
+	if (distanceToCamera > 0.1f)
+	{
+		size = 0;
+	}
+		output.Position.xy += mul(input.Corner, rotation) * size* ViewportScale;
 
 	output.Color = ComputeParticleColor(output.Position, input.Random.z, normalizedAge);
 	output.TextureCoordinate = (input.Corner + 1) / 2;

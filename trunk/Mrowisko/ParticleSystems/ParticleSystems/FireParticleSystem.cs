@@ -22,7 +22,7 @@ namespace Particles.ParticleSystems
         {
             settings.TextureName = "Textures/Particles/fire";
 
-            settings.MaxParticles = 2400;
+            settings.MaxParticles = 1800;
 
             settings.Duration = TimeSpan.FromSeconds(2);
 
