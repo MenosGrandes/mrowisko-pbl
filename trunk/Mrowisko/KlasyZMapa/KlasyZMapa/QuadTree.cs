@@ -18,7 +18,7 @@ namespace Map
     {
 
 
-        public int MinimumDepth = 7;
+        public int MinimumDepth = 9;
         public int IndexCount { get; private set; }
         public BasicEffect Effect;
         private QuadNode _rootNode;
@@ -26,7 +26,7 @@ namespace Map
         public BufferManager _buffers;
         private Vector3 _position;
         private int _topNodeSize;
-        
+
         LightsAndShadows.Light light;
         private Vector3 _cameraPosition;
         private Vector3 _lastCameraPosition;
@@ -35,7 +35,7 @@ namespace Map
 
         public Matrix View;
         public Matrix Projection;
-        public float x=1.0f, z=1.0f;
+        public float x = 1.0f, z = 1.0f;
         public GraphicsDevice Device;
 
         public int TopNodeSize { get { return _topNodeSize; } }
@@ -49,7 +49,7 @@ namespace Map
 
         public BoundingFrustum ViewFrustrum { get; private set; }
         Effect effect;
-        
+
         List<Texture2D> textures;
 
         public bool Cull { get; set; }
@@ -67,13 +67,13 @@ namespace Map
         /// <param name="camera"></param>
         public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale, ContentManager Content, GameCamera.FreeCamera camera)
         {
-           
+
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(513, 100, 513));
 
             ViewFrustrum = new BoundingFrustum(camera.View * camera.Projection);
             this.textures = textures;
             effect = Content.Load<Effect>("Effects/MultiTextured");
-           
+
             Device = device;
 
             _position = position;
@@ -88,59 +88,60 @@ namespace Map
             Indices = _vertices.indices;
 
 
+            envBilbList.Add(new EnvBilb(textures[19], textures[20], device, Content, scale, light));
+            envBilbList.Add(new EnvBilb(textures[17], textures[18], device, Content, scale, light));
 
-            envBilbList.Add(new EnvBilb(textures[6], textures[18], device, Content, scale, light));
             foreach (EnvBilb pass in envBilbList)
             {
-                pass.GenerateObjPositions(_vertices.Vertices, _vertices.TerrainWidth, _vertices.TerrainLength, _vertices.heightData);
+                pass.GenerateObjPositions(_vertices.TerrainLength2, _vertices.TerrainWidth2, _vertices.heightDataToControl);
                 pass.CreateBillboardVerticesFromList();
             }
 
-         
 
 
-            
 
-       Matrix worldMatrix = Matrix.Identity;
-       effect.Parameters["xWorld"].SetValue(worldMatrix);
-       effect.Parameters["xEnableLighting"].SetValue(true);
-       effect.Parameters["xAmbient"].SetValue(light.Ambient);
-       effect.Parameters["xLightPower"].SetValue(light.LightPower);
-       #region tekstury Alphy
-       effect.Parameters["xTexture0"].SetValue(textures[0]);
-       effect.Parameters["xTexture1"].SetValue(textures[1]);
-       effect.Parameters["xTexture2"].SetValue(textures[2]);
-       effect.Parameters["xTexture3"].SetValue(textures[3]);
-       effect.Parameters["xTexture4"].SetValue(textures[4]);
-       effect.Parameters["xTexture5"].SetValue(textures[5]);
-       effect.Parameters["xTexture6"].SetValue(textures[6]);
-       #endregion
-       #region Tekstury Terenu
-       effect.Parameters["xTexture7"].SetValue(textures[7]);
-       effect.Parameters["xTexture8"].SetValue(textures[8]);
-       effect.Parameters["xTexture9"].SetValue(textures[9]);
-       effect.Parameters["xTexture10"].SetValue(textures[10]);
-       effect.Parameters["xTexture11"].SetValue(textures[11]);
 
-       effect.Parameters["xTexture12"].SetValue(textures[12]);
-       effect.Parameters["xTexture13"].SetValue(textures[13]);
-   effect.Parameters["xTexture14"].SetValue(textures[14]);
-       #endregion
-       #region Proj
-     //  effect.Parameters["xTexture14"].SetValue(textures[26]);
-       #endregion
 
-       _rootNode.EnforceMinimumDepth();
+            Matrix worldMatrix = Matrix.Identity;
+            effect.Parameters["xWorld"].SetValue(worldMatrix);
+            effect.Parameters["xEnableLighting"].SetValue(true);
+            effect.Parameters["xAmbient"].SetValue(light.Ambient);
+            effect.Parameters["xLightPower"].SetValue(light.LightPower);
+            #region tekstury Alphy
+            effect.Parameters["xTexture0"].SetValue(textures[0]);
+            effect.Parameters["xTexture1"].SetValue(textures[1]);
+            effect.Parameters["xTexture2"].SetValue(textures[2]);
+            effect.Parameters["xTexture3"].SetValue(textures[3]);
+            effect.Parameters["xTexture4"].SetValue(textures[4]);
+            effect.Parameters["xTexture5"].SetValue(textures[5]);
+            effect.Parameters["xTexture6"].SetValue(textures[6]);
+            #endregion
+            #region Tekstury Terenu
+            effect.Parameters["xTexture7"].SetValue(textures[7]);
+            effect.Parameters["xTexture8"].SetValue(textures[8]);
+            effect.Parameters["xTexture9"].SetValue(textures[9]);
+            effect.Parameters["xTexture10"].SetValue(textures[10]);
+            effect.Parameters["xTexture11"].SetValue(textures[11]);
+
+            effect.Parameters["xTexture12"].SetValue(textures[12]);
+            effect.Parameters["xTexture13"].SetValue(textures[13]);
+            effect.Parameters["xTexture14"].SetValue(textures[14]);
+            #endregion
+            #region Proj
+            //  effect.Parameters["xTexture14"].SetValue(textures[26]);
+            #endregion
+
+            _rootNode.EnforceMinimumDepth();
 
         }
         public void Update(GameTime gameTime)
         {
 
-            
 
 
 
-       
+
+
             IndexCount = 0;
 
 
@@ -165,35 +166,34 @@ namespace Map
 
             this.Device.SetVertexBuffer(_buffers.VertexBuffer);
             this.Device.Indices = _buffers.IndexBuffer;
-      
+
             effect.Parameters["xLightPos"].SetValue(light.lightPosChange(time));
 
-           
+
 
             effect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);
             effect.Parameters["xWorldViewProjection"].SetValue(shadow.woldsViewProjection * Matrix.Identity);
             effect.Parameters["shadowTexture"].SetValue(shadow.ShadowMap);
             effect.Parameters["PCFSamples"].SetValue(shadow.PcfSamples);
-          effect.Parameters["xView"].SetValue(camera.View);
-          effect.Parameters["xProjection"].SetValue(camera.Projection);
-           
-           foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-          {
-              pass.Apply();
-               if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
-           }
+            effect.Parameters["xView"].SetValue(camera.View);
+            effect.Parameters["xProjection"].SetValue(camera.Projection);
+
+            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                if (IndexCount > 0) Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, _vertices.Vertices.Length, 0, IndexCount);
+            }
 
 
-            /*
-     
-         
-           
-    
+
+
+
+
             foreach (EnvBilb pass in envBilbList)
             {
                 pass.DrawBillboards(camera.View, camera.Projection, camera.Position, time);
             }
-            */
+
 
 
         }

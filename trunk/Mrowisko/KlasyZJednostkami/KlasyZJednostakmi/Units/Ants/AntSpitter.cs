@@ -192,8 +192,8 @@ namespace Logic.Units.Ants
             {
                 base.Update(time);
                 time_ += (float)time.ElapsedGameTime.TotalMilliseconds;
-                model.Position = trajectory.GetPointOnCurve(time_);
-                
+                //model.Position = trajectory.GetPointOnCurve(time_);
+                model.Position = new Vector3(trajectory.GetPointOnCurve(time_).X, StaticHelpers.StaticHelper.GetHeightAt(trajectory.GetPointOnCurve(time_).X, trajectory.GetPointOnCurve(time_).Z), trajectory.GetPointOnCurve(time_).Z);
 
             }
             public override void Draw(GameCamera.FreeCamera camera)

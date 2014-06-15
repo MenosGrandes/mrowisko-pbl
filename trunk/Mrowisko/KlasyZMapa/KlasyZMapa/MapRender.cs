@@ -13,9 +13,9 @@ using GameCamera;
 
 namespace Map
 {
-                /// <summary>
-                /// Struct which implementing new VertexType for Multitexturing.
-                /// </summary>
+    /// <summary>
+    /// Struct which implementing new VertexType for Multitexturing.
+    /// </summary>
     public struct VertexMultitextured : IVertexType
     {
         public Vector3 Position;
@@ -23,7 +23,7 @@ namespace Map
         public Vector4 TextureCoordinate;
         public Vector4 TexWeights;
 
-        public static int SizeInBytes = (3 + 3 + 4 + 4 ) * sizeof(float);
+        public static int SizeInBytes = (3 + 3 + 4 + 4) * sizeof(float);
 
         VertexDeclaration IVertexType.VertexDeclaration
         {
@@ -43,90 +43,103 @@ namespace Map
     /// </summary>
     public class MapRender
     {
-         
 
-      // private GraphicsDevice device;
+
+        // private GraphicsDevice device;
         private int Scale;
-        private int terrainWidth2;
+
+
+        private int terrainWidth;
+
+        public int TerrainWidth
+        {
+            get { return terrainWidth; }
+            set { terrainWidth = value; }
+        }
+        private int terrainLength;
+
+        public int TerrainLength
+        {
+            get { return terrainLength; }
+            set { terrainLength = value; }
+        }
         private int terrainLength2;
 
-       private int terrainWidth;
+        public int TerrainLength2
+        {
+            get { return terrainLength2; }
+            set { terrainLength2 = value; }
+        }
+        private int terrainWidth2;
 
-       public int TerrainWidth
-       {
-           get { return terrainWidth; }
-           set { terrainWidth = value; }
-       }
-       private int terrainLength;
+        public int TerrainWidth2
+        {
+            get { return terrainWidth2; }
+            set { terrainWidth2 = value; }
+        }
+        public float[,] heightData
+        {
+            get;
+            set;
+        }
+        public float[,] heightDataToControl
+        {
+            get;
+            set;
+        }
 
-       public int TerrainLength
-       {
-           get { return terrainLength; }
-           set { terrainLength = value; }
-       }
-       public float[,] heightData
-       {
-           get;
-           set;
-       }
-       public float[,] heightDataToControl
-       {
-           get;
-           set;
-       }
+        //private VertexBuffer terrainVertexBuffer;
+        //private IndexBuffer terrainIndexBuffer;
 
-       //private VertexBuffer terrainVertexBuffer;
-       //private IndexBuffer terrainIndexBuffer;
+        private VertexMultitextured[] vertices;
 
-       private VertexMultitextured[] vertices;
+        public VertexMultitextured[] Vertices
+        {
+            get { return vertices; }
+            set { vertices = value; }
+        }
+        public VertexMultitextured this[int index]
+        {
+            get { return Vertices[index]; }
+            set { Vertices[index] = value; }
+        }
 
-       public VertexMultitextured[] Vertices
-       {
-           get { return vertices; }
-           set { vertices = value; }
-       }
-       public VertexMultitextured this[int index]
-       {
-           get { return Vertices[index]; }
-           set { Vertices[index] = value; }
-       }
+        public int[] indices;
+        //private ContentManager Content;
+        //private Effect effect;
+        //private Texture2D grassTexture, sandTexture, rockTexture, snowTexture, treeTexture;
 
-       public int[] indices;
-       //private ContentManager Content;
-       //private Effect effect;
-       //private Texture2D grassTexture, sandTexture, rockTexture, snowTexture, treeTexture;
-
-      // private Layer trees, ants;
+        // private Layer trees, ants;
 
 
 
-       // public MapRender( GraphicsDevice GraphicsDevice, List<Texture2D>texture, currentViewMatrix Content,int Scale, Model model)
+        // public MapRender( GraphicsDevice GraphicsDevice, List<Texture2D>texture, currentViewMatrix Content,int Scale, Model model)
         /// <summary>
         /// Constructor to create vertices and indices from HeighMap.
         /// </summary>
         /// <param name="texture"> Heigh Map image of terrain</param>
         /// <param name="Scale">It's scale.</param>
-    public MapRender (Texture2D texture,int Scale)    
-    {
+        public MapRender(Texture2D texture, int Scale)
+        {
 
-        this.Scale = Scale;
-        Texture2D tex = StaticHelpers.StaticHelper.Content.Load<Texture2D>("HeighMaps/ter2");
-            LoadHeightData(texture,tex);
+            this.Scale = Scale;
+            Texture2D tex = StaticHelpers.StaticHelper.Content.Load<Texture2D>("HeighMaps/ter2");
+            LoadHeightData(texture, tex);
             SetUpvertices(3);
             SetUpTerrainIndices();
             CalculateNormals();
- 
 
-         
+
+
 
         }
 
-        
-                                        /// <summary>
-                                        ///             Loading informations about heigh from texture.
-                                        /// </summary>
-                                        /// <param name="heightMap">Heigh Map image</param>
-    private void LoadHeightData(Texture2D heightMap,Texture2D heightMap2)
+
+        /// <summary>
+        ///             Loading informations about heigh from texture.
+        /// </summary>
+        /// <param name="heightMap">Heigh Map image</param>
+        private void LoadHeightData(Texture2D heightMap, Texture2D heightMap2)
         {
             float minimumHeight = float.MaxValue;
             float maximumHeight = float.MinValue;
@@ -141,16 +154,16 @@ namespace Map
             heightMap.GetData(heightMapColors);
             Color[] heightMapColors2 = new Color[terrainWidth2 * terrainLength2];
             heightMap2.GetData(heightMapColors2);
-          
+
             heightData = new float[terrainWidth, terrainLength];
             for (int x = 0; x < terrainWidth; x++)
-                for (int y = 0; y < terrainLength ; y++)
+                for (int y = 0; y < terrainLength; y++)
                 {
-                    heightData[x, y] = heightMapColors[x + y * terrainWidth].R ;
+                    heightData[x, y] = heightMapColors[x + y * terrainWidth].R;
                     if (heightData[x, y] < minimumHeight) minimumHeight = heightData[x, y];
                     if (heightData[x, y] > maximumHeight) maximumHeight = heightData[x, y];
 
-                                  }
+                }
 
             for (int x = 0; x < terrainWidth; x++)
                 for (int y = 0; y < terrainLength; y++)
@@ -168,7 +181,7 @@ namespace Map
                     if (heightDataToControl[x, y] < minimumHeight) minimumHeight = heightDataToControl[x, y];
                     if (heightDataToControl[x, y] > maximumHeight) maximumHeight = heightDataToControl[x, y];
 
-                                  }
+                }
 
             for (int x = 0; x < terrainWidth2; x++)
                 for (int y = 0; y < terrainLength2; y++)
@@ -178,11 +191,11 @@ namespace Map
                 }
         }
 
-  /// <summary>
-  /// Create vertices from heighData and Scale.
-  /// Create positions of all points,and gets informations about texture coordinations and weights.
-  /// </summary>
-  /// <param name="Scale"></param>
+        /// <summary>
+        /// Create vertices from heighData and Scale.
+        /// Create positions of all points,and gets informations about texture coordinations and weights.
+        /// </summary>
+        /// <param name="Scale"></param>
         private void SetUpvertices(int Scale)
         {
             vertices = new VertexMultitextured[terrainWidth * terrainLength];
@@ -190,23 +203,23 @@ namespace Map
             {
                 for (int y = 0; y < terrainLength; y++)
                 {
-                    vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, y * Scale);                               
-                    vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 5.0f;
-                    vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 5.0f;
-                   
-                   
+                    vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, y * Scale);
+                    vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 10.0f;
+                    vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 10.0f;
+
+
                 }
             }
-           
-            
+
+
         }
-/// <summary>
-///                    Create indices of terrain.
-/// </summary>
-    
-         private void SetUpTerrainIndices()
+        /// <summary>
+        ///                    Create indices of terrain.
+        /// </summary>
+
+        private void SetUpTerrainIndices()
         {
-            indices = new int[(terrainWidth - 1) * (terrainLength - 1) *6];
+            indices = new int[(terrainWidth - 1) * (terrainLength - 1) * 6];
             int counter = 0;
             for (int y = 0; y < terrainLength - 1; y++)
             {
@@ -227,10 +240,10 @@ namespace Map
                 }
             }
         }
- /// <summary>
- /// Callculate normals for all of Vertices.
- /// </summary>
-   
+        /// <summary>
+        /// Callculate normals for all of Vertices.
+        /// </summary>
+
         private void CalculateNormals()
         {
             for (int i = 0; i < vertices.Length; i++)
@@ -245,7 +258,7 @@ namespace Map
                 Vector3 side1 = vertices[index1].Position - vertices[index3].Position;
                 Vector3 side2 = vertices[index1].Position - vertices[index2].Position;
                 Vector3 normal = Vector3.Cross(side1, side2);
-               
+
                 vertices[index1].Normal += normal;
                 vertices[index2].Normal += normal;
                 vertices[index3].Normal += normal;
@@ -258,8 +271,8 @@ namespace Map
 
     }
 
-        
-    }
 
-    
+}
+
+
 
