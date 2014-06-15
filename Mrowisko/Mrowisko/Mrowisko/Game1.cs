@@ -293,18 +293,7 @@ GraphicsDevice);
             
            
             WindowController.setWindowSize(1366, 768, false);
-            Console.WriteLine(GraphicsDevice.Viewport.Bounds);
-            pajak = new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(100, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
-            pajak.switchAnimation("Idle");
-            konik = new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(250, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
-            konik.switchAnimation("Idle");
-            krolowa = new LoadModel(Content.Load<Model>("Models/queen"), new Vector3(450, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
-            krolowa.switchAnimation("Idle");
-            mrowka = new LoadModel(Content.Load<Model>("Models/ant"), new Vector3(600, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
-            mrowka.switchAnimation("Idle");
-            silacz = new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(750, 80, 70), Vector3.Up, new Vector3(1), GraphicsDevice, Content, light);
-            silacz.switchAnimation("Idle");
-            //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
+                //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
             models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), new Vector3(0,30,0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
           //  models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
@@ -352,7 +341,7 @@ GraphicsDevice);
                 currentMouseState = Mouse.GetState();
                 if (timeTriggers.Count<1)
                 {
-                    UpdateFire();
+                    //UpdateFire();
                   //  UpdateExplosions(gameTime);
 
                   //  UpdateProjectiles(gameTime);
@@ -441,7 +430,7 @@ GraphicsDevice);
                         models[i].Intersect(IModel[j]);
 
                     }
-                        if (models[i].GetType() ==  typeof(AntSpitter))
+                      /*  if (models[i].GetType() ==  typeof(AntSpitter))
                         {
                             foreach (Vector4 pos in models[i].spitPos())
                             {
@@ -455,7 +444,7 @@ GraphicsDevice);
                                 //UpdateSmokePlume(pos);
                             }
                         }
-
+                          */
                 }
              
                  
@@ -736,10 +725,10 @@ GraphicsDevice);
             spriteBatch.DrawString(_spr_font, string.Format("mouse3d ={0}", control.mouse3d2), new Vector2(10.0f, 80.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("position3d ={0}", control.position3d), new Vector2(10.0f, 120.0f), Color.Pink);
            */
-             control.Draw(spriteBatch);
+             control.Draw(spriteBatch,(FreeCamera)camera);
             gui.Draw(spriteBatch);
             spriteBatch.End();
-            
+           /* 
            foreach(InteractiveModel model in models)
            {
                if(model.GetType()!=typeof(Beetle))
@@ -749,7 +738,7 @@ GraphicsDevice);
                model.DrawOpaque((FreeCamera)camera, 0.1f, ((Beetle)model).sfereModel.Model);
 
            }
-
+              */
             base.Draw(gameTime);
             
             
