@@ -18,6 +18,8 @@ namespace Logic
     public class InteractiveModel
     {
 
+        public bool ArmorBuff=false;
+
         protected float cropTime;
 
         public float CropTime
@@ -111,6 +113,10 @@ namespace Logic
          {
              model.Draw(camera);
          }
+        public virtual void DrawOpaque(GameCamera.FreeCamera camera,float Alpha,LoadModel model2)
+        {
+            model.DrawOpague(camera, Alpha, model2);
+        }
         public virtual void gaterMaterial(Material material)
         {
         }
@@ -139,6 +145,7 @@ namespace Logic
                 hasBeenHit = false;
                 this.model.Hit = false;
             }
+                
             }
         }
         public virtual void setGaterMaterial(Material m)
@@ -166,8 +173,12 @@ namespace Logic
         }
         public bool CheckRayIntersection(Ray ray)
         {
+                foreach(BoundingSphere sp in model.Spheres)
+                {
+                    if (ray.Intersects(sp) != null) return true;
 
-                if (ray.Intersects(model.BoundingSphere) != null) return true;
+                }
+                //if (ray.Intersects(model.BoundingSphere) != null) return true;
             
             return false;
         }

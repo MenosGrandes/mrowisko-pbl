@@ -314,7 +314,7 @@ namespace Logic
                        effect.DirectionalLight0.Direction = lightDir;  // coming along the x-axis
                        effect.DirectionalLight0.SpecularColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs((float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f); ; // with green highlights
                        */
-
+                        effect.Alpha = 0.4f;
 
                    }
 
@@ -322,6 +322,56 @@ namespace Logic
                            }
             }
            }
+
+
+
+        public void DrawOpague(GameCamera.FreeCamera camera,float Alpha,LoadModel model2 )
+        {
+
+
+            baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(
+           Rotation.Y, Rotation.X, Rotation.Z)
+           * Matrix.CreateTranslation(Position);
+            foreach (ModelMesh mesh in model2.Model.Meshes)
+            {
+                if (!mesh.Name.Contains("BoundingSphere"))
+                {
+                    Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
+                   * baseWorld;
+                    this.localWorld = localWorld;
+                    foreach (ModelMeshPart meshPart in mesh.MeshParts)
+                    {
+
+                        BasicEffect effect = (BasicEffect)meshPart.Effect;
+                        effect.World = localWorld;
+                        effect.View = camera.View;
+                        effect.Projection = camera.Projection;
+                        effect.EnableDefaultLighting();
+                        effect.Alpha = 0.9f;
+                        if (Hit)
+                        {
+                            effect.AmbientLightColor = new Vector3(255, 0, 0);
+                        }
+                        else
+                        {
+                            effect.AmbientLightColor = new Vector3(0, 0, 0);
+                        }
+                        /*
+                    effect.DirectionalLight0.Enabled = true;
+                    effect.DirectionalLight0.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs(-1 * (float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f);
+                    //Console.WriteLine(MathHelper.Clamp((Math.Abs(-1 * (float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower)), 0.3f, 0.9f));// a red light
+                    effect.DirectionalLight0.Direction = lightDir;  // coming along the x-axis
+                    effect.DirectionalLight0.SpecularColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs((float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f); ; // with green highlights
+                    */
+                        effect.Alpha = Alpha;
+
+                    }
+
+                    mesh.Draw();
+                }
+            }
+        }
+
            /// <summary>
            /// Method to Draw AnimatedModel
            /// </summary>
@@ -366,6 +416,7 @@ namespace Logic
                        {
                            effect.AmbientLightColor = new Vector3(0, 0, 0);
                        }
+                      
                        //effect.SpecularColor = new Vector3(0.25f);
                        //effect.SpecularPower = 16;
                    }

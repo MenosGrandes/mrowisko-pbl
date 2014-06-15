@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Map;
 using GameCamera;
 using Logic.Building;
+using Logic.Units.Allies;
 
 
 namespace Logic
@@ -219,10 +220,9 @@ namespace Logic
                     foreach (InteractiveModel ant in models)
                         if (ant.Model.Selected)
                         {
-                            if (ant.GetType().BaseType == typeof(Ant))
-                            {
+                            
                                 SelectedModels.Add(ant);
-                            }
+                            
                         }
                     /*
                 else
@@ -268,10 +268,7 @@ namespace Logic
             {
                 ant.Model.tempPosition = ant.Model.Position;
 
-                if (ant.GetType().BaseType != typeof(Ant))
-                {
-                    continue;
-                }
+
                 if (ant.ImMoving == false)
                 {
                     continue;

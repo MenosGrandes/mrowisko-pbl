@@ -38,7 +38,7 @@ namespace Logic.Units.Ants
         public AntPeasant(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, int maxCapacity, float gaterTime, float atackInterval)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
         {
-            this.maxCapacity = maxCapacity;
+            this.armor = 20; this.maxCapacity = maxCapacity;
             this.capacity = 0;
             this.gaterTime = gaterTime;
             rock2 = 0;
@@ -49,11 +49,12 @@ namespace Logic.Units.Ants
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             circle.Scale = model.Scale.X * 10;
            this.Model.switchAnimation("Atack");
-
+           this.armorAfterBuff = armor * 2;
         }
         public AntPeasant(LoadModel model)
             : base(model)
         {
+            this.armor = 20;
             this.maxCapacity = 100;
             this.capacity = 0;
             this.gaterTime = 10;
@@ -64,7 +65,7 @@ namespace Logic.Units.Ants
            circle.Scale = this.model.Scale.Y * 120;
            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
            circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
-
+           this.armorAfterBuff = armor * 2;
         }
         public override void gaterMaterial(Material material)
         {
@@ -98,10 +99,7 @@ namespace Logic.Units.Ants
         }
         public override void Update(GameTime time)
         {
-            if(gaterMaterialObject!=null)
-          //  this.model.tempPosition = this.model.Position;
             base.Update(time);
-            //Console.WriteLine(elapsedTime);
         }
 
         public override void Draw(GameCamera.FreeCamera camera)
@@ -186,7 +184,7 @@ namespace Logic.Units.Ants
         }
         public override string ToString()
         {
-            return this.GetType().Name + " " + model.Position;
+            return this.GetType().Name + " " + model.Selected+armor;
         }
             
         }
