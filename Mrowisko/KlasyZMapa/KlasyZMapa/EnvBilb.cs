@@ -23,7 +23,7 @@ namespace Map
         private Texture2D envBilbTexture;
         private GraphicsDevice device;
         private List<Vector3> envBilbList;
-        private LightsAndShadows.Light light;
+        //private LightsAndShadows.Light light;
 
         private int scale;
         private ContentManager content;
@@ -44,7 +44,7 @@ namespace Map
         /// <param name="device"></param>
         /// <param name="Content"></param>
         /// <param name="scale"></param>
-        public EnvBilb(Texture2D objMap, Texture2D bilboardTexture, GraphicsDevice device, ContentManager Content, int scale, LightsAndShadows.Light light)
+        public EnvBilb(Texture2D objMap, Texture2D bilboardTexture, GraphicsDevice device, ContentManager Content, int scale/*, LightsAndShadows.Light light*/)
         {
             envBilbTexture = bilboardTexture;
             this.device = device;
@@ -52,7 +52,7 @@ namespace Map
             this.objMap = objMap;
             this.bbEffect = Content.Load<Effect>("Effects/Bilboarding");
             this.content = Content;
-            this.light = light;
+           // this.light = light;
             bbEffect.CurrentTechnique = bbEffect.Techniques["CylBillboard"];
             bbEffect.Parameters["xAllowedRotDir"].SetValue(new Vector3(0, 1, 0));
             bbEffect.Parameters["xScale"].SetValue((float)this.scale);
@@ -152,7 +152,7 @@ namespace Map
         /// <param name="currentViewMatrix"></param>
         /// <param name="projectionMatrix"></param>
         /// <param name="position"></param>
-        public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position, float time)
+        public void DrawBillboards(Matrix currentViewMatrix, Matrix projectionMatrix, Vector3 position/*, float time*/)
         {
 
             bbEffect.Parameters["xBillboardTexture"].SetValue(envBilbTexture);
@@ -161,7 +161,7 @@ namespace Map
             bbEffect.Parameters["xView"].SetValue(currentViewMatrix);
             bbEffect.Parameters["xProjection"].SetValue(projectionMatrix);
             bbEffect.Parameters["xCamPos"].SetValue(position);
-            bbEffect.Parameters["xAmbient"].SetValue(light.lightPosChangeBilb(time));
+           // bbEffect.Parameters["xAmbient"].SetValue(light.lightPosChangeBilb(time));
             device.SetVertexBuffer(VertexBuffer);
             foreach (EffectPass pass in bbEffect.CurrentTechnique.Passes)
             {

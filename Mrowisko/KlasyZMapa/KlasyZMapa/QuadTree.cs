@@ -88,8 +88,8 @@ namespace Map
             Indices = _vertices.indices;
 
 
-            envBilbList.Add(new EnvBilb(textures[19], textures[20], device, Content, scale, light));
-            envBilbList.Add(new EnvBilb(textures[17], textures[18], device, Content, scale, light));
+            envBilbList.Add(new EnvBilb(textures[19], textures[20], device, Content, scale));
+            envBilbList.Add(new EnvBilb(textures[17], textures[18], device, Content, scale));
 
             foreach (EnvBilb pass in envBilbList)
             {
@@ -191,7 +191,7 @@ namespace Map
 
             foreach (EnvBilb pass in envBilbList)
             {
-                pass.DrawBillboards(camera.View, camera.Projection, camera.Position, time);
+                pass.DrawBillboards(camera.View, camera.Projection, camera.Position);
             }
 
 

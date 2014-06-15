@@ -107,8 +107,9 @@ namespace AntHill
             smokePlumeParticles = new Particles.ParticleSystems.SmokePlumeParticleSystem(this, Content);
             fireParticles = new Particles.ParticleSystems.FireParticleSystem(this, Content);
 
-            fireParticles.Interval = 0.5f;
+            fireParticles.Interval = 2.5f;
             projectileTrailParticles.Interval = 2.5f;
+          //  smokePlumeParticles.Interval = 3f;
 
             // Set the draw order so the explosions and fire
             // will appear over the top of the smoke.
@@ -515,11 +516,11 @@ GraphicsDevice);
             //GraphicsDevice.RasterizerState = rasterizerState;
                        float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
-            explosionParticles.SetCamera(camera.View, camera.Projection);
-            explosionSmokeParticles.SetCamera(camera.View, camera.Projection);
-            projectileTrailParticles.SetCamera(camera.View, camera.Projection);
-            smokePlumeParticles.SetCamera(camera.View, camera.Projection);
-            fireParticles.SetCamera(camera.View, camera.Projection);
+            explosionParticles.SetCamera((FreeCamera)camera);
+            explosionSmokeParticles.SetCamera((FreeCamera)camera);
+            projectileTrailParticles.SetCamera((FreeCamera)camera);
+            smokePlumeParticles.SetCamera((FreeCamera)camera);
+            fireParticles.SetCamera((FreeCamera)camera);
 
 
 
@@ -675,7 +676,7 @@ GraphicsDevice);
                 switch (control.selectedObjectMouseOnlyMove.GetType().BaseType.Name)
                 {
                     case "Material":
-                        SoundController.SoundController.Play(SoundEnum.SelectedMaterial);
+                       // SoundController.SoundController.Play(SoundEnum.SelectedMaterial);
                         break;
                   
                 }
@@ -848,9 +849,11 @@ GraphicsDevice);
             {
                 fireParticles.AddParticle(RandomPointOnCircle(), Vector3.One);
             }
-
-            // Create one smoke particle per frmae, too.
-            smokePlumeParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
+            for (int i = 0; i < fireParticlesPerFrame/4; i++)
+            {
+                // Create one smoke particle per frmae, too.
+                smokePlumeParticles.AddParticle(RandomPointOnCircle()+ new Vector3(0,20,0), Vector3.Zero);
+            }
         }
 
 
@@ -871,7 +874,7 @@ GraphicsDevice);
             float z = (float)Math.Cos(angle2);
 
 
-            return new Vector3(models[0].Model.Position.X + x * radius, models[0].Model.Position.Y - (y * radius + height), models[0].Model.Position.Z + z * radius);
+            return new Vector3(models[models.Count - 1].Model.Position.X + x * radius, models[models.Count - 1].Model.Position.Y - (y * radius + height), models[models.Count - 1].Model.Position.Z + z * radius);
         }
 
      
