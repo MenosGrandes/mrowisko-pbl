@@ -178,19 +178,22 @@ namespace Logic.Units.Ants
             }
             public void Hit(InteractiveModel b)
             {
+                if(b.GetType().IsSubclassOf(typeof(Unit)))
+                { 
                 b.Hp -= 1;
                 Console.WriteLine("Dostałą z kulki!");
                 ((Unit)b).LifeBar.LifeLength -= 1;
                 b.hasBeenHit = true;
                 b.Model.Hit = true;
                 SoundController.SoundController.Play(SoundController.SoundEnum.RangeHit);
+                }
             }
             public override void Update(GameTime time)
             {
                 base.Update(time);
                 time_ += (float)time.ElapsedGameTime.TotalMilliseconds;
                 model.Position = trajectory.GetPointOnCurve(time_);
-
+                
 
             }
             public override void Draw(GameCamera.FreeCamera camera)
