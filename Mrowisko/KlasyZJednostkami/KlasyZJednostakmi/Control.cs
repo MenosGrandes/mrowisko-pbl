@@ -29,7 +29,7 @@ namespace Logic
         public List<InteractiveModel> Models_Colision = new List<InteractiveModel>();
         public InteractiveModel selectedObject, selectedObjectMouseOnlyMove;
         private Vector3 poprzedni = Vector3.Zero;
-        public Ray ray,mouseRay;
+        public Ray ray, mouseRay;
         public Vector3 angle = new Vector3(0, 0, 0);
         //private Vector3 playerTarget;
         private Vector2 selectCorner;
@@ -38,18 +38,22 @@ namespace Logic
 
         //tabele wysokosci
         private float[,] heights;
+        public int heightsa;
         public int width;
         public int length;
+        public VertexMultitextured[] vertices;
+
 
 
         //private Texture2D texture;
         Vector2 position, positionMouseOnlyMove;
-        Vector3 position3d, position3DMouseOnlyMove;
+        public Vector3 position3d, position3DMouseOnlyMove;
         MouseState currentMouseState;
         int f = 0;
         private bool mouseDown;
         private Vector3 startRectangle;
         private Vector3 endRectangle;
+        public Vector3 mouse3d2;
 
         public Control(Texture2D _texture, QuadTree quad)
         {
@@ -73,7 +77,12 @@ namespace Logic
 
             currentMouseState = Mouse.GetState();
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
+
+           // Vector3 mouse3d2 = CalculateMouse3DPosition(currentMouseState.X,currentMouseState.Y);
+
             Vector3 mouse3d2 = QuadNodeHelper.getIntersectedQuadNode(mouseRay);
+
+
             selectedObjectMouseOnlyMove = null;
             for (int i = 0; i < models.Count; i++)
                 if (models[i].CheckRayIntersection(mouseRay))
@@ -83,9 +92,10 @@ namespace Logic
                     {
                         selectedObject = models[i];
                         //Console.WriteLine(selectedObject);
+
                     }
                     else
-                    selectedObjectMouseOnlyMove = models[i];
+                        selectedObjectMouseOnlyMove = models[i];
                     break;
                 }
 
@@ -138,76 +148,92 @@ namespace Logic
                     break;
                 }
 
-
-          
-           if (currentMouseState.RightButton == ButtonState.Pressed && !mouseDown)
+            for (int i = 0; i < models.Count; i++)
             {
-                SelectedModels.Clear();
+                for (int j = 0; j < models.Count; j++)
+                {
+                    if (models[i] == models[j]) continue;
+            
 
 
-
-                position = new Vector2(currentMouseState.X, currentMouseState.Y);
-                position3d = CalculateMouse3DPosition(position);
-                selectCorner = position;
-                selectRectangle = new Rectangle((int)position.X, (int)position.Y, 0, 0);
-                //selectedObject = SelectedObject(mouse3d2);
-                //if ((mouse3d2.X > pozycja_X_lewo && mouse3d2.X < pozycja_X_prawo) && (mouse3d2.Z > pozycja_Z_dol && mouse3d2.Z < pozycja_Z_gora))
-                mouseDown = true;
-
+                    if (models[j].Model.BoundingSphere.Intersects(models[i].Model.BoundingSphere))
+                    {
+                        models[i].Model.Position = models[i].Model.tempPosition;
+                    }
+                }
             }
-            else if (currentMouseState.RightButton == ButtonState.Pressed)
-            {
-                SelectedModels.Clear();
-                selectedObject = null;
-                selectCorner = new Vector2(currentMouseState.X, currentMouseState.Y);
-                if (selectCorner.X > position.X)
+
+
+
+                if (currentMouseState.RightButton == ButtonState.Pressed && !mouseDown)
+
                 {
-                    selectRectangle.X = (int)position.X;
+                    SelectedModels.Clear();
+                    SelectedObject();
+
+
+                    position = new Vector2(currentMouseState.X, currentMouseState.Y);
+                    position3d = CalculateMouse3DPosition(position);
+                    selectCorner = position;
+                    selectRectangle = new Rectangle((int)position.X, (int)position.Y, 0, 0);
+                    //selectedObject = SelectedObject(mouse3d2);
+                    //if ((mouse3d2.X > pozycja_X_lewo && mouse3d2.X < pozycja_X_prawo) && (mouse3d2.Z > pozycja_Z_dol && mouse3d2.Z < pozycja_Z_gora))
+                    mouseDown = true;
+
                 }
-                else
+                else if (currentMouseState.RightButton == ButtonState.Pressed)
                 {
-                    selectRectangle.X = (int)selectCorner.X;
-                }
-
-                if (selectCorner.Y > position.Y)
-                {
-                    selectRectangle.Y = (int)position.Y;
-                }
-                else
-                {
-                    selectRectangle.Y = (int)selectCorner.Y;
-                }
-
-                selectRectangle.Width = (int)Math.Abs(position.X - selectCorner.X);
-                selectRectangle.Height = (int)Math.Abs(position.Y - selectCorner.Y);
-
-
-
-
-            }
-            else
-            {
-                if (mouseDown == true)
-                {
-                    Selected();
-                    foreach (InteractiveModel ant in models)
-                        if (ant.Model.Selected)
-                        {
-                            if (ant.GetType().BaseType == typeof(Ant))
-                            {
-                                SelectedModels.Add(ant);
-                            }
-                        }
-                    /*
-                else
-                {
-                    //f = 0;
                     //SelectedModels.Clear();
+
+                    selectCorner = new Vector2(currentMouseState.X, currentMouseState.Y);
+                    if (selectCorner.X > position.X)
+                    {
+                        selectRectangle.X = (int)position.X;
+                    }
+                    else
+                    {
+                        selectRectangle.X = (int)selectCorner.X;
+                    }
+
+                    if (selectCorner.Y > position.Y)
+                    {
+                        selectRectangle.Y = (int)position.Y;
+                    }
+                    else
+                    {
+                        selectRectangle.Y = (int)selectCorner.Y;
+                    }
+
+                    selectRectangle.Width = (int)Math.Abs(position.X - selectCorner.X);
+                    selectRectangle.Height = (int)Math.Abs(position.Y - selectCorner.Y);
+
+
+
+
                 }
-                      */
+                else
+                {
+                    if (mouseDown == true)
+                    {
+                        Selected();
+                        foreach (InteractiveModel ant in models)
+                            if (ant.Model.Selected)
+                            {
+                                if (ant.GetType().BaseType == typeof(Ant))
+                                {
+                                    SelectedModels.Add(ant);
+                                }
+                            }
+                        /*
+                    else
+                    {
+                        //f = 0;
+                        //SelectedModels.Clear();
+                    }
+                          */
+                    }
+                    mouseDown = false;
                 }
-                mouseDown = false;
-            }
 
             if (currentMouseState.LeftButton == ButtonState.Pressed)
             {
@@ -240,6 +266,8 @@ namespace Logic
 
             foreach (InteractiveModel ant in models)
             {
+                ant.Model.tempPosition = ant.Model.Position;
+                 
                 if (ant.GetType().BaseType != typeof(Ant))
                 {
                     continue;
@@ -293,6 +321,7 @@ namespace Logic
 
                 foreach (InteractiveModel model in Models_Colision)
                 {
+
                     if ((model.Model.B_Box.Contains(lewo) == ContainmentType.Contains))
                         czylewo = true;
                     if ((model.Model.B_Box.Contains(prawo) == ContainmentType.Contains))
@@ -460,6 +489,8 @@ namespace Logic
                     //wysokosc
 
                     float height = StaticHelpers.StaticHelper.GetHeightAt(ant.Model.Position.X, ant.Model.Position.Z, this.width, this.length, heights);//GetHeightAt(ant.Model.Position.X, ant.Model.Position.Z);
+                    //float height = vertices[((int)ant.Model.Position.X/3) + ((int)ant.Model.Position.Z/3) * (int)width].Position.Y;
+
                     if (ant.Model.Position.Y < height)
                     {
                         ant.Model.Position += Vector3.Up;
@@ -521,6 +552,8 @@ namespace Logic
         }
 
         
+
+
 
         private void Selected()
         {
@@ -589,29 +622,29 @@ namespace Logic
             }
             return null;
         }
-        public InteractiveModel SelectedObject(Vector3 position)
-        {
-      
-                ray.Position = position;
-                Vector3 a = new Vector3(0, 0, 0);
-                foreach (InteractiveModel IM in IModel)
-                {
-                    if (IM.Model.BoundingSphere.Intersects(ray) != null)
-                    {
-                        return IM;
-                    }
-                }
-                foreach (InteractiveModel ant in models)
-                {
-                    //   Console.WriteLine(ant.Model.Position);
+        public InteractiveModel SelectedObject()
+        {//Vector3 position
 
-                    if (ant.Model.BoundingSphere.Intersects(ray) != null)
-                    {
-
-                        SelectedModels.Add(ant);
-                        return ant;
-                    }
+            //ray.Position = position;
+            Vector3 a = new Vector3(0, 0, 0);
+            foreach (InteractiveModel IM in IModel)
+            {
+                if (IM.CheckRayIntersection(mouseRay))
+                {
+                    return IM;
                 }
+            }
+            foreach (InteractiveModel ant in models)
+            {
+                //   Console.WriteLine(ant.Model.Position);
+
+                if (ant.CheckRayIntersection(mouseRay))
+                {
+
+                    SelectedModels.Add(ant);
+                    return ant;
+                }
+            }
             return null;
         }
 
@@ -622,16 +655,13 @@ namespace Logic
             int mouseX = Mouse.GetState().X;
             int mouseY = Mouse.GetState().Y;
 
-            Vector3 nearsource = new Vector3((float)mouseX, (float)mouseY, 0f);
-            Vector3 farsource = new Vector3((float)mouseX, (float)mouseY, 1f);
+            Vector3 nearSource = new Vector3((float)mouseX, (float)mouseY, 0.0f);
+            Vector3 farSource = new Vector3((float)mouseX, (float)mouseY, 1.0f);
 
-            Matrix world = Matrix.CreateTranslation(0, 0, 0);
+           // Matrix world = Matrix.CreateTranslation(0, 0, 0);
 
-            Vector3 nearPoint = device.Viewport.Unproject(nearsource,
-                this.Projection, this.View, Matrix.Identity);
-
-            Vector3 farPoint = device.Viewport.Unproject(farsource,
-                this.Projection, this.View, Matrix.Identity);
+            Vector3 nearPoint = device.Viewport.Unproject(nearSource, this.Projection, this.View, Matrix.Identity);
+            Vector3 farPoint = device.Viewport.Unproject(farSource, this.Projection, this.View, Matrix.Identity);
 
             Vector3 direction = farPoint - nearPoint;
             direction.Normalize();
@@ -653,19 +683,18 @@ namespace Logic
             int mouseX = (int)pos.X;
             int mouseY = (int)pos.Y;
 
-            Vector3 nearsource = new Vector3((float)mouseX, (float)mouseY, 0f);
-            Vector3 farsource = new Vector3((float)mouseX, (float)mouseY, 1f);
+            Vector3 nearSource = new Vector3((float)mouseX, (float)mouseY, 0.0f);
+            Vector3 farSource = new Vector3((float)mouseX, (float)mouseY, 1.0f);
 
-            Matrix world = Matrix.CreateTranslation(0, 0, 0);
+           // Matrix world = Matrix.CreateTranslation(0, 0, 0);
 
-            Vector3 nearPoint = device.Viewport.Unproject(nearsource,
-                this.Projection, this.View, Matrix.Identity);
-
-            Vector3 farPoint = device.Viewport.Unproject(farsource,
-                this.Projection, this.View, Matrix.Identity);
+            Vector3 nearPoint = device.Viewport.Unproject(nearSource, this.Projection, this.View, Matrix.Identity);
+            Vector3 farPoint = device.Viewport.Unproject(farSource, this.Projection, this.View, Matrix.Identity);
 
             Vector3 direction = farPoint - nearPoint;
             direction.Normalize();
+            //return new Ray(nearPoint, direction);
+            
             Ray pickRay = new Ray(nearPoint, direction);
             float? position = pickRay.Intersects(GroundPlane);
 
@@ -673,7 +702,7 @@ namespace Logic
                 return pickRay.Position + pickRay.Direction * position.Value;
             else
                 return new Vector3(0, 0, 0);
-
+            
 
         }
         private Vector3 CalculateMouse3DPosition(int X, int Y)
@@ -685,26 +714,64 @@ namespace Logic
             Vector3 nearWorldPoint = device.Viewport.Unproject(nearScreenPoint, this.Projection,this.View, Matrix.Identity);
             Vector3 farWorldPoint = device.Viewport.Unproject(farScreenPoint, this.Projection, this.View, Matrix.Identity);
 
-            Vector3 direction = farWorldPoint - nearWorldPoint;
-            direction.Normalize();
+
+            Vector3 nearSource = new Vector3((float)mouseX, (float)mouseY, 0.0f);
+            Vector3 farSource = new Vector3((float)mouseX, (float)mouseY, 1.0f);
+
+            //Matrix world = Matrix.CreateTranslation(0, 0, 0);
+
+            Vector3 nearPoint = device.Viewport.Unproject(nearSource, this.Projection, this.View, Matrix.Identity);
+            Vector3 farPoint = device.Viewport.Unproject(farSource, this.Projection, this.View, Matrix.Identity);
+
+            Vector3 direction = farPoint - nearPoint;
+           direction.Normalize();
+           // return new Ray(nearPoint, direction);
+            
+               Ray pickRay = new Ray(nearPoint, direction);
+               float? position = pickRay.Intersects(GroundPlane);
+
             float zFactor = -nearWorldPoint.Y / direction.Y;
             Vector3 zeroWorldPoint = nearWorldPoint + direction * zFactor;
             return zeroWorldPoint;
 
-
-        }
+            if (position != null)
+                   return pickRay.Position + pickRay.Direction * position.Value;
+               else
+                   return new Vector3(0, 0, 0);
+         }
         public Ray GetMouseRay(Vector2 mousePosition)
         {
-            Vector3 near = new Vector3(mousePosition, 0);
-            Vector3 far = new Vector3(mousePosition, 1);
+            Vector3 nearSource = new Vector3(mousePosition, 0.0f);
+            Vector3 farSource = new Vector3(mousePosition, 1.0f);
 
-            near = device.Viewport.Unproject(near, this.Projection, this.View, Matrix.Identity);
-            far = device.Viewport.Unproject(far, this.Projection, this.View, Matrix.Identity);
+            Vector3 nearPoint = device.Viewport.Unproject(nearSource, this.Projection, this.View, Matrix.Identity);
+            Vector3 farPoint = device.Viewport.Unproject(farSource, this.Projection, this.View, Matrix.Identity);
 
-            return new Ray(near, Vector3.Normalize(far - near));
+            Vector3 direction = farPoint - nearPoint;
+            direction.Normalize();
+
+            return new Ray(nearPoint, direction);
         }
 
-       
+        /*
+
+        public Ray CalculateCursorRay(Matrix projectionMatrix, Matrix viewMatrix)
+        {
+            Vector3 nearSource = new Vector3(Position, 0f);
+            Vector3 farSource = new Vector3(Position, 1f);
+
+             Vector3 nearPoint = GraphicsDevice.Viewport.Unproject(nearSource, projectionMatrix, viewMatrix, Matrix.Identity);
+
+            Vector3 farPoint = GraphicsDevice.Viewport.Unproject(farSource, projectionMatrix, viewMatrix, Matrix.Identity);
+
+            Vector3 direction = farPoint - nearPoint;
+            direction.Normalize();
+
+            return new Ray(nearPoint, direction);
+        }
+
+
+       */
     }
 }
 
