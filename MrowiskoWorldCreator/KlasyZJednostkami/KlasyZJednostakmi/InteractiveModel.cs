@@ -54,7 +54,14 @@ namespace Logic
 
         public virtual void Draw(GameCamera.FreeCamera camera)
          {
+
+           //  model.Draw(camera);
+
          }
+        public virtual void Draw(GameCamera.FreeCamera camera, float time)
+        {
+            model.Draw(camera, time);
+        }
         public virtual void gaterMaterial(Material material)
         {
         }
@@ -71,7 +78,9 @@ namespace Logic
             return null;
         }
         public virtual void Update(GameTime time)
-        { }
+        {
+            model.Update(time);
+        }
         public virtual void setGaterMaterial(Material m)
         { }
 

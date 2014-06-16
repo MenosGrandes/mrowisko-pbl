@@ -46,6 +46,7 @@ namespace Logic
         public VertexMultitextured[] vertices;
 
 
+        public int indeks;
 
         //private Texture2D texture;
         Vector2 position, positionMouseOnlyMove;
@@ -315,7 +316,6 @@ namespace Logic
                 prawy_gorny = ant.Model.Position + (new Vector3(1, 0, -1) * Speed);
 
                 float min;
-                int indeks;
                 float[] tab = new float[8];
 
                 foreach (InteractiveModel model in Models_Colision)
@@ -377,17 +377,61 @@ namespace Logic
                         indeks = i;
                     }
                 }
-
+                
                 if (indeks == 0)
                 {
                     if (poprzedni == Vector3.Right)
                         // ant.Model.Position += new Vector3(-1, 0, -1) * 4.0f;
                         ant.Model.playerTarget.X = ant.Model.playerTarget.X + Speed;
-                    else
+                    else if (poprzedni == Vector3.Up)
+                    {
                         ant.Model.Position += Vector3.Left * Speed;
-                    poprzedni = Vector3.Left;
-                    ant.Model.Rotation = Vector3.Up * (44.8f);
+                        poprzedni = Vector3.Left;
+                            ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(90), 0);
+                    }
+                    else if (poprzedni == Vector3.Forward)
+                    {
+                        ant.Model.Position += Vector3.Left * Speed;
+                        poprzedni = Vector3.Left;
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-90), 0);
+                    }
+                    else if (poprzedni == Vector3.Backward)
+                    {
+                        ant.Model.Position += Vector3.Left * Speed;
+                        poprzedni = Vector3.Left;
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-90), 0);
+                    }
+                    else if (poprzedni == lewy_dolny)
+                    {
+                        ant.Model.Position += Vector3.Left * Speed;
+                        poprzedni = Vector3.Left;
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-45), 0);
+                    }
+                    else if (poprzedni == lewy_gorny)
+                    {
+                        ant.Model.Position += Vector3.Left * Speed;
+                        poprzedni = Vector3.Left;
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45), 0);
+                    }
+                    else if (poprzedni == prawy_dolny)
+                    {
+                        ant.Model.Position += Vector3.Left * Speed;
+                        poprzedni = Vector3.Left;
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-45-90), 0);
+                    }
+                    else if (poprzedni == prawy_gorny)
+                    {
+                        ant.Model.Position += Vector3.Left * Speed;
+                        poprzedni = Vector3.Left;
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45+90), 0);
+                    }
+                    else
+                    {
+                        ant.Model.Position += Vector3.Left * Speed;
+                        poprzedni = Vector3.Left;
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45 + 90), 0);
 
+                    }
                 }
                 if (indeks == 1)
                 {
@@ -397,7 +441,7 @@ namespace Logic
                     else
                         ant.Model.Position += Vector3.Right * Speed;
                     poprzedni = Vector3.Right;
-                    ant.Model.Rotation = Vector3.Up * 179.9f;
+                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(1), 0);
                 }
                 if (indeks == 2)
                 {
@@ -407,7 +451,7 @@ namespace Logic
                     else
                         ant.Model.Position += Vector3.Forward * Speed;
                     poprzedni = Vector3.Forward;
-                    ant.Model.Rotation = Vector3.Up * 43.15f;
+                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(1), 0);
                 }
                 if (indeks == 3)
                 {
@@ -416,7 +460,7 @@ namespace Logic
                     else
                         ant.Model.Position += Vector3.Backward * Speed;
                     poprzedni = Vector3.Backward;
-                    ant.Model.Rotation = Vector3.Up * (-179.9f);
+                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(-1), 0);
                 }
 
                 if (indeks == 4)
@@ -425,7 +469,7 @@ namespace Logic
                         ant.Model.playerTarget = ant.Model.playerTarget + (new Vector3(-1, 0, -1) * Speed);
                     else
                         ant.Model.Position += (new Vector3(-1, 0, -1) * Speed);
-                    ant.Model.Rotation = Vector3.Up * (-44);
+                  //  ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(-1), 0);
                     poprzedni = lewy_gorny;
                 }
 
@@ -435,7 +479,7 @@ namespace Logic
                         ant.Model.Position += Vector3.Backward * Speed;
                     else
                         ant.Model.Position += (new Vector3(-1, 0, 1) * Speed);
-                    ant.Model.Rotation = Vector3.Up * (-42.4f);
+                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(-1), 0);
                     poprzedni = lewy_dolny;
 
                 }
@@ -446,7 +490,7 @@ namespace Logic
                         ant.Model.playerTarget = ant.Model.playerTarget + (new Vector3(-1, 0, -1) * Speed);
                     else
                         ant.Model.Position += (new Vector3(1, 0, 1) * Speed);
-                    ant.Model.Rotation = Vector3.Up * (-47.4f);
+                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(-1), 0);
                     poprzedni = prawy_dolny;
 
                 }
@@ -456,7 +500,7 @@ namespace Logic
                         ant.Model.playerTarget = ant.Model.playerTarget + (new Vector3(-1, 0, -1) * Speed);
                     else
                         ant.Model.Position += (new Vector3(1, 0, -1) * Speed);
-                    ant.Model.Rotation = Vector3.Up * (-45.5f);
+                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(-1), 0);
                     poprzedni = prawy_gorny;
                 }
 

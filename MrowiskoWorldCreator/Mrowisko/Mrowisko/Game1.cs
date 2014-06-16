@@ -133,10 +133,10 @@ MathHelper.ToRadians(0), // Turned around 153 degrees
 MathHelper.ToRadians(-45), // Pitched up 13 degrees
 GraphicsDevice);
 
-            quadTree = new QuadTree(Vector3.Zero, texture, device, 1, Content, (FreeCamera)camera);
+            quadTree = new QuadTree(Vector3.Zero, texture, device, 3, Content, (FreeCamera)camera);
             quadTree.Cull = true;
             quadTree.shadow.RenderTarget = new RenderTarget2D(device, pp.BackBufferWidth, pp.BackBufferHeight, true, device.DisplayMode.Format, DepthFormat.Depth24Stencil8);
-            water = new Water(device, Content, texture[4].Width, 1);
+            water = new Water(device, Content, texture[4].Width, 3);
 
             lastMouseState = Mouse.GetState();
 
@@ -201,7 +201,10 @@ GraphicsDevice);
                 GraphicsDevice.RasterizerState = rasterizerState;
             }
 
-
+             foreach(InteractiveModel m in CreatorController.models)
+             {
+                 m.Update(gameTime);
+             }
             quadTree.View = camera.View;
             quadTree.Projection = camera.Projection;
             quadTree.CameraPosition = ((FreeCamera)camera).Position;
@@ -224,7 +227,7 @@ GraphicsDevice);
             //GraphicsDevice.RasterizerState = rasterizerState;
 
             licznik = 0;
-            float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
+            float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 1000.0f;
 
             RasterizerState rs = new RasterizerState();
             rs.CullMode = CullMode.None;
@@ -253,14 +256,34 @@ GraphicsDevice);
            foreach(InteractiveModel model in CreatorController.models)
            {
                if(((FreeCamera)camera).BoundingVolumeIsInView(model.Model.BoundingSphere))
-               model.Model.Draw(((FreeCamera)camera).View, ((FreeCamera)camera).Projection);
+               {
+
+                   if (model.Model.Player == null)
+                   { model.Draw((FreeCamera)camera); }
+                   else
+                   { model.Draw((FreeCamera)camera, time); }
+
+
+               }
                if(model.selected==true)
                {
                    BoundingSphereRenderer.Render(model.Model.BoundingSphere, CreatorController.device, camera.View, camera.Projection, Color.Red,Color.Beige,Color.Gainsboro);
                }
            }
 
+           foreach (InteractiveModel model in models)
+           {
+               if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+               {
+                  
 
+
+                   //      BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                   //    Color.Green, Color.Aquamarine, Color.White);
+                   //    BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
+                   licznik++;
+               }
+           }
 
                  
 

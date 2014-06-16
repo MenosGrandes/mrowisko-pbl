@@ -1,4 +1,5 @@
-﻿using Map;
+﻿using GameCamera;
+using Map;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Logic.EnviroModel
         }
         public EnviroModels():base()
         { }
-        public override void Draw(GameCamera.FreeCamera camera)
+        public override void Draw(FreeCamera camera)
         {
             model.Draw(camera);
         }

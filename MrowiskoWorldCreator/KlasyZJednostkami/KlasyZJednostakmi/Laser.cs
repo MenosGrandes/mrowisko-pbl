@@ -1,4 +1,5 @@
-﻿using Map;
+﻿using GameCamera;
+using Map;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -26,10 +27,10 @@ namespace Logic
             movementPath = _movementPath;
         }
 
-        
-         public override void Draw( GameCamera.FreeCamera camera)
+
+        public override void Draw(FreeCamera camera)
         {
-            model.Draw(camera.View, camera.Projection);
+            model.Draw(camera);
         }
          public override void Update(GameTime _time)
          {

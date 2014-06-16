@@ -5,7 +5,14 @@ using System.Text;
 
 namespace Logic
 {
-    class Allies:Unit
+   public class Allies:Unit
     {
+   
+        public Allies(LoadModel model):base(model)
+           { }
+        public Allies()
+            : base()
+        {  }
+   
     }
 }

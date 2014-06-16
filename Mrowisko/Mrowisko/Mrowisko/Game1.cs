@@ -492,8 +492,7 @@ GraphicsDevice);
             control.cameraPitch = ((FreeCamera)camera).Pitch;
             control.models = models;
             control.device = device;
-           // control.heightsa = mapR.TerrainWidth*mapR.TerrainLength;
-            //control.vertices = mapR.Vertices;
+
             control.Update(gameTime);
             control.Models_Colision =IModel;
 
@@ -703,7 +702,7 @@ GraphicsDevice);
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                  new Vector2(10.0f, 20.0f), Color.Tomato);
             
-            spriteBatch.DrawString(_spr_font, string.Format("D g={0}", (control.selectedObjectMouseOnlyMove)), new Vector2(10.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("indes {0}", (control.indeks)), new Vector2(10.0f, 140.0f), Color.Pink);
             
            
              // spriteBatch.DrawString(_spr_font, string.Format("D g={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);

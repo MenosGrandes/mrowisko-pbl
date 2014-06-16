@@ -86,9 +86,8 @@ namespace Logic.Units.Ants
         }
         public override void Update(GameTime time)
         {
-            //  this.model.tempPosition = this.model.Position;
+            base.Update(time);
             this.elapsedTime += time.ElapsedGameTime.Milliseconds;
-            LifeBar.CreateBillboardVerticesFromList(this.Model.Position + new Vector3(0, 10, 0));
         }
 
         public override List<Material> releaseMaterial()
@@ -126,7 +125,7 @@ namespace Logic.Units.Ants
                         else if (interactive.GetType() == typeof(AntGranary))
                         {
                             Console.WriteLine("Oddaje");
-                            AntHill.Player.addMaterial(releaseMaterial());
+                            //AntHill.Player.addMaterial(releaseMaterial());
                             this.materials.Clear();
                             Console.WriteLine(Capacity);
                         }
