@@ -26,7 +26,7 @@ namespace Logic.Meterials
        { }
        public override void Draw(FreeCamera camera)
        {
-           model.Draw(camera.View, camera.Projection);
+           model.Draw(camera);
        }
        public override string ToString()
        {

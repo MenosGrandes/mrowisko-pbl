@@ -19,6 +19,7 @@ using Logic.Building;
 using Logic.Building.AntBuildings.Granary;
 using Logic.Units.Predators;
 using Logic.EnviroModel;
+using Logic.Units.Allies;
 namespace AntHill
 {
     public partial class Form1 : Form
@@ -166,7 +167,6 @@ namespace AntHill
              if (selectedIndex >= 0)
              EditObjectRotation(CreatorController.models[selectedIndex]);
 
-             Console.WriteLine("12312213");
          }
 
 
@@ -209,8 +209,8 @@ namespace AntHill
                 {   
                     case "AntPeasant":
                        AntPeasant p = new AntPeasant(null);
-                     p.Model = new LoadModel(CreatorController.content.Load<Model>("Models/mrowka_01"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
-                    
+                     p.Model = new LoadModel(CreatorController.content.Load<Model>("Models/ant"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device,CreatorController.content);
+                     p.Model.switchAnimation("Idle");
                      CreatorController.models.Add(p);
                      _items.Add(p.ToString());     
                         
@@ -277,8 +277,8 @@ namespace AntHill
 
 
                         Spider s = new Spider(null);
-                        s.Model = new LoadModel(CreatorController.content.Load<Model>("Models//pajak_sfery2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
-
+                        s.Model = new LoadModel(CreatorController.content.Load<Model>("Models//spider"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device, CreatorController.content);
+                        s.Model.switchAnimation("Idle");
                         CreatorController.models.Add(s);
                         _items.Add(s.ToString());
 
@@ -309,6 +309,56 @@ namespace AntHill
 
 
                         break;
+
+                    case "Cone":
+
+
+                        Cone c = new Cone(null);
+                        c.Model = new LoadModel(CreatorController.content.Load<Model>("Models//Szyszka1"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
+
+                        CreatorController.models.Add(c);
+                        _items.Add(c.ToString());
+
+
+
+                        break;
+                    case "Cone1":
+
+
+                        Cone1 c2 = new Cone1(null);
+                        c2.Model = new LoadModel(CreatorController.content.Load<Model>("Models//Szyszka2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
+
+                        CreatorController.models.Add(c2);
+                        _items.Add(c2.ToString());
+
+
+
+                        break;
+                    case "Grass":
+
+
+                        Grass gr = new Grass(null);
+                        gr.Model = new LoadModel(CreatorController.content.Load<Model>("Models//grass3d"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
+
+                        CreatorController.models.Add(gr);
+                        _items.Add(gr.ToString());
+
+
+
+                        break;
+                    case "Beetle":
+
+
+                        Beetle bt = new Beetle(new LoadModel(CreatorController.content.Load<Model>("Models//beetle"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device,CreatorController.content));
+                        bt.Model.switchAnimation("Idle");
+                        CreatorController.models.Add(bt);
+                        _items.Add(bt.ToString());
+
+
+
+                        break;
+                   
+
 
                 }
                 
@@ -343,8 +393,10 @@ namespace AntHill
                 {
                     case "AntPeasant":
                         {
-                            AntPeasant p = new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(CreatorController.content.Load<Model>("Models/mrowka_01"), CreatorController.MousePosition, new Vector3(0, 6, 0), new Vector3(0.5f), CreatorController.device), 10, 100);
+                            AntPeasant p = new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(CreatorController.content.Load<Model>("Models/ant"), CreatorController.MousePosition, new Vector3(0, 6, 0), new Vector3(0.5f), CreatorController.device,CreatorController.content), 10, 100);
                             model = p;
+                            model.Model.switchAnimation("Idle");
+
                             break;
                         }
                     case "Log":
@@ -379,8 +431,10 @@ namespace AntHill
                         }
                     case "Spider":
                         {
-                            Spider p = new Spider(new LoadModel(CreatorController.content.Load<Model>("Models//pajak_sfery2"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
+                            Spider p = new Spider(new LoadModel(CreatorController.content.Load<Model>("Models//spider"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device,CreatorController.content));
                             model = p;
+                            model.Model.switchAnimation("Idle");
+
                             break;
                         }
                     case "Tree":
@@ -393,6 +447,31 @@ namespace AntHill
                         {
                             Tree2 p = new Tree2(new LoadModel(CreatorController.content.Load<Model>("Models//tree2"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
                             model = p;
+                            break;
+                        }
+                    case "Szyszka":
+                        {
+                            Cone p = new Cone(new LoadModel(CreatorController.content.Load<Model>("Models/Szyszka1"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
+                            model = p;
+                            break;
+                        }
+                    case "Szyszka2":
+                        {
+                            Cone1 p = new Cone1(new LoadModel(CreatorController.content.Load<Model>("Models/Szyszka2"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
+                            model = p;
+                            break;
+                        }
+                    case "Trawa":
+                        {
+                            Grass p = new Grass(new LoadModel(CreatorController.content.Load<Model>("Models/grass3d"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
+                            model = p;
+                            break;
+                        }
+                    case "Zuk":
+                        {
+                            Beetle p = new Beetle(new LoadModel(CreatorController.content.Load<Model>("Models/beetle"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device,CreatorController.content));
+                            model = p;
+                            model.Model.switchAnimation("Idle");
                             break;
                         }
                 }

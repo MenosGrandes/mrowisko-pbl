@@ -507,7 +507,12 @@
             "TownCenter",
             "Spider",
             "Tree",
-            "Tree2"});
+            "Tree2",
+            "Szyszka",
+            "Szyszka2",
+            "Trawa",
+            "Zuk",
+            "Konik"});
             this.checkedListBox1.Location = new System.Drawing.Point(108, 8);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(90, 109);

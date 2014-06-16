@@ -1,4 +1,5 @@
-﻿using Logic.Building.AntBuildings;
+﻿using GameCamera;
+using Logic.Building.AntBuildings;
 using Map;
 using Microsoft.Xna.Framework;
 using System;
@@ -33,13 +34,9 @@ namespace Logic.Building
         {
             this.building = b;
         }
-        public override void Draw(Matrix View, Matrix Projection)
+        public override void Draw(FreeCamera camera)
         {
-            model.Draw(View, Projection);
-            if(Building!=null)
-            {
-                building.Model.Draw(View, Projection);
-            }
+            model.Draw(camera);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Map;
+﻿using GameCamera;
+using Map;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace Logic.Building.AntBuildings.SeedFarms
         { 
         
         }
-         public override void  Draw(Matrix View, Matrix Projection)
+         public override void  Draw(FreeCamera camera)
         {
-            model.Draw(View, Projection);
+            model.Draw(camera);
         }
         public DicentraFarm()
         { }

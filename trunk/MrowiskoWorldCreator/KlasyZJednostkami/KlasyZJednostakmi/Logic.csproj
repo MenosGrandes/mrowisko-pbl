@@ -86,7 +86,10 @@
     <Compile Include="Building\BuildingPlace.cs" />
     <Compile Include="Curve3D.cs" />
     <Compile Include="ControlEnemy.cs" />
+    <Compile Include="EnviroModel\Cone.cs" />
+    <Compile Include="EnviroModel\Cone1.cs" />
     <Compile Include="EnviroModel\EnviroModels.cs" />
+    <Compile Include="EnviroModel\Grass.cs" />
     <Compile Include="EnviroModel\Tree.cs" />
     <Compile Include="EnviroModel\Tree2.cs" />
     <Compile Include="Laser.cs" />
@@ -102,6 +105,7 @@
     <Compile Include="Triggers\TimeTrigger.cs" />
     <Compile Include="Triggers\Trigger.cs" />
     <Compile Include="Units\Allies\Allies.cs" />
+    <Compile Include="Units\Allies\Beetle.cs" />
     <Compile Include="Units\Ants\Ant.cs" />
     <Compile Include="Building\Building.cs" />
     <Compile Include="Control.cs" />

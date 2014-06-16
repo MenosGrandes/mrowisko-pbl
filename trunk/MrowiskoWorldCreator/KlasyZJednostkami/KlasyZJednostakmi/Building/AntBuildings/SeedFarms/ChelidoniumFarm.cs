@@ -1,4 +1,5 @@
-﻿using Map;
+﻿using GameCamera;
+using Map;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ namespace Logic.Building.AntBuildings.SeedFarms
         { 
         
         }
-         public override void  Draw(Matrix View, Matrix Projection)
+        public override void Draw(FreeCamera camera)
         {
-            model.Draw(View, Projection);
+            model.Draw(camera);
         }
         public ChelidoniumFarm()
         { }
@@ -26,7 +27,7 @@ namespace Logic.Building.AntBuildings.SeedFarms
         }
         public override void Update(GameTime gameTime)
         {
-            timeElapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds/100;
+            timeElapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds/1000;
         }
 
     }

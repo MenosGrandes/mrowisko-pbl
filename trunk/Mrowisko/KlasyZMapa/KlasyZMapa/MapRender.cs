@@ -125,7 +125,7 @@ namespace Map
             this.Scale = Scale;
             Texture2D tex = StaticHelpers.StaticHelper.Content.Load<Texture2D>("HeighMaps/ter2");
             LoadHeightData(texture, tex);
-            SetUpvertices(3);
+            SetUpvertices(Scale);
             SetUpTerrainIndices();
             CalculateNormals();
 
@@ -168,7 +168,7 @@ namespace Map
             for (int x = 0; x < terrainWidth; x++)
                 for (int y = 0; y < terrainLength; y++)
                 {
-                    heightData[x, y] = (heightData[x, y] - minimumHeight) / (maximumHeight - minimumHeight) * 20.0f;
+                    heightData[x, y] = (heightData[x, y] - minimumHeight) / (maximumHeight - minimumHeight) * 30.0f;
 
                 }
 
@@ -186,7 +186,7 @@ namespace Map
             for (int x = 0; x < terrainWidth2; x++)
                 for (int y = 0; y < terrainLength2; y++)
                 {
-                    heightDataToControl[x, y] = (heightDataToControl[x, y] - minimumHeight) / (maximumHeight - minimumHeight) * 30.0f;
+                    heightDataToControl[x, y] = (heightDataToControl[x, y] - minimumHeight) / (maximumHeight - minimumHeight) * 45.0f;
 
                 }
         }
