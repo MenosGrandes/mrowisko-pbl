@@ -169,8 +169,8 @@ VertexShaderOutput ParticleVertexShader(VertexShaderInput input)
 		float3 WorldNormal = camPosition - input.Position;
 		//WorldNormal = mul(WorldNormal, Projection);
 	//WorldNormal = normalize(WorldNormal);
-	float distanceToCamera = dot(camForward, WorldNormal);
-	if (distanceToCamera > 0.1f)
+	float distanceToCamera = length(WorldNormal);
+	if (distanceToCamera < 60)
 	{
 		size = 0;
 	}
