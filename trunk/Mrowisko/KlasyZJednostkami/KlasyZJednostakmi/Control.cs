@@ -44,7 +44,7 @@ namespace Logic
         public int width;
         public int length;
         public VertexMultitextured[] vertices;
-
+        private List<float> history=new List<float>();
 
         public int indeks;
 
@@ -103,6 +103,9 @@ namespace Logic
                 }
 
             for (int i = 0; i < Models_Colision.Count; i++)
+            {
+                Models_Colision[i].Model.B_Box = Models_Colision[i].Model.updateBoundingBox();
+
                 if (Models_Colision[i].CheckRayIntersection(mouseRay))
                 {
                     if (currentMouseState.LeftButton == ButtonState.Pressed)
@@ -150,6 +153,7 @@ namespace Logic
 
                     break;
                 }
+        }
             #region kolizja między jednostkami
             /*
             for (int i = 0; i < models.Count; i++)
@@ -241,6 +245,7 @@ namespace Logic
             {
                 foreach (InteractiveModel ant in SelectedModels)
                 {
+                    history.Clear();
                     ant.Model.playerTarget.X = mouse3d2.X;
                     ant.Model.playerTarget.Z = mouse3d2.Z;
                     ant.Model.switchAnimation("Walk");
@@ -292,12 +297,20 @@ namespace Logic
 
                 foreach (InteractiveModel modelsy in Models_Colision)
                 {
-                    modelsy.Model.B_Box = modelsy.Model.updateBoundingBox();
+                    Vector3 center = modelsy.Model.B_Box.Min + (modelsy.Model.B_Box.Max - modelsy.Model.B_Box.Min) / 2;
+                    //float bBoxHeight = modelsy.Model.B_Box.Max.Y - modelsy.Model.B_Box.Min.Y;
+                    //float bBoxxWidth = modelsy.Model.B_Box.Max.X - modelsy.Model.B_Box.Min.X;
+                    //float odlegloscMiedzyWektorami=Vector3.Distance(modelsy.Model.B_Box.Max, modelsy.Model.B_Box.Min);
+                    //float przekatna = (float)Math.Sqrt(Math.Pow(odlegloscMiedzyWektorami, 2) - Math.Pow(bBoxHeight, 2));
                     if ((modelsy.Model.B_Box.Contains(ant.Model.playerTarget) == ContainmentType.Contains))
                     {
-                        // ant.Model.playerTarget.X = modelsy.Model.B_Box.Max.X + modelsy.Model.B_Box.Max.X - modelsy.Model.B_Box.Min.X;//modelsy.Model.BoundingSphere.Center.X + modelsy.Model.BoundingSphere.Radius;
-                        // ant.Model.playerTarget.Z = modelsy.Model.B_Box.Max.Y+modelsy.Model.B_Box.Max.Y-modelsy.Model.B_Box.Min.Y;//modelsy.Model.BoundingSphere.Center.Z + modelsy.Model.BoundingSphere.Radius;
-                        break;
+
+                        //if (ant.Model.Position.X > ant.Model.playerTarget.X && ant.Model.Position.Z < ant.Model.playerTarget.Z)
+                        {
+                            ant.Model.playerTarget.X = modelsy.Model.B_Box.Max.X + modelsy.Model.B_Box.Max.X - modelsy.Model.B_Box.Min.X;//modelsy.Model.BoundingSphere.Center.X + modelsy.Model.BoundingSphere.Radius;
+                            ant.Model.playerTarget.Z = modelsy.Model.B_Box.Max.Y + modelsy.Model.B_Box.Max.Y - modelsy.Model.B_Box.Min.Y;//modelsy.Model.BoundingSphere.Center.Z + modelsy.Model.BoundingSphere.Radius;
+                        }
+                                            
                     }
 
                 }
@@ -306,20 +319,23 @@ namespace Logic
                 Vector3 lewo, prawo, gora, dol;
                 Vector3 lewy_gorny, prawy_gorny, lewy_dolny, prawy_dolny;
                 bool czylewo = false, czyprawo = false, czygora = false, czydol = false, czylewy_gorny = false, czyprawy_gorny = false, czylewy_dolny = false, czyprawy_dolny = false;
-                lewo = ant.Model.Position + (Vector3.Left * Speed);
-                prawo = ant.Model.Position + (Vector3.Right * Speed);
-                gora = ant.Model.Position + (Vector3.Forward * Speed);
-                dol = ant.Model.Position + (Vector3.Backward * Speed);
-                lewy_gorny = ant.Model.Position + (new Vector3(-1, 0, -1) * Speed);
-                lewy_dolny = ant.Model.Position + (new Vector3(-1, 0, 1) * Speed);
-                prawy_dolny = ant.Model.Position + (new Vector3(1, 0, 1) * Speed);
-                prawy_gorny = ant.Model.Position + (new Vector3(1, 0, -1) * Speed);
+                lewo = ant.Model.Position + (Vector3.Left  * Speed);
+                prawo = ant.Model.Position + (Vector3.Right  * Speed  );
+                gora = ant.Model.Position + (Vector3.Forward  * Speed );
+                dol = ant.Model.Position + (Vector3.Backward  * Speed );
+                lewy_gorny = ant.Model.Position + (new Vector3(-1, 0, -1)  * Speed  );
+                lewy_dolny = ant.Model.Position + (new Vector3(-1, 0, 1)  * Speed  );
+                prawy_dolny = ant.Model.Position + (new Vector3(1, 0, 1)  * Speed  );
+                prawy_gorny = ant.Model.Position + (new Vector3(1, 0, -1)  * Speed  );
 
                 float min;
                 float[] tab = new float[8];
 
                 foreach (InteractiveModel model in Models_Colision)
                 {
+
+                  
+                        
 
                     if ((model.Model.B_Box.Contains(lewo) == ContainmentType.Contains))
                         czylewo = true;
@@ -371,66 +387,37 @@ namespace Logic
                 indeks = 0;
                 for (int i = 0; i < tab.Length; i++)
                 {
+
                     if (tab[i] < min && tab[i] != 0)
-                    {
+                    {   
+                    
+                        
+                        
+                       
+                       
                         min = tab[i];
                         indeks = i;
                     }
                 }
-                
+
+              
+              
                 if (indeks == 0)
                 {
                     if (poprzedni == Vector3.Right)
                         // ant.Model.Position += new Vector3(-1, 0, -1) * 4.0f;
                         ant.Model.playerTarget.X = ant.Model.playerTarget.X + Speed;
-                    else if (poprzedni == Vector3.Up)
-                    {
-                        ant.Model.Position += Vector3.Left * Speed;
-                        poprzedni = Vector3.Left;
-                            ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(90), 0);
-                    }
-                    else if (poprzedni == Vector3.Forward)
-                    {
-                        ant.Model.Position += Vector3.Left * Speed;
-                        poprzedni = Vector3.Left;
-                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-90), 0);
-                    }
-                    else if (poprzedni == Vector3.Backward)
-                    {
-                        ant.Model.Position += Vector3.Left * Speed;
-                        poprzedni = Vector3.Left;
-                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-90), 0);
-                    }
-                    else if (poprzedni == lewy_dolny)
-                    {
-                        ant.Model.Position += Vector3.Left * Speed;
-                        poprzedni = Vector3.Left;
-                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-45), 0);
-                    }
-                    else if (poprzedni == lewy_gorny)
-                    {
-                        ant.Model.Position += Vector3.Left * Speed;
-                        poprzedni = Vector3.Left;
-                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45), 0);
-                    }
-                    else if (poprzedni == prawy_dolny)
-                    {
-                        ant.Model.Position += Vector3.Left * Speed;
-                        poprzedni = Vector3.Left;
-                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-45-90), 0);
-                    }
-                    else if (poprzedni == prawy_gorny)
-                    {
-                        ant.Model.Position += Vector3.Left * Speed;
-                        poprzedni = Vector3.Left;
-                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45+90), 0);
-                    }
+                   
                     else
                     {
                         ant.Model.Position += Vector3.Left * Speed;
                         poprzedni = Vector3.Left;
-                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45 + 90), 0);
-
+                        if (ant.GetType().Name == "Queen")
+                            ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-90), 0);
+                        else
+                        {
+                            ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(90), 0);
+                        }
                     }
                 }
                 if (indeks == 1)
@@ -441,7 +428,12 @@ namespace Logic
                     else
                         ant.Model.Position += Vector3.Right * Speed;
                     poprzedni = Vector3.Right;
-                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(1), 0);
+                    if(ant.GetType().Name=="Queen")
+                    ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(90), 0);
+                    else
+                    {
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-90), 0);
+                    }
                 }
                 if (indeks == 2)
                 {
@@ -451,7 +443,12 @@ namespace Logic
                     else
                         ant.Model.Position += Vector3.Forward * Speed;
                     poprzedni = Vector3.Forward;
-                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(1), 0);
+                    if (ant.GetType().Name == "Queen")
+                    ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(180), 0);
+                    else
+                    {
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(0), 0);
+                    }
                 }
                 if (indeks == 3)
                 {
@@ -460,7 +457,10 @@ namespace Logic
                     else
                         ant.Model.Position += Vector3.Backward * Speed;
                     poprzedni = Vector3.Backward;
-                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(-1), 0);
+                    if (ant.GetType().Name == "Queen")
+                    ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(0), 0);
+                    else
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(180), 0);
                 }
 
                 if (indeks == 4)
@@ -469,7 +469,12 @@ namespace Logic
                         ant.Model.playerTarget = ant.Model.playerTarget + (new Vector3(-1, 0, -1) * Speed);
                     else
                         ant.Model.Position += (new Vector3(-1, 0, -1) * Speed);
-                  //  ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(-1), 0);
+                    if (ant.GetType().Name == "Queen") 
+                    ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-45 - 90), 0);
+                    else
+                        //ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45 + 90), 0);
+                    ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45 ), 0);
+
                     poprzedni = lewy_gorny;
                 }
 
@@ -479,7 +484,13 @@ namespace Logic
                         ant.Model.Position += Vector3.Backward * Speed;
                     else
                         ant.Model.Position += (new Vector3(-1, 0, 1) * Speed);
-                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(-1), 0);
+                    if (ant.GetType().Name == "Queen")  
+                    ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-45 ), 0);
+                    else
+                    {
+                       // ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45), 0);
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45 + 90), 0);
+                    }
                     poprzedni = lewy_dolny;
 
                 }
@@ -490,7 +501,14 @@ namespace Logic
                         ant.Model.playerTarget = ant.Model.playerTarget + (new Vector3(-1, 0, -1) * Speed);
                     else
                         ant.Model.Position += (new Vector3(1, 0, 1) * Speed);
-                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(-1), 0);
+                    if (ant.GetType().Name == "Queen")
+                    ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45 ), 0);
+                    else
+                    {
+                        //ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-45 ), 0); 
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-45 - 90), 0);
+
+                    }
                     poprzedni = prawy_dolny;
 
                 }
@@ -500,7 +518,12 @@ namespace Logic
                         ant.Model.playerTarget = ant.Model.playerTarget + (new Vector3(-1, 0, -1) * Speed);
                     else
                         ant.Model.Position += (new Vector3(1, 0, -1) * Speed);
-                   // ant.Model.Rotation += new Vector3(0, MathHelper.ToRadians(-1), 0);
+                    if (ant.GetType().Name == "Queen")
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(45 + 90), 0);
+                    else
+                    {//ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-45 - 90), 0);
+                        ant.Model.Rotation = new Vector3(0, MathHelper.ToRadians(-45), 0);
+                    }
                     poprzedni = prawy_gorny;
                 }
 
@@ -533,7 +556,12 @@ namespace Logic
 
                     float height = StaticHelpers.StaticHelper.GetHeightAt(ant.Model.Position.X, ant.Model.Position.Z);//GetHeightAt(ant.Model.Position.X, ant.Model.Position.Z);
                     //float height = vertices[((int)ant.Model.Position.X/3) + ((int)ant.Model.Position.Z/3) * (int)width].Position.Y;
-
+                    switch(ant.GetType().Name)
+                    {
+                        case "Beetle": height += 11; break;
+                        case "AntPeasant": height +=7; break;
+                        case "Spider": height += 7; break;
+                    }
                     if (ant.Model.Position.Y < height)
                     {
                         ant.Model.Position += Vector3.Up;

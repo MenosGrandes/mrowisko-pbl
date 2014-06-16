@@ -64,7 +64,7 @@ namespace Controlers
                    switch (model.GetType().Name)
                    {
                        case "AntPeasant":
-                           AntPeasant p = new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
+                           AntPeasant p = new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
                            p.AtackInterval = 10;
                            p.Hp =300;
                            p.gaterTime = 1000;

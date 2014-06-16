@@ -158,9 +158,10 @@ namespace Logic
         Vector3 Scale, GraphicsDevice GraphicsDevice,
         ContentManager Content, LightsAndShadows.Light light)
         {
-            this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(
-           Rotation.Y, Rotation.X, Rotation.Z)
-           * Matrix.CreateTranslation(Position);
+            this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateRotationX(Rotation.X)
+            *Matrix.CreateRotationY(Rotation.Y)*
+            Matrix.CreateRotationZ(Rotation.Z)*
+            Matrix.CreateTranslation(Position);
             shadowCasters = new List<ShadowCasterObject>();
             Console.WriteLine(Position);
             this.Model = Model;
@@ -280,11 +281,11 @@ namespace Logic
         /// <param name="Projection"></param>
         public void Draw(GameCamera.FreeCamera camera)
         {
-            
 
-             baseWorld = Matrix.CreateScale(Scale)* Matrix.CreateFromYawPitchRoll(
-            Rotation.Y, Rotation.X, Rotation.Z)
-            * Matrix.CreateTranslation(Position);
+            this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateRotationX(Rotation.X)
+            * Matrix.CreateRotationY(Rotation.Y) *
+            Matrix.CreateRotationZ(Rotation.Z) *
+            Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 if (!mesh.Name.Contains("BoundingSphere"))
@@ -329,9 +330,10 @@ namespace Logic
         {
 
 
-            baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(
-           Rotation.Y, Rotation.X, Rotation.Z)
-           * Matrix.CreateTranslation(Position);
+            this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateRotationX(Rotation.X)
+            * Matrix.CreateRotationY(Rotation.Y) *
+            Matrix.CreateRotationZ(Rotation.Z) *
+            Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in model2.Model.Meshes)
             {
                 if (!mesh.Name.Contains("BoundingSphere"))
@@ -383,10 +385,10 @@ namespace Logic
 
                Matrix[] bones = Player.GetSkinTransforms();
 
-               Matrix baseWorld = Matrix.CreateScale(Scale)
-               * Matrix.CreateFromYawPitchRoll(
-               Rotation.Y, Rotation.X, Rotation.Z)
-               * Matrix.CreateTranslation(Position);
+               this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateRotationX(Rotation.X)
+               * Matrix.CreateRotationY(Rotation.Y) *
+               Matrix.CreateRotationZ(Rotation.Z) *
+               Matrix.CreateTranslation(Position);
 
 
                foreach (ModelMesh mesh in this.Model.Meshes)
@@ -439,9 +441,10 @@ namespace Logic
                    animationChange = false;
                }
                // update world
-               Matrix world = Matrix.CreateScale(Scale) *
-      Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z) *
-      Matrix.CreateTranslation(Position);
+               this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateRotationX(Rotation.X)
+               * Matrix.CreateRotationY(Rotation.Y) *
+               Matrix.CreateRotationZ(Rotation.Z) *
+               Matrix.CreateTranslation(Position);
                if (shadowCasters != null)
                {
                    if (Player != null)
@@ -458,8 +461,8 @@ namespace Logic
 
                                foreach (ShadowCasterObject sc in shadowCasters)
                                {
-                                  
-                                       sc.World = modelTransforms[mesh.ParentBone.Index] * world;
+
+                                   sc.World = modelTransforms[mesh.ParentBone.Index] * this.baseWorld;
                                                                     
                                }
 
@@ -489,7 +492,8 @@ namespace Logic
 
 
         public void switchAnimation(string nazwa, int howManyTimesPlay=-1)
-        {
+        {  if(Player==null)
+        { return; }
             if (howManyTimesPlay < 1)
             {
                 Player.timesToPlay = -1;
@@ -529,12 +533,61 @@ namespace Logic
         {  if(!mesh.Name.Contains("BoundingSphere")){
             Matrix meshTransform = modelTransforms[mesh.ParentBone.Index];
             b_box=BuildBoundingBox(mesh, meshTransform);
-           
+            //b_box = CalculateBoundingBox();
             return b_box;
         }
         }
         return new BoundingBox();
 }
+   public BoundingBox CalculateBoundingBox()
+   {
+
+       // Create variables to keep min and max xyz values for the model
+       Vector3 modelMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+       Vector3 modelMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+
+       foreach (ModelMesh mesh in Model.Meshes)
+       {
+           //Create variables to hold min and max xyz values for the mesh
+           Vector3 meshMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+           Vector3 meshMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+
+           // There may be multiple parts in a mesh (different materials etc.) so loop through each
+           foreach (ModelMeshPart part in mesh.MeshParts)
+           {
+               // The stride is how big, in bytes, one vertex is in the vertex buffer
+               int stride = part.VertexBuffer.VertexDeclaration.VertexStride;
+
+               byte[] vertexData = new byte[stride * part.NumVertices];
+               part.VertexBuffer.GetData(part.VertexOffset * stride, vertexData, 0, part.NumVertices, 1); // fixed 13/4/11
+
+               // Find minimum and maximum xyz values for this mesh part
+               // We know the position will always be the first 3 float values of the vertex data
+               Vector3 vertPosition = new Vector3();
+               for (int ndx = 0; ndx < vertexData.Length; ndx += stride)
+               {
+                   vertPosition.X = BitConverter.ToSingle(vertexData, ndx);
+                   vertPosition.Y = BitConverter.ToSingle(vertexData, ndx + sizeof(float));
+                   vertPosition.Z = BitConverter.ToSingle(vertexData, ndx + sizeof(float) * 2);
+
+                   // update our running values from this vertex
+                   meshMin = Vector3.Min(meshMin, vertPosition);
+                   meshMax = Vector3.Max(meshMax, vertPosition);
+               }
+           }
+
+           // transform by mesh bone transforms
+           meshMin = Vector3.Transform(meshMin, modelTransforms[mesh.ParentBone.Index]);
+           meshMax = Vector3.Transform(meshMax, modelTransforms[mesh.ParentBone.Index]);
+
+           // Expand model extents by the ones from this mesh
+           modelMin = Vector3.Min(modelMin, meshMin);
+           modelMax = Vector3.Max(modelMax, meshMax);
+       }
+
+       // Create and return the model bounding box
+       return new BoundingBox(modelMin, modelMax);
+   }
         private BoundingBox BuildBoundingBox(ModelMesh mesh, Matrix meshTransform)
         {
             // Create initial variables to hold min and max xyz values for the mesh
@@ -594,7 +647,10 @@ namespace Logic
                     // Iterate through vertices (possibly) growing bounding box, all calculations are done in world space
                     for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
                     {
-                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), baseWorld);
+                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), Matrix.CreateScale(Scale) * Matrix.CreateRotationX(Rotation.X) *
+                Matrix.CreateRotationY(Rotation.Y) *
+                Matrix.CreateRotationZ(Rotation.Z) *
+                Matrix.CreateTranslation(Position));
 
                         min = Vector3.Min(min, transformedPosition);
                         max = Vector3.Max(max, transformedPosition);

@@ -48,7 +48,7 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength =model.Scale.X;
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             circle.Scale = model.Scale.X * 10;
-           this.Model.switchAnimation("Atack");
+           this.Model.switchAnimation("Idle");
            this.armorAfterBuff = armor * 2;
         }
         public AntPeasant(LoadModel model)
@@ -66,6 +66,9 @@ namespace Logic.Units.Ants
            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
            circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
            this.armorAfterBuff = armor * 2;
+           hp = 100;
+           this.Model.switchAnimation("Idle");
+
         }
         public override void gaterMaterial(Material material)
         {
@@ -90,7 +93,6 @@ namespace Logic.Units.Ants
                      
                    }
                     capacity++;
-                   
               
                 
             }
@@ -102,9 +104,9 @@ namespace Logic.Units.Ants
             base.Update(time);
         }
 
-        public override void Draw(GameCamera.FreeCamera camera)
+        public override void Draw(GameCamera.FreeCamera camera,float time)
         {
-            model.Draw(camera);
+            model.Draw(camera,time);
             
         }
         public override void DrawSelected(GameCamera.FreeCamera camera)
@@ -159,20 +161,7 @@ namespace Logic.Units.Ants
                 }
             }
 
-                    foreach(BoundingSphere b in model.Spheres)
-                    {
-
-                           foreach(BoundingSphere b2 in interactive.Model.Spheres)
-                           {
-
-                             if (b.Intersects(b2)  )
-                             {
-                                  
-                             }
- 
-
-                           }
-                   }
+                    
             }
         public override void setGaterMaterial(Material m)
         {

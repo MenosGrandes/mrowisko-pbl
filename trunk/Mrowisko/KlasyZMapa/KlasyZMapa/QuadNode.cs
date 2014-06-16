@@ -48,7 +48,7 @@ namespace Map
         #endregion
 
         public BoundingBox Bounds;
-
+        public bool containSomething = false;
         public NodeType NodeType;
         public bool IsSpit { get { return _isSpit; } }
 

@@ -116,6 +116,7 @@
     <Compile Include="InteractiveModel.cs" />
     <Compile Include="Units\Ants\AntPeasant.cs" />
     <Compile Include="Units\Ants\AntSpitter.cs" />
+    <Compile Include="Units\Ants\Queen.cs" />
     <Compile Include="Units\Predators\Predator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit.cs" />

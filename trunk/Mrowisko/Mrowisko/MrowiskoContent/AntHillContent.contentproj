@@ -392,6 +392,7 @@
       <Name>ant</Name>
       <Importer>XImporter</Importer>
       <Processor>AnimatedModelProcessor</Processor>
+      <ProcessorParameters_RotationY>1</ProcessorParameters_RotationY>
     </Compile>
     <Compile Include="Models\grasshopper.X">
       <Name>grasshopper</Name>
