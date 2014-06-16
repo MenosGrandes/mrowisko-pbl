@@ -107,9 +107,9 @@ namespace AntHill
             smokePlumeParticles = new Particles.ParticleSystems.SmokePlumeParticleSystem(this, Content);
             fireParticles = new Particles.ParticleSystems.FireParticleSystem(this, Content);
 
-            fireParticles.Interval = 2.5f;
+            fireParticles.Interval = 3f;
             projectileTrailParticles.Interval = 2.5f;
-          //  smokePlumeParticles.Interval = 3f;
+            smokePlumeParticles.Interval = 3f;
 
             // Set the draw order so the explosions and fire
             // will appear over the top of the smoke.
@@ -342,10 +342,10 @@ GraphicsDevice);
                 currentMouseState = Mouse.GetState();
                 if (timeTriggers.Count<1)
                 {
-                    //UpdateFire();
+                    UpdateFire();
                   //  UpdateExplosions(gameTime);
 
-                  //  UpdateProjectiles(gameTime);
+                   // UpdateProjectiles(gameTime);
                    
                 }
 
@@ -841,14 +841,14 @@ GraphicsDevice);
         /// </summary>
         void UpdateFire()
         {
-            const int fireParticlesPerFrame = 50;
+            const int fireParticlesPerFrame = 10;
 
             // Create a number of fire particles, randomly positioned around a circle.
-            for (int i = 0; i < fireParticlesPerFrame; i++)
+            for (int i = 0; i < fireParticlesPerFrame/4; i++)
             {
                 fireParticles.AddParticle(RandomPointOnCircle(), Vector3.One);
             }
-            for (int i = 0; i < fireParticlesPerFrame/4; i++)
+            for (int i = 0; i < fireParticlesPerFrame/6; i++)
             {
                 // Create one smoke particle per frmae, too.
                 smokePlumeParticles.AddParticle(RandomPointOnCircle()+ new Vector3(0,20,0), Vector3.Zero);

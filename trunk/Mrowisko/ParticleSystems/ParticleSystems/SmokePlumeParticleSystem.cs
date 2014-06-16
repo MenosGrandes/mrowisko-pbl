@@ -16,7 +16,7 @@ namespace Particles.ParticleSystems
         {
             settings.TextureName = "Textures/Particles/smoke";
 
-            settings.MaxParticles = 2000;
+            settings.MaxParticles = 50;
 
             settings.Duration = TimeSpan.FromSeconds(4);
 
@@ -32,18 +32,18 @@ namespace Particles.ParticleSystems
             settings.Gravity = new Vector3(-20, -8, 0);
 
             settings.MinColor = new Color(64, 96, 128, 64);
-            settings.MaxColor = new Color(64, 64, 64, 8);
+            settings.MaxColor = new Color(64, 64, 64, 16);
 
             settings.EndVelocity = 0.75f;
 
             settings.MinRotateSpeed = -1;
             settings.MaxRotateSpeed = 1;
 
-            settings.MinStartSize = 4;
-            settings.MaxStartSize = 10;
+            settings.MinStartSize = 40;
+            settings.MaxStartSize = 70;
 
-            settings.MinEndSize = 80;
-            settings.MaxEndSize = 120;
+            settings.MinEndSize = 90;
+            settings.MaxEndSize = 140;
         }
     }
 }
