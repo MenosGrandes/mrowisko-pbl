@@ -173,14 +173,22 @@ namespace Logic
         }
         public bool CheckRayIntersection(Ray ray)
         {
-                foreach(BoundingSphere sp in model.Spheres)
-                {
-                    if (ray.Intersects(sp) != null) return true;
 
-                }
-                //if (ray.Intersects(model.BoundingSphere) != null) return true;
-            
-            return false;
+            foreach (BoundingSphere sp in model.Spheres)
+            {
+                if (ray.Intersects(sp) != null) return true;
+
+            }
+
+            if(model.B_Box!=null)
+            {
+                if (ray.Intersects(model.B_Box) != null) return true;
+            }
+           
+
+                   //if (ray.Intersects(model.BoundingSphere) != null) return true;
+                 
+            return false;  
         }
         public bool CheckFrustumIntersection(BoundingFrustum boundingFrustum)
         {

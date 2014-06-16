@@ -211,6 +211,7 @@ namespace AntHill
                // Console.WriteLine(models.GetType().BaseType.Name);
                 if (i.GetType().BaseType == typeof(Building) || i.GetType().BaseType == typeof(Material))
                 {
+                    i.Model.Position = new Vector3(i.Model.Position.X, i.Model.Position.Y + 10, i.Model.Position.Z);
                     IModel.Add(i);
                 }else
                 {
@@ -296,7 +297,7 @@ GraphicsDevice);
             WindowController.setWindowSize(1366, 768, false);
                 //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
-            models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), new Vector3(0,30,0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
+            models.Add(new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), new Vector3(0,30,0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
           //  models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
             models[models.Count-1].Model.switchAnimation("Idle");
             List<String> aa = new List<string>();
@@ -316,6 +317,11 @@ GraphicsDevice);
            timeTriggers.Add(new LaserTrigger((Laser)models[models.Count - 1], 1));
 
           Console.WriteLine("QuadNode: "+QuadNodeController.QuadNodeList.Count);
+
+          BBoxRender.InitializeBBoxDebuger(device);
+
+
+         
         }
         
 
@@ -336,7 +342,6 @@ GraphicsDevice);
         protected override void Update(GameTime gameTime)
         {
 
-            
             gui.Update(gameTime);
             kolizja = false;
                 currentMouseState = Mouse.GetState();
@@ -423,7 +428,7 @@ GraphicsDevice);
                     if(models[i].Hp<=0 && models[i].GetType().BaseType.BaseType==typeof(Unit))
                     {
                         models[i].Model.switchAnimation("Death",1);
-                        models.RemoveAt(i);
+                        //models.RemoveAt(i);
                         
                     }
                     for (int j = 0; j < IModel.Count;j++ )
@@ -643,20 +648,18 @@ GraphicsDevice);
                     { model.Draw((FreeCamera)camera, time); }
                    
 
-                //      BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                   //    Color.Green, Color.Aquamarine, Color.White);
-                  //    BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
-                    licznik++;
+                   //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                  //     Color.Green, Color.Aquamarine, Color.White);
+                  //   BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
                 }
             }
 
-            device.BlendState = BlendState.Opaque;
             foreach (InteractiveModel model in IModel)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
-                    // BoundingSphereRenderer.Render(model.Model.spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
-                  //  BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                 //    BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                 //  BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
 
                    // model.Draw(((camera)));
                     model.Draw((FreeCamera)camera);

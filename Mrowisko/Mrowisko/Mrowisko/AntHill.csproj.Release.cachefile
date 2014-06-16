@@ -87,12 +87,10 @@ Content\Textures\Button\upButton.xnb
 Content\HeighMaps\ter2.xnb
 Content\Textures\circle.xnb
 Content\Models\SkyDome\dome.xnb
-Content\Models\ant.xnb
 Content\Models\grasshopper.xnb
 Content\Models\queen.xnb
 Content\Models\spider.xnb
 Content\Models\strongAnt.xnb
-Content\Models\beetle.xnb
 Content\Models\plujka.xnb
 Content\Fonts\FPS.xnb
 Content\Effects\TexturedEffect.xnb
@@ -153,6 +151,12 @@ Content\Textures\Particles\explosion.xnb
 Content\Models\sferazuka.xnb
 Content\Textures\Particles\fire.xnb
 Content\Textures\Particles\smoke.xnb
+<<<<<<< .mine
+Content\Models\sferazuka.xnb
+Content\Models\ant.xnb
+Content\Models\beetle.xnb
+=======
+>>>>>>> .r193
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
 Content\Cursors\TronBusy.ani
