@@ -149,14 +149,10 @@ Content\Textures\treetex\kopiecmieszkalny_tex_0.xnb
 Content\Textures\treetex\Kopiec_beta_texSheme_0.xnb
 Content\Textures\Particles\explosion.xnb
 Content\Models\sferazuka.xnb
-Content\Textures\Particles\fire.xnb
-Content\Textures\Particles\smoke.xnb
-<<<<<<< .mine
-Content\Models\sferazuka.xnb
 Content\Models\ant.xnb
 Content\Models\beetle.xnb
-=======
->>>>>>> .r193
+Content\Textures\Particles\fire.xnb
+Content\Textures\Particles\smoke.xnb
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
 Content\Cursors\TronBusy.ani

@@ -76,8 +76,8 @@ namespace Logic
 
 
 
-
-
+            if (selectedObject!=null)
+            Console.WriteLine(selectedObject);
             currentMouseState = Mouse.GetState();
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
 
@@ -88,20 +88,26 @@ namespace Logic
 
             selectedObjectMouseOnlyMove = null;
             for (int i = 0; i < models.Count; i++)
+            {
+                if (currentMouseState.LeftButton == ButtonState.Pressed)
+                {
                 if (models[i].CheckRayIntersection(mouseRay))
                 {
                     //Console.WriteLine(models[i].GetType() + " adad");
-                    if (currentMouseState.LeftButton == ButtonState.Pressed)
-                    {
+                   
                         selectedObject = models[i];
                         //Console.WriteLine(selectedObject);
 
-                    }
-                    else
-                        selectedObjectMouseOnlyMove = models[i];
-                    break;
                 }
+                else
+                    selectedObject = null;
+                    
+                }
+               
+               else
+                        selectedObjectMouseOnlyMove = models[i];
 
+            }
             for (int i = 0; i < Models_Colision.Count; i++)
             {
                 Models_Colision[i].Model.B_Box = Models_Colision[i].Model.updateBoundingBox();
@@ -307,8 +313,8 @@ namespace Logic
 
                         //if (ant.Model.Position.X > ant.Model.playerTarget.X && ant.Model.Position.Z < ant.Model.playerTarget.Z)
                         {
-                            ant.Model.playerTarget.X = modelsy.Model.B_Box.Max.X + modelsy.Model.B_Box.Max.X - modelsy.Model.B_Box.Min.X;//modelsy.Model.BoundingSphere.Center.X + modelsy.Model.BoundingSphere.Radius;
-                            ant.Model.playerTarget.Z = modelsy.Model.B_Box.Max.Y + modelsy.Model.B_Box.Max.Y - modelsy.Model.B_Box.Min.Y;//modelsy.Model.BoundingSphere.Center.Z + modelsy.Model.BoundingSphere.Radius;
+//ant.Model.playerTarget.X = modelsy.Model.B_Box.Max.X + modelsy.Model.B_Box.Max.X - modelsy.Model.B_Box.Min.X;//modelsy.Model.BoundingSphere.Center.X + modelsy.Model.BoundingSphere.Radius;
+  //                          ant.Model.playerTarget.Z = modelsy.Model.B_Box.Max.Y + modelsy.Model.B_Box.Max.Y - modelsy.Model.B_Box.Min.Y;//modelsy.Model.BoundingSphere.Center.Z + modelsy.Model.BoundingSphere.Radius;
                         }
                                             
                     }

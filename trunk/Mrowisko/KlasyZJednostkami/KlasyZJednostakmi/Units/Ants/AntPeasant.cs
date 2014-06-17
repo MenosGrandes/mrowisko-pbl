@@ -144,14 +144,17 @@ namespace Logic.Units.Ants
             {
                 if (gaterMaterialObject == interactive)
                 {
-                    if (interactive.GetType().BaseType == typeof(Material))
-                    {
-                        if (gaterTime < elapsedTime)
+                    if (ImMoving) { 
+                    ImMoving = false;
+                    model.playerTarget = model.tempPosition;
+                    model.Position = model.tempPosition;
+                        }
+                    if (gaterTime < elapsedTime)
                         {
-                            gaterMaterial((Material)interactive);
+                            gaterMaterial((Material)gaterMaterialObject);
 
                         }
-                    }
+                    
                 }
                 else if (interactive.GetType() == typeof(AntGranary))
                 {
@@ -159,17 +162,20 @@ namespace Logic.Units.Ants
                     this.materials.Clear();
                   //  Console.WriteLine(Capacity);
                 }
+                else if(interactive.GetType().BaseType.BaseType!=typeof(Unit))
+                {
+                    ImMoving = true;
+                }
             }
 
                     
             }
         public override void setGaterMaterial(Material m)
         {
-            if(m!=gaterMaterialObject)
-            {
+
                 gaterMaterialObject = m;
 
-            }
+           
         }
         public override string ToString()
         {
