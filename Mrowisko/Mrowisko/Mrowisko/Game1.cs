@@ -273,7 +273,7 @@ MathHelper.ToRadians(-45), // Pitched up 13 degrees
 GraphicsDevice);
 
             quadTree = new QuadTree(Vector3.Zero, texture, device,3, Content, (FreeCamera)camera);
-            quadTree.Cull = true;
+            quadTree.Cull = false;
 
             water = new Water(device, Content, texture[4].Width, 3);
 

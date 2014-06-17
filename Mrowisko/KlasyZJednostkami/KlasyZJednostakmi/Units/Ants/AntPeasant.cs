@@ -133,6 +133,7 @@ namespace Logic.Units.Ants
         }
         public override void Intersect(InteractiveModel interactive)
         {
+            base.Intersect(interactive);
             if(this==interactive)
             { return ; }
 
@@ -167,23 +168,7 @@ namespace Logic.Units.Ants
                     ImMoving = true;
                 }
             }
-            if (interactive.GetType().BaseType.BaseType == typeof(Unit))
-            {
-                if (model.BoundingSphere.Intersects(interactive.Model.BoundingSphere))
-                {
-                    //interactive.Model.Position -= Vector3.Left;
-                    float distance2 =Vector3.Distance(model.BoundingSphere.Center,interactive.Model.BoundingSphere.Center);
-                    Vector3 aa=(model.Position-interactive.Model.Position);
-                    if(aa.X>0)
-                    {
-                        model.Position -= Vector3.Left;
-                    }
-                    if (aa.X < 0)
-                    {
-                        model.Position -= Vector3.Right;
-                    }
-                }
-            }
+            
                     
             }
         public override void setGaterMaterial(Material m)

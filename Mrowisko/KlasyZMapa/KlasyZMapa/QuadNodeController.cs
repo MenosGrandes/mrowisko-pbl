@@ -9,6 +9,7 @@ namespace Map
     public static class QuadNodeController
     {
         public static List<QuadNode> QuadNodeList=new List<QuadNode>();
+        public static bool ustawione = false;
         public static Vector3 getIntersectedQuadNode(Ray intersected)
         {
             Vector3 v = Vector3.Zero;
@@ -33,7 +34,7 @@ namespace Map
                             v.Z = k;
 
                             tmp.Min = v;
-                            tmp.Max = v + new Vector3(1);
+                            tmp.Max = v + new Vector3(3);
                            
 
                             if (intersected.Intersects(tmp) != null)
@@ -43,7 +44,7 @@ namespace Map
                         }
                     }
 
-                    return q.Bounds.Min + (q.Bounds.Max - q.Bounds.Min) / 4;
+                    return q.Bounds.Min + (q.Bounds.Max - q.Bounds.Min) /2;
 
                     
                  

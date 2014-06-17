@@ -393,6 +393,7 @@ namespace Map
             {
                 this.Activate();
                 _isSpit = false;
+                if(QuadNodeController.ustawione==false)
                 QuadNodeController.QuadNodeList.Add(this);
 
             }
