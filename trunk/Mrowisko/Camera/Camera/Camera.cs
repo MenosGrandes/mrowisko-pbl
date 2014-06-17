@@ -15,7 +15,7 @@ namespace GameCamera
         Matrix view;
         Matrix projection;
         public Matrix Projection
-        {
+        {                                                                         
             get { return projection; }
             protected set
             {

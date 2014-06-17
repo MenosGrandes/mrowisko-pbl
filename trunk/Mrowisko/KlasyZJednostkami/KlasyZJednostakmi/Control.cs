@@ -64,7 +64,7 @@ namespace Logic
             StaticHelpers.StaticHelper.heights=quad.Vertices.heightDataToControl;
             StaticHelpers.StaticHelper.width = (int)Math.Sqrt(quad.Vertices.heightDataToControl.Length);
             StaticHelpers.StaticHelper.length = (int)Math.Sqrt(quad.Vertices.heightDataToControl.Length);
-            modelos = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), Vector3.Zero, Vector3.One, Vector3.One, StaticHelpers.StaticHelper.Device, null)); 
+            modelos = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), Vector3.Zero, new Vector3(0.3f), Vector3.One, StaticHelpers.StaticHelper.Device, null)); 
 
         }
         public void Update(GameTime gameTime)
@@ -84,7 +84,7 @@ namespace Logic
             // Vector3 mouse3d2 = CalculateMouse3DPosition(currentMouseState.X,currentMouseState.Y);
             
             Vector3 mouse3d2 = QuadNodeController.getIntersectedQuadNode(mouseRay);
-            modelos.Model.Position = new Vector3(mouse3d2.X, 30, mouse3d2.Z);
+            modelos.Model.Position = new Vector3(mouse3d2.X, StaticHelpers.StaticHelper.GetHeightAt(mouse3d2.X,mouse3d2.Z), mouse3d2.Z);
 
             selectedObjectMouseOnlyMove = null;
             for (int i = 0; i < models.Count; i++)
@@ -264,7 +264,7 @@ namespace Logic
 
         public void Draw(SpriteBatch spriteBatch,FreeCamera camera)
         {
-            //modelos.Draw(camera);
+            modelos.Draw(camera);
             if (mouseDown)
             {
                 //spriteBatch.Draw(texture[11], selectRectangle, new Color(255, 255, 255, 180));

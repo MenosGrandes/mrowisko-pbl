@@ -18,7 +18,7 @@ namespace Map
     {
 
 
-        public int MinimumDepth = 9;
+        public int MinimumDepth = 7;
         public int IndexCount { get; private set; }
         public BasicEffect Effect;
         private QuadNode _rootNode;
@@ -130,9 +130,11 @@ namespace Map
             #region Proj
             //  effect.Parameters["xTexture14"].SetValue(textures[26]);
             #endregion
-
+            MinimumDepth = 9;
             _rootNode.EnforceMinimumDepth();
-
+            MinimumDepth = 7;
+            QuadNodeController.ustawione = true;
+            _rootNode.EnforceMinimumDepth();
         }
         public void Update(GameTime gameTime)
         {
