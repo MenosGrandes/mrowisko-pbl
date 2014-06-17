@@ -695,8 +695,14 @@ GraphicsDevice);
                         // Console.WriteLine(control.selectedObject);
                         selected.setGaterMaterial((Material)control.selectedObject);
                     }
+
+                }
+                else
+                {
+                    selected.setGaterMaterial(null);
                 }
             }
+                                
             if (control.selectedObjectMouseOnlyMove != null)
             {
                 control.selectedObjectMouseOnlyMove.DrawSelected((FreeCamera)camera);
