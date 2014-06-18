@@ -29,7 +29,8 @@ using GUI;
 using System.IO;
 using Logic.Units.Allies;
 using Logic.EnviroModel;
-
+using PathFinder;
+using System.Diagnostics;
 namespace AntHill
 {
     /// <summary>
@@ -38,7 +39,7 @@ namespace AntHill
     public class Game1 : Microsoft.Xna.Framework.Game
     {
 
-        RenderTarget2D circle;
+
         List<InteractiveModel> models = new List<InteractiveModel>();
         List<InteractiveModel> inter = new List<InteractiveModel>(); 
         List<InteractiveModel> IModel = new List<InteractiveModel>();
@@ -321,7 +322,20 @@ GraphicsDevice);
 
           BBoxRender.InitializeBBoxDebuger(device);
 
+          PathFinderManager pf = new PathFinderManager(IModel);
+          Console.WriteLine(pf.tileList.Count);
 
+
+           foreach(Tile r in pf.tileList)
+           {
+               //Console.WriteLine(r.walkable);
+               if(r.walkable==false)
+               {
+                   //Console.WriteLine("Tile"+r.centerPosition);
+                   models.Add((new Beetle(new LoadModel(Content.Load<Model>("Models/shoot"),new Vector3(r.centerPosition.X,r.centerPosition.Y+20,r.centerPosition.Z),new Vector3(0),new Vector3(0.4f),GraphicsDevice,light),models)));
+                   //inter.Add(new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/log"), r.centerPosition, Vector3.One, Vector3.One, device, light)));
+               }
+           }
          
         }
         
@@ -509,7 +523,12 @@ GraphicsDevice);
             MouseCursorController.Update();
             camera.Update(gameTime);
 
+
             base.Update(gameTime);
+
+
+
+
 
         }
 
@@ -529,7 +548,10 @@ GraphicsDevice);
 
 
 
-
+            foreach(InteractiveModel a in inter)
+            {
+                a.Draw((FreeCamera)camera,time);
+            }
     
 
 
@@ -647,7 +669,8 @@ GraphicsDevice);
                     { model.Draw((FreeCamera)camera); }
                     else
                     { model.Draw((FreeCamera)camera, time); }
-                   
+
+                    BBoxRender.DrawBBox(model.Model.B_Box, camera.Projection, camera.View, Matrix.Identity);
 
                    //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
                   //     Color.Green, Color.Aquamarine, Color.White);

@@ -25,6 +25,43 @@ namespace Debugger
     0, 4, 1, 5, 2, 6, 3, 7 // Side edges connecting front and back
 };
 
+
+
+
+        public static void DrawBBox(BoundingBox box, Matrix Projection, Matrix View, Matrix localWorld)
+        {   // Use inside a drawing loop
+         
+                Vector3[] corners = box.GetCorners();
+                VertexPositionColor[] primitiveList = new VertexPositionColor[corners.Length];
+
+                // Assign the 8 box vertices
+                for (int i = 0; i < corners.Length; i++)
+                {
+                    primitiveList[i] = new VertexPositionColor(corners[i], Color.White);
+                }
+
+                /* Set your own effect parameters here */
+
+                boxEffect.World = localWorld;
+                boxEffect.View = View;
+                boxEffect.Projection = Projection;
+                boxEffect.TextureEnabled = false;
+
+                // Draw the box with a LineList
+                foreach (EffectPass pass in boxEffect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+                    device.DrawUserIndexedPrimitives(
+                        PrimitiveType.LineList, primitiveList, 0, 8,
+                        bBoxIndices, 0, 12);
+                }
+            }
+        
+        
+        
+        
+        
+        
         public static void DrawBBox(List<BoundingBox> boundingBoxes, Matrix Projection, Matrix View,Matrix localWorld)
         {   // Use inside a drawing loop
             foreach (BoundingBox box in boundingBoxes)
