@@ -145,20 +145,20 @@ namespace Logic.Units.Ants
             {
                 return;
             }
-            if (model.BoundingSphere.Intersects(interactive.Model.B_Box))
+            if (model.Spheres[0].Intersects(interactive.Model.B_Box))
             {
                 Console.WriteLine(gaterMaterialObject);
                 if (gaterMaterialObject == interactive)
                 {
                     if (ImMoving) { 
                     ImMoving = false;
-                    model.playerTarget = model.tempPosition;
+                    model.playerTarget = model.Position;
                    // model.Position = model.tempPosition;
                         }
                     if (gaterTime < elapsedTime)
                         {
                             gaterMaterial((Material)gaterMaterialObject);
-                            SoundController.SoundController.Play(SoundController.SoundEnum.Gater);
+                          //  SoundController.SoundController.Play(SoundController.SoundEnum.Gater);
                             Logic.Player.Player.addMaterial(releaseMaterial());
                             materials.Clear();
                         }

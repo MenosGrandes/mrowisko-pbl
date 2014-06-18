@@ -13,6 +13,8 @@ using GameCamera;
 using Logic.Building;
 using Logic.Units.Allies;
 using Logic.EnviroModel;
+using Logic.Meterials;
+using Logic.Units.Ants;
 
 
 namespace Logic
@@ -72,7 +74,7 @@ namespace Logic
 
 
 
-
+            Avoid(gameTime);
            
             currentMouseState = Mouse.GetState();
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
@@ -245,10 +247,10 @@ namespace Logic
                 }
             }
 
+
             //updateAnt(gameTime);
-            for (int i = 0; i < SelectedModels.Count; i++) {
-                Update(gameTime, SelectedModels[i], Models_Colision, new Vector3(SelectedModels[i].Model.playerTarget.X, StaticHelpers.StaticHelper.GetHeightAt(SelectedModels[i].Model.playerTarget.X, SelectedModels[i].Model.playerTarget.Z), SelectedModels[i].Model.playerTarget.Z));
-            }
+           
+                           
         }
 
         public void Draw(SpriteBatch spriteBatch,FreeCamera camera)
@@ -612,26 +614,46 @@ namespace Logic
 
 
 
-public void Update(GameTime gameTime, InteractiveModel ship,List<InteractiveModel>  obstacles, Vector3 target)
+public void Avoid(GameTime gameTime)
 {
-    float pullDistance = Vector3.Distance(target, ship.Model.Position);
+  for(int j=0;j<models.Count;j++)
+  {
+
+      if (models[j].ImMoving == false)
+      {
+          continue;
+      }
+      if (Vector2.Distance(new Vector2(models[j].Model.Position.X, models[j].Model.Position.Z), new Vector2(models[j].Model.playerTarget.X, models[j].Model.playerTarget.Z)) < 1)
+      {
+          models[j].ImMoving = false;
+          continue;
+      };
+    float pullDistance = Vector3.Distance(models[j].Model.playerTarget, models[j].Model.Position);
  
     //Only do something if we are not already there
     if (pullDistance > 1)
     {
-        Vector3 pull = (target - ship.Model.Position) * (1 /  pullDistance); //the target tries to 'pull us in'
+        Vector3 pull = (models[j].Model.playerTarget - models[j].Model.Position) * (1 / pullDistance); //the target tries to 'pull us in'
         Vector3 totalPush = Vector3.Zero;
  
         int contenders = 0;
-        for (int i = 0; i < obstacles.Count; ++i)		
-        {
+        for (int i = 0; i < Models_Colision.Count; ++i)		
+        {  
+        //if(ship.GetType()==typeof(AntPeasant))
+        //{
+        //    if (((AntPeasant)ship).gaterMaterialObject == obstacles[i])
+        //           {
+        //               continue;
+        //           }
+        //}
+
             //draw a vector from the obstacle to the ship, that 'pushes the ship away'
-            Vector3 push = ship.Model.Position - obstacles[i].Model.Position;
+            Vector3 push = models[j].Model.Position - Models_Colision[i].Model.Position;
  
             //calculate how much we are pushed away from this obstacle, the closer, the more push
-            float distance = (Vector3.Distance(ship.Model.Position, obstacles[i].Model.Position) - obstacles[i].Model.BoundingSphere.Radius) - ship.Model.BoundingSphere.Radius ;
+            float distance = (Vector3.Distance(models[j].Model.Position, Models_Colision[i].Model.Position) - Models_Colision[i].Model.BoundingSphere.Radius) - models[j].Model.BoundingSphere.Radius;
             //only use push force if this object is close enough such that an effect is needed
-            if (distance < ship.Model.BoundingSphere.Radius * 3)
+            if (distance < models[j].Model.BoundingSphere.Radius * 2)
             {
                 ++contenders; //note that this object is actively pushing
  
@@ -651,8 +673,16 @@ public void Update(GameTime gameTime, InteractiveModel ship,List<InteractiveMode
         //Normalize the vector so that we get a vector that points in a certain direction, which we van multiply by our desired speed
         pull.Normalize();
         //Set the ships new position;
-        ship.Model.Position = new Vector3(ship.Model.Position.X + (pull.X*60) * (float)gameTime.ElapsedGameTime.TotalSeconds, StaticHelpers.StaticHelper.GetHeightAt(ship.Model.Position.X,ship.Model.Position.Z), ship.Model.Position.Z+ (pull.Z * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds);
+        float height = 0;
+        switch (models[j].GetType().Name)
+        {
+            case "Beetle": height += 11; break;
+            case "AntPeasant": height += 7; break;
+            case "Spider": height += 7; break;
+        }
+        models[j].Model.Position = new Vector3(models[j].Model.Position.X + (pull.X * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds, StaticHelpers.StaticHelper.GetHeightAt(models[j].Model.Position.X, models[j].Model.Position.Z) + height, models[j].Model.Position.Z + (pull.Z * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds);
     }
+  }
 }
 
 
