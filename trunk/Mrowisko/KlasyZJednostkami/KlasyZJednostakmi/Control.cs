@@ -184,9 +184,9 @@ namespace Logic
                 SelectedModels.Clear();
                 SelectedObject();
 
-
+                starSelectMouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
+                selectRectangleStart = QuadNodeController.getIntersectedQuadNode(starSelectMouseRay);
                 position = new Vector2(currentMouseState.X, currentMouseState.Y);
-                position3d = CalculateMouse3DPosition(position);
                 selectCorner = position;
                 selectRectangle = new Rectangle((int)position.X, (int)position.Y, 0, 0);
                 //selectedObject = SelectedObject(mouse3d2);
@@ -197,8 +197,9 @@ namespace Logic
             else if (currentMouseState.RightButton == ButtonState.Pressed)
             {
                 //SelectedModels.Clear();
-
+                stopMouseRay=GetMouseRay(new Vector2(currentMouseState.X,currentMouseState.Y));
                 selectCorner = new Vector2(currentMouseState.X, currentMouseState.Y);
+                selectRectangleStop = QuadNodeController.getIntersectedQuadNode(stopMouseRay);
                 if (selectCorner.X > position.X)
                 {
                     selectRectangle.X = (int)position.X;
@@ -251,7 +252,6 @@ namespace Logic
             {
                 foreach (InteractiveModel ant in SelectedModels)
                 {
-                    history.Clear();
                     ant.Model.playerTarget.X = mouse3d2.X;
                     ant.Model.playerTarget.Z = mouse3d2.Z;
                     ant.Model.switchAnimation("Walk");
@@ -635,8 +635,8 @@ namespace Logic
         private void Selected()
         {
 
-            startRectangle = CalculateMouse3DPosition(position);
-            endRectangle = CalculateMouse3DPosition(selectCorner);
+            startRectangle = selectRectangleStart;
+            endRectangle = selectRectangleStop;
 
             Vector3 minRectangle;
             Vector3 maxRectangle;
@@ -832,6 +832,14 @@ namespace Logic
 
 
        */
+
+        public Ray starSelectMouseRay { get; set; }
+
+        public Vector3 selectRectangleStart { get; set; }
+
+        public Ray stopMouseRay { get; set; }
+
+        public Vector3 selectRectangleStop { get; set; }
     }
 }
 
