@@ -21,6 +21,9 @@ namespace Logic
 {
     public class Control
     {
+
+
+                       
         public InteractiveModel modelos;
         public float cameraYaw, cameraPitch;
         public Matrix View;
@@ -58,15 +61,12 @@ namespace Logic
         private Vector3 startRectangle;
         private Vector3 endRectangle;
         public Vector3 mouse3d2;
-
-        public Control(Texture2D _texture, QuadTree quad)
+        public PathFinderManager.PathFinderManager pf;
+        public Control(Texture2D _texture, QuadTree quad,PathFinderManager.PathFinderManager _pf)
         {
             this.texture = _texture;
-            StaticHelpers.StaticHelper.heights=quad.Vertices.heightDataToControl;
-            StaticHelpers.StaticHelper.width = (int)Math.Sqrt(quad.Vertices.heightDataToControl.Length);
-            StaticHelpers.StaticHelper.length = (int)Math.Sqrt(quad.Vertices.heightDataToControl.Length);
-            modelos = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), Vector3.Zero, new Vector3(0.3f), Vector3.One, StaticHelpers.StaticHelper.Device, null)); 
-
+                       modelos = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), Vector3.Zero, new Vector3(0.3f), Vector3.One, StaticHelpers.StaticHelper.Device, null));
+            pf = _pf;
         }
         public void Update(GameTime gameTime)
         {
@@ -77,12 +77,15 @@ namespace Logic
           //  Avoid(gameTime);
            
             currentMouseState = Mouse.GetState();
-            mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
+            mouseRay = GetMouseRay(new Vector2(500, 500));
 
             
             Vector3 mouse3d2 = QuadNodeController.getIntersectedQuadNode(mouseRay);
-            modelos.Model.Position = new Vector3(mouse3d2.X, StaticHelpers.StaticHelper.GetHeightAt(mouse3d2.X,mouse3d2.Z), mouse3d2.Z);
-            Console.WriteLine(selectedObject);
+           // int intersectedTileNumber = QuadNodeController.getIntersectedQuadNodeForMove(mouseRay);
+ 
+
+            //modelos.Model.Position = new Vector3(mouse3d2.X, StaticHelpers.StaticHelper.GetHeightAt(mouse3d2.X,mouse3d2.Z), mouse3d2.Z);
+            //Console.WriteLine(selectedObject);
             selectedObjectMouseOnlyMove = null;
             for (int i = 0; i < models.Count; i++)
             {
@@ -240,10 +243,16 @@ namespace Logic
             {
                 foreach (InteractiveModel ant in SelectedModels)
                 {
-                    ant.Model.playerTarget.X = mouse3d2.X;
-                    ant.Model.playerTarget.Z = mouse3d2.Z;
+                    float distance = 0;
+                    mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
+
+                    Tile t=pf.getTile(mouseRay);
+                    modelos.Model.Position = t.centerPosition;
+                    ant.Model.playerTarget = t.centerPosition;
+                    pf.calculateHeuristic(new Vector2(ant.Model.Position.X, ant.Model.Position.Z), new Vector2(t.centerPosition.X, t.centerPosition.Z),out distance);
                     ant.Model.switchAnimation("Walk");
                     ant.ImMoving = true;
+                    Console.WriteLine(distance);
                 }
             }
 

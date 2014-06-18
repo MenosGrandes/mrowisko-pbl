@@ -287,7 +287,7 @@ namespace Logic
             Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                
+                if (!mesh.Name.Contains("Bounding")) { 
                     Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
                    * baseWorld;
                     this.localWorld = localWorld;
@@ -318,6 +318,7 @@ namespace Logic
                    }
 
                    mesh.Draw();
+                }
                            
             }
            }
