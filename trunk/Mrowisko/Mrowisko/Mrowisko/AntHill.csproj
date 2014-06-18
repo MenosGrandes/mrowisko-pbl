@@ -131,6 +131,10 @@
       <Project>{9b34963e-00e4-4ab2-9625-9ae8ef52481b}</Project>
       <Name>Particles</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\PathFinder\PathFinder.csproj">
+      <Project>{1c4f3f32-aef2-421b-82e8-22823a48407b}</Project>
+      <Name>PathFinder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Player\Player.csproj">
       <Project>{80fbc0ee-2892-4ffe-805f-1c37d3981824}</Project>
       <Name>Player</Name>

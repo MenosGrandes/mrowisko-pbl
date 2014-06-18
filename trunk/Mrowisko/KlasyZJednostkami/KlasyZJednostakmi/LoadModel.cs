@@ -111,7 +111,7 @@ namespace Logic
         public LoadModel(Model Model, Vector3 Position, Vector3 Rotation,
         Vector3 Scale, GraphicsDevice graphicsDevice, LightsAndShadows.Light light)
         {
-            Console.WriteLine(Position);
+           // Console.WriteLine(Position);
             this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateRotationX(Rotation.X) * Matrix.CreateRotationX(Rotation.Y) * Matrix.CreateRotationX(Rotation.Z) * Matrix.CreateTranslation(Position);
 
             
@@ -162,7 +162,7 @@ namespace Logic
             Matrix.CreateRotationZ(Rotation.Z)*
             Matrix.CreateTranslation(Position);
             shadowCasters = new List<ShadowCasterObject>();
-            Console.WriteLine(Position);
+            //Console.WriteLine(Position);
             this.Model = Model;
             this.graphicsDevice = GraphicsDevice;
             this.content = Content;
@@ -287,8 +287,7 @@ namespace Logic
             Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                if (!mesh.Name.Contains("Bounding"))
-                { 
+                
                     Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
                    * baseWorld;
                     this.localWorld = localWorld;
@@ -319,7 +318,7 @@ namespace Logic
                    }
 
                    mesh.Draw();
-                           }
+                           
             }
            }
 

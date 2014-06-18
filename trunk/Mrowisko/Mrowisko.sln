@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundController", "SoundCon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{9E09ABA0-7C5B-4E04-88AE-DE0EA4015DCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathFinder", "PathFinder\PathFinder.csproj", "{1C4F3F32-AEF2-421B-82E8-22823A48407B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -123,6 +125,10 @@ Global
 		{9E09ABA0-7C5B-4E04-88AE-DE0EA4015DCD}.Debug|x86.Build.0 = Debug|x86
 		{9E09ABA0-7C5B-4E04-88AE-DE0EA4015DCD}.Release|x86.ActiveCfg = Release|x86
 		{9E09ABA0-7C5B-4E04-88AE-DE0EA4015DCD}.Release|x86.Build.0 = Release|x86
+		{1C4F3F32-AEF2-421B-82E8-22823A48407B}.Debug|x86.ActiveCfg = Debug|x86
+		{1C4F3F32-AEF2-421B-82E8-22823A48407B}.Debug|x86.Build.0 = Debug|x86
+		{1C4F3F32-AEF2-421B-82E8-22823A48407B}.Release|x86.ActiveCfg = Release|x86
+		{1C4F3F32-AEF2-421B-82E8-22823A48407B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

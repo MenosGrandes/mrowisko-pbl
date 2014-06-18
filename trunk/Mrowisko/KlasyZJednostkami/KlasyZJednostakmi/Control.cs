@@ -74,7 +74,7 @@ namespace Logic
 
 
 
-            Avoid(gameTime);
+          //  Avoid(gameTime);
            
             currentMouseState = Mouse.GetState();
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
@@ -248,7 +248,7 @@ namespace Logic
             }
 
 
-            //updateAnt(gameTime);
+            updateAnt(gameTime);
            
                            
         }

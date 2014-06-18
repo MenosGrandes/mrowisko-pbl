@@ -49,7 +49,8 @@ namespace Controlers
                            p.Model.switchAnimation("Atack");
                            listOfAllInteractiveModelsFromFile.Add(p);
                           // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("queen"), new Vector3(150, 0, 0), new Vector3(0, 6, 0), new Vector3(0.4f), GraphicsDevice,Content, light), 10000, 10))
-                           break; 
+                           p.Model.CreateBoudingBox();
+                          break; 
                        case "Log":
 
                            Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//log"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
