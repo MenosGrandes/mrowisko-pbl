@@ -102,6 +102,9 @@
     <Compile Include="Meterials\MaterialCluster\Rock.cs" />
     <Compile Include="Meterials\Stone.cs" />
     <Compile Include="Meterials\Wood.cs" />
+    <Compile Include="PathFinder\Class1.cs" />
+    <Compile Include="PathFinder\Tile.cs" />
+    <Compile Include="PathFinder\WayPoint.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PointInTime.cs" />
     <Compile Include="Triggers\LaserTrigger.cs" />

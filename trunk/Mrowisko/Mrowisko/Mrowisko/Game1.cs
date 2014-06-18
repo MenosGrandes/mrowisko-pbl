@@ -31,6 +31,7 @@ using Logic.Units.Allies;
 using Logic.EnviroModel;
 using PathFinder;
 using System.Diagnostics;
+using Logic.PathFinderManager;
 namespace AntHill
 {
     /// <summary>
@@ -202,7 +203,7 @@ namespace AntHill
 
 
             StaticHelpers.StaticHelper.Content = Content;
-            StaticHelpers.StaticHelper.Device = device;
+            StaticHelpers.StaticHelper.Device = device;     
             
             #region loadFromFile
            
@@ -281,7 +282,6 @@ GraphicsDevice);
 
 
 
-            control = new Logic.Control(texture[11], quadTree);
 
 /////////////// nie wiem czy to powinno byæ czy nie wiêc zakomentowa³em tylko
 //
@@ -308,7 +308,6 @@ GraphicsDevice);
             SoundController.SoundController.content = Content;
            SoundController.SoundController.Initialize(aa);
 
-           gui = new MainGUI(StaticHelpers.StaticHelper.Content,control);
 
 
            models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/beetle"),new Vector3(0,40,100),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
@@ -322,21 +321,24 @@ GraphicsDevice);
 
           BBoxRender.InitializeBBoxDebuger(device);
 
+
+          StaticHelpers.StaticHelper.heights = quadTree.Vertices.heightDataToControl;
+          StaticHelpers.StaticHelper.width = (int)Math.Sqrt(quadTree.Vertices.heightDataToControl.Length);
+          StaticHelpers.StaticHelper.length = (int)Math.Sqrt(quadTree.Vertices.heightDataToControl.Length);
+
+
+
+
           PathFinderManager pf = new PathFinderManager(IModel);
-          Console.WriteLine(pf.tileList.Count);
+          Console.WriteLine(pf.tileList.Length);
+          Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
 
 
-           foreach(Tile r in pf.tileList)
-           {
-               //Console.WriteLine(r.walkable);
-               if(r.walkable==false)
-               {
-                   //Console.WriteLine("Tile"+r.centerPosition);
-                   models.Add((new Beetle(new LoadModel(Content.Load<Model>("Models/shoot"),new Vector3(r.centerPosition.X,r.centerPosition.Y+20,r.centerPosition.Z),new Vector3(0),new Vector3(0.4f),GraphicsDevice,light),models)));
-                   //inter.Add(new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/log"), r.centerPosition, Vector3.One, Vector3.One, device, light)));
-               }
-           }
-         
+          control = new Logic.Control(texture[11], quadTree, pf);
+          gui = new MainGUI(StaticHelpers.StaticHelper.Content, control);
+
+          pf.checkNeighbours(pf.tileList[21, 31], pf.tileList[21, 32]);
+
         }
         
 

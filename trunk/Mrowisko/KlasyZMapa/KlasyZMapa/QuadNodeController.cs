@@ -36,7 +36,7 @@ namespace Map
                              v.Z = k;
 
                              tmp.Min = v;
-                             tmp.Max = v + new Vector3(3);
+                             tmp.Max = v + new Vector3(1);
                            
 
                              if (intersected.Intersects(tmp) != null)
@@ -57,5 +57,8 @@ namespace Map
 
             return Vector3.Zero;  
         }
+
+        
+
     }
 }
