@@ -42,6 +42,10 @@ namespace SoundController
                          if(s_instance[0].State==SoundState.Stopped)
                         s_instance[0].Play();
                         break;
+                    case SoundEnum.Gater:
+                        if (s_instance[2].State == SoundState.Stopped)
+                            s_instance[2].Play();
+                        break;
                     default:
                         break;
 
@@ -56,7 +60,8 @@ namespace SoundController
             SelecetedQueen,
             SelectedPeasant,
             SelectedBuildingPlace,
-            SelectedMaterial
+            SelectedMaterial ,
+            Gater
 
         };
     }

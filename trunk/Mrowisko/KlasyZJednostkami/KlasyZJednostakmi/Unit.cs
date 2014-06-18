@@ -175,7 +175,6 @@ namespace Logic
                     {
                         model.Position += Vector3.Left;
                     }
-                    Console.WriteLine(model.Rotation);
                 }
             }
         }

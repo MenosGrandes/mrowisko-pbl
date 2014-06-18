@@ -11,7 +11,6 @@ namespace Logic
     public class Laser:InteractiveModel
     {
 
-        RenderTarget2D laserMap;
         private bool canStart;
 
         public bool CanStart

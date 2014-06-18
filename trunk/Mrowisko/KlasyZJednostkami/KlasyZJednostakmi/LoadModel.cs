@@ -29,7 +29,7 @@ namespace Logic
             get { return b_box; }
             set {b_box=value;}
         }
-         
+        public List<BoundingBox> boundingBoxes=new List<BoundingBox>();
         public bool Collide;
         public Vector3 Position { get; set; }
         public Vector3 tempPosition { get; set; }
@@ -112,9 +112,8 @@ namespace Logic
         Vector3 Scale, GraphicsDevice graphicsDevice, LightsAndShadows.Light light)
         {
             Console.WriteLine(Position);
-            this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateFromYawPitchRoll(
-            Rotation.Y, Rotation.X, Rotation.Z)
-            * Matrix.CreateTranslation(Position);
+            this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateRotationX(Rotation.X) * Matrix.CreateRotationX(Rotation.Y) * Matrix.CreateRotationX(Rotation.Z) * Matrix.CreateTranslation(Position);
+
             
             shadowCasters = new List<ShadowCasterObject>();
             this.Model = Model;
@@ -128,11 +127,11 @@ namespace Logic
             this.graphicsDevice = graphicsDevice;
             this.light = light;
             buildBoundingSphere();
-
+            CreateBoudingBox();
 
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                if (!mesh.Name.Contains("BoundingSphere"))
+                if (!mesh.Name.Contains("Bounding"))
                     foreach (ModelMeshPart meshpart in mesh.MeshParts)
                 {
 
@@ -184,7 +183,7 @@ namespace Logic
 
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                if (!mesh.Name.Contains("BoundingSphere"))
+                if (!mesh.Name.Contains("Bounding"))
                     foreach (ModelMeshPart meshpart in mesh.MeshParts)
                     {
 
@@ -259,7 +258,7 @@ namespace Logic
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
-                if (mesh.Name.Contains("BoundingSphere"))
+                if (mesh.Name.Contains("Bounding"))
                 {
                     
                     spheres2.Add(transformed);
@@ -288,7 +287,7 @@ namespace Logic
             Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in Model.Meshes)
             {
-                if (!mesh.Name.Contains("BoundingSphere"))
+                if (!mesh.Name.Contains("Bounding"))
                 { 
                     Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
                    * baseWorld;
@@ -336,7 +335,7 @@ namespace Logic
             Matrix.CreateTranslation(Position);
             foreach (ModelMesh mesh in model2.Model.Meshes)
             {
-                if (!mesh.Name.Contains("BoundingSphere"))
+                if (!mesh.Name.Contains("Bounding"))
                 {
                     Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
                    * baseWorld;
@@ -455,7 +454,7 @@ namespace Logic
 
                    foreach (ModelMesh mesh in Model.Meshes)
                    {
-                       if (!mesh.Name.Contains("BoundingSphere"))
+                       if (!mesh.Name.Contains("Bounding"))
                            foreach (ModelMeshPart meshpart in mesh.MeshParts)
                            {
 
@@ -484,7 +483,7 @@ namespace Logic
              foreach (ModelMesh mesh in Model.Meshes)
                {
 
-                   if (!mesh.Name.Contains("BoundingSphere"))
+                   if (!mesh.Name.Contains("Bounding"))
                    mesh.Draw();
                }
 
@@ -526,18 +525,20 @@ namespace Logic
             }
             animationChange = false;
         }
-   public BoundingBox CreateBoudingBox()
+   public void CreateBoudingBox()
     {
 
         foreach (ModelMesh mesh in Model.Meshes)
-        {  if(!mesh.Name.Contains("BoundingSphere")){
+        {
+            if (mesh.Name.Contains("BoundingBox"))
+            {
             Matrix meshTransform = modelTransforms[mesh.ParentBone.Index];
             b_box=BuildBoundingBox(mesh, meshTransform);
             //b_box = CalculateBoundingBox();
-            return b_box;
+            //boundingBoxes.Add(b_box);
+           
         }
         }
-        return new BoundingBox();
 }
    public BoundingBox CalculateBoundingBox()
    {
@@ -634,6 +635,7 @@ namespace Logic
             // For each mesh of the model
             foreach (ModelMesh mesh in Model.Meshes)
             {
+
                 foreach (ModelMeshPart meshPart in mesh.MeshParts)
                 {
                     // Vertex buffer parameters
@@ -647,10 +649,7 @@ namespace Logic
                     // Iterate through vertices (possibly) growing bounding box, all calculations are done in world space
                     for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
                     {
-                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]), Matrix.CreateScale(Scale) * Matrix.CreateRotationX(Rotation.X) *
-                Matrix.CreateRotationY(Rotation.Y) *
-                Matrix.CreateRotationZ(Rotation.Z) *
-                Matrix.CreateTranslation(Position));
+                        Vector3 transformedPosition = Vector3.Transform(new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]),localWorld);
 
                         min = Vector3.Min(min, transformedPosition);
                         max = Vector3.Max(max, transformedPosition);

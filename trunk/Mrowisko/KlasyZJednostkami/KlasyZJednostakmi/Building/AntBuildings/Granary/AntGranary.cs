@@ -25,9 +25,7 @@ namespace Logic.Building.AntBuildings.Granary
         {
 
         }
-        new public void Draw()
-        {
-        }
+
 
     }
 }

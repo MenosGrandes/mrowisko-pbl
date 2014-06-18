@@ -12,6 +12,7 @@ using Map;
 using GameCamera;
 using Logic.Building;
 using Logic.Units.Allies;
+using Logic.EnviroModel;
 
 
 namespace Logic
@@ -39,7 +40,6 @@ namespace Logic
         public LoadModel moving;
 
         //tabele wysokosci
-        private float[,] heights;
         public int heightsa;
         public int width;
         public int length;
@@ -49,10 +49,9 @@ namespace Logic
         public int indeks;
 
         //private Texture2D texture;
-        Vector2 position, positionMouseOnlyMove;
+        Vector2 position;
         public Vector3 position3d, position3DMouseOnlyMove;
         MouseState currentMouseState;
-        int f = 0;
         private bool mouseDown;
         private Vector3 startRectangle;
         private Vector3 endRectangle;
@@ -70,22 +69,18 @@ namespace Logic
         public void Update(GameTime gameTime)
         {
 
-            //if(selectedObject!=null)
-            // Console.WriteLine(selectedObject);
 
 
 
 
-            if (selectedObject!=null)
-            Console.WriteLine(selectedObject);
+           
             currentMouseState = Mouse.GetState();
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
 
-            // Vector3 mouse3d2 = CalculateMouse3DPosition(currentMouseState.X,currentMouseState.Y);
             
             Vector3 mouse3d2 = QuadNodeController.getIntersectedQuadNode(mouseRay);
             modelos.Model.Position = new Vector3(mouse3d2.X, StaticHelpers.StaticHelper.GetHeightAt(mouse3d2.X,mouse3d2.Z), mouse3d2.Z);
-
+            Console.WriteLine(selectedObject);
             selectedObjectMouseOnlyMove = null;
             for (int i = 0; i < models.Count; i++)
             {
@@ -99,8 +94,7 @@ namespace Logic
                         //Console.WriteLine(selectedObject);
 
                 }
-                else
-                    selectedObject = null;
+               
                     
                 }
                
@@ -111,6 +105,7 @@ namespace Logic
             for (int i = 0; i < Models_Colision.Count; i++)
             {
                 Models_Colision[i].Model.B_Box = Models_Colision[i].Model.updateBoundingBox();
+              
 
                 if (Models_Colision[i].CheckRayIntersection(mouseRay))
                 {
@@ -189,14 +184,11 @@ namespace Logic
                 position = new Vector2(currentMouseState.X, currentMouseState.Y);
                 selectCorner = position;
                 selectRectangle = new Rectangle((int)position.X, (int)position.Y, 0, 0);
-                //selectedObject = SelectedObject(mouse3d2);
-                //if ((mouse3d2.X > pozycja_X_lewo && mouse3d2.X < pozycja_X_prawo) && (mouse3d2.Z > pozycja_Z_dol && mouse3d2.Z < pozycja_Z_gora))
                 mouseDown = true;
 
             }
             else if (currentMouseState.RightButton == ButtonState.Pressed)
             {
-                //SelectedModels.Clear();
                 stopMouseRay=GetMouseRay(new Vector2(currentMouseState.X,currentMouseState.Y));
                 selectCorner = new Vector2(currentMouseState.X, currentMouseState.Y);
                 selectRectangleStop = QuadNodeController.getIntersectedQuadNode(stopMouseRay);
@@ -237,13 +229,7 @@ namespace Logic
                                 SelectedModels.Add(ant);
                             
                         }
-                    /*
-                else
-                {
-                    //f = 0;
-                    //SelectedModels.Clear();
-                }
-                      */
+
                 }
                 mouseDown = false;
             }
@@ -259,7 +245,10 @@ namespace Logic
                 }
             }
 
-            updateAnt(gameTime);
+            //updateAnt(gameTime);
+            for (int i = 0; i < SelectedModels.Count; i++) {
+                Update(gameTime, SelectedModels[i], Models_Colision, new Vector3(SelectedModels[i].Model.playerTarget.X, StaticHelpers.StaticHelper.GetHeightAt(SelectedModels[i].Model.playerTarget.X, SelectedModels[i].Model.playerTarget.Z), SelectedModels[i].Model.playerTarget.Z));
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch,FreeCamera camera)
@@ -276,7 +265,7 @@ namespace Logic
         }
         void updateAnt(GameTime gameTime)
         {
-            float Speed = (float)2.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds / 100;
+            float Speed = (float)20f * (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
 
             foreach (InteractiveModel ant in models)
             {
@@ -302,7 +291,10 @@ namespace Logic
 
 
                 foreach (InteractiveModel modelsy in Models_Colision)
+                {  if(modelsy.GetType().BaseType==typeof(EnviroModels))
                 {
+                    continue;
+                }
                     Vector3 center = modelsy.Model.B_Box.Min + (modelsy.Model.B_Box.Max - modelsy.Model.B_Box.Min) / 2;
                     //float bBoxHeight = modelsy.Model.B_Box.Max.Y - modelsy.Model.B_Box.Min.Y;
                     //float bBoxxWidth = modelsy.Model.B_Box.Max.X - modelsy.Model.B_Box.Min.X;
@@ -340,26 +332,28 @@ namespace Logic
                 foreach (InteractiveModel model in Models_Colision)
                 {
 
-                  
-                        
 
-                    if ((model.Model.B_Box.Contains(lewo) == ContainmentType.Contains))
-                        czylewo = true;
-                    if ((model.Model.B_Box.Contains(prawo) == ContainmentType.Contains))
-                        czyprawo = true;
-                    if ((model.Model.B_Box.Contains(gora) == ContainmentType.Contains))
-                        czygora = true;
-                    if ((model.Model.B_Box.Contains(dol) == ContainmentType.Contains))
-                        czydol = true;
-                    if ((model.Model.B_Box.Contains(lewy_gorny) == ContainmentType.Contains))
-                        czylewy_gorny = true;
-                    if ((model.Model.B_Box.Contains(lewy_dolny) == ContainmentType.Contains))
-                        czylewy_dolny = true;
-                    if ((model.Model.B_Box.Contains(prawy_dolny) == ContainmentType.Contains))
-                        czyprawy_dolny = true;
-                    if ((model.Model.B_Box.Contains(prawy_gorny) == ContainmentType.Contains))
-                        czyprawy_gorny = true;
-                }
+                   
+                       if ((model.Model.B_Box.Contains(lewo) == ContainmentType.Contains))
+                           czylewo = true;
+                       if ((model.Model.B_Box.Contains(prawo) == ContainmentType.Contains))
+                           czyprawo = true;
+                       if ((model.Model.B_Box.Contains(gora) == ContainmentType.Contains))
+                           czygora = true;
+                       if ((model.Model.B_Box.Contains(dol) == ContainmentType.Contains))
+                           czydol = true;
+                       if ((model.Model.B_Box.Contains(lewy_gorny) == ContainmentType.Contains))
+                           czylewy_gorny = true;
+                       if ((model.Model.B_Box.Contains(lewy_dolny) == ContainmentType.Contains))
+                           czylewy_dolny = true;
+                       if ((model.Model.B_Box.Contains(prawy_dolny) == ContainmentType.Contains))
+                           czyprawy_dolny = true;
+                       if ((model.Model.B_Box.Contains(prawy_gorny) == ContainmentType.Contains))
+                           czyprawy_gorny = true;
+                   }
+
+                    
+                
 
 
 
@@ -616,6 +610,54 @@ namespace Logic
             }
         }
 
+
+
+public void Update(GameTime gameTime, InteractiveModel ship,List<InteractiveModel>  obstacles, Vector3 target)
+{
+    float pullDistance = Vector3.Distance(target, ship.Model.Position);
+ 
+    //Only do something if we are not already there
+    if (pullDistance > 1)
+    {
+        Vector3 pull = (target - ship.Model.Position) * (1 /  pullDistance); //the target tries to 'pull us in'
+        Vector3 totalPush = Vector3.Zero;
+ 
+        int contenders = 0;
+        for (int i = 0; i < obstacles.Count; ++i)		
+        {
+            //draw a vector from the obstacle to the ship, that 'pushes the ship away'
+            Vector3 push = ship.Model.Position - obstacles[i].Model.Position;
+ 
+            //calculate how much we are pushed away from this obstacle, the closer, the more push
+            float distance = (Vector3.Distance(ship.Model.Position, obstacles[i].Model.Position) - obstacles[i].Model.BoundingSphere.Radius) - ship.Model.BoundingSphere.Radius ;
+            //only use push force if this object is close enough such that an effect is needed
+            if (distance < ship.Model.BoundingSphere.Radius * 3)
+            {
+                ++contenders; //note that this object is actively pushing
+ 
+                if (distance < 0.0001f) //prevent division by zero errors and extreme pushes
+                {
+                    distance = 0.0001f;
+                }
+                float weight = 1 / distance;
+ 
+                totalPush += push * weight;
+            }
+        }
+ 
+        pull *= Math.Max(1, 4 * contenders); //4 * contenders gives the pull enough force to pull stuff trough (tweak this setting for your game!)
+        pull += totalPush;
+ 
+        //Normalize the vector so that we get a vector that points in a certain direction, which we van multiply by our desired speed
+        pull.Normalize();
+        //Set the ships new position;
+        ship.Model.Position = new Vector3(ship.Model.Position.X + (pull.X*60) * (float)gameTime.ElapsedGameTime.TotalSeconds, StaticHelpers.StaticHelper.GetHeightAt(ship.Model.Position.X,ship.Model.Position.Z), ship.Model.Position.Z+ (pull.Z * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds);
+    }
+}
+
+
+
+
         public static bool FloatEquals(float f1, float f2)
         {
             return Math.Abs(f1 - f2) < 2;
@@ -700,10 +742,7 @@ namespace Logic
             return null;
         }
         public InteractiveModel SelectedObject()
-        {//Vector3 position
-
-            //ray.Position = position;
-            Vector3 a = new Vector3(0, 0, 0);
+        {
             foreach (InteractiveModel IM in IModel)
             {
                 if (IM.CheckRayIntersection(mouseRay))
@@ -713,7 +752,6 @@ namespace Logic
             }
             foreach (InteractiveModel ant in models)
             {
-                //   Console.WriteLine(ant.Model.Position);
 
                 if (ant.CheckRayIntersection(mouseRay))
                 {
@@ -726,79 +764,7 @@ namespace Logic
         }
 
 
-        private Vector3 CalculateMouse3DPosition()
-        {
-            Plane GroundPlane = new Plane(0, 30, 0, 30); // x - lewo prawo Z- gora dol
-            int mouseX = Mouse.GetState().X;
-            int mouseY = Mouse.GetState().Y;
 
-            Vector3 nearSource = new Vector3((float)mouseX, (float)mouseY, 0.0f);
-            Vector3 farSource = new Vector3((float)mouseX, (float)mouseY, 1.0f);
-
-            // Matrix world = Matrix.CreateTranslation(0, 0, 0);
-
-            Vector3 nearPoint = device.Viewport.Unproject(nearSource, this.Projection, this.View, Matrix.Identity);
-            Vector3 farPoint = device.Viewport.Unproject(farSource, this.Projection, this.View, Matrix.Identity);
-
-            Vector3 direction = farPoint - nearPoint;
-            direction.Normalize();
-            Ray pickRay = new Ray(nearPoint, direction);
-            float? position = pickRay.Intersects(GroundPlane);
-
-            if (position != null)
-                return pickRay.Position + pickRay.Direction * position.Value;
-            else
-                return new Vector3(0, 0, 0);
-
-
-        }
-
-
-        private Vector3 CalculateMouse3DPosition(Vector2 pos)
-        {
-            Plane GroundPlane = new Plane(0, 1, 0, 0); // x - lewo prawo Z- gora dol
-            int mouseX = (int)pos.X;
-            int mouseY = (int)pos.Y;
-
-            Vector3 nearSource = new Vector3((float)mouseX, (float)mouseY, 0.0f);
-            Vector3 farSource = new Vector3((float)mouseX, (float)mouseY, 1.0f);
-
-            // Matrix world = Matrix.CreateTranslation(0, 0, 0);
-
-            Vector3 nearPoint = device.Viewport.Unproject(nearSource, this.Projection, this.View, Matrix.Identity);
-            Vector3 farPoint = device.Viewport.Unproject(farSource, this.Projection, this.View, Matrix.Identity);
-
-            Vector3 direction = farPoint - nearPoint;
-            direction.Normalize();
-            //return new Ray(nearPoint, direction);
-
-            Ray pickRay = new Ray(nearPoint, direction);
-            float? position = pickRay.Intersects(GroundPlane);
-
-            if (position != null)
-                return pickRay.Position + pickRay.Direction * position.Value;
-            else
-                return new Vector3(0, 0, 0);
-
-
-        }
-        private Vector3 CalculateMouse3DPosition(int X, int Y)
-        {
-            int mouseX = X;
-            int mouseY = Y;
-            Vector3 nearScreenPoint = new Vector3(mouseX, mouseY, 0);
-            Vector3 farScreenPoint = new Vector3(mouseX, mouseY, 1);
-            Vector3 nearWorldPoint = device.Viewport.Unproject(nearScreenPoint, this.Projection, this.View, Matrix.Identity);
-            Vector3 farWorldPoint = device.Viewport.Unproject(farScreenPoint, this.Projection, this.View, Matrix.Identity);
-
-            Vector3 direction = farWorldPoint - nearWorldPoint;
-            direction.Normalize();
-            float zFactor = -nearWorldPoint.Y / direction.Y;
-            Vector3 zeroWorldPoint = nearWorldPoint + direction * zFactor;
-            return zeroWorldPoint;
-
-
-        }
         public Ray GetMouseRay(Vector2 mousePosition)
         {
             Vector3 nearSource = new Vector3(mousePosition, 0.0f);
@@ -812,26 +778,8 @@ namespace Logic
 
             return new Ray(nearPoint, direction);
         }
-
-        /*
-
-        public Ray CalculateCursorRay(Matrix projectionMatrix, Matrix viewMatrix)
-        {
-            Vector3 nearSource = new Vector3(Position, 0f);
-            Vector3 farSource = new Vector3(Position, 1f);
-
-             Vector3 nearPoint = GraphicsDevice.Viewport.Unproject(nearSource, projectionMatrix, viewMatrix, Matrix.Identity);
-
-            Vector3 farPoint = GraphicsDevice.Viewport.Unproject(farSource, projectionMatrix, viewMatrix, Matrix.Identity);
-
-            Vector3 direction = farPoint - nearPoint;
-            direction.Normalize();
-
-            return new Ray(nearPoint, direction);
-        }
-
-
-       */
+                                                                                        
+      
 
         public Ray starSelectMouseRay { get; set; }
 
