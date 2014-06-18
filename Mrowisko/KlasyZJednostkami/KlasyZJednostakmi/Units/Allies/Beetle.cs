@@ -29,6 +29,11 @@ namespace Logic.Units.Allies
             Scope = 100;
             ArmorBuffValue = 100;
             this.Ants = ants;
+            LifeBar.LifeLength = model.Scale.X * 100;
+            circle.Scale = this.model.Scale.Y * 120;
+            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+            circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
+
         }
         public Beetle():base()
         {
@@ -73,7 +78,18 @@ namespace Logic.Units.Allies
         {
             return this.GetType().Name + base.model.Selected;
         }
+        public override void DrawSelected(GameCamera.FreeCamera camera)
+        {
+            LifeBar.CreateBillboardVerticesFromList(model.Position + new Vector3(0, 1, 0) * model.Scale * 50);
+            LifeBar.healthDraw(camera);
 
+        }
+
+        public override void DrawSelectedCircle(GameCamera.FreeCamera camera)
+        {
+            circle.CreateBillboardVerticesFromList(model.Position + new Vector3(-2, 0.1f, -0.1f) * model.Scale * 50);
+            circle.healthDraw(camera);
+        }
     
     }
 }

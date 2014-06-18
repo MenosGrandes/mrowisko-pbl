@@ -141,19 +141,26 @@ namespace Logic.Units.Ants
             {
                 //Console.WriteLine(gaterMaterialObject);
             }
-            if (model.BoundingSphere.Intersects(interactive.Model.Spheres[0]))
+            if (interactive.Model.B_Box.Max==Vector3.Zero)
             {
+                return;
+            }
+            if (model.BoundingSphere.Intersects(interactive.Model.B_Box))
+            {
+                Console.WriteLine(gaterMaterialObject);
                 if (gaterMaterialObject == interactive)
                 {
                     if (ImMoving) { 
                     ImMoving = false;
                     model.playerTarget = model.tempPosition;
-                    model.Position = model.tempPosition;
+                   // model.Position = model.tempPosition;
                         }
                     if (gaterTime < elapsedTime)
                         {
                             gaterMaterial((Material)gaterMaterialObject);
-
+                            SoundController.SoundController.Play(SoundController.SoundEnum.Gater);
+                            Logic.Player.Player.addMaterial(releaseMaterial());
+                            materials.Clear();
                         }
                     
                 }
@@ -173,7 +180,7 @@ namespace Logic.Units.Ants
             }
         public override void setGaterMaterial(Material m)
         {
-
+               if(m!=gaterMaterialObject)
                 gaterMaterialObject = m;
 
            

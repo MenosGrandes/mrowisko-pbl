@@ -28,6 +28,7 @@ using SoundController;
 using GUI;
 using System.IO;
 using Logic.Units.Allies;
+using Logic.EnviroModel;
 
 namespace AntHill
 {
@@ -209,9 +210,8 @@ namespace AntHill
             {
           
                // Console.WriteLine(models.GetType().BaseType.Name);
-                if (i.GetType().BaseType == typeof(Building) || i.GetType().BaseType == typeof(Material))
+                if (i.GetType().BaseType == typeof(Building) || i.GetType().BaseType == typeof(Material) || i.GetType().BaseType==typeof(EnviroModels ))
                 {
-                    i.Model.Position = new Vector3(i.Model.Position.X, i.Model.Position.Y + 10, i.Model.Position.Z);
                     IModel.Add(i);
                 }else
                 {
@@ -303,6 +303,7 @@ GraphicsDevice);
             List<String> aa = new List<string>();
             aa.Add("s1");
             aa.Add("s2");
+            aa.Add("Gater");
             SoundController.SoundController.content = Content;
            SoundController.SoundController.Initialize(aa);
 
@@ -661,7 +662,7 @@ GraphicsDevice);
                  //    BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                  //  BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
 
-                   // model.Draw(((camera)));
+                    BBoxRender.DrawBBox(model.Model.boundingBoxes, camera.Projection, camera.View,Matrix.Identity);
                     model.Draw((FreeCamera)camera);
 
 
@@ -699,7 +700,7 @@ GraphicsDevice);
                 }
                 else
                 {
-                    selected.setGaterMaterial(null);
+                   // selected.setGaterMaterial(null);
                 }
             }
                                 
@@ -712,11 +713,10 @@ GraphicsDevice);
                  new Vector2(10.0f, 20.0f), Color.Tomato);
             
             spriteBatch.DrawString(_spr_font, string.Format("indes {0}", (control.indeks)), new Vector2(10.0f, 140.0f), Color.Pink);
-            
-           
-             // spriteBatch.DrawString(_spr_font, string.Format("D g={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
-             //  spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
-              // spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.wood), new Vector2(230.0f, 240.0f), Color.Pink);
+
+
+            spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.wood), new Vector2(230.0f, 240.0f), Color.Pink);
 
               spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(340.0f, 240.0f), Color.Pink);
                spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(450.0f, 240.0f), Color.Pink);
