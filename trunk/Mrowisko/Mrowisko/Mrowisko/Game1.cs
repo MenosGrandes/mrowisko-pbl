@@ -501,7 +501,7 @@ GraphicsDevice);
 
             control.Update(gameTime);
             control.Models_Colision =IModel;
-
+           
 
           //  e.gameTime = gameTime;
           //  e.Update();
@@ -659,8 +659,8 @@ GraphicsDevice);
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
-                 //    BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
-                 //  BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                     BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                   BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
 
                     BBoxRender.DrawBBox(model.Model.boundingBoxes, camera.Projection, camera.View,Matrix.Identity);
                     model.Draw((FreeCamera)camera);
