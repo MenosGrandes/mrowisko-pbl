@@ -61,12 +61,12 @@ namespace Logic
         private Vector3 startRectangle;
         private Vector3 endRectangle;
         public Vector3 mouse3d2;
-        public PathFinderManager.PathFinderManager pf;
-        public Control(Texture2D _texture, QuadTree quad,PathFinderManager.PathFinderManager _pf)
+        
+        public Control(Texture2D _texture, QuadTree quad)
         {
             this.texture = _texture;
-                       modelos = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), Vector3.Zero, new Vector3(0.3f), Vector3.One, StaticHelpers.StaticHelper.Device, null));
-            pf = _pf;
+         modelos = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), Vector3.Zero, new Vector3(0.3f), Vector3.One, StaticHelpers.StaticHelper.Device, null));
+           
         }
         public void Update(GameTime gameTime)
         {
@@ -246,10 +246,10 @@ namespace Logic
                     float distance = 0;
                     mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
 
-                    Tile t=pf.getTile(mouseRay);
-                    modelos.Model.Position = t.centerPosition;
-                    ant.Model.playerTarget = t.centerPosition;
-                    pf.calculateHeuristic(new Vector2(ant.Model.Position.X, ant.Model.Position.Z), new Vector2(t.centerPosition.X, t.centerPosition.Z),out distance);
+                  //  Tile t=pf.getTile(mouseRay);
+                 //   modelos.Model.Position = t.centerPosition;
+                 ////   ant.Model.playerTarget = t.centerPosition;
+                 //   pf.calculateHeuristic(new Vector2(ant.Model.Position.X, ant.Model.Position.Z), new Vector2(t.centerPosition.X, t.centerPosition.Z),out distance);
                     ant.Model.switchAnimation("Walk");
                     ant.ImMoving = true;
                     Console.WriteLine(distance);

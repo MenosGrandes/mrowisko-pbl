@@ -29,9 +29,9 @@ using GUI;
 using System.IO;
 using Logic.Units.Allies;
 using Logic.EnviroModel;
-using PathFinder;
 using System.Diagnostics;
-using Logic.PathFinderManager;
+using Logic.PathFinderManagerNamespace;
+using Logic.PathFinderNamespace;
 namespace AntHill
 {
     /// <summary>
@@ -327,18 +327,14 @@ GraphicsDevice);
           StaticHelpers.StaticHelper.length = (int)Math.Sqrt(quadTree.Vertices.heightDataToControl.Length);
 
 
-
-
-          PathFinderManager pf = new PathFinderManager(IModel);
-          Console.WriteLine(pf.tileList.Length);
+          PathFinderManager.PathFinderManagerInitialize(64);
           Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
 
 
-          control = new Logic.Control(texture[11], quadTree, pf);
+          control = new Logic.Control(texture[11], quadTree);
           gui = new MainGUI(StaticHelpers.StaticHelper.Content, control);
-
-          pf.checkNeighbours(pf.tileList[21, 31], pf.tileList[21, 32]);
-
+          pf = new PathFinder(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[0, 4]);
+          
         }
         
 
@@ -359,6 +355,18 @@ GraphicsDevice);
         protected override void Update(GameTime gameTime)
         {
 
+            _elapsed_time2 += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (_elapsed_time2 >= 10000f) { 
+            if (pf.Search())
+            {
+                Console.WriteLine(pf.closedList[pf.closedList.Count - 1]);
+                Console.WriteLine(pf.endNode);
+                models[0].Model.Position = new Vector3(pf.closedList[pf.closedList.Count - 1].centerPosition.X, StaticHelpers.StaticHelper.GetHeightAt(pf.closedList[pf.closedList.Count - 1].centerPosition.X, pf.closedList[pf.closedList.Count - 1].centerPosition.Y), pf.closedList[pf.closedList.Count - 1].centerPosition.Y);
+                _elapsed_time2 = 0;
+            }
+            _elapsed_time2 = 0;
+
+            }
             gui.Update(gameTime);
             kolizja = false;
                 currentMouseState = Mouse.GetState();
@@ -910,10 +918,14 @@ GraphicsDevice);
             return new Vector3(models[models.Count - 1].Model.Position.X + x * radius, models[models.Count - 1].Model.Position.Y - (y * radius + height), models[models.Count - 1].Model.Position.Z + z * radius);
         }
 
-     
-       
 
 
+
+
+
+        public PathFinder pf { get; set; }
+
+        public float _elapsed_time2 { get; set; }
     }
 }
 
