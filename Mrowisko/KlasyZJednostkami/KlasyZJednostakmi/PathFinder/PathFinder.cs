@@ -12,17 +12,32 @@ namespace Logic.PathFinderNamespace
         public Node startNode;
         public Node endNode;
         public float movementCost;
+        public Node currentNode;
         public List<Node> finalPath = new List<Node>();
         public List<Node> openList = new List<Node>();//mozemy na nie pójsc
         public List<Node> closedList = new List<Node>();//tile na ktorych juz bylismy;
-
+        public List<Node> neibours = new List<Node>();
         public PathFinder(Node startNode, Node endNode)
-        {
+        {   
             this.startNode = startNode;
             this.endNode = endNode;
             openList.Add(startNode);
+            getStartNodeNeighbours(startNode);
+            openList.Remove(startNode);
             closedList.Add(startNode);
+            currentNode = getMinFromList(); 
 
+
+            for (int j = 0; j < 1000; j++) {
+            if(currentNode==endNode)
+            {
+                break;
+            }
+            openList.Remove(currentNode);
+            closedList.Add(currentNode);
+            getNeighbours(currentNode);
+            currentNode = getMinFromList();
+            }
         }
         public bool Search()
         {
@@ -32,15 +47,16 @@ namespace Logic.PathFinderNamespace
                 return false;
             }
             else
-            {return true;}
+            {
+                
+                
+                return true;}
 
         }
-        public void getNeighbours(Node currentNode)
+        public void getStartNodeNeighbours(Node currentNode)
         {
-            float minimumValue = float.MaxValue;
-            Node minNode=new Node();
 
-            //klocek w lewo
+
             if (currentNode.index.X - 1 >= 0 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y]))
             {
                 openList.Add(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y]);
@@ -88,29 +104,181 @@ namespace Logic.PathFinderNamespace
                 openList.Add(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1]);
                 PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1].parent = currentNode;
             }
-            //openList.RemoveAll(x => x.index == currentNode.index);
-            //tablice do sprawdzania odleglosci
-            float[] f = new float[openList.Count];
-            float[] ManhatanFromStart = new float[openList.Count];
-            float[] ManhatanFromStop = new float[openList.Count];
-            //sprawdzanie tego wszystkiego
-            for (int i = 0; i < openList.Count; i++)
+           
+            CalculateManhattan();
+        }
+        public void getNeighbours(Node currentNode)
+        {
+
+            if (currentNode.index.X - 1 >= 0 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y]))
             {
-                ManhatanFromStart[i] = Math.Abs(startNode.centerPosition.X - openList[i].centerPosition.X) + Math.Abs(startNode.centerPosition.Y - openList[i].centerPosition.Y);
-                ManhatanFromStop[i] = Math.Abs(endNode.centerPosition.X - openList[i].centerPosition.X) + Math.Abs(endNode.centerPosition.Y - openList[i].centerPosition.Y);
-                f[i] = ManhatanFromStop[i] + ManhatanFromStart[i];
-                if (minimumValue > f[i] && !closedList.Contains(openList[i]) )
+                if (!openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y]))
                 {
-                    minimumValue = f[i];
-                    minNode = openList[i];
+                    openList.Add(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y]);
+                    PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y].parent = currentNode;
+                }
+                else
+                {
+                    var item = openList.Find(x => x.index == new Vector2(currentNode.index.X - 1, (int)currentNode.index.Y));
+                    if(item.ManhatanFromStart<currentNode.ManhatanFromStart)
+                    {
+                        Console.WriteLine("adsasdad");
+                    }   
+                }
+               
+            }
+            //klocek do gory
+            if (currentNode.index.Y - 1 >= 0 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y - 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y - 1]))
+            {
+                if (!openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y - 1]))
+                { 
+                openList.Add(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y - 1]);
+                PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y - 1].parent = currentNode;
+                }
+                else
+                {
+                    var item = openList.Find(x => x.index == new Vector2(currentNode.index.X , (int)currentNode.index.Y-1));
+                    if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
+                    {
+                        Console.WriteLine("adsasdad");
+                    }
                 }
             }
-            
-              
-            closedList.Add(minNode);
+            //klocek w prawo
+            if (currentNode.index.Y + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1]))
+            {
+                if (!openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1]))
+                { 
+                openList.Add(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1]);
+                PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1].parent = currentNode;
+                }
+                else
+                {
+                    var item = openList.Find(x => x.index == new Vector2(currentNode.index.X , (int)currentNode.index.Y+1));
+                    if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
+                    {
+                        Console.WriteLine("adsasdad");
+                    }
+                }
+            }
+            //klocek do dolu
+            if (currentNode.index.X + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y]))
+            {
+                if (!openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y]))
+                {
+                    openList.Add(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y]);
+                    PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y].parent = currentNode;
+                }
+                else
+                {
+                    var item = openList.Find(x => x.index == new Vector2(currentNode.index.X + 1, (int)currentNode.index.Y));
+                    if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
+                    {
+                        Console.WriteLine("adsasdad");
+                    }
+                }
+            }
+            //lewy górny róg
+            if (currentNode.index.X - 1 >= 0 && currentNode.index.Y - 1 >= 0 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y - 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y - 1]))
+            {
+                if (!openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y - 1])) { 
+                    openList.Add(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y - 1]);
+                    PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y - 1].parent = currentNode;
+                }
+                else
+                {
+                    var item = openList.Find(x => x.index == new Vector2(currentNode.index.X - 1, (int)currentNode.index.Y-1));
+                    if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
+                    {
+                        Console.WriteLine("adsasdad");
+                    }
+                }
+            }
+            //prawy górny
+            if (currentNode.index.X + 1 <= 63 && currentNode.index.Y - 1 >= 0 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1]))
+            {
+               if( !openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1]))
+               {
+                   openList.Add(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1]);
+                PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1].parent = currentNode;
+               }
+               else
+               {
+                   var item = openList.Find(x => x.index == new Vector2(currentNode.index.X + 1, (int)currentNode.index.Y - 1));
+                   if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
+                   {
+                       Console.WriteLine("adsasdad");
+                   }
+               }
+            }
+            //prawy dolny
+            if (currentNode.index.X + 1 <= 63 && currentNode.index.Y + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1]))
+            {
+                if(!openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1]))
+                {openList.Add(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1]);
+                PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1].parent = currentNode;
+                }
+                else
+                {
+                    var item = openList.Find(x => x.index == new Vector2(currentNode.index.X + 1, (int)currentNode.index.Y+1));
+                    if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
+                    {
+                        Console.WriteLine("adsasdad");
+                    }
+                }
+            }
+            //lewy dolny róg
+            if (currentNode.index.X - 1 >= 0 && currentNode.index.Y + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1]))
+            {
+                if( !openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1]))
+                { openList.Add(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1]);
+                PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1].parent = currentNode;
+                }
+                else
+                {
+                    var item = openList.Find(x => x.index == new Vector2(currentNode.index.X - 1, (int)currentNode.index.Y+1));
+                    if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
+                    {
+                        Console.WriteLine("adsasdad");
+                    }
+                }
+            }
 
+            CalculateManhattan();
         }
 
+        public void CalculateManhattan()
+        {
+            for (int i = 0; i < openList.Count; i++)
+            {
+                openList[i].ManhatanFromStart =(float)Math.Sqrt((float)Math.Pow(openList[i].index.X - startNode.index.X, 2) + (float)Math.Pow(openList[i].index.Y - startNode.index.Y,2));
+                openList[i].ManhatanFromStop = (float)Math.Sqrt((float)Math.Pow(openList[i].index.X - endNode.index.X, 2) + (float)Math.Pow(openList[i].index.Y - endNode.index.Y, 2));
+                openList[i].CalcF();
+            }
+        }
+        public void CalculateManhattan(Node CurentNode)
+        {
+
+            CurentNode.ManhatanFromStart = (float)Math.Sqrt((float)Math.Pow(CurentNode.index.X - startNode.index.X, 2) + (float)Math.Pow(CurentNode.index.Y - startNode.index.Y, 2));
+            CurentNode.ManhatanFromStop = (float)Math.Sqrt((float)Math.Pow(CurentNode.index.X - endNode.index.X, 2) + (float)Math.Pow(CurentNode.index.Y - endNode.index.Y, 2));
+            CurentNode.CalcF();
+             
+        }
+        public Node getMinFromList()
+        {
+            Node minNode = new Node();
+            float min = float.MaxValue;
+            for (int i = 0; i < openList.Count; i++)
+            {
+                   if(min>openList[i].f)
+                   {
+                       min = openList[i].f;
+                       minNode = openList[i];
+
+                   }
+            }
+            return minNode;
+        }
 
     }
 }
