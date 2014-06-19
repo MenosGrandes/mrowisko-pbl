@@ -25,19 +25,25 @@ namespace Logic.PathFinderNamespace
             getStartNodeNeighbours(startNode);
             openList.Remove(startNode);
             closedList.Add(startNode);
-            currentNode = getMinFromList(); 
+            currentNode = getMinFromList();
 
+            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+            while(currentNode!=endNode) {
 
-            for (int j = 0; j < 1000; j++) {
-            if(currentNode==endNode)
-            {
-                break;
-            }
             openList.Remove(currentNode);
             closedList.Add(currentNode);
             getNeighbours(currentNode);
             currentNode = getMinFromList();
             }
+            Node parent = new Node();
+            finalPath.Add(endNode);
+            finalPath.Add(closedList[closedList.Count - 1]);
+            while (parent != startNode) {
+                parent = finalPath[finalPath.Count - 1].parent;
+            finalPath.Add(parent);
+            }
+            sw.Stop();
+            Console.WriteLine(sw.Elapsed.TotalMilliseconds);
         }
         public bool Search()
         {
@@ -122,7 +128,8 @@ namespace Logic.PathFinderNamespace
                     var item = openList.Find(x => x.index == new Vector2(currentNode.index.X - 1, (int)currentNode.index.Y));
                     if(item.ManhatanFromStart<currentNode.ManhatanFromStart)
                     {
-                        Console.WriteLine("adsasdad");
+                        item.parent = currentNode;
+
                     }   
                 }
                
@@ -140,7 +147,7 @@ namespace Logic.PathFinderNamespace
                     var item = openList.Find(x => x.index == new Vector2(currentNode.index.X , (int)currentNode.index.Y-1));
                     if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
                     {
-                        Console.WriteLine("adsasdad");
+                        item.parent = currentNode;
                     }
                 }
             }
@@ -157,7 +164,7 @@ namespace Logic.PathFinderNamespace
                     var item = openList.Find(x => x.index == new Vector2(currentNode.index.X , (int)currentNode.index.Y+1));
                     if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
                     {
-                        Console.WriteLine("adsasdad");
+                        item.parent = currentNode;
                     }
                 }
             }
@@ -174,7 +181,7 @@ namespace Logic.PathFinderNamespace
                     var item = openList.Find(x => x.index == new Vector2(currentNode.index.X + 1, (int)currentNode.index.Y));
                     if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
                     {
-                        Console.WriteLine("adsasdad");
+                        item.parent = currentNode;
                     }
                 }
             }
@@ -190,7 +197,7 @@ namespace Logic.PathFinderNamespace
                     var item = openList.Find(x => x.index == new Vector2(currentNode.index.X - 1, (int)currentNode.index.Y-1));
                     if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
                     {
-                        Console.WriteLine("adsasdad");
+                        item.parent = currentNode;
                     }
                 }
             }
@@ -207,7 +214,7 @@ namespace Logic.PathFinderNamespace
                    var item = openList.Find(x => x.index == new Vector2(currentNode.index.X + 1, (int)currentNode.index.Y - 1));
                    if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
                    {
-                       Console.WriteLine("adsasdad");
+                       item.parent = currentNode;
                    }
                }
             }
@@ -223,7 +230,7 @@ namespace Logic.PathFinderNamespace
                     var item = openList.Find(x => x.index == new Vector2(currentNode.index.X + 1, (int)currentNode.index.Y+1));
                     if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
                     {
-                        Console.WriteLine("adsasdad");
+                        item.parent = currentNode;
                     }
                 }
             }
@@ -239,7 +246,7 @@ namespace Logic.PathFinderNamespace
                     var item = openList.Find(x => x.index == new Vector2(currentNode.index.X - 1, (int)currentNode.index.Y+1));
                     if (item.ManhatanFromStart < currentNode.ManhatanFromStart)
                     {
-                        Console.WriteLine("adsasdad");
+                        item.parent = currentNode.parent;
                     }
                 }
             }
