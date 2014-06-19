@@ -333,8 +333,9 @@ GraphicsDevice);
 
           control = new Logic.Control(texture[11], quadTree);
           gui = new MainGUI(StaticHelpers.StaticHelper.Content, control);
-          pf = new PathFinder(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[0, 4]);
-          
+          pf = new PathFinder(PathFinderManager.tileList[2, 1], PathFinderManager.tileList[2, 4]);
+          //pf = new PathFinder(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[2, 0]);
+
         }
         
 

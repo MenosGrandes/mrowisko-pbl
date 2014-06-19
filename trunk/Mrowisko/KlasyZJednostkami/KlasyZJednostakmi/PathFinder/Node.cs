@@ -15,14 +15,17 @@ namespace Logic
        public float Height;
        public bool walkable;
        public Vector2 index;
-       public float heuristicValue { get; set; }
+       public float f ;
+       public float ManhatanFromStart;
+       public float ManhatanFromStop; 
+       
+       
        public Node(Vector2 centerPosition,bool walkable,BoundingBox box,Vector2 _Index)
        {
            this.centerPosition = centerPosition;
            this.walkable = walkable;
            this.Box = box;
            this.index = _Index;
-           heuristicValue = 999999;
            Height = StaticHelpers.StaticHelper.GetHeightAt(centerPosition.X, centerPosition.Y);
 
        }
@@ -30,7 +33,11 @@ namespace Logic
        { }
        public override string ToString()
        {
-           return centerPosition + " " + walkable + " " +heuristicValue;
+           return centerPosition + " " + walkable + " " +f;
+       }
+       public void CalcF()
+       {
+           f = ManhatanFromStart + ManhatanFromStop;
        }
 
        public BoundingBox Box { get; set; }
