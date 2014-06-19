@@ -8,25 +8,26 @@ using System.Text;
 
 namespace Logic
 {
-   public  class Tile
+   public  class Node
     {
-     public  Vector3 centerPosition;
+       public Node parent;
+       public  Vector2 centerPosition;
+       public float Height;
        public bool walkable;
        public Vector2 index;
        public float heuristicValue { get; set; }
-       public Tile(Vector3 centerPosition,bool walkable,BoundingBox box,Vector2 _Index)
+       public Node(Vector2 centerPosition,bool walkable,BoundingBox box,Vector2 _Index)
        {
            this.centerPosition = centerPosition;
            this.walkable = walkable;
            this.Box = box;
            this.index = _Index;
            heuristicValue = 999999;
+           Height = StaticHelpers.StaticHelper.GetHeightAt(centerPosition.X, centerPosition.Y);
 
        }
-       public Tile()
-       {
-
-       }
+       public Node()
+       { }
        public override string ToString()
        {
            return centerPosition + " " + walkable + " " +heuristicValue;
