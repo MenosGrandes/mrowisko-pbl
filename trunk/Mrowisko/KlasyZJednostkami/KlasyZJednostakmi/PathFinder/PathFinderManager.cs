@@ -30,41 +30,14 @@ namespace Logic.PathFinderManagerNamespace
                 for (int J = 0; J < GridSize; J += 1)
                 {
 
-                    tileList[J, i] = new Node(new Vector2(24 + J * 48, 24 + i * 48), true, new BoundingBox(new Vector3(J * 48, 10, i * 48), new Vector3(J * 48 + 24, StaticHelpers.StaticHelper.GetHeightAt(J * 48 + 24, i * 48 + 24), i * 48 + 24)), new Vector2(J, i));
+                    tileList[J, i] = new Node(new Vector2(24/2 + J * 48/2, 24/2 + i * 48/2), true, new BoundingBox(new Vector3(J * 48/2, 10, i * 48/2), new Vector3(J * 48/2+ 48/2, StaticHelpers.StaticHelper.GetHeightAt(J * 48/2 + 48/2, i * 48/2 + 48/2), i * 48/2 + 48/2)), new Vector2(J, i));
                 }
 
             }
-        for(int i=0;i<5;i++)
-        {
-            for(int j=0;j<6;j++)
-            {
-                if (i == 3 && j == 2)
-                    tileList[j, i].walkable = false;
-                if (i == 3 && j == 3)
-                    tileList[j, i].walkable = false;
-                if (i == 3 && j == 1)
-                    tileList[j, i].walkable = false;
-            }
+        
         }
 
-        }
 
-        public static Node getTile(Ray mouseRay)
-        {
-            for(int i=0;i<GridSize;i++)
-            {
-                for(int k=0;k<GridSize;k++)
-                {
-                    if(mouseRay.Intersects(tileList[i,k].Box)!=null)
-                    {
-                             return tileList[i,k];
-                    }
-                }
-            }
-            return new Node(Vector2.Zero, false, new BoundingBox(),new Vector2(0,0));
-
-               
-        }
         public static bool isWalkable(int x, int y)
         {
             return tileList[x, y].walkable;
@@ -74,6 +47,20 @@ namespace Logic.PathFinderManagerNamespace
             return tileList[(int)curentNode.index.X, (int)curentNode.index.Y].walkable;
         }
 
-        
+        public static Node getNodeIntersected(Ray mouseRay)
+        {
+            foreach (Node q in tileList)
+            {
+                if ((mouseRay.Intersects(q.Box)) != null)
+                {
+                    //return q.Box.Min + (q.Box.Max - q.Box.Min) / 2;
+                    return q;
+                }
+
+
+            }
+            return new Node();
+
+        }
     }
 }

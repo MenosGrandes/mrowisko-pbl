@@ -20,7 +20,20 @@ namespace Logic
         //tutaj sa elementy ktore kazda jednostka bedzie miec. content po to zeby w konstruktorze 
         //kazdej dziedziczacej klasy przypisac odpowiedni model na stale
 
+        private PathFinderNamespace.PathFinder pathFinder;
 
+        public PathFinderNamespace.PathFinder PathFinder
+        {
+            get { return pathFinder; }
+            set { pathFinder = value; }
+        }
+        private Queue<Node> movementPath;
+
+        public Queue<Node> MovementPath
+        {
+            get { return movementPath; }
+            set { movementPath = value; }
+        }
 
         protected float armorAfterBuff;
 
@@ -114,18 +127,23 @@ namespace Logic
             this.atackInterval = atackInterval;
             base.elapsedTime = 0;
             this.armorAfterBuff = armor * 2;
+            pathFinder = new PathFinderNamespace.PathFinder();
 
         }
         public Unit(): base()
         {
             base.elapsedTime = 0;
             this.armorAfterBuff = armor * 2;
+            pathFinder = new PathFinderNamespace.PathFinder();
+
         }
         public Unit(LoadModel model):base(model)
         {
             
             base.elapsedTime = 0;
             this.armorAfterBuff = armor * 2;
+            pathFinder = new PathFinderNamespace.PathFinder();
+
         }
         public Vector3 getPosition()
          {

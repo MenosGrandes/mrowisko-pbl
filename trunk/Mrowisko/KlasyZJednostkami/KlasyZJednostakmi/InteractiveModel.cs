@@ -18,6 +18,13 @@ namespace Logic
     public class InteractiveModel
     {
 
+        private Node myNode;
+
+        public Node MyNode
+        {
+            get { return myNode; }
+            set { myNode = value; }
+        }
         public bool ArmorBuff=false;
 
         protected float cropTime;
@@ -97,12 +104,14 @@ namespace Logic
             this.elapsedTime = 0;
             this.lifeBar = new HUD.LifeBar(1);
             this.circle = new HUD.Circle();
+            this.myNode = getMyNode();
         }
 
         public InteractiveModel()
         {
             this.lifeBar = new HUD.LifeBar(1);
             this.circle = new HUD.Circle();
+            this.myNode = getMyNode();
         }
         public virtual void Draw(GameCamera.FreeCamera camera,float time)
         {
@@ -196,6 +205,17 @@ namespace Logic
                 ContainmentType con = boundingFrustum.Contains(model.BoundingSphere);
                 if (con == ContainmentType.Contains || con == ContainmentType.Intersects) return true;
                 return false;
+        }
+        public Node getMyNode()
+        {
+                    foreach(Node n in PathFinderManagerNamespace.PathFinderManager.tileList)
+                    {
+                        if(n.Box.Contains(this.model.Position)==ContainmentType.Contains)
+                        {
+                            return n;
+                        }
+                    }
+                    return new Node();
         }
     }
 }
