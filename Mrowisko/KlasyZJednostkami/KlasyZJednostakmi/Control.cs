@@ -241,6 +241,11 @@ namespace Logic
                         ((Unit)ant).PathFinder.finalPath.Clear();
                         ant.Model.switchAnimation("Walk");
                         ant.ImMoving = true;
+                        Console.WriteLine("Już jestem");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nie ma mnie jeszcze");
                     }
                 }
             }

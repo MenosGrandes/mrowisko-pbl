@@ -40,7 +40,7 @@ namespace AntHill
     public class Game1 : Microsoft.Xna.Framework.Game
     {
 
-
+        public bool showGrid = false;
         List<InteractiveModel> models = new List<InteractiveModel>();
         List<InteractiveModel> inter = new List<InteractiveModel>(); 
         List<InteractiveModel> IModel = new List<InteractiveModel>();
@@ -343,7 +343,8 @@ GraphicsDevice);
 
 
             //pf = new PathFinder(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[2, 0]);
-
+          PathFinder pf = new PathFinder();
+          pf.Search(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[63, 63]);
         }
         
 
@@ -558,11 +559,7 @@ GraphicsDevice);
 
 
 
-            foreach(InteractiveModel a in inter)
-            {
-                a.Draw((FreeCamera)camera,time);
-            }
-    
+
 
 
             device.SetRenderTarget(shadow.RenderTarget);
