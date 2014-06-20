@@ -152,6 +152,11 @@ namespace AntHill
         /// </summary>
         protected override void LoadContent()
         {
+
+
+
+
+
             #region KURSORY i okno
             StaticHelpers.StaticHelper.DeviceManager = graphics;
             WindowController.window = (Form)Form.FromHandle(this.Window.Handle);
@@ -204,23 +209,7 @@ namespace AntHill
 
             StaticHelpers.StaticHelper.Content = Content;
             StaticHelpers.StaticHelper.Device = device;     
-            
-            #region loadFromFile
-           
-            Controlers.LoadModelsFromFile.Load();
-            foreach (InteractiveModel i in LoadModelsFromFile.listOfAllInteractiveModelsFromFile)
-            {
-          
-               // Console.WriteLine(models.GetType().BaseType.Name);
-                if (i.GetType().BaseType == typeof(Building) || i.GetType().BaseType == typeof(Material) || i.GetType().BaseType==typeof(EnviroModels ))
-                {
-                    IModel.Add(i);
-                }else
-                {
-                    models.Add(i);
-                }
-            }
-            #endregion   
+   
             #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
             //alphy do terenu
@@ -271,7 +260,7 @@ namespace AntHill
             camera = new FreeCamera(
 new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 20, texture[4].Width * 1 / 2),
 MathHelper.ToRadians(0), // Turned around 153 degrees
-MathHelper.ToRadians(-45), // Pitched up 13 degrees
+MathHelper.ToRadians(-60), // Pitched up 13 degrees
 GraphicsDevice);
 
             quadTree = new QuadTree(Vector3.Zero, texture, device,3, Content, (FreeCamera)camera);
@@ -279,9 +268,30 @@ GraphicsDevice);
 
             water = new Water(device, Content, texture[4].Width, 3);
 
+            StaticHelpers.StaticHelper.heights = quadTree.Vertices.heightDataToControl;
+            StaticHelpers.StaticHelper.width = (int)Math.Sqrt(quadTree.Vertices.heightDataToControl.Length);
+            StaticHelpers.StaticHelper.length = (int)Math.Sqrt(quadTree.Vertices.heightDataToControl.Length);
+            
+            PathFinderManager.PathFinderManagerInitialize(64);
 
 
+            #region loadFromFile
 
+            Controlers.LoadModelsFromFile.Load();
+            foreach (InteractiveModel i in LoadModelsFromFile.listOfAllInteractiveModelsFromFile)
+            {
+
+                // Console.WriteLine(models.GetType().BaseType.Name);
+                if (i.GetType().BaseType == typeof(Building) || i.GetType().BaseType == typeof(Material) || i.GetType().BaseType == typeof(EnviroModels))
+                {
+                    IModel.Add(i);
+                }
+                else
+                {
+                    models.Add(i);
+                }
+            }
+            #endregion   
 
 /////////////// nie wiem czy to powinno byæ czy nie wiêc zakomentowa³em tylko
 //
@@ -322,22 +332,21 @@ GraphicsDevice);
           BBoxRender.InitializeBBoxDebuger(device);
 
 
-          StaticHelpers.StaticHelper.heights = quadTree.Vertices.heightDataToControl;
-          StaticHelpers.StaticHelper.width = (int)Math.Sqrt(quadTree.Vertices.heightDataToControl.Length);
-          StaticHelpers.StaticHelper.length = (int)Math.Sqrt(quadTree.Vertices.heightDataToControl.Length);
 
 
-          PathFinderManager.PathFinderManagerInitialize(64);
+
           Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
 
 
           control = new Logic.Control(texture[11], quadTree);
           gui = new MainGUI(StaticHelpers.StaticHelper.Content, control);
-          pf = new PathFinder(PathFinderManager.tileList[2, 1], PathFinderManager.tileList[2, 4]);
-          //pf = new PathFinder(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[2, 0]);
+
+
+            //pf = new PathFinder(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[2, 0]);
 
         }
         
+
 
         /// <summary>w
         /// UnloadContent will be called once per game and is the place to unload
@@ -356,18 +365,9 @@ GraphicsDevice);
         protected override void Update(GameTime gameTime)
         {
 
-            _elapsed_time2 += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (_elapsed_time2 >= 10000f) { 
-            if (pf.Search())
-            {
-                Console.WriteLine(pf.closedList[pf.closedList.Count - 1]);
-                Console.WriteLine(pf.endNode);
-                models[0].Model.Position = new Vector3(pf.closedList[pf.closedList.Count - 1].centerPosition.X, StaticHelpers.StaticHelper.GetHeightAt(pf.closedList[pf.closedList.Count - 1].centerPosition.X, pf.closedList[pf.closedList.Count - 1].centerPosition.Y), pf.closedList[pf.closedList.Count - 1].centerPosition.Y);
-                _elapsed_time2 = 0;
-            }
-            _elapsed_time2 = 0;
 
-            }
+
+         
             gui.Update(gameTime);
             kolizja = false;
                 currentMouseState = Mouse.GetState();
@@ -532,9 +532,8 @@ GraphicsDevice);
           //  e.Update();
 
             MouseCursorController.Update();
+
             camera.Update(gameTime);
-
-
             base.Update(gameTime);
 
 
@@ -671,6 +670,21 @@ GraphicsDevice);
             water.DrawWater(time, (FreeCamera)camera);
 
 
+            //foreach (Node n in PathFinderManager.tileList)
+            //{
+            //    if (camera.BoundingVolumeIsInView(n.Box))
+            //    {
+            //        BBoxRender.DrawBBox(n.Box, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
+            //    }
+            //}
+
+            foreach(QuadNode q in QuadNodeController.QuadNodeList)
+            {
+                if(camera.BoundingVolumeIsInView(q.Bounds))
+                {
+                    BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
+                }
+            }
 
             foreach (InteractiveModel model in models)
             {
@@ -681,7 +695,7 @@ GraphicsDevice);
                     else
                     { model.Draw((FreeCamera)camera, time); }
 
-                    BBoxRender.DrawBBox(model.Model.B_Box, camera.Projection, camera.View, Matrix.Identity);
+                   // BBoxRender.DrawBBox(model.Model.B_Box, camera.Projection, camera.View, Matrix.Identity,Color.Black);
 
                    //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
                   //     Color.Green, Color.Aquamarine, Color.White);
@@ -746,7 +760,7 @@ GraphicsDevice);
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                  new Vector2(10.0f, 20.0f), Color.Tomato);
             
-            spriteBatch.DrawString(_spr_font, string.Format("indes {0}", (control.indeks)), new Vector2(10.0f, 140.0f), Color.Pink);
+            spriteBatch.DrawString(_spr_font, string.Format("indes {0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
 
 
             spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);

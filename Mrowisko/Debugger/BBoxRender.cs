@@ -28,7 +28,7 @@ namespace Debugger
 
 
 
-        public static void DrawBBox(BoundingBox box, Matrix Projection, Matrix View, Matrix localWorld)
+        public static void DrawBBox(BoundingBox box, Matrix Projection, Matrix View, Matrix localWorld,Color color)
         {   // Use inside a drawing loop
          
                 Vector3[] corners = box.GetCorners();
@@ -37,7 +37,7 @@ namespace Debugger
                 // Assign the 8 box vertices
                 for (int i = 0; i < corners.Length; i++)
                 {
-                    primitiveList[i] = new VertexPositionColor(corners[i], Color.White);
+                    primitiveList[i] = new VertexPositionColor(corners[i], color);
                 }
 
                 /* Set your own effect parameters here */

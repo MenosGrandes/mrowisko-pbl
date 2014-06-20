@@ -12,13 +12,17 @@ namespace Logic.PathFinderNamespace
         public Node startNode;
         public Node endNode;
         public float movementCost;
-        public Node currentNode;
         public List<Node> finalPath = new List<Node>();
         public List<Node> openList = new List<Node>();//mozemy na nie pójsc
         public List<Node> closedList = new List<Node>();//tile na ktorych juz bylismy;
-        public List<Node> neibours = new List<Node>();
-        public PathFinder(Node startNode, Node endNode)
+        public PathFinder()
         {   
+           
+        }
+        public bool Search(Node startNode,Node endNode)
+        {
+            Node currentNode=new Node();
+
             this.startNode = startNode;
             this.endNode = endNode;
             openList.Add(startNode);
@@ -27,37 +31,30 @@ namespace Logic.PathFinderNamespace
             closedList.Add(startNode);
             currentNode = getMinFromList();
 
-            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
-            while(currentNode!=endNode) {
+            while (currentNode != endNode)
+            {
 
-            openList.Remove(currentNode);
-            closedList.Add(currentNode);
-            getNeighbours(currentNode);
-            currentNode = getMinFromList();
+                openList.Remove(currentNode);
+                closedList.Add(currentNode);
+                getNeighbours(currentNode);
+                currentNode = getMinFromList();
+                if(openList.Count==0)
+                {
+                    return false;
+                }
             }
             Node parent = new Node();
             finalPath.Add(endNode);
             finalPath.Add(closedList[closedList.Count - 1]);
-            while (parent != startNode) {
+            while (parent != startNode)
+            {
                 parent = finalPath[finalPath.Count - 1].parent;
-            finalPath.Add(parent);
+                finalPath.Add(parent);
             }
-            sw.Stop();
-            Console.WriteLine(sw.Elapsed.TotalMilliseconds);
-        }
-        public bool Search()
-        {
-            if(closedList[closedList.Count-1]!=endNode)
-            {
-                getNeighbours(closedList[closedList.Count - 1]);
-                return false;
-            }
-            else
-            {
-                
-                
-                return true;}
-
+            finalPath.Reverse();
+            closedList.Clear();
+            openList.Clear();
+            return true;
         }
         public void getStartNodeNeighbours(Node currentNode)
         {
@@ -75,13 +72,13 @@ namespace Logic.PathFinderNamespace
                 PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y - 1].parent = currentNode;
             }
             //klocek w prawo
-            if (currentNode.index.Y + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1]))
+            if (currentNode.index.Y + 1 <= PathFinderManager.GridSize-1 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1]))
             {
                 openList.Add(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1]);
                 PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1].parent = currentNode;
             }
             //klocek do dolu
-            if (currentNode.index.X + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y]))
+            if (currentNode.index.X + 1 <= PathFinderManager.GridSize-1 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y]))
             {
                 openList.Add(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y]);
                 PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y].parent = currentNode;
@@ -93,19 +90,19 @@ namespace Logic.PathFinderNamespace
                 PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y - 1].parent = currentNode;
             }
             //prawy górny
-            if (currentNode.index.X + 1 <= 63 && currentNode.index.Y - 1 >= 0 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1]))
+            if (currentNode.index.X + 1 <= PathFinderManager.GridSize-1 && currentNode.index.Y - 1 >= 0 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1]))
             {
                 openList.Add(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1]);
                 PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1].parent = currentNode;
             }
             //prawy dolny
-            if (currentNode.index.X + 1 <= 63 && currentNode.index.Y + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1]))
+            if (currentNode.index.X + 1 <= PathFinderManager.GridSize-1 && currentNode.index.Y + 1 <= PathFinderManager.GridSize-1 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1]))
             {
                 openList.Add(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1]);
                 PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1].parent = currentNode;
             }
             //lewy dolny róg
-            if (currentNode.index.X - 1 >= 0 && currentNode.index.Y + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1]))
+            if (currentNode.index.X - 1 >= 0 && currentNode.index.Y + 1 <= PathFinderManager.GridSize-1 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1]))
             {
                 openList.Add(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1]);
                 PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1].parent = currentNode;
@@ -152,7 +149,7 @@ namespace Logic.PathFinderNamespace
                 }
             }
             //klocek w prawo
-            if (currentNode.index.Y + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1]))
+            if (currentNode.index.Y + 1 <= PathFinderManager.GridSize-1 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1]))
             {
                 if (!openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X, (int)currentNode.index.Y + 1]))
                 { 
@@ -169,7 +166,7 @@ namespace Logic.PathFinderNamespace
                 }
             }
             //klocek do dolu
-            if (currentNode.index.X + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y]))
+            if (currentNode.index.X + 1 <= PathFinderManager.GridSize-1 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y]))
             {
                 if (!openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y]))
                 {
@@ -202,7 +199,7 @@ namespace Logic.PathFinderNamespace
                 }
             }
             //prawy górny
-            if (currentNode.index.X + 1 <= 63 && currentNode.index.Y - 1 >= 0 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1]))
+            if (currentNode.index.X + 1 <= PathFinderManager.GridSize-1 && currentNode.index.Y - 1 >= 0 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1]))
             {
                if( !openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y - 1]))
                {
@@ -219,7 +216,7 @@ namespace Logic.PathFinderNamespace
                }
             }
             //prawy dolny
-            if (currentNode.index.X + 1 <= 63 && currentNode.index.Y + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1]))
+            if (currentNode.index.X + 1 <= PathFinderManager.GridSize-1 && currentNode.index.Y + 1 <= PathFinderManager.GridSize-1 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1]))
             {
                 if(!openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1]))
                 {openList.Add(PathFinderManager.tileList[(int)currentNode.index.X + 1, (int)currentNode.index.Y + 1]);
@@ -235,7 +232,7 @@ namespace Logic.PathFinderNamespace
                 }
             }
             //lewy dolny róg
-            if (currentNode.index.X - 1 >= 0 && currentNode.index.Y + 1 <= 63 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1]))
+            if (currentNode.index.X - 1 >= 0 && currentNode.index.Y + 1 <= PathFinderManager.GridSize-1 && PathFinderManager.isWalkable(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1])&&!closedList.Contains(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1]))
             {
                 if( !openList.Contains(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1]))
                 { openList.Add(PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1]);
