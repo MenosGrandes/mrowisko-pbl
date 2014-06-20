@@ -345,6 +345,16 @@ GraphicsDevice);
             //pf = new PathFinder(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[2, 0]);
           PathFinder pf = new PathFinder();
           pf.Search(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[63, 63]);
+            for(int i=0;i<PathFinderManager.GridSize;i++)
+            {
+                for (int j = 0; j < PathFinderManager.GridSize; j++)
+                {
+                        if(PathFinderManager.tileList[i,j].walkable==false)
+                        {
+                            inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log"),new Vector3( PathFinderManager.tileList[i,j].centerPosition.X,PathFinderManager.tileList[i,j].Height,PathFinderManager.tileList[i,j].centerPosition.Y),Vector3.Zero,Vector3.One,device,light)));
+                        }
+                }  
+            }                       
         }
         
 
@@ -675,13 +685,14 @@ GraphicsDevice);
                 }
             }
 
-            //foreach (QuadNode q in QuadNodeController.QuadNodeList)
-            //{
-            //    if (camera.BoundingVolumeIsInView(q.Bounds))
-            //    {
-            //        BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
-            //    }
-            //}
+            foreach (InteractiveModel q in inter)
+            {
+                if (camera.BoundingVolumeIsInView(q.Model.BoundingSphere))
+                {
+                   // BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
+                    q.Draw((FreeCamera)camera);
+                }
+            }
 
             foreach (InteractiveModel model in models)
             {
