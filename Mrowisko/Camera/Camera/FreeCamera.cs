@@ -58,8 +58,8 @@ namespace GameCamera
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             float rotatate = 0;
 
-            if (keyState.IsKeyDown(Keys.W)) { translation += new Vector3(0, (float)Math.Sin(-45), 1) * MathHelper.ToRadians(Pitch) * scale ;   Zoom = false; }
-            if (keyState.IsKeyDown(Keys.S)) { translation += new Vector3(0, (float)Math.Sin(45), -1) * MathHelper.ToRadians(Pitch) * scale; Zoom = false; }
+            if (keyState.IsKeyDown(Keys.W)) { translation += new Vector3(0, -1,1) * MathHelper.ToRadians(Pitch) * scale ;   Zoom = false; }
+            if (keyState.IsKeyDown(Keys.S)) { translation += new Vector3(0, 1,-1) * MathHelper.ToRadians(Pitch) * scale; Zoom = false; }
             if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.Q)) rotatate += MathHelper.ToRadians(0.05f);

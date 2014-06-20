@@ -260,7 +260,7 @@ namespace AntHill
             camera = new FreeCamera(
 new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 20, texture[4].Width * 1 / 2),
 MathHelper.ToRadians(0), // Turned around 153 degrees
-MathHelper.ToRadians(-60), // Pitched up 13 degrees
+MathHelper.ToRadians(-75), // Pitched up 13 degrees
 GraphicsDevice);
 
             quadTree = new QuadTree(Vector3.Zero, texture, device,3, Content, (FreeCamera)camera);
@@ -308,7 +308,7 @@ GraphicsDevice);
             WindowController.setWindowSize(1366, 768, false);
                 //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
-            models.Add(new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), new Vector3(0,30,0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
+            models.Add(new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), new Vector3(100,30,100), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
           //  models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
             models[models.Count-1].Model.switchAnimation("Idle");
             List<String> aa = new List<string>();
@@ -322,7 +322,7 @@ GraphicsDevice);
 
            models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/beetle"),new Vector3(20,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
            models[models.Count - 1].Model.switchAnimation("Idle");
-
+            
            models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
 
            timeTriggers.Add(new LaserTrigger((Laser)models[models.Count - 1], 1));
@@ -667,21 +667,21 @@ GraphicsDevice);
             water.DrawWater(time, (FreeCamera)camera);
 
 
-            //foreach (Node n in PathFinderManager.tileList)
-            //{
-            //    if (camera.BoundingVolumeIsInView(n.Box))
-            //    {
-            //        BBoxRender.DrawBBox(n.Box, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
-            //    }
-            //}
-
-            foreach(QuadNode q in QuadNodeController.QuadNodeList)
+            foreach (Node n in PathFinderManager.tileList)
             {
-                if(camera.BoundingVolumeIsInView(q.Bounds))
+                if (camera.BoundingVolumeIsInView(n.Box))
                 {
-                    BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
+                    BBoxRender.DrawBBox(n.Box, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
                 }
             }
+
+            //foreach (QuadNode q in QuadNodeController.QuadNodeList)
+            //{
+            //    if (camera.BoundingVolumeIsInView(q.Bounds))
+            //    {
+            //        BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
+            //    }
+            //}
 
             foreach (InteractiveModel model in models)
             {

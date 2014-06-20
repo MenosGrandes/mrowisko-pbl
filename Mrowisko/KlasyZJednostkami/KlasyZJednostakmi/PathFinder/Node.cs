@@ -10,6 +10,7 @@ namespace Logic
 {
    public  class Node
     {
+
        public Node parent;
        public  Vector2 centerPosition;
        public float Height;

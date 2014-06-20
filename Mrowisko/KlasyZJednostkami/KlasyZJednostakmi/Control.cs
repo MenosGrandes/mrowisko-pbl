@@ -80,9 +80,11 @@ namespace Logic
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X,currentMouseState.Y));
             
             Vector3 mouse3d2 = QuadNodeController.getIntersectedQuadNode(mouseRay);
+                        Node n= PathFinderManagerNamespace.PathFinderManager.getNodeIntersected(mouseRay);
+                        Vector3 mouseNodeSelectedVector=new Vector3(n.centerPosition.X,n.Height,n.centerPosition.Y);
            // int intersectedTileNumber = QuadNodeController.getIntersectedQuadNodeForMove(mouseRay);
            // modelos.Model.Position = mouse3d2;
-            modelos.Model.Position = mouse3d2;
+                        modelos.Model.Position = mouseNodeSelectedVector;
             //modelos.Model.Position = new Vector3(mouse3d2.X, StaticHelpers.StaticHelper.GetHeightAt(mouse3d2.X,mouse3d2.Z), mouse3d2.Z);
             //Console.WriteLine(selectedObject);
             selectedObjectMouseOnlyMove = null;
@@ -236,12 +238,10 @@ namespace Logic
                     endNode = PathFinderManagerNamespace.PathFinderManager.getNodeIntersected(mouseRay);
                     if (((Unit)ant).PathFinder.Search(ant.MyNode, endNode) == true)
                     {
-                        ant.Model.Position = new Vector3(((Unit)ant).PathFinder.finalPath[((Unit)ant).PathFinder.finalPath.Count - 1].centerPosition.X, StaticHelpers.StaticHelper.GetHeightAt(((Unit)ant).PathFinder.finalPath[((Unit)ant).PathFinder.finalPath.Count - 1].centerPosition.X, ((Unit)ant).PathFinder.finalPath[((Unit)ant).PathFinder.finalPath.Count - 1].centerPosition.Y), ((Unit)ant).PathFinder.finalPath[((Unit)ant).PathFinder.finalPath.Count - 1].centerPosition.Y);
-                        ((Unit)ant).MyNode = ((Unit)ant).PathFinder.finalPath.Last();
+
+                        ((Unit)ant).MovementPath=new Queue<Node>(((Unit)ant).PathFinder.finalPath);
+                        ((Unit)ant).Moving = true;
                         ((Unit)ant).PathFinder.finalPath.Clear();
-                        ant.Model.switchAnimation("Walk");
-                        ant.ImMoving = true;
-                        Console.WriteLine("Już jestem");
                     }
                     else
                     {
@@ -388,9 +388,20 @@ namespace Logic
 
             return new Ray(nearPoint, direction);
         }
-                                                                                        
-      
 
+
+        void updatePosition(InteractiveModel unit, Vector2 targetPos, GameTime gameTime)
+        {
+            float speed = (float)2.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
+            Vector2 Direction = targetPos - new Vector2(unit.Model.Position.X, unit.Model.Position.Z);
+            Direction.Normalize();
+
+            Vector3 UnitSpeed = new Vector3(Direction.X, 0, Direction.Y) * speed; // speed is your unit's speed
+
+            // Now you update position
+            unit.Model.Position = new Vector3(unit.Model.Position.X + UnitSpeed.X, StaticHelpers.StaticHelper.GetHeightAt(unit.Model.Position.X + UnitSpeed.X, unit.Model.Position.Z + UnitSpeed.Z), unit.Model.Position.Z + UnitSpeed.Z);
+            unit.MyNode = unit.getMyNode();
+        }
         public Ray starSelectMouseRay { get; set; }
 
         public Vector3 selectRectangleStart { get; set; }
@@ -399,5 +410,6 @@ namespace Logic
 
         public Vector3 selectRectangleStop { get; set; }
     }
+
 }
 
