@@ -110,6 +110,7 @@
     <Compile Include="Triggers\LaserTrigger.cs" />
     <Compile Include="Triggers\TimeTrigger.cs" />
     <Compile Include="Triggers\Trigger.cs" />
+    <Compile Include="UnitFormation.cs" />
     <Compile Include="Units\Allies\Allies.cs" />
     <Compile Include="Units\Allies\Beetle.cs" />
     <Compile Include="Units\Ants\Ant.cs" />
