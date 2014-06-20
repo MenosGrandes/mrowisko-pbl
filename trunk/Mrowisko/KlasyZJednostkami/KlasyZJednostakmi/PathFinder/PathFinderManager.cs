@@ -59,7 +59,7 @@ namespace Logic.PathFinderManagerNamespace
 
 
             }
-            return new Node();
+            return PathFinderManager.tileList[0, 0];
 
         }
     }
