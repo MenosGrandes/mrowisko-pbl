@@ -22,7 +22,11 @@ namespace Logic.PathFinderNamespace
         public bool Search(Node startNode,Node endNode)
         {
             Node currentNode=new Node();
-
+            if(startNode==endNode)
+            {
+                finalPath.Add(startNode);
+                return true;
+            }
             this.startNode = startNode;
             this.endNode = endNode;
             openList.Add(startNode);
