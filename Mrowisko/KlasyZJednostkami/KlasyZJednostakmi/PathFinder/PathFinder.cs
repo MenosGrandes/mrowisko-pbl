@@ -52,8 +52,10 @@ namespace Logic.PathFinderNamespace
             finalPath.Add(closedList[closedList.Count - 1]);
             while (parent != startNode)
             {
-                parent = finalPath[finalPath.Count - 1].parent;
-                finalPath.Add(parent);
+                
+                    parent = finalPath[finalPath.Count - 1].parent;
+                    finalPath.Add(parent);
+                
             }
             finalPath.Reverse();
             closedList.Clear();
