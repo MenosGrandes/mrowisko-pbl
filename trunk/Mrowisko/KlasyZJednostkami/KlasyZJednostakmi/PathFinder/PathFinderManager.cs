@@ -30,7 +30,7 @@ namespace Logic.PathFinderManagerNamespace
                 for (int J = 0; J < GridSize; J += 1)
                 {
 
-                    tileList[J, i] = new Node(new Vector2(24 + J * 48, 24 + i * 48), true, new BoundingBox(new Vector3(J * 48, 10, i * 48), new Vector3(J * 48+ 48, StaticHelpers.StaticHelper.GetHeightAt(J * 48 + 48, i * 48 + 48)+3, i * 48 + 48)), new Vector2(J, i));
+                    tileList[J, i] = new Node(new Vector2(12 + J * 24, 12 + i * 24), true, new BoundingBox(new Vector3(J * 24, 10, i * 24), new Vector3(J * 24+ 24, StaticHelpers.StaticHelper.GetHeightAt(J * 24 + 24, i * 24 + 24)+3, i * 24 + 24)), new Vector2(J, i));
                 }
 
             }
@@ -40,7 +40,7 @@ namespace Logic.PathFinderManagerNamespace
             {
                 for (int J = 0; J < GridSize; J += 1)
                 {
-                    int a = r.Next(100);
+                    int a = r.Next(400);
                     if(a<5)
                     tileList[J, i].walkable = false; //new Node(new Vector2(24 + J * 48, 24 + i * 48), true, new BoundingBox(new Vector3(J * 48, 10, i * 48), new Vector3(J * 48 + 48, StaticHelpers.StaticHelper.GetHeightAt(J * 48 + 48, i * 48 + 48) + 3, i * 48 + 48)), new Vector2(J, i));
                 }

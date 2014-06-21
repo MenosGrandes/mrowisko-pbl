@@ -92,12 +92,17 @@ namespace Logic
             get
             {
                 // No need for rotation, as this is a sphere
-                Matrix worldTransform = Matrix.CreateScale(Scale) *  Matrix.CreateTranslation(Position);
+                Matrix worldTransform = Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position);
                 BoundingSphere transformed = boundingSphere;
                 transformed = transformed.Transform(worldTransform);
 
                 return transformed;
             }
+            set
+            {
+                boundingSphere = value;
+            }
+
         }
         /// <summary>
         /// Constructor of LoadModel class.

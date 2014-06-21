@@ -272,7 +272,7 @@ GraphicsDevice);
             StaticHelpers.StaticHelper.width = (int)Math.Sqrt(quadTree.Vertices.heightDataToControl.Length);
             StaticHelpers.StaticHelper.length = (int)Math.Sqrt(quadTree.Vertices.heightDataToControl.Length);
             
-            PathFinderManager.PathFinderManagerInitialize(64);
+            PathFinderManager.PathFinderManagerInitialize(128);
 
 
             #region loadFromFile
@@ -308,9 +308,10 @@ GraphicsDevice);
             WindowController.setWindowSize(1366, 768, false);
                 //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
-            models.Add(new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), new Vector3(100,30,100), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
+            models.Add(new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), new Vector3(100,40,100), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
+            models[models.Count - 1].Model.switchAnimation("Idle");
           //  models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
-            models[models.Count-1].Model.switchAnimation("Idle");
+           
             List<String> aa = new List<string>();
             aa.Add("s1");
             aa.Add("s2");
@@ -320,7 +321,7 @@ GraphicsDevice);
 
 
 
-           models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/beetle"),new Vector3(20,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
+           models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(20,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
            models[models.Count - 1].Model.switchAnimation("Idle");
             
            models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
@@ -343,8 +344,8 @@ GraphicsDevice);
 
 
             //pf = new PathFinder(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[2, 0]);
-          PathFinder pf = new PathFinder();
-          pf.Search(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[63, 63]);
+          //PathFinder pf = new PathFinder();
+          //pf.Search(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[63, 63]);
             for(int i=0;i<PathFinderManager.GridSize;i++)
             {
                 for (int j = 0; j < PathFinderManager.GridSize; j++)
@@ -536,6 +537,18 @@ GraphicsDevice);
             control.device = device;
 
             control.Update(gameTime);
+
+            foreach( Unit unit in control.SelectedModels)
+            {
+                if (unit.Model.Selected)
+                {
+                  //  unit.obstaclesOnRoad(control.filtrObstacles(models));
+                    unit.obstaclesOnRoad(IModel);
+                    unit.obstaclesOnRoad(inter);
+                }
+
+                          
+            }
             control.Models_Colision =IModel;
            
 
@@ -689,6 +702,9 @@ GraphicsDevice);
             {
                 if (camera.BoundingVolumeIsInView(q.Model.BoundingSphere))
                 {
+                     BoundingSphereRenderer.Render(q.Model.BoundingSphere, device, camera.View, camera.Projection,
+                       Color.Green, Color.Aquamarine, Color.White);
+                     //BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
                    // BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
                     q.Draw((FreeCamera)camera);
                 }

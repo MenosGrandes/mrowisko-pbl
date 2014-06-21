@@ -132,9 +132,15 @@ namespace Logic
         public virtual void Intersect(InteractiveModel interactive)
     {
     }
+
         public virtual List<Material> releaseMaterial()
         {
             return null;
+        }
+
+        public virtual void obstaclesOnRoad(List<InteractiveModel> obstacles)
+        {
+            
         }
 
         public virtual Logic.Meterials.Material addCrop()

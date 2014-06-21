@@ -38,6 +38,8 @@ namespace Logic.Meterials.MaterialCluster
                 wood.Add(new Wood());
             }
 
+           // this.Model.BoundingSphere = new BoundingSphere(this.Model.BoundingSphere.Center, this.Model.BoundingSphere.Radius/10);
+            
         }
 
         public void removeWood(int n)
