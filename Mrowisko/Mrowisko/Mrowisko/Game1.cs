@@ -32,6 +32,7 @@ using Logic.EnviroModel;
 using System.Diagnostics;
 using Logic.PathFinderManagerNamespace;
 using Logic.PathFinderNamespace;
+using Logic.Units.Predators;
 namespace AntHill
 {
     /// <summary>
@@ -152,10 +153,6 @@ namespace AntHill
         /// </summary>
         protected override void LoadContent()
         {
-
-
-
-
 
             #region KURSORY i okno
             StaticHelpers.StaticHelper.DeviceManager = graphics;
@@ -320,9 +317,12 @@ GraphicsDevice);
            SoundController.SoundController.Initialize(aa);
 
 
-
-           models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(20,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
-           models[models.Count - 1].Model.switchAnimation("Idle");
+          
+           
+          models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(20,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
+         // models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(100, 40, 100), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+           
+            models[models.Count - 1].Model.switchAnimation("Idle");
             
            models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
 
@@ -332,7 +332,7 @@ GraphicsDevice);
 
           BBoxRender.InitializeBBoxDebuger(device);
 
-
+         
 
 
 
@@ -355,10 +355,10 @@ GraphicsDevice);
                             inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log"),new Vector3( PathFinderManager.tileList[i,j].centerPosition.X,PathFinderManager.tileList[i,j].Height,PathFinderManager.tileList[i,j].centerPosition.Y),Vector3.Zero,Vector3.One,device,light)));
                         }
                 }  
-            }                       
+            }
         }
         
-
+        
 
         /// <summary>w
         /// UnloadContent will be called once per game and is the place to unload
