@@ -378,11 +378,6 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Models\tree1.FBX">
-      <Name>tree1</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
     <Compile Include="Models\ant.X">
       <Name>ant</Name>
       <Importer>XImporter</Importer>

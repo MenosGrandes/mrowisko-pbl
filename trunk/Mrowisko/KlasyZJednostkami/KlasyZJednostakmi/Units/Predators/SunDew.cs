@@ -5,39 +5,56 @@ using System.Text;
 using Microsoft.Xna.Framework;
 namespace Logic.Units.Predators
 {
-    class SunDew:Unit
+    public class SunDew:Unit
     {
     
      public List<InteractiveModel> Ants = new List<InteractiveModel>();
-        private float Scope;
-        private float AttackSpeed;
-        private int Damage;
 
+
+        private float trawienie = 0.0f;
+        private float czas_trawienia = 5.0f;
+        private bool trawienie_flaga = false;
         public SunDew(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, int maxCapacity, float gaterTime, float atackInterval,float Scope,float AttackSpeed, int Damage)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
     {
-        this.Scope = Scope;
-        this.AttackSpeed=AttackSpeed;
-        this.Damage=Damage;
+     
     }
+
+        public SunDew(LoadModel model, List<InteractiveModel> ants)
+            : base(model)
+        {
+      
+            this.Ants = ants;
+            LifeBar.LifeLength = model.Scale.X * 100;
+            circle.Scale = this.model.Scale.Y * 120;
+            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+            circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
+
+        }
+
+
         public void update(GameTime gameTime)
         {
-                foreach(Unit model in Ants)
+            if (trawienie_flaga == true)
+            {
+                trawienie += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (trawienie > czas_trawienia)
                 {
-                    float lenght = (float)Math.Sqrt(Math.Pow(model.Model.Position.X - this.Model.Position.X, 2.0f) + Math.Pow(model.Model.Position.Z - this.Model.Position.Z, 2.0f));
-                    if(lenght<=Scope)
+                    trawienie_flaga = false;
+                    trawienie = 0.0f;
+                }
+            }
+            else
+            {
+                foreach (Unit model in Ants)
+                {
+                    if (this.Model.BoundingSphere.Contains(model.Model.Position) == ContainmentType.Contains)
                     {
-                        AttackSpeed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if (AttackSpeed > 2.0f)
-                    {
-                        if (model.Hp > 0)
-                            model.Hp -= Damage;
-                        AttackSpeed = 0.0f;
-                    }
+                        Ants.Remove(model);
+                        trawienie_flaga = true;
                     }
                 }
-            
-
+            }
         }
     
     }
