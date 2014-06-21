@@ -17,7 +17,7 @@ namespace GUI
     {
 
         public InteractiveModel selectedModel;
-        public List<InteractiveModel> selectedModels;
+        public List<Unit> selectedModels;
         private Control control;
         public Control Control
         {

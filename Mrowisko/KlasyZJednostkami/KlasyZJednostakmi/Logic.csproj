@@ -92,6 +92,7 @@
     <Compile Include="EnviroModel\Grass.cs" />
     <Compile Include="EnviroModel\Tree.cs" />
     <Compile Include="EnviroModel\Tree2.cs" />
+    <Compile Include="Formation\Leader.cs" />
     <Compile Include="Laser.cs" />
     <Compile Include="LoadModel.cs" />
     <Compile Include="Meterials\Chelidonium.cs" />
@@ -110,7 +111,7 @@
     <Compile Include="Triggers\LaserTrigger.cs" />
     <Compile Include="Triggers\TimeTrigger.cs" />
     <Compile Include="Triggers\Trigger.cs" />
-    <Compile Include="UnitFormation.cs" />
+    <Compile Include="Formation\UnitFormation.cs" />
     <Compile Include="Units\Allies\Allies.cs" />
     <Compile Include="Units\Allies\Beetle.cs" />
     <Compile Include="Units\Ants\Ant.cs" />
