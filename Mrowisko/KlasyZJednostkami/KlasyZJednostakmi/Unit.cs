@@ -29,6 +29,10 @@ namespace Logic
             get { return moving; }
             set { moving = value; }
         }
+
+        public List<InteractiveModel> obstacles = new List<InteractiveModel>();
+
+             
         private PathFinderNamespace.PathFinder pathFinder;
 
         public PathFinderNamespace.PathFinder PathFinder
@@ -145,7 +149,7 @@ namespace Logic
             base.elapsedTime = 0;
             this.armorAfterBuff = armor * 2;
             pathFinder = new PathFinderNamespace.PathFinder();
-            speed = 6;
+            speed = 42;
         }
         public Unit()
             : base()
@@ -153,7 +157,7 @@ namespace Logic
             base.elapsedTime = 0;
             this.armorAfterBuff = armor * 2;
             pathFinder = new PathFinderNamespace.PathFinder();
-            speed = 6;
+            speed = 42;
 
         }
         public Unit(LoadModel model)
@@ -163,7 +167,7 @@ namespace Logic
             base.elapsedTime = 0;
             this.armorAfterBuff = armor * 2;
             pathFinder = new PathFinderNamespace.PathFinder();
-            speed = 6;
+            speed = 42;
         }
         public Vector3 getPosition()
         {
@@ -217,11 +221,11 @@ namespace Logic
               
                 if (!AtDestination)
                 {
-                    Console.WriteLine("pora isc");
                     direction = -(new Vector2(Model.Position.X, Model.Position.Z) - destination);
                     //This scales the vector to 1, we'll use move Speed and elapsed Time 
                     //to find the how far the tank moves
-                    direction.Normalize();
+                    direction =Vector2.Normalize(direction);
+                    
                     model.Position = new Vector3(Model.Position.X + (direction.X *
                         speed * elapsedTime3),
                         StaticHelpers.StaticHelper.GetHeightAt(Model.Position.X + (direction.X *
@@ -230,6 +234,7 @@ namespace Logic
                         ,
                         Model.Position.Z + (direction.Y *
                         speed * elapsedTime3));
+                    model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), destination, model.Rotation.Y, 1.05f), model.Rotation.Z);
                     MyNode = this.getMyNode();
                 }
                 
@@ -265,45 +270,112 @@ namespace Logic
                     direction = -(new Vector2(Model.Position.X, Model.Position.Z) - destination);
                     //This scales the vector to 1, we'll use move Speed and elapsed Time 
                     //to find the how far the tank moves
-                    direction.Normalize();
-                    model.Position = new Vector3(Model.Position.X + (direction.X *
+                    direction = Vector2.Normalize(direction);
+                    this.reachTarget(time, this, new Vector3(destination.X, StaticHelpers.StaticHelper.GetHeightAt(destination.X,destination.Y), destination.Y));
+                    /*model.Position = new Vector3(Model.Position.X + (direction.X *
                         speed * elapsedTime3),
                         StaticHelpers.StaticHelper.GetHeightAt(Model.Position.X + (direction.X *
                         speed * elapsedTime3), Model.Position.Z + (direction.Y *
                         speed * elapsedTime3))
                         ,
                         Model.Position.Z + (direction.Y *
-                        speed * elapsedTime3));
+                        speed * elapsedTime3));*/
+                    model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), destination, model.Rotation.Y, 1.0f), model.Rotation.Z);
+                    Console.WriteLine(model.Rotation.Y);
                     MyNode = this.getMyNode();
                 }
             }
         }
 
+        public void reachTarget(GameTime gameTime, InteractiveModel ship, Vector3 target)
+        {
+            float pullDistance = Vector3.Distance(target, ship.Model.Position);
+
+            //Only do something if we are not already there
+           // if (pullDistance > 1)
+            {
+                Vector3 pull = (target - ship.Model.Position) * (1 / pullDistance); //the target tries to 'pull us in'
+                Vector3 totalPush = Vector3.Zero;
+
+                int contenders = 0;
+                for (int i = 0; i < obstacles.Count; ++i)
+                {
+                    //draw a vector from the obstacle to the ship, that 'pushes the ship away'
+                    Vector3 push = ship.Model.Position - obstacles[i].Model.Position;
+
+                    //calculate how much we are pushed away from this obstacle, the closer, the more push
+                    float distance = (Vector3.Distance(ship.Model.Position, obstacles[i].Model.Position) - obstacles[i].Model.BoundingSphere.Radius) - ship.Model.BoundingSphere.Radius;
+                    //only use push force if this object is close enough such that an effect is needed
+                    if (distance < ship.Model.BoundingSphere.Radius * 3)
+                    {
+                        ++contenders; //note that this object is actively pushing
+
+                        if (distance < 0.0001f) //prevent division by zero errors and extreme pushes
+                        {
+                            distance = 0.0001f;
+                        }
+                        float weight = 1 / distance;
+
+                        totalPush += push * weight;
+                    }
+                }
+
+                pull *= Math.Max(1, 4 * contenders); //4 * contenders gives the pull enough force to pull stuff trough (tweak this setting for your game!)
+                pull += totalPush;
+
+                //Normalize the vector so that we get a vector that points in a certain direction, which we van multiply by our desired speed
+                pull.Normalize();
+                //Set the ships new position;
+                ship.Model.Position = new Vector3(ship.Model.Position.X + (pull.X * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds, StaticHelpers.StaticHelper.GetHeightAt(ship.Model.Position.X, ship.Model.Position.Z), ship.Model.Position.Z + (pull.Z * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds);
+            }
+        }
+
+        public override void obstaclesOnRoad(List<InteractiveModel> obstacles)
+        {
+            foreach(InteractiveModel unit in obstacles)
+            {
+                if (!this.obstacles.Contains(unit))
+                {
+                    if (Vector2.Distance(new Vector2(this.Model.Position.X, this.Model.Position.Z), new Vector2(unit.Model.Position.X, unit.Model.Position.X)) < 150)
+                        this.obstacles.Add(unit);
+                }
+                else if (this.obstacles.Contains(unit) && unit.Model.Selected)
+                {
+                    this.obstacles.Remove(unit);
+                }
+            }
+            
+        }
+
 
         public override void Intersect(InteractiveModel interactive)
         {
-            base.Intersect(interactive);
-            //if (interactive.GetType().BaseType.BaseType == typeof(Unit))
-            //{
-            //    if (model.BoundingSphere.Intersects(interactive.Model.BoundingSphere))
-            //    {
-            //        //interactive.Model.Position -= Vector3.Left;
-            //        float distance2 = Vector3.Distance(model.BoundingSphere.Center, interactive.Model.BoundingSphere.Center);
-            //        Vector3 aa = (model.Position - interactive.Model.Position);
-            //        if (aa.X > 0)
-            //        {
-            //            model.Position += Vector3.Right;
-            //        }
-            //        if (aa.X < 0)
-            //        {
-            //            model.Position += Vector3.Left;
-            //        }
-            //    }
-            //}
+            base.Intersect(interactive);/*
+            if (!interactive.Model.Selected)
+            {
+                if (interactive.GetType().BaseType.BaseType == typeof(Unit))
+                {
+                    if (model.BoundingSphere.Intersects(interactive.Model.BoundingSphere))
+                    {
+                        //interactive.Model.Position -= Vector3.Left;
+                        float distance2 = Vector3.Distance(model.BoundingSphere.Center, interactive.Model.BoundingSphere.Center);
+                        Vector3 aa = (model.Position - interactive.Model.Position);
+                        if (aa.X > 0)
+                        {
+                            model.Position += Vector3.Right;
+                        }
+                        if (aa.X < 0)
+                        {
+                            model.Position += Vector3.Left;
+                        }
+                    }
+                }
+            }*/
         }
         public bool AtDestination
         {
-            get { return DistanceToDestination < 6; }
+            get { if(this.IfLeader) return DistanceToDestination < 6;
+            else return DistanceToDestination < this.model.BoundingSphere.Radius+3; }
         }
         public float DistanceToDestination
         {

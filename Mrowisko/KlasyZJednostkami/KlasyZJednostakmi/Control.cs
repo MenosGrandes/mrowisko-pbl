@@ -286,6 +286,18 @@ namespace Logic
             }
         }
 
+        public List<InteractiveModel> filtrObstacles(List<InteractiveModel> obstacles)
+        {
+            List<InteractiveModel> result = new List<InteractiveModel>();
+            foreach(InteractiveModel unit in obstacles)
+            {
+                if(!unit.Model.Selected)
+                    result.Add(unit);
+            }
+
+            return result;
+        }
+
         public static bool FloatEquals(float f1, float f2)
         {
             return Math.Abs(f1 - f2) < 2;

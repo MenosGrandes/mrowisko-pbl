@@ -92,7 +92,6 @@
     <Compile Include="EnviroModel\Grass.cs" />
     <Compile Include="EnviroModel\Tree.cs" />
     <Compile Include="EnviroModel\Tree2.cs" />
-    <Compile Include="Formation\Leader.cs" />
     <Compile Include="Laser.cs" />
     <Compile Include="LoadModel.cs" />
     <Compile Include="Meterials\Chelidonium.cs" />
