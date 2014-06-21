@@ -308,7 +308,7 @@ GraphicsDevice);
             WindowController.setWindowSize(1366, 768, false);
                 //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
-            models.Add(new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), new Vector3(100,40,100), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
+            models.Add(new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/grasshopper"), new Vector3(100,40,100), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
             models[models.Count - 1].Model.switchAnimation("Idle");
           //  models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
            
