@@ -109,6 +109,14 @@ namespace Logic
             set { atackInterval = value; }
         }
 
+        protected bool ifLeader = false;
+
+        public bool IfLeader
+        {
+            get { return ifLeader; }
+            set { ifLeader = value; }
+        }
+
 
         /*
          protected List<Skill> skillsList;
@@ -178,6 +186,7 @@ namespace Logic
         public override void Update(GameTime time)
         {
             base.Update(time);
+
             if (ArmorBuff)
             {
                 armor = armorAfterBuff;
@@ -187,9 +196,52 @@ namespace Logic
                 armor = armorAfterBuff / 2;
             }
 
+           if(ifLeader)
+           {
+               this.goToTarget(time);
+           }
+           else
+           {
+               this.follow(time);
+           }
+
+        }
+
+        public void follow(GameTime time)
+        {
+           
             if (moving)
             {
-                float elapsedTime3 = (float)time.ElapsedGameTime.TotalSeconds ;
+                float elapsedTime3 = (float)time.ElapsedGameTime.TotalSeconds;
+               
+              
+                if (!AtDestination)
+                {
+                    Console.WriteLine("pora isc");
+                    direction = -(new Vector2(Model.Position.X, Model.Position.Z) - destination);
+                    //This scales the vector to 1, we'll use move Speed and elapsed Time 
+                    //to find the how far the tank moves
+                    direction.Normalize();
+                    model.Position = new Vector3(Model.Position.X + (direction.X *
+                        speed * elapsedTime3),
+                        StaticHelpers.StaticHelper.GetHeightAt(Model.Position.X + (direction.X *
+                        speed * elapsedTime3), Model.Position.Z + (direction.Y *
+                        speed * elapsedTime3))
+                        ,
+                        Model.Position.Z + (direction.Y *
+                        speed * elapsedTime3));
+                }
+            }
+
+        }
+
+        public void goToTarget(GameTime time)
+        {
+            
+
+            if (moving)
+            {
+                float elapsedTime3 = (float)time.ElapsedGameTime.TotalSeconds;
 
                 // If we have any waypoints, the first one on the list is where 
                 // we want to go
@@ -202,7 +254,7 @@ namespace Logic
                 // the list, get rid of the first one since we’re there now
                 if (AtDestination && movementPath.Count >= 1)
                 {
-                    MyNode= movementPath.Dequeue();
+                    MyNode = movementPath.Dequeue();
 
                 }
 
@@ -222,8 +274,9 @@ namespace Logic
                         speed * elapsedTime3));
                 }
             }
-
         }
+
+
         public override void Intersect(InteractiveModel interactive)
         {
             base.Intersect(interactive);

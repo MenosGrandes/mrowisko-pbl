@@ -32,7 +32,7 @@ namespace Logic
         public List<InteractiveModel> models;
         public List<float> angles = new List<float>();
         public Texture2D texture;
-        public List<InteractiveModel> SelectedModels = new List<InteractiveModel>();
+        public List<Unit> SelectedModels = new List<Unit>();
         public List<InteractiveModel> IModel = new List<InteractiveModel>();
         public List<InteractiveModel> Models_Colision = new List<InteractiveModel>();
         public InteractiveModel selectedObject, selectedObjectMouseOnlyMove;
@@ -43,6 +43,7 @@ namespace Logic
         private Vector2 selectCorner;
         private Rectangle selectRectangle;
         public LoadModel moving;
+        private UnitFormation formation;
 
         //tabele wysokosci
         public int heightsa;
@@ -222,7 +223,7 @@ namespace Logic
                         if (ant.Model.Selected)
                         {
                             
-                                SelectedModels.Add(ant);
+                                SelectedModels.Add((Unit)ant);
                             
                         }
 
@@ -232,25 +233,37 @@ namespace Logic
 
             if (lastMouseState.LeftButton == ButtonState.Pressed &&currentMouseState.LeftButton== ButtonState.Released)
             {
-                foreach (InteractiveModel ant in SelectedModels)
+                if (SelectedModels.Count > 0)
                 {
+                    formation = new UnitFormation(SelectedModels);
+
+                    // foreach (InteractiveModel ant in SelectedModels)
+                    //{
 
                     endNode = PathFinderManagerNamespace.PathFinderManager.getNodeIntersected(mouseRay);
-                    if (((Unit)ant).PathFinder.Search(ant.MyNode, endNode) == true)
+
+                    if (formation.Leader.PathFinder.Search(formation.Leader.MyNode, endNode) == true)
                     {
 
-                        ((Unit)ant).MovementPath=new Queue<Node>(((Unit)ant).PathFinder.finalPath);
-                        ((Unit)ant).Moving = true;
-                        ((Unit)ant).PathFinder.finalPath.Clear();
+                        formation.Leader.MovementPath = new Queue<Node>(formation.Leader.PathFinder.finalPath);
+                        formation.Leader.Moving = true;
+                        formation.Leader.PathFinder.finalPath.Clear();
+                        formation.formationSetOff();
                     }
                     else
                     {
                         Console.WriteLine("Nie ma mnie jeszcze");
                     }
                 }
+
+               // }
             }
 
 
+            if (formation!=null)
+            {
+                formation.formationSetOff();
+            }
             lastMouseState = currentMouseState; 
                            
         }
@@ -366,7 +379,7 @@ namespace Logic
                 if (ant.CheckRayIntersection(mouseRay))
                 {
 
-                    SelectedModels.Add(ant);
+                    SelectedModels.Add((Unit)ant);
                     return ant;
                 }
             }
