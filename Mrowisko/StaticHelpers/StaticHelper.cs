@@ -106,7 +106,7 @@ namespace StaticHelpers
             // we'll use the Atan2 function. Atan will calculates the arc tangent of 
             // y / x for us, and has the added benefit that it will use the signs of x
             // and y to determine what cartesian quadrant to put the result in.
-            float desiredAngle = (float)Math.Atan2(x, y);//- MathHelper.ToRadians(180);
+            float desiredAngle = (float)Math.Atan2(x, y)- MathHelper.ToRadians(180);
 
             // so now we know where we WANT to be facing, and where we ARE facing...
             // if we weren't constrained by turnSpeed, this would be easy: we'd just 

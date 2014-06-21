@@ -306,7 +306,7 @@ namespace Logic
                     //calculate how much we are pushed away from this obstacle, the closer, the more push
                     float distance = (Vector3.Distance(ship.Model.Position, obstacles[i].Model.Position) - obstacles[i].Model.BoundingSphere.Radius) - ship.Model.BoundingSphere.Radius;
                     //only use push force if this object is close enough such that an effect is needed
-                    if (distance < ship.Model.BoundingSphere.Radius * 3)
+                    if (distance < ship.Model.BoundingSphere.Radius)
                     {
                         ++contenders; //note that this object is actively pushing
 
