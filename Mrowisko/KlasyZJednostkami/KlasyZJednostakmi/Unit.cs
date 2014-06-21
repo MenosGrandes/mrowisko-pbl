@@ -231,6 +231,10 @@ namespace Logic
                         Model.Position.Z + (direction.Y *
                         speed * elapsedTime3));
                 }
+                else
+                {
+                    MyNode = this.getMyNode();
+                }
             }
 
         }

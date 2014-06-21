@@ -174,6 +174,11 @@ namespace Logic
             if (currentMouseState.RightButton == ButtonState.Pressed && !mouseDown)
             {
                 SelectedModels.Clear();
+                if (formation != null)
+                {
+                    formation.Units.Clear();
+                    formation.MovementOrder.Clear();
+                }
                 SelectedObject();
 
                 starSelectMouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
@@ -222,7 +227,7 @@ namespace Logic
                     foreach (InteractiveModel ant in models)
                         if (ant.Model.Selected)
                         {
-                            
+                            ((Unit)ant).IfLeader = false;
                                 SelectedModels.Add((Unit)ant);
                             
                         }
