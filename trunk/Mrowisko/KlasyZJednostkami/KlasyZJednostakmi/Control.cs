@@ -50,24 +50,25 @@ namespace Logic
         public int width;
         public int length;
         public VertexMultitextured[] vertices;
-        private List<float> history=new List<float>();
+        private List<float> history = new List<float>();
 
         public int indeks;
 
         //private Texture2D texture;
         Vector2 position;
         public Vector3 position3d, position3DMouseOnlyMove;
-        MouseState currentMouseState,lastMouseState;
+        MouseState currentMouseState, lastMouseState;
+        KeyboardState currentKeyboardState;
         private bool mouseDown;
         private Vector3 startRectangle;
         private Vector3 endRectangle;
         public Vector3 mouse3d2;
-        
+
         public Control(Texture2D _texture, QuadTree quad)
         {
             this.texture = _texture;
-         modelos = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), Vector3.Zero, new Vector3(0.3f), new Vector3(0.2f), StaticHelpers.StaticHelper.Device, null));
-           
+            modelos = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), Vector3.Zero, new Vector3(0.3f), new Vector3(0.2f), StaticHelpers.StaticHelper.Device, null));
+
         }
         public void Update(GameTime gameTime)
         {
@@ -75,17 +76,18 @@ namespace Logic
 
 
 
-          //  Avoid(gameTime);
-           
+            //  Avoid(gameTime);
+
             currentMouseState = Mouse.GetState();
-            mouseRay = GetMouseRay(new Vector2(currentMouseState.X,currentMouseState.Y));
-            
+            currentKeyboardState = Keyboard.GetState();
+            mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
+
             Vector3 mouse3d2 = QuadNodeController.getIntersectedQuadNode(mouseRay);
-                        Node n= PathFinderManagerNamespace.PathFinderManager.getNodeIntersected(mouseRay);
-                        Vector3 mouseNodeSelectedVector=new Vector3(n.centerPosition.X,n.Height,n.centerPosition.Y);
-           // int intersectedTileNumber = QuadNodeController.getIntersectedQuadNodeForMove(mouseRay);
-           // modelos.Model.Position = mouse3d2;
-                        modelos.Model.Position = mouseNodeSelectedVector;
+            Node n = PathFinderManagerNamespace.PathFinderManager.getNodeIntersected(mouseRay);
+            Vector3 mouseNodeSelectedVector = new Vector3(n.centerPosition.X, n.Height, n.centerPosition.Y);
+            // int intersectedTileNumber = QuadNodeController.getIntersectedQuadNodeForMove(mouseRay);
+            // modelos.Model.Position = mouse3d2;
+            modelos.Model.Position = mouseNodeSelectedVector;
             //modelos.Model.Position = new Vector3(mouse3d2.X, StaticHelpers.StaticHelper.GetHeightAt(mouse3d2.X,mouse3d2.Z), mouse3d2.Z);
             //Console.WriteLine(selectedObject);
             selectedObjectMouseOnlyMove = null;
@@ -94,32 +96,32 @@ namespace Logic
 
             for (int i = 0; i < models.Count; i++)
             {
-               
+
                 if (currentMouseState.LeftButton == ButtonState.Pressed)
                 {
 
-             
-                if (models[i].CheckRayIntersection(mouseRay))
-                {
-                    //Console.WriteLine(models[i].GetType() + " adad");
-                   
+
+                    if (models[i].CheckRayIntersection(mouseRay))
+                    {
+                        //Console.WriteLine(models[i].GetType() + " adad");
+
                         selectedObject = models[i];
                         //Console.WriteLine(selectedObject);
 
+                    }
+
+
                 }
-               
-                    
-                }
-               
-               else
-                        selectedObjectMouseOnlyMove = models[i];
+
+                else
+                    selectedObjectMouseOnlyMove = models[i];
 
             }
-#region modele z którymi mamy interakacje
+            #region modele z którymi mamy interakacje
             for (int i = 0; i < Models_Colision.Count; i++)
             {
                 Models_Colision[i].Model.B_Box = Models_Colision[i].Model.updateBoundingBox();
-              
+
 
                 if (Models_Colision[i].CheckRayIntersection(mouseRay))
                 {
@@ -169,7 +171,7 @@ namespace Logic
                     break;
                 }
             }
-#endregion
+            #endregion
 
             if (currentMouseState.RightButton == ButtonState.Pressed && !mouseDown)
             {
@@ -191,7 +193,7 @@ namespace Logic
             }
             else if (currentMouseState.RightButton == ButtonState.Pressed)
             {
-                stopMouseRay=GetMouseRay(new Vector2(currentMouseState.X,currentMouseState.Y));
+                stopMouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
                 selectCorner = new Vector2(currentMouseState.X, currentMouseState.Y);
                 selectRectangleStop = QuadNodeController.getIntersectedQuadNode(stopMouseRay);
                 if (selectCorner.X > position.X)
@@ -227,6 +229,7 @@ namespace Logic
                     foreach (InteractiveModel ant in models)
                         if (ant.Model.Selected)
                         {
+
                             ((Unit)ant).IfLeader = false;
                                 SelectedModels.Add((Unit)ant);
                             
@@ -236,7 +239,7 @@ namespace Logic
                 mouseDown = false;
             }
 
-            if (lastMouseState.LeftButton == ButtonState.Pressed &&currentMouseState.LeftButton== ButtonState.Released)
+            if (lastMouseState.LeftButton == ButtonState.Pressed && currentMouseState.LeftButton == ButtonState.Released && !currentKeyboardState.IsKeyDown(Keys.Space))
             {
                 if (SelectedModels.Count > 0)
                 {
@@ -250,10 +253,12 @@ namespace Logic
                     if (formation.Leader.PathFinder.Search(formation.Leader.MyNode, endNode) == true)
                     {
 
+
                         formation.Leader.MovementPath = new Queue<Node>(formation.Leader.PathFinder.finalPath);
                         formation.Leader.Moving = true;
                         formation.Leader.PathFinder.finalPath.Clear();
                         formation.formationSetOff();
+
                     }
                     else
                     {
@@ -264,16 +269,37 @@ namespace Logic
                // }
             }
 
+            if (currentKeyboardState.IsKeyDown(Keys.Space))
+            {
+                if (currentMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    foreach (Unit jumpModel in SelectedModels)
+                    {
+                       // if (jumpModel.GetType()==typeof(Grasshopper))
+                        {
+                            jumpModel.destination = new Vector2(mouse3d2.X,mouse3d2.Z);
+                            jumpModel.direction = new Vector2(jumpModel.Model.playerTarget.X - jumpModel.Model.Position.X, jumpModel.Model.playerTarget.Z - jumpModel.Model.Position.Z);
+                            jumpModel.direction.Normalize();
+                            jumpModel.middlePoint = new Vector2((jumpModel.Model.playerTarget.X - jumpModel.Model.Position.X)/2+jumpModel.Model.playerTarget.X, (jumpModel.Model.playerTarget.Z - jumpModel.Model.Position.Z)/2 + jumpModel.Model.playerTarget.Z);
+                           // float maxHeight = direction.Length() / 2 + jumpModel.Model.Position.Y;
+                            jumpModel.Model.switchAnimation("Jump");
+                            jumpModel.Jumping= true;
+                          
+                        }
+                    }
+                }
+            }
+
 
             if (formation!=null)
             {
                 formation.formationSetOff();
             }
             lastMouseState = currentMouseState; 
-                           
+
         }
 
-        public void Draw(SpriteBatch spriteBatch,FreeCamera camera)
+        public void Draw(SpriteBatch spriteBatch, FreeCamera camera)
         {
             modelos.Draw(camera);
             if (mouseDown)

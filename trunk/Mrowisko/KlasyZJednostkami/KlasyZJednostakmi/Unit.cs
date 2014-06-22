@@ -20,6 +20,7 @@ namespace Logic
 
         public Vector2 destination { get; set; }
         public Vector2 direction { get; set; }
+        public Vector2 middlePoint { get; set; } 
 
 
         private bool moving=false;
@@ -30,6 +31,17 @@ namespace Logic
             set { moving = value; }
         }
 
+
+        private bool jumping = false;
+        public bool Jumping
+        {
+            get { return jumping; }
+            set { jumping = value; }
+        }
+
+        private bool halfOfJump = false;
+
+        
         public List<InteractiveModel> obstacles = new List<InteractiveModel>();
 
              
@@ -239,7 +251,7 @@ namespace Logic
                 }
                 
             }
-
+            
         }
 
         public void goToTarget(GameTime time)
@@ -283,6 +295,43 @@ namespace Logic
                     model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), destination, model.Rotation.Y, 1.0f), model.Rotation.Z);
                     Console.WriteLine(model.Rotation.Y);
                     MyNode = this.getMyNode();
+                }
+            }
+            if (jumping)
+            {
+                if(!AtDestination)
+                {
+                    //direction = -(new Vector2(Model.Position.X, Model.Position.Z) - destination);
+                    float maxHeight = (direction.Length() / 2) + StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z);
+                   Vector4 startJump = new Vector4(model.Position, 0f);
+                    Vector4 endJump = new Vector4(model.playerTarget, 1f);
+                    //direction = Vector2.Normalize(direction);
+
+                    float tempHeight = StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z);
+                    if (!halfOfJump)
+                    {
+                        if (Math.Abs(middlePoint.X - model.Position.X) <= 1f || Math.Abs(middlePoint.Y - model.Position.Z) <= 1f)
+                         {
+                             halfOfJump = true;
+                         }
+                        tempHeight += 3;
+                        model.Position += new Vector3(direction.X, 20, direction.Y);                      
+                    }
+                    else
+                    {
+                        tempHeight -= 3;
+                        model.Position += new Vector3(direction.X, -20, direction.Y);
+                       
+                    }
+                    
+                }
+                else if (AtDestination)
+                {
+                    model.Position = new Vector3(model.Position.X, StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z), model.Position.Z);
+                    jumping = false;
+                    halfOfJump = false;
+                    model.switchAnimation("Idle");
+
                 }
             }
         }
