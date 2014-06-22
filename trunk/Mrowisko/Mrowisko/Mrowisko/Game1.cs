@@ -320,6 +320,10 @@ GraphicsDevice);
           
            
           models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(20,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
+<<<<<<< .mine
+          models[models.Count - 1].Model.switchAnimation("Idle");
+          models.Add(new Spider(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(100, 40, 100), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light)));
+=======
           models[models.Count - 1].Model.switchAnimation("Idle");
           models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(200, 40, 200), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
           models[models.Count - 1].Model.switchAnimation("Idle");
@@ -328,6 +332,7 @@ GraphicsDevice);
      
            models.Add(new Grasshopper(new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(50, 40, 50), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
            models[models.Count - 1].Model.switchAnimation("Idle");
+>>>>>>> .r220
            
            models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
 
@@ -432,7 +437,16 @@ GraphicsDevice);
                 {
                     models[i].Update(gameTime);
                     models[i].Model.Update(gameTime);
+<<<<<<< .mine
+
+                    if (models[i].attacking)
+                    {
+                        models[i].Attack();
+                    }
+
+=======
                 
+>>>>>>> .r220
                     if (control.selectedObjectMouseOnlyMove != null)
                     {
                         // Console.WriteLine(control.selectedObjectMouseOnlyMove);
@@ -467,8 +481,12 @@ GraphicsDevice);
                    // if(models[i].Hp<=0 && models[i].GetType().BaseType.BaseType==typeof(Unit))
                     if (models[i].Hp <= 0 && models[i] is Unit)
                     {
+<<<<<<< .mine
+                       // models[i].Model.switchAnimation("Death",1);
+=======
                         Console.WriteLine("Zjadl"+models[i].GetType());
                         models[i].Model.switchAnimation("Death",1);
+>>>>>>> .r220
                         models.RemoveAt(i);
                         
                     }

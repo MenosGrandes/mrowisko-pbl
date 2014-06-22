@@ -65,12 +65,12 @@ namespace Logic.Units.Ants
 
 
         }
-        public override void Attack(InteractiveModel a)
+        public override void Attack()
         {
             //if (range <= Math.Abs(model.Position.X - a.Model.Position.Y) + Math.Abs(model.Position.X - a.Model.Position.Y))
             if (elapsedTime >= atackInterval)
             {
-                bullets.Add(new SpitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), a.Model.Position));
+                bullets.Add(new SpitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), target.Model.Position));
                 elapsedTime = 0;
             }
         }

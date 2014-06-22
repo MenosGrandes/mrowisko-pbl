@@ -23,7 +23,7 @@ namespace Logic.Units.Predators
         public SunDew(LoadModel model, List<InteractiveModel> ants)
             : base(model)
         {
-      
+            selectable = false;
             this.Ants = ants;
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;

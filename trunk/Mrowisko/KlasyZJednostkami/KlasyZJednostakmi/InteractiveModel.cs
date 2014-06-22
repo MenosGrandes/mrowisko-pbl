@@ -34,12 +34,15 @@ namespace Logic
             get { return cropTime; }
             set { cropTime = value; }
         }
-        
-        
+
+        public float rangeOfSight = 50.0f;
+        public bool attacking = false;
         public bool ImMoving = false;
         public bool hasBeenHit=false;
         public float tim_to_Show_Hit=4;
         public float temp_time;
+        public bool selectable = true;
+        public InteractiveModel target;
 
         protected ContentManager content;
 
@@ -165,9 +168,9 @@ namespace Logic
         }
         public virtual void setGaterMaterial(Material m)
         { }
-        public virtual void Attack(InteractiveModel a)
+        public virtual void Attack()
         {
-           // Console.WriteLine("Attack!!");
+            Console.WriteLine("Attack!! :: " + target);
         }
 
         public virtual bool spitter()

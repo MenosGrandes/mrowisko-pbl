@@ -35,17 +35,21 @@ namespace Logic.PathFinderManagerNamespace
 
             }
             Random r=new Random();
+<<<<<<< .mine
+        /*    
+=======
           /*  
+>>>>>>> .r220
             for (int i = 0; i < GridSize; i += 1)
             {
                 for (int J = 0; J < GridSize; J += 1)
                 {
-                    int a = r.Next(400);
+                    int a = r.Next(500);
                     if(a<5)
                     tileList[J, i].walkable = false; //new Node(new Vector2(24 + J * 48, 24 + i * 48), true, new BoundingBox(new Vector3(J * 48, 10, i * 48), new Vector3(J * 48 + 48, StaticHelpers.StaticHelper.GetHeightAt(J * 48 + 48, i * 48 + 48) + 3, i * 48 + 48)), new Vector2(J, i));
                 }
 
-            }
+            }*/
             */
         }
 
