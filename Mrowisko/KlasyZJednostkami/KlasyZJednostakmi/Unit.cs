@@ -261,12 +261,7 @@ namespace Logic
                 }
                 
             }
-<<<<<<< .mine
-                
 
-=======
-            
->>>>>>> .r220
         }
 
         public void goToTarget(GameTime time)
