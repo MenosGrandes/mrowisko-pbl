@@ -33,7 +33,7 @@ namespace Logic.Units.Allies
             circle.Scale = this.model.Scale.Y * 120;
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
-
+            this.Hp = 100;
         }
         public Beetle():base()
         {
