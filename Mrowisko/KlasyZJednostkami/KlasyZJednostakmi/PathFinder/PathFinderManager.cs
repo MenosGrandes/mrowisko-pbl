@@ -35,7 +35,7 @@ namespace Logic.PathFinderManagerNamespace
 
             }
             Random r=new Random();
-            
+          /*  
             for (int i = 0; i < GridSize; i += 1)
             {
                 for (int J = 0; J < GridSize; J += 1)
@@ -46,6 +46,7 @@ namespace Logic.PathFinderManagerNamespace
                 }
 
             }
+            */
         }
 
 

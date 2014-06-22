@@ -320,9 +320,11 @@ GraphicsDevice);
           
            
           models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(20,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
-         // models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(100, 40, 100), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
-           
-            models[models.Count - 1].Model.switchAnimation("Idle");
+          models[models.Count - 1].Model.switchAnimation("Idle");
+          models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(200, 40, 200), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+          models[models.Count - 1].Model.switchAnimation("Idle");
+        
+
      
            models.Add(new Grasshopper(new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(50, 40, 50), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
            models[models.Count - 1].Model.switchAnimation("Idle");
@@ -379,10 +381,7 @@ GraphicsDevice);
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
-
-
-         
+ 
             gui.Update(gameTime);
             kolizja = false;
                 currentMouseState = Mouse.GetState();
@@ -433,8 +432,7 @@ GraphicsDevice);
                 {
                     models[i].Update(gameTime);
                     models[i].Model.Update(gameTime);
-
-
+                
                     if (control.selectedObjectMouseOnlyMove != null)
                     {
                         // Console.WriteLine(control.selectedObjectMouseOnlyMove);
@@ -466,10 +464,12 @@ GraphicsDevice);
                     {
                         models[i].Intersect(models[j]);
                     }
-                    if(models[i].Hp<=0 && models[i].GetType().BaseType.BaseType==typeof(Unit))
+                   // if(models[i].Hp<=0 && models[i].GetType().BaseType.BaseType==typeof(Unit))
+                    if (models[i].Hp <= 0 && models[i] is Unit)
                     {
+                        Console.WriteLine("Zjadl"+models[i].GetType());
                         models[i].Model.switchAnimation("Death",1);
-                        //models.RemoveAt(i);
+                        models.RemoveAt(i);
                         
                     }
                     for (int j = 0; j < IModel.Count;j++ )
