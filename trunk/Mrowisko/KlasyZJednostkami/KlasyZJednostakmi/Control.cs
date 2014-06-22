@@ -88,14 +88,11 @@ namespace Logic
 
             }
 
-<<<<<<< .mine
+
 
           //  Avoid(gameTime);
            
-=======
-            //  Avoid(gameTime);
 
->>>>>>> .r220
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
@@ -119,19 +116,13 @@ namespace Logic
                     
             for (int i = 0; i < models.Count; i++)
             {
-<<<<<<< .mine
+
              
                 if (models[i].CheckRayIntersection(mouseRay))
                 {
                     //Console.WriteLine(models[i].GetType() + " adad");
                   //  if (models[i].selectable)
-=======
 
-                    if (models[i].CheckRayIntersection(mouseRay))
-                    {
-                        //Console.WriteLine(models[i].GetType() + " adad");
-
->>>>>>> .r220
                         selectedObject = models[i];
                  //       Console.WriteLine(selectedObject);
                         if (models[i].GetType().BaseType == typeof(Predator))
@@ -143,18 +134,13 @@ namespace Logic
                                     
                             }
 
-<<<<<<< .mine
-                        }
-                       
-                        
 
-=======
                     }
 
 
->>>>>>> .r220
+
                 }
-<<<<<<< .mine
+
                 else
                     selectedObjectMouseOnlyMove = models[i];
             }
@@ -187,17 +173,8 @@ namespace Logic
                 }
                
                
-=======
->>>>>>> .r220
 
-<<<<<<< .mine
-            
-=======
-                else
-                    selectedObjectMouseOnlyMove = models[i];
 
-            }
->>>>>>> .r220
             #region modele z którymi mamy interakacje
             for (int i = 0; i < Models_Colision.Count; i++)
             {
@@ -333,7 +310,7 @@ namespace Logic
                     bool targetSet = false;
                     foreach (InteractiveModel unit in models)
                     {
-                        if (unit.CheckRayIntersection(mouseRay) && !unit.selectable)
+                        if (unit.CheckRayIntersection(mouseRay) && !unit.selectable && unit.GetType() != typeof(Logic.Units.Predators.SunDew))
                         {
                             endNode = unit.MyNode;
                             targetSet = true;
