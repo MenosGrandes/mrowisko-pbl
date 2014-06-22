@@ -28,6 +28,7 @@ namespace Logic
         public bool ArmorBuff=false;
 
         protected float cropTime;
+        public bool snr = false;
 
         public float CropTime
         {
