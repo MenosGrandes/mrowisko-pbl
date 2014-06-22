@@ -206,25 +206,27 @@ namespace Logic
         public override void Update(GameTime time)
         {
             base.Update(time);
-            MyNode = this.getMyNode();
-            if (ArmorBuff)
+            if (snr == false)
             {
-                armor = armorAfterBuff;
-            }
-            else
-            {
-                armor = armorAfterBuff / 2;
-            }
+                MyNode = this.getMyNode();
+                if (ArmorBuff)
+                {
+                    armor = armorAfterBuff;
+                }
+                else
+                {
+                    armor = armorAfterBuff / 2;
+                }
 
-           if(ifLeader)
-           {
-               this.goToTarget(time);
-           }
-           else
-           {
-               this.follow(time);
-           }
-
+                if (ifLeader)
+                {
+                    this.goToTarget(time);
+                }
+                else
+                {
+                    this.follow(time);
+                }
+            }
         }
 
         public void follow(GameTime time)
