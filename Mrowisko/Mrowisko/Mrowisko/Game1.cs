@@ -322,7 +322,7 @@ GraphicsDevice);
           models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(20,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
 
           models[models.Count - 1].Model.switchAnimation("Idle");
-          models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(120, 40, 120), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
+          models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/rosiczka"), new Vector3(120, 40, 120), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
 
           models[models.Count - 1].Model.switchAnimation("Idle");
          
