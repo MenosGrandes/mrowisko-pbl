@@ -44,6 +44,7 @@ namespace Logic
         private Rectangle selectRectangle;
         public LoadModel moving;
         private UnitFormation formation;
+       
 
         //tabele wysokosci
         public int heightsa;
@@ -73,11 +74,28 @@ namespace Logic
         public void Update(GameTime gameTime)
         {
 
+            foreach (InteractiveModel unit in SelectedModels)
+            {
+                if (unit.target != null && unit.GetType() != typeof(AntSpitter) && unit.Model.BoundingSphere.Intersects(unit.target.Model.BoundingSphere))
+                {
+                    unit.attacking = true;
 
+                }
+                else if (unit.target != null && unit.GetType() == typeof(AntSpitter) && Vector3.Distance(unit.Model.Position, unit.target.Model.Position) < unit.rangeOfSight)
+                {
+                    unit.attacking = true;
+                }
 
+            }
 
+<<<<<<< .mine
+
+          //  Avoid(gameTime);
+           
+=======
             //  Avoid(gameTime);
 
+>>>>>>> .r220
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
@@ -94,29 +112,92 @@ namespace Logic
 
 
 
-            for (int i = 0; i < models.Count; i++)
-            {
+         
 
                 if (currentMouseState.LeftButton == ButtonState.Pressed)
                 {
-
+                    
+            for (int i = 0; i < models.Count; i++)
+            {
+<<<<<<< .mine
+             
+                if (models[i].CheckRayIntersection(mouseRay))
+                {
+                    //Console.WriteLine(models[i].GetType() + " adad");
+                  //  if (models[i].selectable)
+=======
 
                     if (models[i].CheckRayIntersection(mouseRay))
                     {
                         //Console.WriteLine(models[i].GetType() + " adad");
 
+>>>>>>> .r220
                         selectedObject = models[i];
-                        //Console.WriteLine(selectedObject);
+                 //       Console.WriteLine(selectedObject);
+                        if (models[i].GetType().BaseType == typeof(Predator))
+                        {
+                            foreach (InteractiveModel unit in SelectedModels)
+                            {
+                               
+                                    unit.target = models[i];
+                                    
+                            }
 
+<<<<<<< .mine
+                        }
+                       
+                        
+
+=======
                     }
 
 
+>>>>>>> .r220
                 }
+<<<<<<< .mine
+                else
+                    selectedObjectMouseOnlyMove = models[i];
+            }
+            int counter = 0;
+            foreach (InteractiveModel unit in models)
+            {
+                if (unit.CheckRayIntersection(mouseRay))
+                {
+                    counter++;
+                   
+                }
+            }
+            if (counter == 0)
+            {
+                foreach (InteractiveModel unit in SelectedModels)
+                {
+                    unit.attacking = false;
+                    unit.target = null;
+                }
+            }
+            else
+            {
+                counter = 0;
+            }
+               
+                
 
+               
+                    
+                }
+               
+               
+=======
+>>>>>>> .r220
+
+<<<<<<< .mine
+            
+=======
                 else
                     selectedObjectMouseOnlyMove = models[i];
 
             }
+>>>>>>> .r220
             #region modele z którymi mamy interakacje
             for (int i = 0; i < Models_Colision.Count; i++)
             {
@@ -231,6 +312,7 @@ namespace Logic
                         {
 
                             ((Unit)ant).IfLeader = false;
+                            if (ant.selectable)
                                 SelectedModels.Add((Unit)ant);
                             
                         }
@@ -248,7 +330,21 @@ namespace Logic
                     // foreach (InteractiveModel ant in SelectedModels)
                     //{
 
-                    endNode = PathFinderManagerNamespace.PathFinderManager.getNodeIntersected(mouseRay);
+                    bool targetSet = false;
+                    foreach (InteractiveModel unit in models)
+                    {
+                        if (unit.CheckRayIntersection(mouseRay) && !unit.selectable)
+                        {
+                            endNode = unit.MyNode;
+                            targetSet = true;
+                           // Console.WriteLine("weszlo w pajaka");
+                            break;
+                        }
+                    }
+                    if (!targetSet)
+                    {
+                        endNode = PathFinderManagerNamespace.PathFinderManager.getNodeIntersected(mouseRay);
+                    }
 
                     if (formation.Leader.PathFinder.Search(formation.Leader.MyNode, endNode) == true)
                     {
@@ -295,7 +391,9 @@ namespace Logic
             {
                 formation.formationSetOff();
             }
-            lastMouseState = currentMouseState; 
+            lastMouseState = currentMouseState;
+
+         
 
         }
 
@@ -421,7 +519,7 @@ namespace Logic
 
                 if (ant.CheckRayIntersection(mouseRay))
                 {
-
+                    if(ant.selectable)
                     SelectedModels.Add((Unit)ant);
                     return ant;
                 }
