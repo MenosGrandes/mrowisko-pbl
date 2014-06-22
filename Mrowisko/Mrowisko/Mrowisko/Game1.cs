@@ -323,7 +323,10 @@ GraphicsDevice);
          // models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(100, 40, 100), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
            
             models[models.Count - 1].Model.switchAnimation("Idle");
-            
+     
+           models.Add(new Grasshopper(new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(50, 40, 50), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+           models[models.Count - 1].Model.switchAnimation("Idle");
+           
            models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
 
            timeTriggers.Add(new LaserTrigger((Laser)models[models.Count - 1], 1));

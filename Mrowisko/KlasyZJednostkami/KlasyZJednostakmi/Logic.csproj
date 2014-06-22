@@ -113,6 +113,7 @@
     <Compile Include="Formation\UnitFormation.cs" />
     <Compile Include="Units\Allies\Allies.cs" />
     <Compile Include="Units\Allies\Beetle.cs" />
+    <Compile Include="Units\Allies\Grasshopper.cs" />
     <Compile Include="Units\Ants\Ant.cs" />
     <Compile Include="Building\Building.cs" />
     <Compile Include="Control.cs" />
