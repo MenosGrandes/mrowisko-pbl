@@ -42,6 +42,10 @@ namespace Logic.Meterials.MaterialCluster
         public void removeRock(int n)
         {
             if (stone.Count != 0) { stone.RemoveRange(0, 1); }
+            if (stone.Count < 300) { stone.RemoveRange(0,stone.Count); } 
+            
+             //   ClusterSize = 0; 
+           // GC.Collect();}
 
         }
         public override string ToString()

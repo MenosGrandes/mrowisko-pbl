@@ -20,8 +20,8 @@ namespace Logic
 
         public Vector2 destination { get; set; }
         public Vector2 direction { get; set; }
-        public Vector2 middlePoint { get; set; } 
-
+        public Vector2 middlePoint { get; set; }
+        public float tempHeight { get; set; }
 
         private bool moving=false;
 
@@ -44,8 +44,7 @@ namespace Logic
         
         public List<InteractiveModel> obstacles = new List<InteractiveModel>();
 
-       
-
+     
              
         private PathFinderNamespace.PathFinder pathFinder;
 
@@ -321,8 +320,6 @@ namespace Logic
                 {
                     //direction = -(new Vector2(Model.Position.X, Model.Position.Z) - destination);
                     float maxHeight = (direction.Length() / 2) + StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z);
-                   Vector4 startJump = new Vector4(model.Position, 0f);
-                    Vector4 endJump = new Vector4(model.playerTarget, 1f);
                     //direction = Vector2.Normalize(direction);
 
                     float tempHeight = StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z);
@@ -332,13 +329,14 @@ namespace Logic
                          {
                              halfOfJump = true;
                          }
-                        tempHeight += 3;
-                        model.Position += new Vector3(direction.X, 20, direction.Y);                      
+                        model.Position += new Vector3(direction.X, 100, direction.Y); 
+                        tempHeight += 20;
+                        
                     }
                     else
                     {
-                        tempHeight -= 3;
-                        model.Position += new Vector3(direction.X, -20, direction.Y);
+                        tempHeight -= 20;
+                        model.Position += new Vector3(direction.X, -100, direction.Y);
                        
                     }
                     

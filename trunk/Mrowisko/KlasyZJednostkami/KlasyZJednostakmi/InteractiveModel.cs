@@ -220,7 +220,7 @@ namespace Logic
         {
                     foreach(Node n in PathFinderManagerNamespace.PathFinderManager.tileList)
                     {
-                        if(n.Box.Contains(this.model.Position)==ContainmentType.Contains)
+                        //if(n.Box.Contains(this.model.Position)==ContainmentType.Contains)
                         {
                             return n;
                         }

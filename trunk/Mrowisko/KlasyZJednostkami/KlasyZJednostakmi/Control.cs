@@ -354,7 +354,7 @@ namespace Logic
                             jumpModel.direction = new Vector2(jumpModel.Model.playerTarget.X - jumpModel.Model.Position.X, jumpModel.Model.playerTarget.Z - jumpModel.Model.Position.Z);
                             jumpModel.direction.Normalize();
                             jumpModel.middlePoint = new Vector2((jumpModel.Model.playerTarget.X - jumpModel.Model.Position.X)/2+jumpModel.Model.playerTarget.X, (jumpModel.Model.playerTarget.Z - jumpModel.Model.Position.Z)/2 + jumpModel.Model.playerTarget.Z);
-                           // float maxHeight = direction.Length() / 2 + jumpModel.Model.Position.Y;
+                            jumpModel.tempHeight = StaticHelpers.StaticHelper.GetHeightAt(jumpModel.Model.Position.X, jumpModel.Model.Position.Z);
                             jumpModel.Model.switchAnimation("Jump");
                             jumpModel.Jumping= true;
                           
