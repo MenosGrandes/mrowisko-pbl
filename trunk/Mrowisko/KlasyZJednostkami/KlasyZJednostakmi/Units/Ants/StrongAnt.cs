@@ -130,6 +130,7 @@ namespace Logic.Units.Ants
                         b.hasBeenHit = true;
                         b.Model.Hit = true;
                         b.Model.Rotation -= new Vector3(0, 0.01f, 0);
+                        b.Model.Position -= new Vector3(0.1f, 0, 0);
                     }
                    }
             }
