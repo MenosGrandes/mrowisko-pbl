@@ -13,6 +13,9 @@ namespace Logic.Units.Predators
         private int range = 120;
         private int snared_max = 3;
         private int snared = 0;
+        private float time = 0.0f;
+        private float attack_speed = 2.0f;
+        private int damage = 30;
          public Spider():base()
        { }
        public Spider(LoadModel model):base(model)
@@ -50,16 +53,11 @@ namespace Logic.Units.Predators
 
             for(int i=0;i<Ants.Count;i++)
             {
-                if (Ants[i].snr == true)
-                {
-                    this.reachTarget(gameTime, this, Ants[i].Model.Position);
-                }
-
                 float spr = (float)Math.Sqrt(Math.Pow(Ants[i].Model.Position.X - this.Model.Position.X, 2.0) + (float)Math.Pow(Ants[i].Model.Position.Z - this.Model.Position.Z, 2.0));
                // Console.WriteLine(spr +" "+ Ants[i].GetType());
                 if (spr <= range && this != Ants[i] && snared < snared_max && Ants[i].snr==false)
                 {
-                    if (Ants[i] is Unit)
+                    if (Ants[i] is Unit && !(Ants[i] is Predator))
                     {
                         Ants[i].snr = true;
                         snared++;
@@ -69,6 +67,25 @@ namespace Logic.Units.Predators
 
             }
 
+            for (int j = 0; j < Ants.Count; j++)
+            {
+                if (Ants[j].snr == true && !(Ants[j] is Predator))
+                 {
+                     if (!(this.Model.BoundingSphere.Intersects(Ants[j].Model.BoundingSphere)))
+                      this.reachTarget(gameTime, this, Ants[j].Model.Position);
+                     else
+                     {
+                         time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                         if (time > 2.0f)
+                         {
+                             Ants[j].Hp -= damage;
+                             time = 0;
+                         }
+                     }
+                     break;
+                 }
+            }
+        
         }
 
     }
