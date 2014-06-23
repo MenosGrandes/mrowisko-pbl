@@ -91,6 +91,8 @@ Content\HeighMaps\ter2.xnb
 Content\Textures\circle.xnb
 Content\Textures\treetex\szyszka1.xnb
 Content\Textures\treetex\szyszka2.xnb
+Content\Models\uvw1.xnb
+Content\Models\uvw2.xnb
 Content\Models\SkyDome\dome.xnb
 Content\Models\ant.xnb
 Content\Models\grasshopper.xnb
@@ -100,6 +102,7 @@ Content\Models\strongAnt.xnb
 Content\Models\beetle.xnb
 Content\Models\plujka.xnb
 Content\Models\tea.xnb
+Content\Models\rosiczka.xnb
 Content\Fonts\FPS.xnb
 Content\Effects\TexturedEffect.xnb
 Content\Effects\Bilboarding.xnb
@@ -144,6 +147,7 @@ Content\Models\strongAnt_Anims.xnb
 Content\Models\ant_Anims.xnb
 Content\Models\beetle_Anims.xnb
 Content\Models\plujka_Anims.xnb
+Content\Models\rosiczka_Anims.xnb
 Content\Models\SkyDome\cloudMap_0.xnb
 Content\Models\ant_diffuse_0.xnb
 Content\Models\grasshopperUVW_0.xnb
@@ -156,6 +160,8 @@ Content\Models\mrowka_diffuse_map_0.xnb
 Content\Models\beetlediffuse_0.xnb
 Content\Models\plujka_diffuse_0.xnb
 Content\Models\uzi_diffuse_0.xnb
+Content\Models\uvw2_0.xnb
+Content\Models\uvw1_0.xnb
 Content\Models\stone2.fbm\stone2map_0.xnb
 Content\Textures\treetex\Hodowla_alpha_tex_0.xnb
 Content\Textures\treetex\h2_tex_0.xnb
@@ -163,12 +169,6 @@ Content\Textures\treetex\kopiecmieszkalny_tex_0.xnb
 Content\Textures\treetex\Kopiec_beta_texSheme_0.xnb
 Content\Textures\treetex\szyszka1_0.xnb
 Content\Textures\treetex\szyszka2_0.xnb
-Content\Models\uvw1.xnb
-Content\Models\uvw2.xnb
-Content\Models\rosiczka.xnb
-Content\Models\rosiczka_Anims.xnb
-Content\Models\uvw2_0.xnb
-Content\Models\uvw1_0.xnb
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
 Content\Cursors\TronBusy.ani
