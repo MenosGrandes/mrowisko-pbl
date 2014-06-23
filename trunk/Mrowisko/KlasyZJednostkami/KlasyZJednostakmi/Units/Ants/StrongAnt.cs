@@ -120,6 +120,18 @@ namespace Logic.Units.Ants
                 b.Model.Hit = true;
                 SoundController.SoundController.Play(SoundController.SoundEnum.RangeHit);
                 }
+                else if (b.GetType()==typeof(EnviroModel.Cone) || b.GetType()==typeof(EnviroModel.Cone1))
+                {
+                    if (b.Hp > 0)
+                    {
+                        b.Hp -= 1;
+                        Console.WriteLine("Niszcze szyszke!");
+                        ((EnviroModel.EnviroModels)b).LifeBar.LifeLength -= 1;
+                        b.hasBeenHit = true;
+                        b.Model.Hit = true;
+                        b.Model.Rotation -= new Vector3(0, 0.01f, 0);
+                    }
+                   }
             }
             public override void Draw(GameCamera.FreeCamera camera)
             {
