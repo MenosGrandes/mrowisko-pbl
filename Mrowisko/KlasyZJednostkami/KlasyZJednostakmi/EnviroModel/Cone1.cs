@@ -14,7 +14,7 @@ namespace Logic.EnviroModel
             : base(model)
         {
             selectable = false;
-            this.hp =00;
+            this.hp =350;
            // LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
            // circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
            // LifeBar.LifeLength = model.Scale.X * 100;
