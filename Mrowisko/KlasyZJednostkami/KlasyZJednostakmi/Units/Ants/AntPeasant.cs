@@ -38,7 +38,7 @@ namespace Logic.Units.Ants
         public AntPeasant(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, int maxCapacity, float gaterTime, float atackInterval)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
         {
-            this.armor = 20; this.maxCapacity = maxCapacity;
+            this.armor = 10; this.maxCapacity = maxCapacity;
             this.capacity = 0;
             this.gaterTime = gaterTime;
             rock2 = 0;
@@ -54,7 +54,7 @@ namespace Logic.Units.Ants
         public AntPeasant(LoadModel model)
             : base(model)
         {
-            this.armor = 20;
+            this.armor = 10;
             this.maxCapacity = 100;
             this.capacity = 0;
             this.gaterTime = 10;
@@ -80,15 +80,25 @@ namespace Logic.Units.Ants
                     switch (material.GetType().Name)
                    {
 
-                       case "Log": ((Log)material).removeWood(1);
-                                     materials.Add(new Wood());
-                                    wood2++; ;
-                          // ((Log)material).Model.Scale = new Vector3((float)((float)((Log)material).ClusterSize / (float)((Log)material).MaxClusterSize)) * material.Model.Scale;
-     
+                       case "Log": //this.model.playerTarget.X = material.Model.Position.X;
+                                   // this.model.playerTarget.Z = material.Model.Position.Z;
+                                   this.destination = new Vector2(material.Model.Position.X, material.Model.Position.Z);   
+                                    materials.Add(new Wood());
+                                    wood2++;
+                                    //material.ClusterSize--;
+                                    ((Log)material).removeWood(1);
+                                    ((Log)material).Model.Scale = new Vector3((float)((float)((Log)material).ClusterSize / (float)((Log)material).MaxClusterSize));// * material.Model.Scale;
+                           
                            break;
-                       case "Rock": materials.Add(new Stone()); rock2++; ((Rock)material).removeRock(1);
-                          // ((Rock)material).Model.Scale = new Vector3((float)((float)((Rock)material).ClusterSize / (float)((Rock)material).MaxClusterSize))*material.Model.Scale;
-     
+                       case "Rock": //this.model.playerTarget.X = material.Model.Position.X;
+                           //this.model.playerTarget.Z = material.Model.Position.Z;
+                                    this.destination = new Vector2(material.Model.Position.X, material.Model.Position.Z);
+                           materials.Add(new Stone()); 
+                           rock2++;
+                           //((Rock)material).ClusterSize--;
+                           ((Rock)material).removeRock(1);
+                           ((Rock)material).Model.Scale = new Vector3((float)((float)((Rock)material).ClusterSize / (float)((Rock)material).MaxClusterSize));//*material.Model.Scale;
+                          
                            break;
                      
                    }
@@ -152,7 +162,9 @@ namespace Logic.Units.Ants
                 {
                     if (ImMoving) { 
                     ImMoving = false;
-                    model.playerTarget = model.Position;
+                   // model.playerTarget = model.Position;
+                        model.Position = interactive.Model.Position;
+                   
                    // model.Position = model.tempPosition;
                         }
                     if (gaterTime < elapsedTime)

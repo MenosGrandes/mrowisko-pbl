@@ -120,7 +120,6 @@ Content\Models\log.xnb
 Content\Models\trawa.xnb
 Content\Models\antGranary.xnb
 Content\Models\townCenter.xnb
-Content\Models\tree1.xnb
 Content\Models\shoot.xnb
 Content\Models\h1.xnb
 Content\Models\h2.xnb
@@ -158,13 +157,18 @@ Content\Models\beetlediffuse_0.xnb
 Content\Models\plujka_diffuse_0.xnb
 Content\Models\uzi_diffuse_0.xnb
 Content\Models\stone2.fbm\stone2map_0.xnb
-Content\tree2_tex_0.xnb
 Content\Textures\treetex\Hodowla_alpha_tex_0.xnb
 Content\Textures\treetex\h2_tex_0.xnb
 Content\Textures\treetex\kopiecmieszkalny_tex_0.xnb
 Content\Textures\treetex\Kopiec_beta_texSheme_0.xnb
 Content\Textures\treetex\szyszka1_0.xnb
 Content\Textures\treetex\szyszka2_0.xnb
+Content\Models\uvw1.xnb
+Content\Models\uvw2.xnb
+Content\Models\rosiczka.xnb
+Content\Models\rosiczka_Anims.xnb
+Content\Models\uvw2_0.xnb
+Content\Models\uvw1_0.xnb
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
 Content\Cursors\TronBusy.ani
