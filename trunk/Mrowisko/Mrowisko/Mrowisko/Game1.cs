@@ -319,7 +319,9 @@ GraphicsDevice);
 
           
            
-          models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(20,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
+          //models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(20,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
+         // models[models.Count - 1].Model.switchAnimation("Idle");
+
 
           models[models.Count - 1].Model.switchAnimation("Idle");
 
@@ -330,16 +332,31 @@ GraphicsDevice);
         //  models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(150, 40, 300), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
 
        //   models[models.Count - 1].Model.switchAnimation("Idle");
+
          
+        // models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(120, 40, 120), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
+         //models[models.Count - 1].Model.switchAnimation("Idle");
+
+         // models.Add(new Spider(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(250, 40, 250), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+         // models[models.Count - 1].Model.switchAnimation("Idle");
+
 
 
 
            models.Add(new Grasshopper(new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(50, 40, 50), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
            models[models.Count - 1].Model.switchAnimation("Idle");
 
-           
-           models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
 
+            models.Add(new StrongAnt(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(120,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light)));
+            models[models.Count - 1].Model.switchAnimation("Idle");
+
+
+           //models.Add(new Grasshopper(new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(50, 40, 50), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+           //models[models.Count - 1].Model.switchAnimation("Idle");
+
+          // models.Add(new AntPeasant(new LoadModel(Content.Load<Model>("Models/ant"), new Vector3(100, 40, 10), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light)));
+
+           models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
            timeTriggers.Add(new LaserTrigger((Laser)models[models.Count - 1], 1));
 
           Console.WriteLine("QuadNode: "+QuadNodeController.QuadNodeList.Count);
