@@ -207,6 +207,7 @@ namespace Logic
         public override void Update(GameTime time)
         {
             base.Update(time);
+            MyNode = this.getMyNode();
             if (snr == false)
             {
                // MyNode = this.getMyNode();
@@ -228,6 +229,7 @@ namespace Logic
                     this.follow(time);
                 }
             }
+            MyNode = this.getMyNode();
         }
 
         public void follow(GameTime time)
@@ -236,7 +238,7 @@ namespace Logic
             if (moving)
             {
                 float elapsedTime3 = (float)time.ElapsedGameTime.TotalSeconds;
-               
+                this.model.switchAnimation("Walk");
               
                 if (!AtDestination&& (target==null || Vector3.Distance(target.Model.Position, this.model.Position)>this.rangeOfSight))
                 {
@@ -261,6 +263,11 @@ namespace Logic
                     if (Vector3.Distance(target.Model.Position, this.model.Position) >= this.model.BoundingSphere.Radius/2)
                         this.reachTarget(time, this, target.Model.Position);
                 }
+                if(AtDestination || ( target != null && Vector3.Distance(target.Model.Position, this.model.Position) > this.rangeOfSight))
+                {
+                    this.model.switchAnimation("Idle");
+                }
+               
                 
             }
 
@@ -273,7 +280,7 @@ namespace Logic
             if (moving)
             {
                 float elapsedTime3 = (float)time.ElapsedGameTime.TotalSeconds;
-
+                this.model.switchAnimation("Walk");
                 // If we have any waypoints, the first one on the list is where 
                 // we want to go
                 if (movementPath.Count >= 1 && (target==null || Vector3.Distance(target.Model.Position, this.model.Position)>this.rangeOfSight))
@@ -293,6 +300,10 @@ namespace Logic
                 {
                     MyNode = movementPath.Dequeue();
 
+                }
+                if (movementPath.Count < 1)
+                {
+                    this.moving = false;
                 }
 
                 if (!AtDestination)
@@ -314,8 +325,12 @@ namespace Logic
                     //Console.WriteLine(model.Rotation.Y);
                 }
             }
+          
+              
+            
             if (jumping)
             {
+                this.model.switchAnimation("Jump");
                 if(!AtDestination)
                 {
                     //direction = -(new Vector2(Model.Position.X, Model.Position.Z) - destination);
@@ -350,11 +365,19 @@ namespace Logic
 
                 }
             }
+
+            if(!this.moving && !this.jumping)
+            this.model.switchAnimation("Idle");
         }
 
         public void reachTarget(GameTime gameTime, InteractiveModel ship, Vector3 target)
         {
             float pullDistance = Vector3.Distance(target, ship.Model.Position);
+
+            if (this.target != null && this.model.BoundingSphere.Intersects(this.target.Model.BoundingSphere))
+            {
+                this.model.switchAnimation("Attack");
+            }
 
             //Only do something if we are not already there
            // if (pullDistance > 1)
@@ -423,8 +446,11 @@ namespace Logic
         }
         public bool AtDestination
         {
-            get { if(this.IfLeader) return DistanceToDestination < 6;
-            else return DistanceToDestination < this.model.BoundingSphere.Radius+3; }
+            get
+            {
+                if (this.IfLeader) return DistanceToDestination < 6;
+                else { return DistanceToDestination < this.model.BoundingSphere.Radius + 3; }
+            }
         }
         public float DistanceToDestination
         {

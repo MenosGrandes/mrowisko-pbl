@@ -31,6 +31,7 @@ namespace Logic.Units.Predators
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             this.Hp = 100;
             this.Model.Position = new Vector3(this.Model.Position.X, 0.0f, this.Model.Position.Z);
+            this.modelHeight = 10;
         }
 
 

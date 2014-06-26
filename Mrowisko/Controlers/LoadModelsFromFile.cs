@@ -80,6 +80,30 @@ namespace Controlers
 
 
                            break;
+                       case "Queen":
+
+                           Queen qu = new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//queen"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
+
+
+                           qu.Model.switchAnimation("Idle");
+                           listOfAllInteractiveModelsFromFile.Add(qu);
+                           break;
+                       case "AntSpitter":
+
+                           AntSpitter x = new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//plujka"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
+
+
+                            x.Model.switchAnimation("Idle");
+                            listOfAllInteractiveModelsFromFile.Add(x);
+                           break;
+                       case "StrongAnt":
+
+                           StrongAnt sa = new StrongAnt(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//strongAnt"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
+
+
+                           sa.Model.switchAnimation("Idle");
+                           listOfAllInteractiveModelsFromFile.Add(sa);
+                           break;
 
                        case "AntGranary":
 
