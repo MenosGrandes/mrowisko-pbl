@@ -10,8 +10,8 @@ namespace Logic.EnviroModel
     public class Tree:EnviroModels
     {
         public Tree(LoadModel model):base(model)
-        { }
+        { selectable = false; }
         public Tree():base()
-        { }
+        { selectable = false; }
     }
 }

@@ -120,8 +120,8 @@ namespace Controlers
                        case "Tree":
 
 
-                            Tree t = new Tree(null);
-                            t.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//tree1"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,_light);
+                            Tree t = new Tree(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//tree1"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,_light));
+            
                          //  t.Model.BuildBoundingSphereMaterial();
 
                             listOfAllInteractiveModelsFromFile.Add(t);
@@ -133,8 +133,7 @@ namespace Controlers
                      case "Tree2":
 
 
-                            Tree2 t2 = new Tree2(null);
-                            t2.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//tree2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,_light);
+                            Tree2 t2 = new Tree2(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//tree2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,_light));
                            //t2.Model.BuildBoundingSphereMaterial();
 
                             listOfAllInteractiveModelsFromFile.Add(t2);
@@ -145,8 +144,8 @@ namespace Controlers
                             break;      
                        case "Cone":
                            
-                            Cone c = new Cone(null);
-                            c.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//Szyszka2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light);
+                            Cone c = new Cone(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//Szyszka2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
+                            
                           //  c.Model.BuildBoundingSphereMaterial();
                            // c.Model.B_Box = BoundingBox.CreateFromSphere(c.Model.Spheres[0]);
                             listOfAllInteractiveModelsFromFile.Add(c);
@@ -154,8 +153,7 @@ namespace Controlers
                            break;
                        case "Cone1":
 
-                           Cone1 c1 = new Cone1(null);
-                           c1.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//Szyszka1"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light);
+                           Cone1 c1 = new Cone1(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//Szyszka1"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
                          //  c1.Model.BuildBoundingSphereMaterial();
                            
                            // c1.Model.B_Box = BoundingBox.CreateFromSphere(c1.Model.Spheres[0]);
@@ -164,8 +162,7 @@ namespace Controlers
                            break;
                        case "Grass":
 
-                           Grass gr = new Grass(null);
-                           gr.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//Szyszka2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light);
+                           Grass gr = new Grass(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//Szyszka2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
                            gr.Model.BuildBoundingSphereMaterial();
                                                      // c1.Model.CreateBoudingBox();
 
@@ -183,7 +180,7 @@ namespace Controlers
                            break;
                        case "Beetle":
 
-                           GrassHopper beetle = new GrassHopper(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//beetle"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
+                           Beetle beetle = new Beetle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//beetle"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
 
                            // c1.Model.CreateBoudingBox();
                            beetle.Model.switchAnimation("Idle");

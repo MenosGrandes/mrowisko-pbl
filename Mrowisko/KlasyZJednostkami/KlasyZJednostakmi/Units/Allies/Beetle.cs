@@ -37,6 +37,18 @@ namespace Logic.Units.Allies
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             this.Hp = 100;
         }
+        public Beetle(LoadModel model)
+            : base(model)
+        {
+            sfereModel = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/sferazuka"), model.Position, Vector3.Zero, Vector3.One, StaticHelpers.StaticHelper.Device, model.light));
+            Scope = 100;
+            ArmorBuffValue = 100;
+            LifeBar.LifeLength = model.Scale.X * 100;
+            circle.Scale = this.model.Scale.Y * 120;
+            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+            circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
+            this.Hp = 100;
+        }
         public Beetle():base()
         {
 
@@ -50,7 +62,17 @@ namespace Logic.Units.Allies
 
         }
 
-            
+        public void removeMyself()
+        {
+            foreach (InteractiveModel model in Ants)
+            {
+                if (model == this)
+                {
+                    Ants.Remove(model);
+                    return;
+                }
+            }
+        }    
         public override void Update(GameTime time)
         {
             base.Update(time);
