@@ -61,6 +61,8 @@ namespace Logic
             set { movementPath = value; }
         }
 
+        protected uint modelHeight = 0;
+
         protected float armorAfterBuff;
 
         public float ArmorAfterBuff
@@ -247,7 +249,7 @@ namespace Logic
                         speed * elapsedTime3),
                         StaticHelpers.StaticHelper.GetHeightAt(Model.Position.X + (direction.X *
                         speed * elapsedTime3), Model.Position.Z + (direction.Y *
-                        speed * elapsedTime3))
+                        speed * elapsedTime3)) + modelHeight
                         ,
                         Model.Position.Z + (direction.Y *
                         speed * elapsedTime3));
@@ -299,7 +301,7 @@ namespace Logic
                     //This scales the vector to 1, we'll use move Speed and elapsed Time 
                     //to find the how far the tank moves
                     direction = Vector2.Normalize(direction);
-                    this.reachTarget(time, this, new Vector3(destination.X, StaticHelpers.StaticHelper.GetHeightAt(destination.X,destination.Y), destination.Y));
+                    this.reachTarget(time, this, new Vector3(destination.X, StaticHelpers.StaticHelper.GetHeightAt(destination.X, destination.Y) + modelHeight, destination.Y));
                     /*model.Position = new Vector3(Model.Position.X + (direction.X *
                         speed * elapsedTime3),
                         StaticHelpers.StaticHelper.GetHeightAt(Model.Position.X + (direction.X *
@@ -341,7 +343,7 @@ namespace Logic
                 }
                 else if (AtDestination)
                 {
-                    model.Position = new Vector3(model.Position.X, StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z), model.Position.Z);
+                    model.Position = new Vector3(model.Position.X, StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z) + modelHeight, model.Position.Z);
                     jumping = false;
                     halfOfJump = false;
                     model.switchAnimation("Idle");
@@ -393,7 +395,7 @@ namespace Logic
                 {
                     model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), new Vector2(this.target.Model.Position.X, this.target.Model.Position.Y), model.Rotation.Y, 1.0f), model.Rotation.Z);
                 }
-                ship.Model.Position = new Vector3(ship.Model.Position.X + (pull.X * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds, StaticHelpers.StaticHelper.GetHeightAt(ship.Model.Position.X, ship.Model.Position.Z), ship.Model.Position.Z + (pull.Z * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                ship.Model.Position = new Vector3(ship.Model.Position.X + (pull.X * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds, StaticHelpers.StaticHelper.GetHeightAt(ship.Model.Position.X, ship.Model.Position.Z) + modelHeight, ship.Model.Position.Z + (pull.Z * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds);
             }
         }
 
