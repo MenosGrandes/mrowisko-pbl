@@ -299,7 +299,7 @@ GraphicsDevice);
                 }
             }
             #endregion   
-
+            PathFinderManager.blockAllNodes(IModel);
 /////////////// nie wiem czy to powinno byæ czy nie wiêc zakomentowa³em tylko
 //
 //            mapR = new MapRender(texture[15], 3);
@@ -384,19 +384,7 @@ GraphicsDevice);
           gui = new MainGUI(StaticHelpers.StaticHelper.Content, control);
 
 
-            //pf = new PathFinder(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[2, 0]);
-          //PathFinder pf = new PathFinder();
-          //pf.Search(PathFinderManager.tileList[0, 0], PathFinderManager.tileList[63, 63]);
-            for(int i=0;i<PathFinderManager.GridSize;i++)
-            {
-                for (int j = 0; j < PathFinderManager.GridSize; j++)
-                {
-                        if(PathFinderManager.tileList[i,j].walkable==false)
-                        {
-                            inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log2"),new Vector3( PathFinderManager.tileList[i,j].centerPosition.X,PathFinderManager.tileList[i,j].Height,PathFinderManager.tileList[i,j].centerPosition.Y),Vector3.Zero,Vector3.One,device,light)));
-                        }
-                }  
-            }
+
             control.Models_Colision = IModel;
 
         }
@@ -591,7 +579,7 @@ GraphicsDevice);
             {
                 
                     //  unit.obstaclesOnRoad(control.filtrObstacles(models));
-                    unit.obstaclesOnRoad(IModel);
+                    //unit.obstaclesOnRoad(IModel);
                
 
 
