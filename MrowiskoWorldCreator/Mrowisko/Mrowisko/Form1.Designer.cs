@@ -512,7 +512,10 @@
             "Szyszka2",
             "Trawa",
             "Zuk",
-            "Konik"});
+            "Konik",
+            "Plujka",
+            "Królowa",
+            "Silacz"});
             this.checkedListBox1.Location = new System.Drawing.Point(108, 8);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(90, 109);
