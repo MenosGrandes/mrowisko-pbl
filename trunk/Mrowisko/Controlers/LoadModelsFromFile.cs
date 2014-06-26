@@ -50,6 +50,24 @@ namespace Controlers
                            p.Model.switchAnimation("Atack");
                            listOfAllInteractiveModelsFromFile.Add(p);
                           break;
+                       case "StrongAnt":
+                          StrongAnt sa = new StrongAnt(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/strongAnt"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
+                          sa.Model.switchAnimation("Atack");
+
+                          listOfAllInteractiveModelsFromFile.Add(sa);
+                          break;
+                       case "Queen":
+                          Queen qq = new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
+                         qq.Model.switchAnimation("Atack");
+
+                          listOfAllInteractiveModelsFromFile.Add(qq);
+                          break;
+                       case "AntSpitter":
+                          AntSpitter asd = new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/plujka"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
+                          asd.Model.switchAnimation("Atack");
+
+                          listOfAllInteractiveModelsFromFile.Add(asd);
+                          break;
                        case "Log":
 
                            Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//log"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
@@ -80,30 +98,7 @@ namespace Controlers
 
 
                            break;
-                       case "Queen":
-
-                           Queen qu = new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//queen"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
-
-
-                           qu.Model.switchAnimation("Idle");
-                           listOfAllInteractiveModelsFromFile.Add(qu);
-                           break;
-                       case "AntSpitter":
-
-                           AntSpitter x = new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//plujka"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
-
-
-                            x.Model.switchAnimation("Idle");
-                            listOfAllInteractiveModelsFromFile.Add(x);
-                           break;
-                       case "StrongAnt":
-
-                           StrongAnt sa = new StrongAnt(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//strongAnt"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
-
-
-                           sa.Model.switchAnimation("Idle");
-                           listOfAllInteractiveModelsFromFile.Add(sa);
-                           break;
+                      
 
                        case "AntGranary":
 
