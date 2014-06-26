@@ -369,6 +369,28 @@ namespace AntHill
 
 
                         break;
+                    case "Queen" :
+
+                        Queen queen = new Queen(new LoadModel(CreatorController.content.Load<Model>("Models//queen"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device, CreatorController.content));
+                        queen.Model.switchAnimation("Idle");
+                        CreatorController.models.Add(queen);
+                        _items.Add(queen.ToString());
+                        break;
+
+                    case "AntSpitter":
+
+                        AntSpitter spitter = new AntSpitter(new LoadModel(CreatorController.content.Load<Model>("Models//plujka"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device, CreatorController.content));
+                        spitter.Model.switchAnimation("Idle");
+                        CreatorController.models.Add(spitter);
+                        _items.Add(spitter.ToString());
+                        break;
+                    case "StrongAnt":
+
+                        AntSpitter strongAnt = new AntSpitter(new LoadModel(CreatorController.content.Load<Model>("Models//strongAnt"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device, CreatorController.content));
+                        strongAnt.Model.switchAnimation("Idle");
+                        CreatorController.models.Add(strongAnt);
+                        _items.Add(strongAnt.ToString());
+                        break;
 
                 }
                 
@@ -395,7 +417,6 @@ namespace AntHill
 
         private void btnAdd_MouseClick(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("asdasd");
             selected = true;
             foreach (string name in checkedListBox1.CheckedItems)
             {
@@ -487,6 +508,27 @@ namespace AntHill
                     case "Konik":
                         {
                             GrassHopper p = new GrassHopper(new LoadModel(CreatorController.content.Load<Model>("Models/grasshopper"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device, CreatorController.content));
+                            model = p;
+                            model.Model.switchAnimation("Idle");
+                            break;
+                        }
+                    case "Plujka":
+                        {
+                            AntSpitter p = new AntSpitter(new LoadModel(CreatorController.content.Load<Model>("Models/plujka"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device, CreatorController.content));
+                            model = p;
+                            model.Model.switchAnimation("Idle");
+                            break;
+                        }
+                    case "Królowa":
+                        {
+                            Queen p = new Queen(new LoadModel(CreatorController.content.Load<Model>("Models/queen"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device, CreatorController.content));
+                            model = p;
+                            model.Model.switchAnimation("Idle");
+                            break;
+                        }
+                    case "Silacz":
+                        {
+                            StrongAnt p = new StrongAnt(new LoadModel(CreatorController.content.Load<Model>("Models/strongAnt"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device, CreatorController.content));
                             model = p;
                             model.Model.switchAnimation("Idle");
                             break;
