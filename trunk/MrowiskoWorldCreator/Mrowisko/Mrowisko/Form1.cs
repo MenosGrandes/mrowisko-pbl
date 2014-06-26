@@ -276,8 +276,7 @@ namespace AntHill
                     case "Spider":
 
 
-                        Spider s = new Spider(null);
-                        s.Model = new LoadModel(CreatorController.content.Load<Model>("Models//spider"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device, CreatorController.content);
+                        Spider s = new Spider(new LoadModel(CreatorController.content.Load<Model>("Models//spider"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device, CreatorController.content));
                         s.Model.switchAnimation("Idle");
                         CreatorController.models.Add(s);
                         _items.Add(s.ToString());
@@ -357,8 +356,19 @@ namespace AntHill
 
 
                         break;
-                   
 
+                    case "GrassHopper":
+
+
+                        //GrassH konik = new Beetle(new LoadModel(CreatorController.content.Load<Model>("Models//beetle"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device, CreatorController.content));
+                        GrassHopper konik = new GrassHopper(new LoadModel(CreatorController.content.Load<Model>("Models//grasshopper"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device, CreatorController.content));
+                        konik.Model.switchAnimation("Idle");
+                        CreatorController.models.Add(konik);
+                        _items.Add(konik.ToString());
+
+
+
+                        break;
 
                 }
                 
@@ -470,6 +480,13 @@ namespace AntHill
                     case "Zuk":
                         {
                             Beetle p = new Beetle(new LoadModel(CreatorController.content.Load<Model>("Models/beetle"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device,CreatorController.content));
+                            model = p;
+                            model.Model.switchAnimation("Idle");
+                            break;
+                        }
+                    case "Konik":
+                        {
+                            GrassHopper p = new GrassHopper(new LoadModel(CreatorController.content.Load<Model>("Models/grasshopper"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device, CreatorController.content));
                             model = p;
                             model.Model.switchAnimation("Idle");
                             break;

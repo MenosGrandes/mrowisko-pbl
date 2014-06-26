@@ -305,8 +305,8 @@ GraphicsDevice);
             WindowController.setWindowSize(1366, 768, false);
                 //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
-            models.Add(new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/grasshopper"), new Vector3(300,40,300), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
-            models[models.Count - 1].Model.switchAnimation("Idle");
+            ////models.Add(new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/grasshopper"), new Vector3(300,40,300), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
+            ////models[models.Count - 1].Model.switchAnimation("Idle");
           //  models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
            
             List<String> aa = new List<string>();
@@ -323,11 +323,11 @@ GraphicsDevice);
          // models[models.Count - 1].Model.switchAnimation("Idle");
 
 
-          models[models.Count - 1].Model.switchAnimation("Idle");
+         // models[models.Count - 1].Model.switchAnimation("Idle");
 
-          models.Add(new Spider(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(150, 40, 150), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+         // models.Add(new Spider(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(150, 40, 150), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
 
-         models[models.Count - 1].Model.switchAnimation("Idle");
+         //models[models.Count - 1].Model.switchAnimation("Idle");
 
         //  models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(150, 40, 300), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
 
@@ -343,12 +343,12 @@ GraphicsDevice);
 
 
 
-           models.Add(new Grasshopper(new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(50, 40, 50), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
-           models[models.Count - 1].Model.switchAnimation("Idle");
+           ////models.Add(new Grasshopper(new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(50, 40, 50), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+           ////models[models.Count - 1].Model.switchAnimation("Idle");
 
 
-            models.Add(new StrongAnt(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(120,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light)));
-            models[models.Count - 1].Model.switchAnimation("Idle");
+           //// models.Add(new StrongAnt(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(120,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light)));
+           //// models[models.Count - 1].Model.switchAnimation("Idle");
 
 
            //models.Add(new Grasshopper(new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(50, 40, 50), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
@@ -356,8 +356,8 @@ GraphicsDevice);
 
           // models.Add(new AntPeasant(new LoadModel(Content.Load<Model>("Models/ant"), new Vector3(100, 40, 10), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light)));
 
-           models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
-           timeTriggers.Add(new LaserTrigger((Laser)models[models.Count - 1], 1));
+           //models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
+           //timeTriggers.Add(new LaserTrigger((Laser)models[models.Count - 1], 1));
 
           Console.WriteLine("QuadNode: "+QuadNodeController.QuadNodeList.Count);
 
@@ -411,14 +411,14 @@ GraphicsDevice);
             gui.Update(gameTime);
             kolizja = false;
                 currentMouseState = Mouse.GetState();
-                if (timeTriggers.Count<1)
-                {
-                    UpdateFire();
-                  //  UpdateExplosions(gameTime);
+                //if (timeTriggers.Count<1)
+                //{
+                //    UpdateFire();
+                //  //  UpdateExplosions(gameTime);
 
-                   // UpdateProjectiles(gameTime);
+                //   // UpdateProjectiles(gameTime);
                    
-                }
+                //}
 
 
 

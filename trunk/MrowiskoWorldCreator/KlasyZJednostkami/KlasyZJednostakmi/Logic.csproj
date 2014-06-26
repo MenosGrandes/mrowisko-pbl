@@ -106,6 +106,7 @@
     <Compile Include="Triggers\Trigger.cs" />
     <Compile Include="Units\Allies\Allies.cs" />
     <Compile Include="Units\Allies\Beetle.cs" />
+    <Compile Include="Units\Allies\GrassHopper.cs" />
     <Compile Include="Units\Ants\Ant.cs" />
     <Compile Include="Building\Building.cs" />
     <Compile Include="Control.cs" />

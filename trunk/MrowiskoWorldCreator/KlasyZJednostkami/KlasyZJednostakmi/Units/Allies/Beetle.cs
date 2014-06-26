@@ -8,8 +8,10 @@ using Logic.Units.Ants;
 using Microsoft.Xna.Framework.Graphics;
 namespace Logic.Units.Allies
 {
-    public class Beetle:Unit
+    [Serializable]
+    public class Beetle:Allie
     {
+        [NonSerialized]
         public InteractiveModel sfereModel;
         public List<InteractiveModel> Ants = new List<InteractiveModel>();
         private float Scope;

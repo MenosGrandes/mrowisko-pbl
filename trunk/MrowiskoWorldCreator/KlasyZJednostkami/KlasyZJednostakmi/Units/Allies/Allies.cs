@@ -5,12 +5,13 @@ using System.Text;
 
 namespace Logic
 {
-   public class Allies:Unit
+    [Serializable]
+   public class Allie:Unit
     {
    
-        public Allies(LoadModel model):base(model)
+        public Allie(LoadModel model):base(model)
            { }
-        public Allies()
+        public Allie()
             : base()
         {  }
    

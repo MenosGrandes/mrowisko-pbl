@@ -3,6 +3,7 @@ using Logic.Building;
 using Logic.Building.AntBuildings.Granary;
 using Logic.EnviroModel;
 using Logic.Meterials.MaterialCluster;
+using Logic.Units.Allies;
 using Logic.Units.Ants;
 using Logic.Units.Predators;
 using Map;
@@ -48,9 +49,7 @@ namespace Controlers
                            p.gaterTime = 10;
                            p.Model.switchAnimation("Atack");
                            listOfAllInteractiveModelsFromFile.Add(p);
-                          // models.Add(new AntPeasant(10, 10, 10, 10, 10, 10, new LoadModel(Content.Load<Model>("queen"), new Vector3(150, 0, 0), new Vector3(0, 6, 0), new Vector3(0.4f), GraphicsDevice,Content, light), 10000, 10))
-                           p.Model.CreateBoudingBox();
-                          break; 
+                          break;
                        case "Log":
 
                            Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//log"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
@@ -110,16 +109,14 @@ namespace Controlers
 
 
                             Spider s = new Spider(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//spider"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,StaticHelpers.StaticHelper.Content,_light));
-                            s.AtackInterval = 10;
-                            s.Hp = 1000;
+
 
                             s.Model.switchAnimation("Idle");
                             listOfAllInteractiveModelsFromFile.Add(s);
 
 
 
-
-                            break;  /* 
+                            break;   
                        case "Tree":
 
 
@@ -145,11 +142,11 @@ namespace Controlers
 
 
 
-                            break;      */
+                            break;      
                        case "Cone":
                            
                             Cone c = new Cone(null);
-                            c.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//123"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,_light);
+                            c.Model = new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//Szyszka2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light);
                           //  c.Model.BuildBoundingSphereMaterial();
                            // c.Model.B_Box = BoundingBox.CreateFromSphere(c.Model.Spheres[0]);
                             listOfAllInteractiveModelsFromFile.Add(c);
@@ -175,9 +172,27 @@ namespace Controlers
                            listOfAllInteractiveModelsFromFile.Add(gr);
 
                            break;
-                                    
-                   }
+                       case "GrassHopper":
 
+                           GrassHopper gr1 = new GrassHopper(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//grasshopper"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,StaticHelpers.StaticHelper.Content, _light));
+                          
+                        // c1.Model.CreateBoudingBox();
+                           gr1.Model.switchAnimation("Idle");
+                           listOfAllInteractiveModelsFromFile.Add(gr1);
+
+                           break;
+                       case "Beetle":
+
+                           GrassHopper beetle = new GrassHopper(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//beetle"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
+
+                           // c1.Model.CreateBoudingBox();
+                           beetle.Model.switchAnimation("Idle");
+                           listOfAllInteractiveModelsFromFile.Add(beetle);
+
+                           break;
+                   
+                   }
+                   
 
                }
            }

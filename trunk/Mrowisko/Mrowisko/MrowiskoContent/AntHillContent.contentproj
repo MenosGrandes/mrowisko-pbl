@@ -494,6 +494,16 @@
       <Importer>XImporter</Importer>
       <Processor>AnimatedModelProcessor</Processor>
     </Compile>
+    <Compile Include="Models\tree1.FBX">
+      <Name>tree1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\tree2.FBX">
+      <Name>tree2</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\Particles\explosion.png">
