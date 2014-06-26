@@ -28,25 +28,27 @@ namespace Logic.Units.Predators
        public Spider(LoadModel model):base(model)
        {
            LifeBar.LifeLength = model.Scale.X * 100;
-           selectable = false;
+           selectable = true;
            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
            this.Hp = 100;
+           this.modelHeight = 26;
 
        }
        public Spider(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model,float atackInterval)
            : base(hp, armor, strength, range, cost, buildingTime, model,atackInterval)
-       { selectable = false; }
+       { selectable = true; this.modelHeight = 26; }
        
          public Spider(LoadModel model, List<InteractiveModel> ants)
             : base(model)
         {
-            selectable = false;
+            selectable = true;
             this.Ants = ants;
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             this.Hp = 100;
+            this.modelHeight = 26;
         }
 
          public void removeMyself()

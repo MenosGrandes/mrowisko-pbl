@@ -18,7 +18,7 @@ namespace Logic
     public class InteractiveModel
     {
 
-        private Node myNode;
+        protected Node myNode;
 
         public Node MyNode
         {
@@ -115,6 +115,7 @@ namespace Logic
         {
             this.lifeBar = new HUD.LifeBar(1);
             this.circle = new HUD.Circle();
+            this.myNode = getMyNode();
            // this.myNode = getMyNode();
         }
         public virtual void Draw(GameCamera.FreeCamera camera,float time)
