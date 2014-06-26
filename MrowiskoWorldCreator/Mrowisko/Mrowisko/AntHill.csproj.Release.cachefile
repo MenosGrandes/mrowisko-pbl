@@ -78,7 +78,6 @@ Content\Models\temp.xnb
 Content\Models\uzi_diffuse.xnb
 Content\Models\wingUVW.xnb
 Content\Models\SkyDome\dome.xnb
-Content\animacja.xnb
 Content\Models\pajak_sfery2.xnb
 Content\Models\beetle.xnb
 Content\Models\ant.xnb
@@ -93,7 +92,6 @@ Content\Effects\Bilboarding.xnb
 Content\Effects\MultiTextured.xnb
 Content\Effects\Ground.xnb
 Content\Effects\Shadows.xnb
-Content\animacja_Anims.xnb
 Content\Models\spider_Anims.xnb
 Content\Models\beetle_Anims.xnb
 Content\Models\ant_Anims.xnb
@@ -113,7 +111,6 @@ Content\Textures\treetex\szyszka2_0.xnb
 Content\plujka_diffuse_0.xnb
 Content\uzi_diffuse_0.xnb
 Content\Models\SkyDome\cloudMap_0.xnb
-Content\fire_0.xnb
 Content\Models\spiderUVW_0.xnb
 Content\Models\beetlediffuse_0.xnb
 Content\Models\ant_diffuse_0.xnb

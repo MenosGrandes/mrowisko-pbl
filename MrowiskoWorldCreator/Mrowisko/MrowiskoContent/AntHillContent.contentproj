@@ -171,24 +171,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="animacja.X">
-      <Name>animacja</Name>
-      <Importer>XImporter</Importer>
-      <Processor>AnimatedModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\AnimacjaPipelineExtension\AnimacjaPipelineExtension.csproj">
       <Project>{c48d080e-13f0-4b71-b4e2-0376eec21ba2}</Project>
       <Name>AnimacjaPipelineExtension</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="animacja_Anims.xml">
-      <Name>animacja_Anims</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\stone2.fbx">
