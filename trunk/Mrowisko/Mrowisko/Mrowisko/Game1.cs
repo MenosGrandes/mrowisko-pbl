@@ -64,7 +64,6 @@ namespace AntHill
         public Camera camera;
         MouseState lastMouseState;
         Water water;
-        LoadModel mrowka, krolowa, pajak, konik, silacz;
         QuadTree quadTree;
         MapRender mapR;
         //FPS COUNTER
@@ -285,6 +284,17 @@ GraphicsDevice);
                 }
                 else
                 {
+                    if(i.GetType()==typeof(Beetle))
+                    {
+                        ((Beetle)i).Ants=models;
+                        ((Beetle)i).removeMyself();
+                    }
+                    else if(i.GetType()==typeof(Spider))
+                    {
+                        ((Spider)i).Ants = models;
+                        ((Spider)i).removeMyself();
+
+                    }
                     models.Add(i);
                 }
             }
@@ -337,8 +347,8 @@ GraphicsDevice);
         // models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(120, 40, 120), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
          //models[models.Count - 1].Model.switchAnimation("Idle");
 
-         // models.Add(new Spider(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(250, 40, 250), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
-         // models[models.Count - 1].Model.switchAnimation("Idle");
+          // models.Add(new Spider(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(250, 40, 250), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+          // models[models.Count - 1].Model.switchAnimation("Idle");
 
 
 
@@ -383,14 +393,15 @@ GraphicsDevice);
                 {
                         if(PathFinderManager.tileList[i,j].walkable==false)
                         {
-                            inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log"),new Vector3( PathFinderManager.tileList[i,j].centerPosition.X,PathFinderManager.tileList[i,j].Height,PathFinderManager.tileList[i,j].centerPosition.Y),Vector3.Zero,Vector3.One,device,light)));
+                            inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log2"),new Vector3( PathFinderManager.tileList[i,j].centerPosition.X,PathFinderManager.tileList[i,j].Height,PathFinderManager.tileList[i,j].centerPosition.Y),Vector3.Zero,Vector3.One,device,light)));
                         }
                 }  
             }
+            control.Models_Colision = IModel;
+
         }
         
         
-
         /// <summary>w
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
@@ -498,10 +509,22 @@ GraphicsDevice);
                         models[i].Intersect(models[j]);
                     }
                    // if(models[i].Hp<=0 && models[i].GetType().BaseType.BaseType==typeof(Unit))
+             
+      
+                /****************
+                for (int kj = 0; kj < IModel.Count; kj++)
+                    {
+                        models[i].Intersect(IModel[kj]);
+
+                    }
+                 *///////////////////
+
+
+
                     if (models[i].Hp <= 0 && models[i] is Unit)
                     {
 
-                        Console.WriteLine("Zjadl"+models[i].GetType());
+                        Console.WriteLine("Zjadl "+models[i].GetType());
                         models[i].Model.switchAnimation("Death",1);
                         foreach(InteractiveModel unit in control.SelectedModels)
                         {
@@ -513,26 +536,8 @@ GraphicsDevice);
                         models.RemoveAt(i);
                         
                     }
-                    for (int j = 0; j < IModel.Count;j++ )
-                    {
-                        models[i].Intersect(IModel[j]);
 
-                    }
-                      /*  if (models[i].GetType() ==  typeof(AntSpitter))
-                        {
-                            foreach (Vector4 pos in models[i].spitPos())
-                            {
-                               // if()
-                                Vector3 tmpPos = new Vector3(pos.X,pos.Y,pos.Z);
-                               if(pos.W == 0)
-                                UpdateSpit(tmpPos,false);
-                                else
-                                 UpdateSpit(tmpPos, true);
-                               
-                                //UpdateSmokePlume(pos);
-                            }
-                        }
-                          */
+                     
                 }
              
                  
@@ -582,18 +587,16 @@ GraphicsDevice);
 
             control.Update(gameTime);
 
-            foreach( Unit unit in control.SelectedModels)
+            foreach (Unit unit in control.SelectedModels)
             {
-                if (unit.Model.Selected)
-                {
-                  //  unit.obstaclesOnRoad(control.filtrObstacles(models));
+                
+                    //  unit.obstaclesOnRoad(control.filtrObstacles(models));
                     unit.obstaclesOnRoad(IModel);
-                    unit.obstaclesOnRoad(inter);
-                }
+               
 
-                          
+
             }
-            control.Models_Colision =IModel;
+           
            
 
           //  e.gameTime = gameTime;
@@ -657,6 +660,7 @@ GraphicsDevice);
 
              foreach (InteractiveModel model in models)
              {
+                 
                  hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["Technique1"];
                  //hiDefShadowEffect.Parameters["Model"].SetValue(true);
                  hiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
@@ -734,13 +738,13 @@ GraphicsDevice);
             water.DrawWater(time, (FreeCamera)camera);
 
 
-            foreach (Node n in PathFinderManager.tileList)
-            {
-                if (camera.BoundingVolumeIsInView(n.Box))
-                {
-                    BBoxRender.DrawBBox(n.Box, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
-                }
-            }
+            //foreach (Node n in PathFinderManager.tileList)
+            //{
+            //    if (camera.BoundingVolumeIsInView(n.Box))
+            //    {
+            //        BBoxRender.DrawBBox(n.Box, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
+            //    }
+            //}
 
             foreach (InteractiveModel q in inter)
             {

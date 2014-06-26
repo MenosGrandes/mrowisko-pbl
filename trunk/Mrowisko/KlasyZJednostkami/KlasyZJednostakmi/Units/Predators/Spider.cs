@@ -9,12 +9,19 @@ namespace Logic.Units.Predators
     [Serializable]
     public class Spider:Predator
     {
+        [NonSerialized]
         public List<InteractiveModel> Ants = new List<InteractiveModel>();
+        [NonSerialized]
         private int range = 120;
+        [NonSerialized]
         private int snared_max = 3;
+        [NonSerialized]
         private int snared = 0;
+        [NonSerialized]
         private float time = 0.0f;
+        [NonSerialized]
         private float attack_speed = 2.0f;
+        [NonSerialized]
         private int damage = 30;
          public Spider():base()
        { }
@@ -23,6 +30,7 @@ namespace Logic.Units.Predators
            LifeBar.LifeLength = model.Scale.X * 100;
            selectable = false;
            LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
+           this.Hp = 100;
 
        }
        public Spider(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model,float atackInterval)
@@ -40,8 +48,18 @@ namespace Logic.Units.Predators
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             this.Hp = 100;
         }
-        
-        
+
+         public void removeMyself()
+         { 
+            foreach(InteractiveModel model in Ants)
+            {
+                  if(model==this)
+                  {
+                      Ants.Remove(model);
+                      return;
+                  }
+            }
+         }
         public override void DrawSelected(GameCamera.FreeCamera camera)
        {
            base.DrawSelected(camera);
@@ -50,9 +68,9 @@ namespace Logic.Units.Predators
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
             for(int i=0;i<Ants.Count;i++)
-            {
+            {                
+
                 float spr = (float)Math.Sqrt(Math.Pow(Ants[i].Model.Position.X - this.Model.Position.X, 2.0) + (float)Math.Pow(Ants[i].Model.Position.Z - this.Model.Position.Z, 2.0));
                // Console.WriteLine(spr +" "+ Ants[i].GetType());
                 if (spr <= range && this != Ants[i] && snared < snared_max && Ants[i].snr==false)
@@ -61,7 +79,7 @@ namespace Logic.Units.Predators
                     {
                         Ants[i].snr = true;
                         snared++;
-                        Console.WriteLine("unieruchomienie " + Ants[i].GetType());
+                        //Console.WriteLine("unieruchomienie " + Ants[i].GetType());
                     }
                 }
 
@@ -78,7 +96,8 @@ namespace Logic.Units.Predators
                          time += (float)gameTime.ElapsedGameTime.TotalSeconds;
                          if (time > 2.0f)
                          {
-                             Ants[j].Hp -= damage;
+                             //Ants[j].Hp -= damage;
+                             Attack();
                              time = 0;
                          }
                      }

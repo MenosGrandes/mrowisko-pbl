@@ -73,6 +73,10 @@ namespace Logic
         }
         public void Update(GameTime gameTime)
         {
+            if(selectedObject!=null)
+            {
+                Console.WriteLine(selectedObject.GetType().Name);
+            }
 
             foreach (InteractiveModel unit in SelectedModels)
             {
@@ -123,7 +127,7 @@ namespace Logic
                     //Console.WriteLine(models[i].GetType() + " adad");
                   //  if (models[i].selectable)
 
-                        selectedObject = models[i];
+                         selectedObject = models[i];
                  //       Console.WriteLine(selectedObject);
                         if (models[i].GetType().BaseType == typeof(Predator))
                         {
@@ -178,8 +182,6 @@ namespace Logic
             #region modele z którymi mamy interakacje
             for (int i = 0; i < Models_Colision.Count; i++)
             {
-                Models_Colision[i].Model.B_Box = Models_Colision[i].Model.updateBoundingBox();
-
 
                 if (Models_Colision[i].CheckRayIntersection(mouseRay))
                 {
@@ -368,6 +370,10 @@ namespace Logic
             {
                 formation.formationSetOff();
             }
+            if (currentMouseState.RightButton == ButtonState.Pressed)
+            {
+                selectedObject = null;
+            }
             lastMouseState = currentMouseState;
 
          
@@ -521,18 +527,18 @@ namespace Logic
         }
 
 
-        void updatePosition(InteractiveModel unit, Vector2 targetPos, GameTime gameTime)
-        {
-            float speed = (float)2.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
-            Vector2 Direction = targetPos - new Vector2(unit.Model.Position.X, unit.Model.Position.Z);
-            Direction.Normalize();
+        //void updatePosition(InteractiveModel unit, Vector2 targetPos, GameTime gameTime)
+        //{
+        //    float speed = (float)2.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
+        //    Vector2 Direction = targetPos - new Vector2(unit.Model.Position.X, unit.Model.Position.Z);
+        //    Direction.Normalize();
 
-            Vector3 UnitSpeed = new Vector3(Direction.X, 0, Direction.Y) * speed; // speed is your unit's speed
+        //    Vector3 UnitSpeed = new Vector3(Direction.X, 0, Direction.Y) * speed; // speed is your unit's speed
 
-            // Now you update position
-            unit.Model.Position = new Vector3(unit.Model.Position.X + UnitSpeed.X, StaticHelpers.StaticHelper.GetHeightAt(unit.Model.Position.X + UnitSpeed.X, unit.Model.Position.Z + UnitSpeed.Z), unit.Model.Position.Z + UnitSpeed.Z);
-            unit.MyNode = unit.getMyNode();
-        }
+        //     Now you update position
+        //    unit.Model.Position = new Vector3(unit.Model.Position.X + UnitSpeed.X, StaticHelpers.StaticHelper.GetHeightAt(unit.Model.Position.X + UnitSpeed.X, unit.Model.Position.Z + UnitSpeed.Z), unit.Model.Position.Z + UnitSpeed.Z);
+        //    unit.MyNode = unit.getMyNode();
+        //}
         public Ray starSelectMouseRay { get; set; }
 
         public Vector3 selectRectangleStart { get; set; }

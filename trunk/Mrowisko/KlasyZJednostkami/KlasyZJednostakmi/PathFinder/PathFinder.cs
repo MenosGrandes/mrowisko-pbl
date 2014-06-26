@@ -34,7 +34,12 @@ namespace Logic.PathFinderNamespace
             openList.Remove(startNode);
             closedList.Add(startNode);
             currentNode = getMinFromList();
-
+            if (currentNode == endNode)
+            {
+                finalPath.Add(startNode);
+                finalPath.Add(endNode);
+                return true;
+            }
             while (currentNode != endNode)
             {
 
@@ -42,6 +47,7 @@ namespace Logic.PathFinderNamespace
                 closedList.Add(currentNode);
                 getNeighbours(currentNode);
                 currentNode = getMinFromList();
+
                 if(openList.Count==0)
                 {
                     return false;

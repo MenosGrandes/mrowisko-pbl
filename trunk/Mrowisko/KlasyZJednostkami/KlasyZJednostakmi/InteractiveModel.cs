@@ -115,7 +115,7 @@ namespace Logic
         {
             this.lifeBar = new HUD.LifeBar(1);
             this.circle = new HUD.Circle();
-            this.myNode = getMyNode();
+           // this.myNode = getMyNode();
         }
         public virtual void Draw(GameCamera.FreeCamera camera,float time)
         {
@@ -218,9 +218,10 @@ namespace Logic
         }
         public Node getMyNode()
         {
+            //if(myNode==get)
                     foreach(Node n in PathFinderManagerNamespace.PathFinderManager.tileList)
                     {
-                        //if(n.Box.Contains(this.model.Position)==ContainmentType.Contains)
+                        if(n.Box.Contains(this.model.Position)==ContainmentType.Contains)
                         {
                             return n;
                         }

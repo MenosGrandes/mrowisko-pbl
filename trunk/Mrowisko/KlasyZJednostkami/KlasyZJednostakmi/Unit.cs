@@ -207,7 +207,7 @@ namespace Logic
             base.Update(time);
             if (snr == false)
             {
-                MyNode = this.getMyNode();
+               // MyNode = this.getMyNode();
                 if (ArmorBuff)
                 {
                     armor = armorAfterBuff;
@@ -252,7 +252,6 @@ namespace Logic
                         Model.Position.Z + (direction.Y *
                         speed * elapsedTime3));
                     model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), destination, model.Rotation.Y, 1.05f), model.Rotation.Z);
-                    MyNode = this.getMyNode();
                 }
                 else if (target != null && Vector3.Distance(target.Model.Position, this.model.Position) < this.rangeOfSight)
                 {
@@ -310,8 +309,7 @@ namespace Logic
                         Model.Position.Z + (direction.Y *
                         speed * elapsedTime3));*/
                     model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), destination, model.Rotation.Y, 1.0f), model.Rotation.Z);
-                    Console.WriteLine(model.Rotation.Y);
-                    MyNode = this.getMyNode();
+                    //Console.WriteLine(model.Rotation.Y);
                 }
             }
             if (jumping)
@@ -419,27 +417,7 @@ namespace Logic
 
         public override void Intersect(InteractiveModel interactive)
         {
-            base.Intersect(interactive);/*
-            if (!interactive.Model.Selected)
-            {
-                if (interactive.GetType().BaseType.BaseType == typeof(Unit))
-                {
-                    if (model.BoundingSphere.Intersects(interactive.Model.BoundingSphere))
-                    {
-                        //interactive.Model.Position -= Vector3.Left;
-                        float distance2 = Vector3.Distance(model.BoundingSphere.Center, interactive.Model.BoundingSphere.Center);
-                        Vector3 aa = (model.Position - interactive.Model.Position);
-                        if (aa.X > 0)
-                        {
-                            model.Position += Vector3.Right;
-                        }
-                        if (aa.X < 0)
-                        {
-                            model.Position += Vector3.Left;
-                        }
-                    }
-                }
-            }*/
+            base.Intersect(interactive);
         }
         public bool AtDestination
         {
