@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Logic.Units.Ants
 {
-      [Serializable]
+        [Serializable]
     public class StrongAnt:Ant
     {
    
@@ -20,7 +20,6 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
-            this.modelHeight = 5;
         }
         public StrongAnt(LoadModel model)
             : base(model)
@@ -34,7 +33,6 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
-            this.modelHeight = 5;
         }
         public StrongAnt(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
@@ -45,7 +43,6 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
-            this.modelHeight = 5;
 
         }
         public override void Update(GameTime time)

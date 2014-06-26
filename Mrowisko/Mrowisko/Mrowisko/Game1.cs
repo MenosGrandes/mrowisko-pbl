@@ -299,7 +299,7 @@ GraphicsDevice);
                 }
             }
             #endregion   
-            PathFinderManager.blockAllNodes(IModel);
+                PathFinderManager.blockAllNodes(IModel);
 /////////////// nie wiem czy to powinno byæ czy nie wiêc zakomentowa³em tylko
 //
 //            mapR = new MapRender(texture[15], 3);
