@@ -50,6 +50,7 @@ namespace Logic.Units.Ants
             circle.Scale = model.Scale.X * 10;
            this.Model.switchAnimation("Idle");
            this.armorAfterBuff = armor * 2;
+           this.modelHeight = 14;
         }
         public AntPeasant(LoadModel model)
             : base(model)
@@ -68,6 +69,7 @@ namespace Logic.Units.Ants
            this.armorAfterBuff = armor * 2;
            hp = 100;
            this.Model.switchAnimation("Idle");
+           this.modelHeight = 14;
 
         }
         public override void gaterMaterial(Material material)

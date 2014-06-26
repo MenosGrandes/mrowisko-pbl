@@ -56,7 +56,7 @@ namespace Logic.Units.Predators
                     if (this.Model.BoundingSphere.Contains(Ants[i].Model.BoundingSphere) == ContainmentType.Intersects && this!=Ants[i] && Ants[i] is Unit)
                     // if (this.Model.BoundingSphere.Intersects(model.Model.BoundingSphere))
                     {
-                        this.Model.Position = new Vector3(this.Model.Position.X, StaticHelpers.StaticHelper.GetHeightAt(this.Model.Position.X,this.Model.Position.Z), this.Model.Position.Z);
+                        this.Model.Position = new Vector3(this.Model.Position.X, StaticHelpers.StaticHelper.GetHeightAt(this.Model.Position.X, this.Model.Position.Z) + modelHeight, this.Model.Position.Z);
                         Console.WriteLine("proboje_zjec"+Ants[i].GetType());
                         Ants[i].Hp = -1;
                         trawienie_flaga = true;

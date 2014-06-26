@@ -21,6 +21,7 @@ namespace Logic.Units.Allies
         this.Scope = Scope;
         this.ArmorBuffValue = ArmorBuff;
         hp = 1000;
+        this.modelHeight = 28;
     }
         public GrassHopper(LoadModel model):base(model)
         {
@@ -31,6 +32,7 @@ namespace Logic.Units.Allies
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             hp = 1000;
+            this.modelHeight = 28;
         }
         public GrassHopper()
             : base()
