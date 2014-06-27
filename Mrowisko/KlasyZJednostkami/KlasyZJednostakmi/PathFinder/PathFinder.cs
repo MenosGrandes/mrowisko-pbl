@@ -19,6 +19,16 @@ namespace Logic.PathFinderNamespace
         {   
            
         }
+        public bool SearchNearest(ref Node node)
+        {
+            
+            openList.Add(node);
+            getStartNodeNeighbours(node);
+            openList.Remove(node);
+            closedList.Add(node);
+             node = getMinFromList();
+            return true;
+        }
         public bool Search(Node startNode,Node endNode)
         {
 
@@ -31,7 +41,7 @@ namespace Logic.PathFinderNamespace
                 Console.WriteLine("BUILDING");
             }
 
-            if(endNode.walkable==false && (endNode.haveBuilding==true || endNode.haveMineral==true)) 
+            if(endNode.walkable==false && (endNode.haveBuilding==false || endNode.haveMineral==false)) 
             {
                 return false;
             }
@@ -47,6 +57,7 @@ namespace Logic.PathFinderNamespace
             this.endNode = endNode;
             openList.Add(startNode);
             getStartNodeNeighbours(startNode);
+            CalculateManhattan();
             openList.Remove(startNode);
             closedList.Add(startNode);
             currentNode = getMinFromList();
@@ -137,7 +148,7 @@ namespace Logic.PathFinderNamespace
                 PathFinderManager.tileList[(int)currentNode.index.X - 1, (int)currentNode.index.Y + 1].parent = currentNode;
             }
            
-            CalculateManhattan();
+           
         }
         public void getNeighbours(Node currentNode)
         {

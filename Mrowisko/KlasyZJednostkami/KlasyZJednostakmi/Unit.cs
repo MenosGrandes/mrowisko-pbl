@@ -376,7 +376,7 @@ namespace Logic
 
             if (this.target != null && this.model.BoundingSphere.Intersects(this.target.Model.BoundingSphere))
             {
-                this.model.switchAnimation("Attack");
+                this.model.switchAnimation("Atack");
             }
 
             //Only do something if we are not already there

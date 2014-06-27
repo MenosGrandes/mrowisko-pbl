@@ -149,26 +149,13 @@ namespace Logic.Units.Ants
             if(this==interactive)
             { return ; }
 
-            if(gaterMaterialObject!=null)
-            {
-                //Console.WriteLine(gaterMaterialObject);
-            }
-            if (interactive.Model.B_Box.Max==Vector3.Zero)
-            {
-                return;
-            }
-            if (model.Spheres[0].Intersects(interactive.Model.B_Box))
+             if(interactive.GetType().IsSubclassOf(typeof(Material))){
+            if (model.BoundingSphere.Intersects(interactive.Model.BoundingSphere))
             {
                 Console.WriteLine(gaterMaterialObject);
                 if (gaterMaterialObject == interactive)
                 {
-                    if (ImMoving) { 
-                    ImMoving = false;
-                   // model.playerTarget = model.Position;
-                        model.Position = interactive.Model.Position;
-                   
-                   // model.Position = model.tempPosition;
-                        }
+
                     if (gaterTime < elapsedTime)
                         {
                             gaterMaterial((Material)gaterMaterialObject);
@@ -184,20 +171,43 @@ namespace Logic.Units.Ants
                     this.materials.Clear();
                   //  Console.WriteLine(Capacity);
                 }
-                else if(interactive.GetType().BaseType.BaseType!=typeof(Unit))
-                {
-                    ImMoving = true;
-                }
+
             }
             
-                    
+              }      
             }
         public override void setGaterMaterial(Material m)
         {
-               if(m!=gaterMaterialObject)
-                gaterMaterialObject = m;
 
-           
+            if (m != gaterMaterialObject)
+            {
+                float distance = float.MaxValue;
+                Node nearest = new Node(); 
+                gaterMaterialObject = m;
+                foreach(Node n in m.nodes)
+                {
+                    if(distance>Vector2.Distance( n.centerPosition,new Vector2(model.Position.X,model.Position.Z)))
+                    {
+                        distance = Vector2.Distance(n.centerPosition, new Vector2(model.Position.X, model.Position.Z));
+                        nearest = n;
+                    }
+                }
+                PathFinder.SearchNearest(ref nearest);
+                if(PathFinder.Search(myNode, nearest))
+                {
+                    MovementPath = new Queue<Node>(PathFinder.finalPath);
+                   Moving = true;
+                   PathFinder.finalPath.Clear();
+                }
+                else
+                {
+                    Console.WriteLine("adsasda");
+                }
+
+            }
+
+
+
         }
         public override string ToString()
         {

@@ -11,6 +11,7 @@ namespace Logic.Meterials
     [Serializable]
     public class Material : InteractiveModel
     {
+        public List<Node> nodes = new List<Node>();
         public int ClusterSize;
         public int MaxClusterSize;
 
