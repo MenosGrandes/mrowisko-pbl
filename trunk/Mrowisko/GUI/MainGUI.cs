@@ -32,26 +32,31 @@ namespace GUI
             JUST_RELEASED,
             DOWN
         }
-        const int NUMBER_OF_BUTTONS = 17,
+        const int NUMBER_OF_BUTTONS = 20,
             MENU_BUTTON_IDX = 0,
-            UP_BUTTON_IDX = 1,
-            DOWN_BUTTON_IDX = 2,
-            ATTACK_ANT_BUTTON_IDX = 3,
-            DEFENCE_ANT_BUTTON_IDX = 4,
-            RUN_ANT_BUTTON_IDX = 5,
-            SAVE_BUTTON_IDX = 6,
-            PAUSE_BUTTON_IDX = 7,
-            PLAY_BUTTON_IDX = 8,
+            SAVE_BUTTON_IDX = 1,
+            PAUSE_BUTTON_IDX = 2,
+            PLAY_BUTTON_IDX = 3,
 
-            B1_BUTTON_IDX = 9,
-            B2_BUTTON_IDX = 10,
-            B3_BUTTON_IDX = 11,
+            RESUME_T_BUTTON_IDX = 4,
+            SAVE_T_BUTTON_IDX = 5,
+            LOAD_T_BUTTON_IDX = 6,
+            OPTIONS_T_BUTTON_IDX = 7,
+            EXIT_T_BUTTON_IDX = 8,
 
-            RESUME_T_BUTTON_IDX = 12,
-            SAVE_T_BUTTON_IDX = 13,
-            LOAD_T_BUTTON_IDX = 14,
-            OPTIONS_T_BUTTON_IDX = 15,
-            EXIT_T_BUTTON_IDX = 16,
+            UNIT1_BUTTON_IDX = 9,
+            UNIT2_BUTTON_IDX = 10,
+            UNIT3_BUTTON_IDX = 11,
+            UNIT4_BUTTON_IDX = 12,
+            UNIT5_BUTTON_IDX = 13,
+
+            B1_BUTTON_IDX = 14,
+            B2_BUTTON_IDX = 15,
+            B3_BUTTON_IDX = 16,
+
+            ATTACK_ANT_BUTTON_IDX = 17,
+            DEFENCE_ANT_BUTTON_IDX = 18,
+            RUN_ANT_BUTTON_IDX = 19,
 
             BUTTON_HEIGHT = 54,
             BUTTON_WIDTH = 342;
@@ -70,27 +75,21 @@ namespace GUI
 
         bool unitMenuON = true;
         bool buildMenuON = false;
-        bool maxMenu = false;
+        bool unitSelected = true;
         bool mainMenuOn = false;
 
 
-        const int NUMBER_OF_BARS = 12,
-            INFO_BAR_IDX = 0,
-            MAP_BAR_IDX = 1,
-            Q_MENU_BAR = 2,
-            B_BAR_IDX = 3,
-            U_BAR_IDX = 4,
-            MAX_UNIT_BAR = 5,
-            MIN_UNIT_BAR = 6,
-            PAUSE_MENU_BACK = 7,
-            MINI_MAP = 8,
-            FRIEND_SIGN = 9,
-            NEUTRAL_SIGN = 10,
-            ENEMY_SIGN = 11;
+        const int NUMBER_OF_BARS = 6,
+            MAIN_BAR_IDX = 0,
+            PAUSE_MENU_BACK = 1,
+            MINI_MAP = 2,
+            FRIEND_SIGN = 3,
+            NEUTRAL_SIGN = 4,
+            ENEMY_SIGN = 5;
 
-        Color[] itf_color = new Color[NUMBER_OF_BARS];
-        Rectangle[] itf_rectangle = new Rectangle[NUMBER_OF_BARS];
-        Texture2D[] itf_texture = new Texture2D[NUMBER_OF_BARS];
+        Color[] bar_color = new Color[NUMBER_OF_BARS];
+        Rectangle[] bar_rectangle = new Rectangle[NUMBER_OF_BARS];
+        Texture2D[] bar_texture = new Texture2D[NUMBER_OF_BARS];
 
         public MainGUI(ContentManager content, Control c)
         {
@@ -99,7 +98,7 @@ namespace GUI
             this.control = c;
         }
 
-       public void Initialize()
+        public void Initialize()
         {
 
             /// Interface ----------------------------------------------------------------------------------------
@@ -119,33 +118,14 @@ namespace GUI
 
 
             //=== === === BARS
-            itf_color[INFO_BAR_IDX] = Color.White;
-            itf_rectangle[INFO_BAR_IDX] = new Rectangle(164, 20, 722, 49);
+            bar_color[MAIN_BAR_IDX] = Color.White;
+            bar_rectangle[MAIN_BAR_IDX] = new Rectangle(0, 0, 1366, 768);
 
-            itf_color[MAP_BAR_IDX] = Color.White;
-            itf_rectangle[MAP_BAR_IDX] = new Rectangle(1024, 20, 325, 270);
+            bar_color[PAUSE_MENU_BACK] = Color.White;
+            bar_rectangle[PAUSE_MENU_BACK] = new Rectangle(1, 1, 1366, 768);
 
-            itf_color[Q_MENU_BAR] = Color.White;
-            itf_rectangle[Q_MENU_BAR] = new Rectangle(886, 20, 138, 49);
-
-
-            itf_color[B_BAR_IDX] = Color.White;
-            itf_rectangle[B_BAR_IDX] = new Rectangle(712, 676, 316, 84);
-
-            itf_color[U_BAR_IDX] = Color.White;
-            itf_rectangle[U_BAR_IDX] = new Rectangle(712, 676, 316, 84);
-
-            itf_color[MAX_UNIT_BAR] = Color.White;
-            itf_rectangle[MAX_UNIT_BAR] = new Rectangle(1024, 438, 325, 321);
-
-            itf_color[MIN_UNIT_BAR] = Color.White;
-            itf_rectangle[MIN_UNIT_BAR] = new Rectangle(1024, 676, 325, 84);
-
-            itf_color[PAUSE_MENU_BACK] = Color.White;
-            itf_rectangle[PAUSE_MENU_BACK] = new Rectangle(1, 1, 1366, 768);
-
-            itf_color[MINI_MAP] = Color.White;
-            itf_rectangle[MINI_MAP] = new Rectangle(1036, 28, 300, 250);
+            bar_color[MINI_MAP] = Color.White;
+            bar_rectangle[MINI_MAP] = new Rectangle(1043, 510, 312, 248);
 
             //=== === === BUTTONS
             // menu
@@ -153,28 +133,57 @@ namespace GUI
             button_state[MENU_BUTTON_IDX] = BState.UP;
             button_color[MENU_BUTTON_IDX] = Color.White;
             button_timer[MENU_BUTTON_IDX] = 0.0;
-            button_rectangle[MENU_BUTTON_IDX] = new Rectangle(20, 20, 67, 50);
+            button_rectangle[MENU_BUTTON_IDX] = new Rectangle(10, 6, 69, 69);
 
             // save
 
             button_state[SAVE_BUTTON_IDX] = BState.UP;
             button_color[SAVE_BUTTON_IDX] = Color.White;
             button_timer[SAVE_BUTTON_IDX] = 0.0;
-            button_rectangle[SAVE_BUTTON_IDX] = new Rectangle(900, 30, 30, 30);
+            button_rectangle[SAVE_BUTTON_IDX] = new Rectangle(90, 45, 29, 29);
 
             // pause
 
             button_state[PAUSE_BUTTON_IDX] = BState.UP;
             button_color[PAUSE_BUTTON_IDX] = Color.White;
             button_timer[PAUSE_BUTTON_IDX] = 0.0;
-            button_rectangle[PAUSE_BUTTON_IDX] = new Rectangle(940, 30, 30, 30);
+            button_rectangle[PAUSE_BUTTON_IDX] = new Rectangle(128, 6, 29, 29);
 
             // play
 
             button_state[PLAY_BUTTON_IDX] = BState.UP;
             button_color[PLAY_BUTTON_IDX] = Color.White;
             button_timer[PLAY_BUTTON_IDX] = 0.0;
-            button_rectangle[PLAY_BUTTON_IDX] = new Rectangle(980, 30, 30, 30);
+            button_rectangle[PLAY_BUTTON_IDX] = new Rectangle(90, 6, 29, 29);
+
+            //=== jednostki -------------------------------------------------
+
+            button_state[UNIT1_BUTTON_IDX] = BState.UP;
+            button_color[UNIT1_BUTTON_IDX] = Color.White;
+            button_timer[UNIT1_BUTTON_IDX] = 0.0;
+            button_rectangle[UNIT1_BUTTON_IDX] = new Rectangle(11, 691, 69, 69);
+
+            button_state[UNIT2_BUTTON_IDX] = BState.UP;
+            button_color[UNIT2_BUTTON_IDX] = Color.White;
+            button_timer[UNIT2_BUTTON_IDX] = 0.0;
+            button_rectangle[UNIT2_BUTTON_IDX] = new Rectangle(101, 691, 69, 69);
+
+            button_state[UNIT3_BUTTON_IDX] = BState.UP;
+            button_color[UNIT3_BUTTON_IDX] = Color.White;
+            button_timer[UNIT3_BUTTON_IDX] = 0.0;
+            button_rectangle[UNIT3_BUTTON_IDX] = new Rectangle(191, 691, 69, 69);
+
+            button_state[UNIT4_BUTTON_IDX] = BState.UP;
+            button_color[UNIT4_BUTTON_IDX] = Color.White;
+            button_timer[UNIT4_BUTTON_IDX] = 0.0;
+            button_rectangle[UNIT4_BUTTON_IDX] = new Rectangle(281, 691, 69, 69);
+
+            button_state[UNIT5_BUTTON_IDX] = BState.UP;
+            button_color[UNIT5_BUTTON_IDX] = Color.White;
+            button_timer[UNIT5_BUTTON_IDX] = 0.0;
+            button_rectangle[UNIT5_BUTTON_IDX] = new Rectangle(371, 691, 69, 69);
+
+
 
             //=== BUDYNKI -----------------------------------------------------------
 
@@ -183,22 +192,20 @@ namespace GUI
             button_state[B1_BUTTON_IDX] = BState.UP;
             button_color[B1_BUTTON_IDX] = Color.White;
             button_timer[B1_BUTTON_IDX] = 0.0;
-            button_rectangle[B1_BUTTON_IDX] = new Rectangle(845, 680, 51, 52);
+            button_rectangle[B1_BUTTON_IDX] = new Rectangle(691, 756, 69, 69);
 
             // B2
 
             button_state[B2_BUTTON_IDX] = BState.UP;
             button_color[B2_BUTTON_IDX] = Color.White;
             button_timer[B2_BUTTON_IDX] = 0.0;
-            button_rectangle[B2_BUTTON_IDX] = new Rectangle(905, 680, 51, 52);
-
+            button_rectangle[B1_BUTTON_IDX] = new Rectangle(691, 856, 69, 69);
             // B3
 
             button_state[B3_BUTTON_IDX] = BState.UP;
             button_color[B3_BUTTON_IDX] = Color.White;
             button_timer[B3_BUTTON_IDX] = 0.0;
-            button_rectangle[B3_BUTTON_IDX] = new Rectangle(965, 680, 51, 52);
-
+            button_rectangle[B3_BUTTON_IDX] = new Rectangle(691, 956, 69, 69);
             //=== BUDYNKI -----------------------------------------------------------
 
             // defense
@@ -206,21 +213,22 @@ namespace GUI
             button_state[DEFENCE_ANT_BUTTON_IDX] = BState.UP;
             button_color[DEFENCE_ANT_BUTTON_IDX] = Color.White;
             button_timer[DEFENCE_ANT_BUTTON_IDX] = 0.0;
-            button_rectangle[DEFENCE_ANT_BUTTON_IDX] = new Rectangle(845, 680, 51, 52);
+            button_rectangle[DEFENCE_ANT_BUTTON_IDX] = new Rectangle(756, 691, 69, 69);
 
             // attack
 
             button_state[ATTACK_ANT_BUTTON_IDX] = BState.UP;
             button_color[ATTACK_ANT_BUTTON_IDX] = Color.White;
             button_timer[ATTACK_ANT_BUTTON_IDX] = 0.0;
-            button_rectangle[ATTACK_ANT_BUTTON_IDX] = new Rectangle(905, 680, 51, 52);
+            button_rectangle[ATTACK_ANT_BUTTON_IDX] = new Rectangle(846, 691, 69, 69);
 
             // RUN
 
             button_state[RUN_ANT_BUTTON_IDX] = BState.UP;
             button_color[RUN_ANT_BUTTON_IDX] = Color.White;
             button_timer[RUN_ANT_BUTTON_IDX] = 0.0;
-            button_rectangle[RUN_ANT_BUTTON_IDX] = new Rectangle(965, 680, 51, 52);
+            button_rectangle[RUN_ANT_BUTTON_IDX] = new Rectangle(936, 691, 69, 69);
+
 
             //=== menu wyœwietlane -------------------------------------------------
 
@@ -251,107 +259,106 @@ namespace GUI
 
             //=== unit menu --------------------------------------------------------
 
-            button_state[UP_BUTTON_IDX] = BState.UP;
-            button_color[UP_BUTTON_IDX] = Color.White;
-            button_timer[UP_BUTTON_IDX] = 0.0;
-            button_rectangle[UP_BUTTON_IDX] = new Rectangle(1028, 679, 57, 25);
-
-            button_state[DOWN_BUTTON_IDX] = BState.UP;
-            button_color[DOWN_BUTTON_IDX] = Color.White;
-            button_timer[DOWN_BUTTON_IDX] = 0.0;
-            button_rectangle[DOWN_BUTTON_IDX] = new Rectangle(1028, 441, 57, 25);
-       }
+        }
         public void LoadContent(ContentManager Content)
-       {
+        {
 
-           /// Interface -------------------------------------------------------------------------------
+            /// Interface -------------------------------------------------------------------------------
 
-           button_texture[MENU_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/menuButton");
-           button_texture[ATTACK_ANT_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/attackButton");
-           button_texture[DEFENCE_ANT_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/defenceButton");
-           button_texture[RUN_ANT_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/runOutButton");
-           button_texture[B1_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/b1Button");
-           button_texture[B2_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/b2Button");
-           button_texture[B3_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/b3Button");
+            button_texture[MENU_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/menuButton");
 
-           button_texture[SAVE_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/saveButton");
-           button_texture[PAUSE_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/pauseButton");
-           button_texture[PLAY_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/playButton");
+            button_texture[SAVE_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/saveButton");
+            button_texture[PAUSE_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/pauseButton");
+            button_texture[PLAY_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/playButton");
 
-           button_texture[RESUME_T_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/resumeTButton");
-           button_texture[SAVE_T_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/saveTButton");
-           button_texture[LOAD_T_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/loadTButton");
-           button_texture[OPTIONS_T_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/optionsTButton");
-           button_texture[EXIT_T_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/exitTButton");
 
-           button_texture[UP_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/upButton");
-           button_texture[DOWN_BUTTON_IDX] =
-              Content.Load<Texture2D>(@"Textures/Button/downButton");
+            button_texture[RESUME_T_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/resumeTButton");
+            button_texture[SAVE_T_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/saveTButton");
+            button_texture[LOAD_T_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/loadTButton");
+            button_texture[OPTIONS_T_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/optionsTButton");
+            button_texture[EXIT_T_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/exitTButton");
 
-           itf_texture[INFO_BAR_IDX] =
-               Content.Load<Texture2D>(@"Textures/Bars/infoBar");
-           itf_texture[MAP_BAR_IDX] =
-               Content.Load<Texture2D>(@"Textures/Bars/mapBar");
-           itf_texture[Q_MENU_BAR] =
-               Content.Load<Texture2D>(@"Textures/Bars/qMenuBar");
-           itf_texture[B_BAR_IDX] =
-               Content.Load<Texture2D>(@"Textures/Bars/bBar");
-           itf_texture[U_BAR_IDX] =
-               Content.Load<Texture2D>(@"Textures/Bars/uBar");
-           itf_texture[MAX_UNIT_BAR] =
-               Content.Load<Texture2D>(@"Textures/Bars/maxUnitBar");
-           itf_texture[MIN_UNIT_BAR] =
-               Content.Load<Texture2D>(@"Textures/Bars/minUnitBar");
-           itf_texture[PAUSE_MENU_BACK] =
-               Content.Load<Texture2D>(@"Textures/Bars/PAUSE_MENU_BACK");
-           itf_texture[MINI_MAP] =
-               Content.Load<Texture2D>(@"Textures/Map_Content/MiniMap");
-           itf_texture[FRIEND_SIGN] =
-               Content.Load<Texture2D>(@"Textures/Map_Content/friendlySign");
-           itf_texture[NEUTRAL_SIGN] =
+            button_texture[UNIT1_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/standardAntButton");
+            button_texture[UNIT2_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/standardAntButton");
+            button_texture[UNIT3_BUTTON_IDX] =
+              Content.Load<Texture2D>(@"Textures/Button/standardAntButton");
+            button_texture[UNIT4_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/standardAntButton");
+            button_texture[UNIT5_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/standardAntButton");
+            
+            button_texture[B1_BUTTON_IDX] =
+                Content.Load<Texture2D>(@"Textures/Button/b1Button");
+            button_texture[B2_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/b2Button");
+            button_texture[B3_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/b3Button");
+
+            button_texture[ATTACK_ANT_BUTTON_IDX] =
+                Content.Load<Texture2D>(@"Textures/Button/attackButton");
+            button_texture[DEFENCE_ANT_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/defenceButton");
+            button_texture[RUN_ANT_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/runOutButton");
+
+            button_texture[SAVE_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/saveButton");
+            button_texture[PAUSE_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/pauseButton");
+            button_texture[PLAY_BUTTON_IDX] =
+               Content.Load<Texture2D>(@"Textures/Button/playButton");
+
+
+
+
+            //bars
+            bar_texture[MAIN_BAR_IDX] =
+                Content.Load<Texture2D>(@"Textures/Bars/bars_complex");
+            bar_texture[PAUSE_MENU_BACK] =
+                Content.Load<Texture2D>(@"Textures/Bars/PAUSE_MENU_BACK");
+            bar_texture[MINI_MAP] =
+                Content.Load<Texture2D>(@"Textures/Map_Content/MiniMap");
+            bar_texture[FRIEND_SIGN] =
+                Content.Load<Texture2D>(@"Textures/Map_Content/friendlySign");
+            bar_texture[NEUTRAL_SIGN] =
                Content.Load<Texture2D>(@"Textures/Map_Content/neutralSign");
-           itf_texture[ENEMY_SIGN] =
-               Content.Load<Texture2D>(@"Textures/Map_Content/enemySign");
-
-
-       }
+            bar_texture[ENEMY_SIGN] =
+                Content.Load<Texture2D>(@"Textures/Map_Content/enemySign");
+        }
         public void Update(GameTime gameTime)
         {
 
             ///interface --------------------------------------------------------------------------------
-            if (control.selectedObject != null) { 
-            selectedModel = control.selectedObject;
-                if(selectedModel.GetType().IsSubclassOf(typeof(Ant)))
+            if (control.selectedObject != null)
+            {
+                selectedModel = control.selectedObject;
+                if (selectedModel.GetType().IsSubclassOf(typeof(Ant)))
                 {
-                     unitMenuON=true;
-                     buildMenuON = false;
+                    unitMenuON = true;
+                    buildMenuON = false;
                 }
                 else if (selectedModel.GetType().IsSubclassOf(typeof(Building)))
                 {
-                 buildMenuON=true;
-                 unitMenuON = false;
+                    buildMenuON = true;
+                    unitMenuON = false;
 
                 }
 
             }
-            if (control.SelectedModels.Count > 0) { 
-            selectedModels = control.SelectedModels;
+            if (control.SelectedModels.Count > 0)
+            {
+                selectedModels = control.SelectedModels;
             }
 
             // get elapsed frame time in seconds
@@ -364,64 +371,69 @@ namespace GUI
             prev_mpressed = mpressed;
             mpressed = mouse_state.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed;
 
-            update_buttons();
+            update_buttons();  //--------------------------------------------------------------------------------------------------------------------------------- uncomment and fix
 
         }
+
+
+
+
+
+
+
+
+
         public void Draw(SpriteBatch spriteBatch)
         {
+            // BAR           full main bar -------------
+            spriteBatch.Draw(bar_texture[MAIN_BAR_IDX], bar_rectangle[MAIN_BAR_IDX], bar_color[MAIN_BAR_IDX]);
+            //mini map
+            spriteBatch.Draw(bar_texture[MINI_MAP], bar_rectangle[MINI_MAP], bar_color[MINI_MAP]);
 
-           
-            /* tutaj popoprawiaæ*/
-        
-           
-       
-
+            //BUTTONS         ------------------------
+            //MainGUI menu button
             spriteBatch.Draw(button_texture[MENU_BUTTON_IDX], button_rectangle[MENU_BUTTON_IDX], button_color[MENU_BUTTON_IDX]);
-
-            if (unitMenuON)
-            {
-                for (int i = 0; i <= U_BAR_IDX; i++)
-                {
-                    spriteBatch.Draw(itf_texture[i], itf_rectangle[i], itf_color[i]);
-                }
-                for (int i = ATTACK_ANT_BUTTON_IDX; i <= RUN_ANT_BUTTON_IDX; i++)
-                    spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
-               
-            }
-            if(buildMenuON)
-            {
-                for (int i = 0; i <= B_BAR_IDX; i++)
-                {
-                    spriteBatch.Draw(itf_texture[i], itf_rectangle[i], itf_color[i]);
-                }
-                for (int i = B1_BUTTON_IDX; i <= B3_BUTTON_IDX; i++)
-                    spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
-            }
-
-            if (mainMenuOn)
-            {
-                spriteBatch.Draw(itf_texture[PAUSE_MENU_BACK], itf_rectangle[PAUSE_MENU_BACK], itf_color[PAUSE_MENU_BACK]);
-                for (int i = RESUME_T_BUTTON_IDX; i < NUMBER_OF_BUTTONS; i++)
-                    spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
-            }
-
-
-            if (maxMenu)
-            {
-                spriteBatch.Draw(itf_texture[MIN_UNIT_BAR], itf_rectangle[MIN_UNIT_BAR], itf_color[MIN_UNIT_BAR]);
-                spriteBatch.Draw(button_texture[UP_BUTTON_IDX], button_rectangle[UP_BUTTON_IDX], button_color[UP_BUTTON_IDX]);
-            }
-            else
-            {
-                spriteBatch.Draw(itf_texture[MAX_UNIT_BAR], itf_rectangle[MAX_UNIT_BAR], itf_color[MAX_UNIT_BAR]);
-                spriteBatch.Draw(button_texture[DOWN_BUTTON_IDX], button_rectangle[DOWN_BUTTON_IDX], button_color[DOWN_BUTTON_IDX]);
-            }
-
-            spriteBatch.Draw(itf_texture[MINI_MAP], itf_rectangle[MINI_MAP], itf_color[MINI_MAP]);
+            // pause , play, save menu
             for (int i = SAVE_BUTTON_IDX; i <= PLAY_BUTTON_IDX; i++)
                 spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
 
+
+            //panel jednostek
+            if (unitSelected)
+            {
+                spriteBatch.Draw(button_texture[UNIT1_BUTTON_IDX], button_rectangle[UNIT1_BUTTON_IDX], button_color[UNIT1_BUTTON_IDX]);
+                spriteBatch.Draw(button_texture[UNIT2_BUTTON_IDX], button_rectangle[UNIT2_BUTTON_IDX], button_color[UNIT2_BUTTON_IDX]);
+                spriteBatch.Draw(button_texture[UNIT3_BUTTON_IDX], button_rectangle[UNIT3_BUTTON_IDX], button_color[UNIT3_BUTTON_IDX]);
+                spriteBatch.Draw(button_texture[UNIT4_BUTTON_IDX], button_rectangle[UNIT4_BUTTON_IDX], button_color[UNIT4_BUTTON_IDX]);
+                spriteBatch.Draw(button_texture[UNIT5_BUTTON_IDX], button_rectangle[UNIT5_BUTTON_IDX], button_color[UNIT5_BUTTON_IDX]);
+            }
+
+            //panel budynków
+            if (buildMenuON)
+            {
+                spriteBatch.Draw(button_texture[B1_BUTTON_IDX], button_rectangle[B1_BUTTON_IDX], button_color[B1_BUTTON_IDX]);
+                spriteBatch.Draw(button_texture[B2_BUTTON_IDX], button_rectangle[B2_BUTTON_IDX], button_color[B2_BUTTON_IDX]);
+                spriteBatch.Draw(button_texture[B3_BUTTON_IDX], button_rectangle[B3_BUTTON_IDX], button_color[B3_BUTTON_IDX]);
+            }
+            else //panel ob³ugi jednostek
+            {
+                spriteBatch.Draw(button_texture[ATTACK_ANT_BUTTON_IDX], button_rectangle[ATTACK_ANT_BUTTON_IDX], button_color[ATTACK_ANT_BUTTON_IDX]);
+                spriteBatch.Draw(button_texture[DEFENCE_ANT_BUTTON_IDX], button_rectangle[DEFENCE_ANT_BUTTON_IDX], button_color[DEFENCE_ANT_BUTTON_IDX]);
+                spriteBatch.Draw(button_texture[RUN_ANT_BUTTON_IDX], button_rectangle[RUN_ANT_BUTTON_IDX], button_color[RUN_ANT_BUTTON_IDX]);
+            }
+
+
+
+
+            //Pause Menu ----------
+            if (mainMenuOn)
+            {
+                spriteBatch.Draw(bar_texture[PAUSE_MENU_BACK], bar_rectangle[PAUSE_MENU_BACK], bar_color[PAUSE_MENU_BACK]);
+                for (int i = RESUME_T_BUTTON_IDX; i <= EXIT_T_BUTTON_IDX; i++)
+                    spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
+            }
         }
+
         // wrapper for hit_image_alpha taking Rectangle and Texture
         Boolean hit_image_alpha(Rectangle rect, Texture2D tex, int x, int y)
         {
@@ -471,7 +483,7 @@ namespace GUI
                     {
                         // mouse is currently down
                         button_state[i] = BState.DOWN;
-                        button_color[i] = Color.Goldenrod;
+                        button_color[i] = Color.Brown;
                     }
                     else if (!mpressed && prev_mpressed)
                     {
@@ -485,7 +497,7 @@ namespace GUI
                     else
                     {
                         button_state[i] = BState.HOVER;
-                        button_color[i] = Color.Gold;
+                        button_color[i] = Color.RosyBrown;
                     }
                 }
                 else
@@ -521,29 +533,28 @@ namespace GUI
                     //wyrysuj obrazek
                     //w³¹cz menu
                     break;
-                   
+
                 case ATTACK_ANT_BUTTON_IDX:
-Console.WriteLine("attack!!@");                    break;
+                    Console.WriteLine("attack!!@");
+                    break;
                 case DEFENCE_ANT_BUTTON_IDX:
-                    Console.WriteLine("attack!!@"); 
+                    Console.WriteLine("attack!!@");
                     break;
                 case RUN_ANT_BUTTON_IDX:
-                    Console.WriteLine("run!!@"); 
+                    Console.WriteLine("run!!@");
                     break;
-                  
+
                 case B1_BUTTON_IDX:
-                    if ((selectedModel.GetType()==typeof(BuildingPlace)))
-                    ((BuildingPlace)selectedModel).Build1();
+                    if ((selectedModel.GetType() == typeof(BuildingPlace)))
+                        ((BuildingPlace)selectedModel).Build1();
                     break;
                 case B2_BUTTON_IDX:
-                    if ((selectedModel.GetType()==typeof(BuildingPlace)))
-                    ((BuildingPlace)selectedModel).BuildHyacyntFarm();
-
-
+                    if ((selectedModel.GetType() == typeof(BuildingPlace)))
+                        ((BuildingPlace)selectedModel).BuildHyacyntFarm();
                     break;
                 case B3_BUTTON_IDX:
-                  if ((selectedModel.GetType()==typeof(BuildingPlace)))
-                    ((BuildingPlace)selectedModel).BuildDicentraFarm();
+                    if ((selectedModel.GetType() == typeof(BuildingPlace)))
+                        ((BuildingPlace)selectedModel).BuildDicentraFarm();
 
 
                     break;
@@ -567,14 +578,6 @@ Console.WriteLine("attack!!@");                    break;
                 case EXIT_T_BUTTON_IDX:
                     //this.Exit();
                     break;
-
-                case UP_BUTTON_IDX:
-                    maxMenu = false;
-                    break;
-                case DOWN_BUTTON_IDX:
-                    maxMenu = true;
-                    break;
-
                 default:
                     break;
             }
