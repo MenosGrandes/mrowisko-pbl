@@ -21,6 +21,22 @@ namespace Logic.PathFinderNamespace
         }
         public bool Search(Node startNode,Node endNode)
         {
+
+            if (endNode.haveMineral == true)
+            {
+                Console.WriteLine("MINERAL");               
+            }
+            else if(endNode.haveBuilding==true)
+            {
+                Console.WriteLine("BUILDING");
+            }
+
+            if(endNode.walkable==false && (endNode.haveBuilding==true || endNode.haveMineral==true)) 
+            {
+                return false;
+            }
+
+
             Node currentNode=new Node();
             if(startNode==endNode)
             {
