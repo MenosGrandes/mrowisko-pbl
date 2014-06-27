@@ -20,6 +20,7 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
+            this.modelHeight = 14;
         }
         public StrongAnt(LoadModel model)
             : base(model)
@@ -33,6 +34,7 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
+            this.modelHeight = 14;
         }
         public StrongAnt(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
@@ -43,6 +45,7 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
+            this.modelHeight = 14;
 
         }
         public override void Update(GameTime time)
@@ -52,9 +55,13 @@ namespace Logic.Units.Ants
         }
         public override void Attack()
         {
+            this.model.switchAnimation("Atack");
             //if (range <= Math.Abs(model.Position.X - a.Model.Position.Y) + Math.Abs(model.Position.X - a.Model.Position.Y))
             if (elapsedTime >= atackInterval)
             {
+                this.target.hasBeenHit = true;
+                this.target.Hp -=  (int)this.strength;
+                ((Unit)this.target).LifeBar.LifeLength -= ((Unit)this.target).LifeBar.LifeLength * ((100 * 1) / this.target.Hp);
               //  bullets.Add(new SpitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), target.Model.Position));
                 elapsedTime = 0;
             }

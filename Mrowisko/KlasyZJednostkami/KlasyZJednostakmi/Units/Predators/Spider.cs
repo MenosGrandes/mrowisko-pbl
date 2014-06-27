@@ -98,7 +98,10 @@ namespace Logic.Units.Predators
                          time += (float)gameTime.ElapsedGameTime.TotalSeconds;
                          if (time > 2.0f)
                          {
-                             //Ants[j].Hp -= damage;
+                             Ants[j].Hp -= damage;
+                             Ants[j].hasBeenHit = true;
+                             this.model.switchAnimation("Atack");
+                             ((Unit)Ants[j]).LifeBar.LifeLength -= ((Unit)Ants[j]).LifeBar.LifeLength * ((100 * (float)damage) / (float)Ants[j].Hp);
                              Attack();
                              time = 0;
                          }
