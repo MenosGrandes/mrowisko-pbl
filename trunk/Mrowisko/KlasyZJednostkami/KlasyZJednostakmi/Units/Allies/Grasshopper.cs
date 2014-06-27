@@ -59,6 +59,20 @@ namespace Logic.Units.Allies
             circle.CreateBillboardVerticesFromList(model.Position + new Vector3(-2, 0.1f, -0.1f) * model.Scale * 50);
             circle.healthDraw(camera);
         }
+
+        public override void Attack()
+        {
+            this.model.switchAnimation("Atack");
+            this.hasBeenHit = true;
+            //if (range <= Math.Abs(model.Position.X - a.Model.Position.Y) + Math.Abs(model.Position.X - a.Model.Position.Y))
+            if (elapsedTime >= atackInterval)
+            {
+                this.target.Hp -= (int)this.strength;
+                ((Unit)this.target).LifeBar.LifeLength -= ((Unit)this.target).LifeBar.LifeLength * ((100 * 1) / this.target.Hp);
+                //  bullets.Add(new SpitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), target.Model.Position));
+                elapsedTime = 0;
+            }
+        }
     
     }
 

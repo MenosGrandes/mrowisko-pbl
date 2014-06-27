@@ -26,6 +26,7 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
+            this.modelHeight = 14;
         }
         public AntSpitter(LoadModel model)
             : base(model)
@@ -39,6 +40,7 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
+            this.modelHeight = 14;
         }
         public AntSpitter(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
@@ -49,7 +51,8 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
-
+            this.modelHeight = 14;
+            
         }
         public override void Update(GameTime time)
         {
@@ -188,7 +191,7 @@ namespace Logic.Units.Ants
                 { 
                 b.Hp -= 1;
                 Console.WriteLine("Dostałą z kulki!");
-                ((Unit)b).LifeBar.LifeLength -= 1;
+                ((Unit)b).LifeBar.LifeLength -= ((Unit)b).LifeBar.LifeLength * ((100*1)/b.Hp );
                 b.hasBeenHit = true;
                 b.Model.Hit = true;
                 SoundController.SoundController.Play(SoundController.SoundEnum.RangeHit);
