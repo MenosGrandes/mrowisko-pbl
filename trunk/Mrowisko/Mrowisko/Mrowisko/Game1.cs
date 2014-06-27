@@ -256,7 +256,7 @@ namespace AntHill
             camera = new FreeCamera(
 new Vector3(texture[4].Width * 1 / 2, texture[4].Width * 1 / 20, texture[4].Width * 1 / 2),
 MathHelper.ToRadians(0), // Turned around 153 degrees
-MathHelper.ToRadians(-75), // Pitched up 13 degrees
+MathHelper.ToRadians(-45), // Pitched up 13 degrees
 GraphicsDevice);
 
             quadTree = new QuadTree(Vector3.Zero, texture, device,3, Content, (FreeCamera)camera);
@@ -808,20 +808,20 @@ GraphicsDevice);
 
             foreach (InteractiveModel selected in control.SelectedModels)
             {
+
                 selected.DrawSelected((FreeCamera)camera);
                 selected.DrawSelectedCircle((FreeCamera)camera);
                 if (control.selectedObject != null)
                 {
                     if (control.selectedObject.GetType().BaseType == typeof(Material))
                     {
-                        // Console.WriteLine(control.selectedObject);
                         selected.setGaterMaterial((Material)control.selectedObject);
                     }
 
                 }
                 else
                 {
-                   // selected.setGaterMaterial(null);
+                    selected.setGaterMaterial(null);
                 }
             }
                                 
