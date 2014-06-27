@@ -53,6 +53,7 @@ namespace Logic.Units.Ants
             this.Model.switchAnimation("Idle");
             this.armorAfterBuff = armor * 2;
             this.modelHeight = 14;
+           this.MaxHp = 100;
         }
         public AntPeasant(LoadModel model)
             : base(model)
@@ -72,6 +73,7 @@ namespace Logic.Units.Ants
             hp = 100;
             this.Model.switchAnimation("Idle");
             this.modelHeight = 14;
+           this.MaxHp = 100;
 
         }
         public override void gaterMaterial(Material material)

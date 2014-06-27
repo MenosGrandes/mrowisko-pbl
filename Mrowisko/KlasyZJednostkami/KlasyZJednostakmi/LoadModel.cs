@@ -439,7 +439,7 @@ namespace Logic
            {
                if (list!=null && Player.end)
                {
-                   Console.Out.WriteLine(Player.CurrentClip.Duration.TotalMilliseconds - Player.CurrentTime.TotalMilliseconds);
+                  // Console.Out.WriteLine(Player.CurrentClip.Duration.TotalMilliseconds - Player.CurrentTime.TotalMilliseconds);
                    Player.StartClip(list);
                    list = null;
                    animationChange = false;

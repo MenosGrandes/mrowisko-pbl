@@ -36,7 +36,7 @@ namespace Logic
             set { cropTime = value; }
         }
 
-        public float rangeOfSight = 50.0f;
+        public float rangeOfSight = 250.0f;
         public bool attacking = false;
         public bool ImMoving = false;
         public bool hasBeenHit=false;
@@ -70,6 +70,15 @@ namespace Logic
             get { return hp; }
             set { hp = value; }
         }
+
+        protected int maxHp;
+
+        public int MaxHp
+        {
+            get { return maxHp; }
+            set { maxHp = value; }
+        }
+
         public float ElapsedTime;
 
         protected float elapsedTime
@@ -169,7 +178,7 @@ namespace Logic
         }
         public virtual void setGaterMaterial(Material m)
         { }
-        public virtual void Attack()
+        public virtual void Attack(GameTime gameTime)
         {
             Console.WriteLine("Attack!! :: " + target);
         }
