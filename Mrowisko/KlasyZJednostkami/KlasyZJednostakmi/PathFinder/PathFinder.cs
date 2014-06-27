@@ -27,6 +27,8 @@ namespace Logic.PathFinderNamespace
             openList.Remove(node);
             closedList.Add(node);
              node = getMinFromList();
+             closedList.Clear();
+             openList.Clear();
             return true;
         }
         public bool Search(Node startNode,Node endNode)
