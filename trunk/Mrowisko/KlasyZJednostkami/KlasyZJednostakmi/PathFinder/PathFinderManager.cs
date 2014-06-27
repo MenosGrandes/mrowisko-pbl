@@ -60,6 +60,7 @@ namespace Logic.PathFinderManagerNamespace
                                 if (m.GetType().BaseType == typeof(Material))
                                 {
                                     tileList[i, J].haveMineral = true;
+                                    ((Material)m).nodes.Add(tileList[i, J]);
                                 }
                                 else if (m.GetType().IsSubclassOf(typeof(Building.Building)))
                                 {

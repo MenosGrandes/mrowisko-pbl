@@ -505,20 +505,19 @@ GraphicsDevice);
                         MouseCursorController.stage = CursorStage.Normal;
                     }
                     //foreach (InteractiveModel model2 in models)
-                    for (int j = 0; j < models.Count;j++ )
-                    {
-                        models[i].Intersect(models[j]);
-                    }
+                    //for (int j = 0; j < models.Count;j++ )
+                    //{
+                    //    models[i].Intersect(models[j]);
+                    //}
                    // if(models[i].Hp<=0 && models[i].GetType().BaseType.BaseType==typeof(Unit))
              
       
-                /****************
                 for (int kj = 0; kj < IModel.Count; kj++)
                     {
                         models[i].Intersect(IModel[kj]);
 
                     }
-                 *///////////////////
+               
 
 
 
