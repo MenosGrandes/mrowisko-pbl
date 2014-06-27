@@ -71,7 +71,7 @@ namespace Controlers
                        case "Log":
 
                            Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//log"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
-                           g.Model.BuildBoundingSphereMaterial();
+                         //  g.Model.BuildBoundingSphereMaterial();
                            listOfAllInteractiveModelsFromFile.Add(g);
 
                            break;
@@ -79,7 +79,7 @@ namespace Controlers
 
 
                            Rock q = new Rock(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//stone2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Rock)model).ClusterSize);
-                            q.Model.BuildBoundingSphereMaterial()  ;
+                         //   q.Model.BuildBoundingSphereMaterial()  ;
                            listOfAllInteractiveModelsFromFile.Add(q);
 
 
@@ -90,7 +90,7 @@ namespace Controlers
 
 
                            BuildingPlace w = new BuildingPlace( new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//buildingPlace"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
-                           w.Model.BuildBoundingSphereMaterial();
+                         //  w.Model.BuildBoundingSphereMaterial();
 
                            listOfAllInteractiveModelsFromFile.Add(w);
 
@@ -104,7 +104,7 @@ namespace Controlers
 
 
                            AntGranary ag = new AntGranary(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//antGranary"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
-                           ag.Model.BuildBoundingSphereMaterial();
+                          // ag.Model.BuildBoundingSphereMaterial();
 
                            listOfAllInteractiveModelsFromFile.Add(ag);
                             
@@ -117,7 +117,6 @@ namespace Controlers
 
                             Logic.Building.AntBuildings.TownCenter ad = new Logic.Building.AntBuildings.TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//townCenter"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
                             //ad.Model.CreateBoudingBox();
-                            ad.Model.B_Box = BoundingBox.CreateFromSphere(ad.Model.BoundingSphere);
                             ad.Model.BuildBoundingSphereMaterial();
 
                             listOfAllInteractiveModelsFromFile.Add(ad);

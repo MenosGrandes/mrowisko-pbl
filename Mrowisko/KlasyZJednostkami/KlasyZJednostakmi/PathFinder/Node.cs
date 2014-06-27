@@ -18,9 +18,10 @@ namespace Logic
        public Vector2 index;
        public float f ;
        public float ManhatanFromStart;
-       public float ManhatanFromStop; 
-       
-       
+       public float ManhatanFromStop;
+       public bool haveMineral=false;
+       public bool haveBuilding = false;  
+
        public Node(Vector2 centerPosition,bool walkable,BoundingBox box,Vector2 _Index)
        {
            this.centerPosition = centerPosition;

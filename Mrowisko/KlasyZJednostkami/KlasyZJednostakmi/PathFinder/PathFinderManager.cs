@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Map;
+using Logic.Meterials;
 namespace Logic.PathFinderManagerNamespace
 {
     public static class PathFinderManager
@@ -51,10 +52,30 @@ namespace Logic.PathFinderManagerNamespace
                 {
                     foreach (InteractiveModel m in obstacles)
                     {
-                        if (tileList[i, J].Box.Intersects(m.Model.BoundingSphere))
+                        if (m.Model.Spheres.Count > 0)
                         {
-                            tileList[i, J].walkable = false;
+                            
+                            if (tileList[i, J].Box.Intersects(m.Model.Spheres[0]))
+                            {
+                                if (m.GetType().BaseType == typeof(Material))
+                                {
+                                    tileList[i, J].haveMineral = true;
+                                }
+                                else if (m.GetType().IsSubclassOf(typeof(Building.Building)))
+                                {
+                                    tileList[i, J].haveBuilding = true;
+                                }
+                                tileList[i, J].walkable = false;
+                            }
                         }
+                        else
+                        {
+                            if (tileList[i, J].Box.Intersects(m.Model.BoundingSphere))
+                            {
+                                tileList[i, J].walkable = false;
+                            }
+                        }
+                        
                     }
                 }
             }
