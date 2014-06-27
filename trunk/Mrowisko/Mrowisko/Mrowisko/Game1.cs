@@ -558,6 +558,10 @@ GraphicsDevice);
                   
                         model.Update(gameTime);
                         model.Model.Update(gameTime);
+                        if (model.raisingBuilding)
+                        {
+
+                        }
 
                      if(model.GetType().IsSubclassOf(typeof(Building)))
                      {
@@ -976,6 +980,12 @@ GraphicsDevice);
             smokePlumeParticles.AddParticle(pos, Vector3.Zero);
         }
 
+        void UpdateSmokePlumeBuilding(InteractiveModel building)
+        {
+            // This is trivial: we just create one new smoke particle per frame.
+            smokePlumeParticles.AddParticle(RandomPointOnCircleBuilding(building), Vector3.Zero);
+        }
+
 
         /// <summary>
         /// Helper for updating the fire effect.
@@ -1016,6 +1026,22 @@ GraphicsDevice);
 
             return new Vector3(models[models.Count - 1].Model.Position.X + x * radius, models[models.Count - 1].Model.Position.Y - (y * radius + height), models[models.Count - 1].Model.Position.Z + z * radius);
         }
+
+        Vector3 RandomPointOnCircleBuilding(InteractiveModel building)
+        {
+            
+
+            double angle = random.NextDouble() * Math.PI * 2;
+            
+
+            float x = (float)Math.Sin(angle);
+            float z = (float)Math.Cos(angle);
+
+
+            return new Vector3(building.Model.Position.X + x * building.Model.BoundingSphere.Radius, building.Model.Position.Y, building.Model.Position.Z + z * building.Model.BoundingSphere.Radius);
+        }
+
+
 
 
 

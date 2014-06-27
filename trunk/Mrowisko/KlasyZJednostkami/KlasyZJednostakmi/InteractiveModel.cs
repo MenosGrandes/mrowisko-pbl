@@ -43,6 +43,7 @@ namespace Logic
         public float tim_to_Show_Hit=4;
         public float temp_time;
         public bool selectable = true;
+        public bool raisingBuilding = false;
         public InteractiveModel target;
 
         protected ContentManager content;

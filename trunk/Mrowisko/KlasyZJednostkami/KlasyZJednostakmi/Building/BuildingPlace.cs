@@ -14,6 +14,7 @@ namespace Logic.Building
     public class BuildingPlace : Building
     {
         private Building house;
+        private float time;
 
         public Building House
         {
@@ -51,18 +52,40 @@ namespace Logic.Building
         }
         public void Build1()
         {
-            this.house = new AntBuildings.Granary.AntGranary(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/kopiec"), this.model.Position, Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light));
+            this.house = new AntBuildings.Granary.AntGranary(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/kopiec"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius * 2, this.model.Position.Z), Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light));
         }
 
 
         public void BuildHyacyntFarm()
         {
-            this.house = new HyacyntFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h1"), this.model.Position, Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 100);
+            this.house = new HyacyntFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h1"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius * 2, this.model.Position.Z), Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 100);
         }
 
         public void BuildDicentraFarm()
         {
-            this.house = new DicentraFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h2"), this.model.Position, Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 100);
+            this.house = new DicentraFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h2"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius*2, this.model.Position.Z), Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 100);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            this.time = 0;
+            if (this.house!=null && this.house.Model.Position.Y < this.model.Position.Y)
+            {
+                this.raisingBuilding = true;
+                 time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (time > 0.01f)
+                        {
+                            this.house.Model.Position += new Vector3(0,1,0);
+                            this.house.Model.Rotation += new Vector3(0, 0.05f, 0);
+                        }
+            }
+            else
+            {
+                this.raisingBuilding = false;
+            }
+
+
         }
     }
 }

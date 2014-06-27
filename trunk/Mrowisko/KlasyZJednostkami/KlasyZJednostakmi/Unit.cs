@@ -375,14 +375,7 @@ namespace Logic
         {
             float pullDistance = Vector2.Distance(new Vector2(target.X,target.Z), new Vector2(ship.Model.Position.X, ship.Model.Position.Y));
 
-<<<<<<< .mine
-          
-=======
-            if (this.target != null && this.model.BoundingSphere.Intersects(this.target.Model.BoundingSphere))
-            {
-                this.model.switchAnimation("Atack");
-            }
->>>>>>> .r242
+
 
             //Only do something if we are not already there
           //  if (pullDistance > 1)
