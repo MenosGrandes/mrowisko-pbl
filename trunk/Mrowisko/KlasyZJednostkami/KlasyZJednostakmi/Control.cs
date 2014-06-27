@@ -145,7 +145,9 @@ namespace Logic
                 else
                     selectedObjectMouseOnlyMove = models[i];
             }
-            int counter = 0;
+
+                    //nie wiem czy sie jeszcze nie przyda; dotyczy usuwania  celu z jednostek jak mysz nic nie trafi
+        /*    int counter = 0;
             foreach (InteractiveModel unit in models)
             {
                 if (unit.CheckRayIntersection(mouseRay))
@@ -159,13 +161,12 @@ namespace Logic
                 foreach (InteractiveModel unit in SelectedModels)
                 {
                     unit.attacking = false;
-                    unit.target = null;
+                    //unit.target = null;
                 }
             }
-            else
-            {
+            
                 counter = 0;
-            }
+            */
                
                 
 

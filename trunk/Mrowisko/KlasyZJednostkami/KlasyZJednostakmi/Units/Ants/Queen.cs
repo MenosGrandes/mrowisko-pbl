@@ -30,6 +30,7 @@ namespace Logic.Units.Ants
             this.armorAfterBuff = armor * 2;
             hp = 100;
             this.modelHeight = 1;
+            this.MaxHp = 100;
         }
         public Queen(LoadModel model)
             : base(model)
@@ -45,6 +46,7 @@ namespace Logic.Units.Ants
             hp = 100;
             this.Model.switchAnimation("Idle");
             this.modelHeight = 1;
+            this.MaxHp = 100;
             
 
         }

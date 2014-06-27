@@ -474,7 +474,7 @@ GraphicsDevice);
 
                     if (models[i].attacking)
                     {
-                        models[i].Attack();
+                        models[i].Attack(gameTime);
                     }
 
 

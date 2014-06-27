@@ -30,6 +30,7 @@ namespace Logic.Units.Predators
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             this.Hp = 100;
+            this.MaxHp = 100;
             this.Model.Position = new Vector3(this.Model.Position.X, 0.0f, this.Model.Position.Z);
             this.modelHeight = 10;
         }

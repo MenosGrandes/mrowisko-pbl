@@ -10,6 +10,7 @@ namespace Logic.Units.Ants
         [Serializable]
     public class StrongAnt:Ant
     {
+            private float time = 0.0f;
    
         public StrongAnt()
             : base()
@@ -35,6 +36,7 @@ namespace Logic.Units.Ants
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
             this.modelHeight = 14;
+            this.MaxHp = 100;
         }
         public StrongAnt(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
@@ -46,6 +48,7 @@ namespace Logic.Units.Ants
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
             this.modelHeight = 14;
+            this.MaxHp = 100;
 
         }
         public override void Update(GameTime time)
@@ -53,17 +56,18 @@ namespace Logic.Units.Ants
             base.Update(time);
 
         }
-        public override void Attack()
+        public override void Attack(GameTime gameTime)
         {
+            time += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.model.switchAnimation("Atack");
             //if (range <= Math.Abs(model.Position.X - a.Model.Position.Y) + Math.Abs(model.Position.X - a.Model.Position.Y))
-            if (elapsedTime >= atackInterval)
+            if (time > 2.0f)
             {
                 this.target.hasBeenHit = true;
                 this.target.Hp -=  (int)this.strength;
-                ((Unit)this.target).LifeBar.LifeLength -= ((Unit)this.target).LifeBar.LifeLength * ((100 * 1) / this.target.Hp);
+                ((Unit)this.target).LifeBar.LifeLength -= ((Unit)this.target).LifeBar.LifeLength * (this.strength / this.target.MaxHp);
               //  bullets.Add(new SpitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), target.Model.Position));
-                elapsedTime = 0;
+                time = 0;
             }
         }
 
@@ -119,16 +123,9 @@ namespace Logic.Units.Ants
             }
             public void Hit(InteractiveModel b)
             {
-                if(b.GetType().IsSubclassOf(typeof(Predator)))
-                { 
-                b.Hp -= 1;
-                Console.WriteLine("Siłuje się!");
-                ((Unit)b).LifeBar.LifeLength -= 1;
-                b.hasBeenHit = true;
-                b.Model.Hit = true;
-                SoundController.SoundController.Play(SoundController.SoundEnum.RangeHit);
-                }
-                else if (b.GetType()==typeof(EnviroModel.Cone) || b.GetType()==typeof(EnviroModel.Cone1))
+                
+                
+                if (b.GetType()==typeof(EnviroModel.Cone) || b.GetType()==typeof(EnviroModel.Cone1))
                 {
                     if (b.Hp > 0)
                     {

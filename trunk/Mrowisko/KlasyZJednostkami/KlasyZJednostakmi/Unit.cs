@@ -240,7 +240,7 @@ namespace Logic
                 float elapsedTime3 = (float)time.ElapsedGameTime.TotalSeconds;
                 this.model.switchAnimation("Walk");
               
-                if (!AtDestination&& (target==null || Vector3.Distance(target.Model.Position, this.model.Position)>this.rangeOfSight))
+                if (!AtDestination && (target==null || Vector3.Distance(target.Model.Position, this.model.Position)>this.rangeOfSight))
                 {
                     direction = -(new Vector2(Model.Position.X, Model.Position.Z) - destination);
                     //This scales the vector to 1, we'll use move Speed and elapsed Time 
@@ -257,16 +257,16 @@ namespace Logic
                         speed * elapsedTime3));
                     model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), destination, model.Rotation.Y, 1.05f), model.Rotation.Z);
                 }
-                else if (target != null && Vector3.Distance(target.Model.Position, this.model.Position) < this.rangeOfSight)
+                else if (this.target != null && Vector3.Distance(target.Model.Position, this.model.Position) < this.rangeOfSight)
                 {
-                    movementPath.Clear();
-                    if (Vector3.Distance(target.Model.Position, this.model.Position) >= this.model.BoundingSphere.Radius/2)
+                   // movementPath.Clear();
+                    if (Vector3.Distance(this.target.Model.Position, this.model.Position) >= this.model.BoundingSphere.Radius/2)
                         this.reachTarget(time, this, target.Model.Position);
                 }
-                if(AtDestination || ( target != null && Vector3.Distance(target.Model.Position, this.model.Position) > this.rangeOfSight))
+                /*if(AtDestination || ( target != null && Vector3.Distance(target.Model.Position, this.model.Position) > this.rangeOfSight))
                 {
                     this.model.switchAnimation("Idle");
-                }
+                }*/
                
                 
             }
@@ -283,16 +283,17 @@ namespace Logic
                 this.model.switchAnimation("Walk");
                 // If we have any waypoints, the first one on the list is where 
                 // we want to go
-                if (movementPath.Count >= 1 && (target==null || Vector3.Distance(target.Model.Position, this.model.Position)>this.rangeOfSight))
+                if (movementPath.Count >= 1)
                 {
                     destination = movementPath.Peek().centerPosition;
                 }
-                else if (target != null && Vector3.Distance(target.Model.Position, this.model.Position) < this.rangeOfSight)
+              /*  if (target != null && Vector3.Distance(target.Model.Position, this.model.Position) < this.rangeOfSight)
                 {
+                    if (movementPath.Count >= 1)
                     movementPath.Clear();
                     if (Vector3.Distance(target.Model.Position, this.model.Position) >= this.model.BoundingSphere.Radius / 2)
-                    this.reachTarget(time, this, target.Model.Position);
-                }
+                        this.reachTarget(time, this, target.Model.Position);
+                }*/
 
                 // If we’re at the destination and there is at least one waypoint in 
                 // the list, get rid of the first one since we’re there now
@@ -301,7 +302,7 @@ namespace Logic
                     MyNode = movementPath.Dequeue();
 
                 }
-                if (movementPath.Count < 1)
+                if (movementPath.Count < 1 && target == null)
                 {
                     this.moving = false;
                 }
@@ -372,18 +373,23 @@ namespace Logic
 
         public void reachTarget(GameTime gameTime, InteractiveModel ship, Vector3 target)
         {
-            float pullDistance = Vector3.Distance(target, ship.Model.Position);
+            float pullDistance = Vector2.Distance(new Vector2(target.X,target.Z), new Vector2(ship.Model.Position.X, ship.Model.Position.Y));
 
+<<<<<<< .mine
+          
+=======
             if (this.target != null && this.model.BoundingSphere.Intersects(this.target.Model.BoundingSphere))
             {
                 this.model.switchAnimation("Atack");
             }
+>>>>>>> .r242
 
             //Only do something if we are not already there
-           // if (pullDistance > 1)
-            {
+          //  if (pullDistance > 1)
+            
                 Vector3 pull = (target - ship.Model.Position) * (1 / pullDistance); //the target tries to 'pull us in'
                 Vector3 totalPush = Vector3.Zero;
+                this.moving = true;
 
                 int contenders = 0;
                 for (int i = 0; i < obstacles.Count; ++i)
@@ -404,7 +410,7 @@ namespace Logic
                         }
                         float weight = 1 / distance;
 
-                        totalPush += push * weight;
+                //        totalPush += push * weight;
                     }
                 }
 
@@ -414,12 +420,19 @@ namespace Logic
                 //Normalize the vector so that we get a vector that points in a certain direction, which we van multiply by our desired speed
                 pull.Normalize();
                 //Set the ships new position;
-                if (this.target != null && Vector3.Distance(this.target.Model.Position, this.model.Position) < this.rangeOfSight)
-                {
-                    model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), new Vector2(this.target.Model.Position.X, this.target.Model.Position.Y), model.Rotation.Y, 1.0f), model.Rotation.Z);
-                }
+           //     if (this.target != null && Vector3.Distance(this.target.Model.Position, this.model.Position) < this.rangeOfSight)
+             //   {
+               //     model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), new Vector2(this.target.Model.Position.X, this.target.Model.Position.Y), model.Rotation.Y, 1.0f), model.Rotation.Z);
+                //}
                 ship.Model.Position = new Vector3(ship.Model.Position.X + (pull.X * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds, StaticHelpers.StaticHelper.GetHeightAt(ship.Model.Position.X, ship.Model.Position.Z) + modelHeight, ship.Model.Position.Z + (pull.Z * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds);
-            }
+
+
+                if (this.target != null && pullDistance < this.target.Model.BoundingSphere.Radius/2)
+                {
+
+                    this.moving = false;
+                }
+          
         }
 
         public override void obstaclesOnRoad(List<InteractiveModel> obstacles)

@@ -27,6 +27,7 @@ namespace Logic.Units.Ants
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
             this.modelHeight = 14;
+            this.MaxHp = 100;
         }
         public AntSpitter(LoadModel model)
             : base(model)
@@ -41,6 +42,7 @@ namespace Logic.Units.Ants
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
             this.modelHeight = 14;
+            this.MaxHp = 100;
         }
         public AntSpitter(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
@@ -52,6 +54,7 @@ namespace Logic.Units.Ants
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
             this.modelHeight = 14;
+            this.MaxHp = 100;
             
         }
         public override void Update(GameTime time)
@@ -69,7 +72,7 @@ namespace Logic.Units.Ants
 
 
         }
-        public override void Attack()
+        public override void Attack(GameTime gameTime)
         {
             //if (range <= Math.Abs(model.Position.X - a.Model.Position.Y) + Math.Abs(model.Position.X - a.Model.Position.Y))
             if (elapsedTime >= atackInterval)
