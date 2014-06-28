@@ -85,7 +85,6 @@
     <Compile Include="Building\AntBuildings\TownCenter.cs" />
     <Compile Include="Building\BuildingPlace.cs" />
     <Compile Include="Curve3D.cs" />
-    <Compile Include="ControlEnemy.cs" />
     <Compile Include="EnviroModel\Cone.cs" />
     <Compile Include="EnviroModel\Cone1.cs" />
     <Compile Include="EnviroModel\EnviroModels.cs" />

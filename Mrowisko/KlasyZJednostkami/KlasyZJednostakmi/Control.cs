@@ -73,10 +73,7 @@ namespace Logic
         }
         public void Update(GameTime gameTime)
         {
-           if(selectedObject!=null)
-           {
-               Console.WriteLine(selectedObject);
-           }
+
 
             foreach (InteractiveModel unit in SelectedModels)
             {

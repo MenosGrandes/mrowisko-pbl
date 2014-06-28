@@ -50,7 +50,6 @@ namespace AntHill
         List<Curve3D> curvesForLaser = new List<Curve3D>();
         List<List<PointInTime>> pointsForLasers = new List<List<PointInTime>>();
         Logic.Control control;
-        ControlEnemy e= new ControlEnemy();
         InteractiveModel spider;
         MainGUI gui;
 
@@ -350,14 +349,13 @@ GraphicsDevice);
            
          
 
-          models.Add(new StrongAnt(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(20, 40, 20), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light)));
-          models[models.Count - 1].Model.switchAnimation("Idle");
+          
 
          // models[models.Count - 1].Model.switchAnimation("Idle");
 
-          models.Add(new Spider(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(150, 40, 300), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+          models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/crab"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.4f), GraphicsDevice,  light), models));
 
-         models[models.Count - 1].Model.switchAnimation("Idle");
+    
 
         //  models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(150, 40, 300), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
 
@@ -539,7 +537,7 @@ GraphicsDevice);
                                 control.SelectedModels.Remove((Unit)unit);
                             break;
                         }
-
+                        //models[i] = null;
                         models.RemoveAt(i);
                         
                     }
