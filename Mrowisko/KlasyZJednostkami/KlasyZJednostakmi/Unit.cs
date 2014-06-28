@@ -61,7 +61,7 @@ namespace Logic
             set { movementPath = value; }
         }
 
-        protected uint modelHeight = 0;
+        public uint modelHeight = 0;
 
         protected float armorAfterBuff;
 
@@ -344,43 +344,43 @@ namespace Logic
           
               
             
-            if (jumping)
-            {
-                this.model.switchAnimation("Jump");
-                if(!AtDestination)
-                {
-                    //direction = -(new Vector2(Model.Position.X, Model.Position.Z) - destination);
-                    float maxHeight = (direction.Length() / 2) + StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z);
-                    //direction = Vector2.Normalize(direction);
+            //if (jumping)
+            //{
+            //    this.model.switchAnimation("Jump");
+            //    if(!AtDestination)
+            //    {
+            //        //direction = -(new Vector2(Model.Position.X, Model.Position.Z) - destination);
+            //        float maxHeight = (direction.Length() / 2) + StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z);
+            //        //direction = Vector2.Normalize(direction);
 
-                    float tempHeight = StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z);
-                    if (!halfOfJump)
-                    {
-                        if (Math.Abs(middlePoint.X - model.Position.X) <= 1f || Math.Abs(middlePoint.Y - model.Position.Z) <= 1f)
-                         {
-                             halfOfJump = true;
-                         }
-                        model.Position += new Vector3(direction.X, 100, direction.Y); 
-                        tempHeight += 20;
+            //        float tempHeight = StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z);
+            //        if (!halfOfJump)
+            //        {
+            //            if (Math.Abs(middlePoint.X - model.Position.X) <= 1f || Math.Abs(middlePoint.Y - model.Position.Z) <= 1f)
+            //             {
+            //                 halfOfJump = true;
+            //             }
+            //            model.Position += new Vector3(direction.X, 100, direction.Y); 
+            //            tempHeight += 20;
                         
-                    }
-                    else
-                    {
-                        tempHeight -= 20;
-                        model.Position += new Vector3(direction.X, -100, direction.Y);
+            //        }
+            //        else
+            //        {
+            //            tempHeight -= 20;
+            //            model.Position += new Vector3(direction.X, -100, direction.Y);
                        
-                    }
+            //        }
                     
-                }
-                else if (AtDestination)
-                {
-                    model.Position = new Vector3(model.Position.X, StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z) + modelHeight, model.Position.Z);
-                    jumping = false;
-                    halfOfJump = false;
-                    model.switchAnimation("Idle");
+            //    }
+            //    else if (AtDestination)
+            //    {
+            //        model.Position = new Vector3(model.Position.X, StaticHelpers.StaticHelper.GetHeightAt(model.Position.X, model.Position.Z) + modelHeight, model.Position.Z);
+            //        jumping = false;
+            //        halfOfJump = false;
+            //        model.switchAnimation("Idle");
 
-                }
-            }
+            //    }
+            //}
 
             if(!this.moving && !this.jumping)
             this.model.switchAnimation("Idle");

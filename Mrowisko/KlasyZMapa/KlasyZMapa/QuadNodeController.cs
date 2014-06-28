@@ -20,31 +20,31 @@ namespace Map
             {
                 if((intersected.Intersects(q.Bounds))!=null)
                 {
-                   
-                    //// prezri vsetky bunky terenu v patchi a zisti ktoru malu bunku pretina
-                    // int minX = (int)q.Bounds.Min.X;
-                    // int minZ = (int)q.Bounds.Min.Z;
-                    // int maxX = (int)q.Bounds.Max.X;
-                    // int maxZ = (int)q.Bounds.Max.Z;
 
-                    // for (int j = minX; j < maxX; j++)
-                    // {
-                    //     for (int k = minZ; k < maxZ; k++)
-                    //     {
-                    //         v.X = j;
-                    //         v.Y = StaticHelpers.StaticHelper.GetHeightAt(k, j);
-                    //         v.Z = k;
+                    // prezri vsetky bunky terenu v patchi a zisti ktoru malu bunku pretina
+                    int minX = (int)q.Bounds.Min.X;
+                    int minZ = (int)q.Bounds.Min.Z;
+                    int maxX = (int)q.Bounds.Max.X;
+                    int maxZ = (int)q.Bounds.Max.Z;
 
-                    //         tmp.Min = v;
-                    //         tmp.Max = v + new Vector3(1);
-                           
+                    for (int j = minX; j < maxX; j++)
+                    {
+                        for (int k = minZ; k < maxZ; k++)
+                        {
+                            v.X = j;
+                            v.Y = StaticHelpers.StaticHelper.GetHeightAt(k, j);
+                            v.Z = k;
 
-                    //         if (intersected.Intersects(tmp) != null)
-                    //         {
-                    //             return v;
-                    //         }
-                    //     }
-                    // }
+                            tmp.Min = v;
+                            tmp.Max = v + new Vector3(1);
+
+
+                            if (intersected.Intersects(tmp) != null)
+                            {
+                                return v;
+                            }
+                        }
+                    }
                        
                     return q.Bounds.Min + (q.Bounds.Max - q.Bounds.Min) /2;
 

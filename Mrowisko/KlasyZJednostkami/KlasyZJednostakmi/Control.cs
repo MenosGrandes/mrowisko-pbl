@@ -104,7 +104,12 @@ namespace Logic
             currentKeyboardState = Keyboard.GetState();
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
 
+
+            
+            
+            
             Vector3 mouse3d2 = QuadNodeController.getIntersectedQuadNode(mouseRay);
+
             Node n = PathFinderManagerNamespace.PathFinderManager.getNodeIntersected(mouseRay);
             Vector3 mouseNodeSelectedVector = new Vector3(n.centerPosition.X, n.Height, n.centerPosition.Y);
             // int intersectedTileNumber = QuadNodeController.getIntersectedQuadNodeForMove(mouseRay);
@@ -319,7 +324,7 @@ namespace Logic
                 mouseDown = false;
             }
 
-            if (lastMouseState.LeftButton == ButtonState.Pressed && currentMouseState.LeftButton == ButtonState.Released && !currentKeyboardState.IsKeyDown(Keys.Space))
+            if (lastMouseState.LeftButton == ButtonState.Pressed && currentMouseState.LeftButton == ButtonState.Released )
             {
                 if (SelectedModels.Count > 0)
                 {
@@ -363,29 +368,62 @@ namespace Logic
                // }
             }
 
-            if (currentKeyboardState.IsKeyDown(Keys.Space))
-            {
-                if (currentMouseState.LeftButton == ButtonState.Pressed)
-                {
-                    foreach (Unit jumpModel in SelectedModels)
-                    {
-                       // if (jumpModel.GetType()==typeof(Grasshopper))
-                        {
-                            jumpModel.destination = new Vector2(mouse3d2.X,mouse3d2.Z);
-                            jumpModel.direction = new Vector2(jumpModel.Model.playerTarget.X - jumpModel.Model.Position.X, jumpModel.Model.playerTarget.Z - jumpModel.Model.Position.Z);
-                            jumpModel.direction.Normalize();
-                            jumpModel.middlePoint = new Vector2((jumpModel.Model.playerTarget.X - jumpModel.Model.Position.X)/2+jumpModel.Model.playerTarget.X, (jumpModel.Model.playerTarget.Z - jumpModel.Model.Position.Z)/2 + jumpModel.Model.playerTarget.Z);
-                            jumpModel.tempHeight = StaticHelpers.StaticHelper.GetHeightAt(jumpModel.Model.Position.X, jumpModel.Model.Position.Z);
-                            jumpModel.Model.switchAnimation("Jump");
-                            jumpModel.Jumping= true;
+            //if (currentKeyboardState.IsKeyDown(Keys.Space))
+            //{
+            //    if (currentMouseState.LeftButton == ButtonState.Pressed)
+            //    {
+            //        foreach (Unit jumpModel in SelectedModels)
+            //        {
+            //           if (jumpModel.GetType()==typeof(Grasshopper))
+            //            {
+            //                jumpModel.destination = new Vector2(mouse3d2.X,mouse3d2.Z);
+            //                jumpModel.direction = new Vector2(jumpModel.Model.playerTarget.X - jumpModel.Model.Position.X, jumpModel.Model.playerTarget.Z - jumpModel.Model.Position.Z);
+            //                jumpModel.direction.Normalize();
+            //                jumpModel.middlePoint = new Vector2((jumpModel.Model.playerTarget.X - jumpModel.Model.Position.X)/2+jumpModel.Model.playerTarget.X, (jumpModel.Model.playerTarget.Z - jumpModel.Model.Position.Z)/2 + jumpModel.Model.playerTarget.Z);
+            //                jumpModel.tempHeight = StaticHelpers.StaticHelper.GetHeightAt(jumpModel.Model.Position.X, jumpModel.Model.Position.Z);
+            //                jumpModel.Model.switchAnimation("Jump");
+            //                jumpModel.Jumping= true;
                           
-                        }
-                    }
-                }
-            }
+            //            }
+            //        }
+            //    }
+            //}
 
+            #region Skakanie
+           if (currentKeyboardState.IsKeyDown(Keys.Space)&&lastKeyboardState.IsKeyUp(Keys.Space))
+           {
+               if (endNode != null && endNode.haveBuilding==false && endNode.walkable==true && endNode.haveMineral==false) { 
+               foreach (Unit jumpModel in SelectedModels)
+               {
+                   if(jumpModel is GrassHopper)
+                   {
 
-            if (formation!=null)
+                       jumpModel.Jumping = true;
+                       Vector2 centerPoint = new Vector2((jumpModel.Model.Position.X+endNode.centerPosition.X)/2, (jumpModel.Model.Position.Z+endNode.centerPosition.Y)/2);
+
+                      ((GrassHopper)jumpModel).pointsForJump.Add(new PointInTime(jumpModel.Model.Position,1000));
+                        ((GrassHopper)jumpModel).pointsForJump.Add(new PointInTime(new Vector3(centerPoint.X, 500f, centerPoint.Y), 2000));
+                       ((GrassHopper)jumpModel).pointsForJump.Add(new PointInTime(new Vector3(endNode.centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(endNode.centerPosition.X,endNode.centerPosition.Y)+jumpModel.modelHeight,endNode.centerPosition.Y), 3000));
+
+                       ((GrassHopper)jumpModel).jumpPath = new Curve3D(((GrassHopper)jumpModel).pointsForJump);
+                       jumpModel.MovementPath.Clear();
+
+                   }
+               }
+               }
+           }
+            #endregion
+           #region TRANSPORTOWIEC
+           if (currentKeyboardState.IsKeyDown(Keys.R) && lastKeyboardState.IsKeyUp(Keys.R))
+           {
+               if(SelectedModels.Count>=2)
+               {
+                   models.Add(new Transporter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/log2"), new Vector3(200,43,200), Vector3.Zero, Vector3.One, StaticHelpers.StaticHelper.Device, SelectedModels[0].Model.light),SelectedModels));
+               }
+           }
+           #endregion
+
+           if (formation!=null)
             {
                 formation.formationSetOff();
             }
@@ -396,7 +434,7 @@ namespace Logic
 
 
             lastMouseState = currentMouseState;
-
+            lastKeyboardState = currentKeyboardState;
          
 
         }
@@ -567,6 +605,8 @@ namespace Logic
         public Ray stopMouseRay { get; set; }
 
         public Vector3 selectRectangleStop { get; set; }
+
+        public KeyboardState lastKeyboardState { get; set; }
     }
 
 }

@@ -308,8 +308,8 @@ GraphicsDevice);
                 for (int i = 0; i < PathFinderManager.GridSize; i += 1)
                 {
                     for (int J = 0; J < PathFinderManager.GridSize; J += 1)
-                    { 
-                    if(PathFinderManager.tileList[i,J].walkable==false)
+                    {
+                        if (PathFinderManager.tileList[i, J].walkable == false || PathFinderManager.tileList[i, J].haveMineral == true || PathFinderManager.tileList[i, J].haveBuilding == true)
                     {
                         inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log2"),new Vector3(PathFinderManager.tileList[i,J].centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(PathFinderManager.tileList[i,J].centerPosition.X,PathFinderManager.tileList[i,J].centerPosition.Y),PathFinderManager.tileList[i,J].centerPosition.Y),Vector3.Zero,new Vector3(1f,0.3f,1f),device,light)));
                     }
@@ -763,18 +763,18 @@ GraphicsDevice);
             //}
 
 
-            /*
+          
 
-            foreach (InteractiveModel q in inter)
-            {
-                if (camera.BoundingVolumeIsInView(q.Model.BoundingSphere))
-                {
-                           //BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
-                   // BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
-                    q.Draw((FreeCamera)camera);
-                }
-            }
-                */
+            //foreach (InteractiveModel q in inter)
+            //{
+            //    if (camera.BoundingVolumeIsInView(q.Model.BoundingSphere))
+            //    {
+            //               //BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
+            //       // BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
+            //        q.Draw((FreeCamera)camera);
+            //    }
+            //}
+                
             foreach (InteractiveModel model in models)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))

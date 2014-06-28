@@ -37,43 +37,51 @@ namespace GameCamera
         }
         public void Move(Vector3 Translation,float time,Matrix rotation)
         {
-            if (Position.Y < 300) { 
-            Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
+            //if (Position.Y < 300) { 
+            //Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
 
-            this.translation += Translation*time;
+            //this.translation += Translation*time;
             
 
-            Position = Vector3.Lerp(Position,translation, 0.1f);
-            }else
-            {
-                Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
+            //Position = Vector3.Lerp(Position,translation, 0.1f);
+            //}else
+            //{
+            //    Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
 
-                this.translation += Translation * time;
-                Position = Vector3.Lerp(new Vector3(Position.X, 299, Position.Z), translation, 0.1f);
-            }
+            //    this.translation += Translation * time;
+            //    Position = Vector3.Lerp(new Vector3(Position.X, 299, Position.Z), translation, 0.1f);
+            //}
 
-            if(Position.Y>200)
-            {
-                Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
+            //if(Position.Y>200)
+            //{
+            //    Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
 
-                this.translation += Translation * time;
-
-
-                Position = Vector3.Lerp(Position, translation, 0.1f);
-            }   else
-            {
-                Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
-
-                this.translation += Translation * time;
+            //    this.translation += Translation * time;
 
 
-                Position = Vector3.Lerp(Position, new Vector3(Position.X, 200, Position.Z), 0.1f);
-            }
-         
+            //    Position = Vector3.Lerp(Position, translation, 0.1f);
+            //}   else
+            //{
+            //    Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
+
+            //    this.translation += Translation * time;
+
+
+            //    Position = Vector3.Lerp(Position, new Vector3(Position.X, 200, Position.Z), 0.1f);
+            //}
+
+            Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
+
+               this.translation += Translation * time;
+
+
+              Position = Vector3.Lerp(Position, translation, 0.1f);
+
+
         }
         public override void Update(GameTime gameTime)
         {
-            int scale = 5;
+            int scale = 11;
             MouseState mouseState = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
 
@@ -90,11 +98,11 @@ namespace GameCamera
             if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.Q)) rotatate += MathHelper.ToRadians(0.05f);
             if (keyState.IsKeyDown(Keys.E)) rotatate -=MathHelper.ToRadians(0.05f);
-            if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue && Position.Y < 310)
+            if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue )//&& Position.Y < 310)
             {
                translation+= Vector3.Lerp(translation, new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale,0.1f);
             }
-            else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue && Position.Y>200)
+            else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)// && Position.Y>200)
             {
                 translation += Vector3.Lerp(translation, new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1 * scale, 0.1f);
             }
