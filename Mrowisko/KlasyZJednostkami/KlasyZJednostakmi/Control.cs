@@ -83,11 +83,17 @@ namespace Logic
                 if (unit.target != null && unit.GetType() != typeof(AntSpitter) && unit.Model.BoundingSphere.Intersects(unit.target.Model.BoundingSphere))
                 {
                     unit.attacking = true;
+                    unit.ImMoving = false;
 
                 }
                 else if (unit.target != null && unit.GetType() == typeof(AntSpitter) && Vector3.Distance(unit.Model.Position, unit.target.Model.Position) < unit.rangeOfSight)
                 {
                     unit.attacking = true;
+                    unit.ImMoving = false;
+                }
+                else
+                {
+                    unit.attacking = false;
                 }
 
             }
@@ -118,6 +124,8 @@ namespace Logic
                 if (currentMouseState.LeftButton == ButtonState.Pressed)
                 {
                     selectedObject = null;
+                    bool hit = false;
+
             for (int i = 0; i < models.Count; i++)
             {
 
@@ -140,14 +148,27 @@ namespace Logic
 
 
                     }
+                        hit = true;
+                        break;
 
 
 
                 }
 
-                else
-                    selectedObjectMouseOnlyMove = models[i];
+                
+                    //selectedObjectMouseOnlyMove = models[i];
             }
+
+                    if(!hit)
+                {
+                    foreach (InteractiveModel unit in SelectedModels)
+                    {
+
+                        unit.target = null;
+                        unit.attacking = false;
+
+                    }
+                }
 
                     //nie wiem czy sie jeszcze nie przyda; dotyczy usuwania  celu z jednostek jak mysz nic nie trafi
         /*    int counter = 0;
@@ -375,6 +396,11 @@ namespace Logic
             {
                 selectedObject = null;
             }
+            if (currentMouseState.LeftButton == ButtonState.Pressed)
+            {
+                selectedObject = null;
+            }
+
             lastMouseState = currentMouseState;
 
          

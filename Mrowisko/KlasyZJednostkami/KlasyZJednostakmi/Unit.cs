@@ -207,8 +207,23 @@ namespace Logic
         public override void Update(GameTime time)
         {
             base.Update(time);
+
+            if (this.Model.snr == true)
+            {
+
+                temp_time += (float)time.ElapsedGameTime.Milliseconds / 1000;
+                if (temp_time > 4)
+                {
+                    this.Model.snr = false;
+
+                    temp_time = 0.0f;
+                  
+                }
+
+            }
+            
             MyNode = this.getMyNode();
-            if (snr == false)
+            if (this.Model.snr == false && this.attacking == false)
             {
                // MyNode = this.getMyNode();
                 if (ArmorBuff)
