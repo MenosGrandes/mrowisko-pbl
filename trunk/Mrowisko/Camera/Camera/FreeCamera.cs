@@ -37,17 +37,43 @@ namespace GameCamera
         }
         public void Move(Vector3 Translation,float time,Matrix rotation)
         {
+            if (Position.Y < 300) { 
             Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
 
             this.translation += Translation*time;
             
 
             Position = Vector3.Lerp(Position,translation, 0.1f);
+            }else
+            {
+                Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
+
+                this.translation += Translation * time;
+                Position = Vector3.Lerp(new Vector3(Position.X, 299, Position.Z), translation, 0.1f);
+            }
+
+            if(Position.Y>200)
+            {
+                Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
+
+                this.translation += Translation * time;
+
+
+                Position = Vector3.Lerp(Position, translation, 0.1f);
+            }   else
+            {
+                Translation = Vector3.Lerp(Vector3.Transform(Translation, rotation), Translation, 0.1f);
+
+                this.translation += Translation * time;
+
+
+                Position = Vector3.Lerp(Position, new Vector3(Position.X, 200, Position.Z), 0.1f);
+            }
          
         }
         public override void Update(GameTime gameTime)
         {
-            int scale = 11;
+            int scale = 5;
             MouseState mouseState = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
 
@@ -58,21 +84,19 @@ namespace GameCamera
             Vector3 translation = Vector3.Zero;// Determine in which direction to move the camera
             float rotatate = 0;
 
-            if (keyState.IsKeyDown(Keys.W)) { translation += new Vector3(0, -1,1) * MathHelper.ToRadians(Pitch) * scale ;   Zoom = false; }
-            if (keyState.IsKeyDown(Keys.S)) { translation += new Vector3(0, 1,-1) * MathHelper.ToRadians(Pitch) * scale; Zoom = false; }
+            if (keyState.IsKeyDown(Keys.W)) { translation += new Vector3(0, -1,1) * MathHelper.ToRadians(Pitch) * scale ;  }
+            if (keyState.IsKeyDown(Keys.S)) { translation += new Vector3(0, 1,-1) * MathHelper.ToRadians(Pitch) * scale; }
             if (keyState.IsKeyDown(Keys.A)) translation += Vector3.Left * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.D)) translation += Vector3.Right * (MathHelper.ToRadians(Pitch) * -1) * scale ;
             if (keyState.IsKeyDown(Keys.Q)) rotatate += MathHelper.ToRadians(0.05f);
             if (keyState.IsKeyDown(Keys.E)) rotatate -=MathHelper.ToRadians(0.05f);
-            if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
+            if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue && Position.Y < 310)
             {
                translation+= Vector3.Lerp(translation, new Vector3(0, -1, 0) * MathHelper.ToRadians(135.0f)*-1*scale,0.1f);
-               Zoom = true;
             }
-            else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)
+            else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue && Position.Y>200)
             {
                 translation += Vector3.Lerp(translation, new Vector3(0, 1, 0) * MathHelper.ToRadians(135.0f) * -1 * scale, 0.1f);
-                Zoom = true;
             }
             // Move 3 units per millisecond, independent of frame rate
            // translation *= 0.5f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;

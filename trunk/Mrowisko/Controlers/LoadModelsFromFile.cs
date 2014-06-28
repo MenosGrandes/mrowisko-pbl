@@ -46,25 +46,24 @@ namespace Controlers
                            AntPeasant p = new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
                            p.AtackInterval = 10;
                            p.Hp =300;
-                           p.gaterTime = 10;
-                           p.Model.switchAnimation("Atack");
+                           p.Model.switchAnimation("Idle");
                            listOfAllInteractiveModelsFromFile.Add(p);
                           break;
                        case "StrongAnt":
                           StrongAnt sa = new StrongAnt(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/strongAnt"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
-                          sa.Model.switchAnimation("Atack");
+                          sa.Model.switchAnimation("Idle");
 
                           listOfAllInteractiveModelsFromFile.Add(sa);
                           break;
                        case "Queen":
                           Queen qq = new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/queen"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
-                         qq.Model.switchAnimation("Atack");
+                          qq.Model.switchAnimation("Idle");
 
                           listOfAllInteractiveModelsFromFile.Add(qq);
                           break;
                        case "AntSpitter":
                           AntSpitter asd = new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/plujka"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
-                          asd.Model.switchAnimation("Atack");
+                          asd.Model.switchAnimation("Idle");
 
                           listOfAllInteractiveModelsFromFile.Add(asd);
                           break;

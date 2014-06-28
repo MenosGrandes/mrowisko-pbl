@@ -105,7 +105,6 @@ namespace Logic.Units.Predators
                              Ants[j].hasBeenHit = true;
                              this.model.switchAnimation("Atack");
                              ((Unit)Ants[j]).LifeBar.LifeLength -= ((Unit)Ants[j]).LifeBar.LifeLength * ((100 * (float)damage) / (float)Ants[j].Hp);
-                             Attack();
                              time = 0;
                          }
                      }

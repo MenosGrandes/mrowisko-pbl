@@ -73,7 +73,10 @@ namespace Logic
         }
         public void Update(GameTime gameTime)
         {
-
+           if(selectedObject!=null)
+           {
+               Console.WriteLine(selectedObject);
+           }
 
             foreach (InteractiveModel unit in SelectedModels)
             {
@@ -114,7 +117,7 @@ namespace Logic
 
                 if (currentMouseState.LeftButton == ButtonState.Pressed)
                 {
-                    
+                    selectedObject = null;
             for (int i = 0; i < models.Count; i++)
             {
 

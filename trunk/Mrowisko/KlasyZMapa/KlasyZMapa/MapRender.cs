@@ -119,13 +119,13 @@ namespace Map
         /// </summary>
         /// <param name="texture"> Heigh Map image of terrain</param>
         /// <param name="Scale">It's scale.</param>
-        public MapRender(Texture2D texture, int Scale)
+        public MapRender(Texture2D texture, int Scale,Vector2 position)
         {
 
             this.Scale = Scale;
             Texture2D tex = StaticHelpers.StaticHelper.Content.Load<Texture2D>("HeighMaps/ter2");
             LoadHeightData(texture, tex);
-            SetUpvertices(Scale);
+            SetUpvertices(Scale, position);
             SetUpTerrainIndices();
             CalculateNormals();
 
@@ -196,14 +196,14 @@ namespace Map
         /// Create positions of all points,and gets informations about texture coordinations and weights.
         /// </summary>
         /// <param name="Scale"></param>
-        private void SetUpvertices(int Scale)
+        private void SetUpvertices(int Scale,Vector2 position)
         {
             vertices = new VertexMultitextured[terrainWidth * terrainLength];
             for (int x = 0; x < terrainWidth; x++)
             {
                 for (int y = 0; y < terrainLength; y++)
                 {
-                    vertices[x + y * terrainWidth].Position = new Vector3(x * Scale, heightData[x, y] * Scale, y * Scale);
+                    vertices[x + y * terrainWidth].Position = new Vector3(x * Scale + position.X, heightData[x, y] * Scale, y * Scale + position.Y);
                     vertices[x + y * terrainWidth].TextureCoordinate.X = (float)x / 10.0f;
                     vertices[x + y * terrainWidth].TextureCoordinate.Y = (float)y / 10.0f;
 

@@ -65,7 +65,7 @@ namespace Map
         /// <param name="scale"></param>
         /// <param name="Content"></param>
         /// <param name="camera"></param>
-        public QuadTree(Vector3 position, List<Texture2D> textures, GraphicsDevice device, int scale, ContentManager Content, GameCamera.FreeCamera camera)
+        public QuadTree(Vector2 position, List<Texture2D> textures, GraphicsDevice device, int scale, ContentManager Content, GameCamera.FreeCamera camera)
         {
 
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(513, 100, 513));
@@ -76,10 +76,9 @@ namespace Map
 
             Device = device;
 
-            _position = position;
             _topNodeSize = textures[15].Width - 1;
 
-            _vertices = new MapRender(textures[15], scale);
+            _vertices = new MapRender(textures[15], scale, position);
             _buffers = new BufferManager(_vertices.Vertices, device);
             _rootNode = new QuadNode(NodeType.FullNode, _topNodeSize, 1, null, this, 0);
 
