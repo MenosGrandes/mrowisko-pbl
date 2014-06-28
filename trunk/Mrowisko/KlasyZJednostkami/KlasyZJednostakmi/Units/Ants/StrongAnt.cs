@@ -63,9 +63,23 @@ namespace Logic.Units.Ants
             //if (range <= Math.Abs(model.Position.X - a.Model.Position.Y) + Math.Abs(model.Position.X - a.Model.Position.Y))
             if (time > 2.0f)
             {
-                this.target.hasBeenHit = true;
-                this.target.Hp -=  (int)this.strength;
-                ((Unit)this.target).LifeBar.LifeLength -= ((Unit)this.target).LifeBar.LifeLength * (this.strength / this.target.MaxHp);
+
+                if (this.target.Hp < 0)
+                {
+                    this.target = null;
+                    this.attacking = false;
+                    if (this.ImMoving)
+                        this.model.switchAnimation("Walk");
+                    else
+                    {
+                        this.model.switchAnimation("Idle");
+                    }
+                }
+                else
+                {
+                    this.target.Hp -= (int)this.strength;
+                    ((Unit)this.target).LifeBar.LifeLength -= ((Unit)this.target).LifeBar.LifeLength * (this.strength / this.target.MaxHp);
+                }
               //  bullets.Add(new SpitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), target.Model.Position));
                 time = 0;
             }

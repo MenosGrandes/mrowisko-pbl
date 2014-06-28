@@ -348,19 +348,9 @@ GraphicsDevice);
 
           
            
-          models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(20,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light),models));
-          models[models.Count - 1].Model.switchAnimation("Idle");
+         
 
-          models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(20, 40, 20), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
-          models[models.Count - 1].Model.switchAnimation("Idle");
-
-          models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(20, 40, 20), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
-          models[models.Count - 1].Model.switchAnimation("Idle");
-
-          models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(20, 40, 20), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
-          models[models.Count - 1].Model.switchAnimation("Idle");
-
-          models.Add(new Beetle(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(20, 40, 20), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+          models.Add(new StrongAnt(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(20, 40, 20), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light)));
           models[models.Count - 1].Model.switchAnimation("Idle");
 
          // models[models.Count - 1].Model.switchAnimation("Idle");
@@ -541,7 +531,7 @@ GraphicsDevice);
                     if (models[i].Hp <= 0 && models[i] is Unit)
                     {
 
-                        Console.WriteLine("Zjadl "+models[i].GetType());
+                        Console.WriteLine("Zjadl "+ models[i].GetType());
                         models[i].Model.switchAnimation("Death",1);
                         foreach(InteractiveModel unit in control.SelectedModels)
                         {
@@ -798,8 +788,8 @@ GraphicsDevice);
 
                    // BBoxRender.DrawBBox(model.Model.B_Box, camera.Projection, camera.View, Matrix.Identity,Color.Black);
 
-                   //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                  //     Color.Green, Color.Aquamarine, Color.White);
+                      BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                       Color.Green, Color.Aquamarine, Color.White);
                   //   BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
                 }
             }
@@ -863,7 +853,7 @@ GraphicsDevice);
             spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
                  new Vector2(10.0f, 20.0f), Color.Tomato);
             
-            spriteBatch.DrawString(_spr_font, string.Format("indes {0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
+          /*  spriteBatch.DrawString(_spr_font, string.Format("indes {0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
 
 
             spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
@@ -871,7 +861,7 @@ GraphicsDevice);
 
               spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(340.0f, 240.0f), Color.Pink);
                spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(450.0f, 240.0f), Color.Pink);
-               spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 240.0f), Color.Pink);
+               spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 240.0f), Color.Pink);*/
                /* 
              spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
              spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);

@@ -38,6 +38,7 @@ namespace Logic
         [NonSerialized]
         public Model Model;
         public Boolean Selected;
+        public bool snr = false;
         public Vector3 playerTarget;
         public ContentManager content;
         public Boolean animationChange = false;//true oznacza ze został wciśniety guzik do zmiany animacji i można ją zmienić
@@ -224,18 +225,14 @@ namespace Logic
             {
                 BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
                 
-                spheres2.Add(new BoundingSphere(transformed.Center- new Vector3(transformed.Radius / 6 , 0, 6*transformed.Radius / 6),transformed.Radius/3));
-                spheres2.Add(new BoundingSphere(transformed.Center - new Vector3( spheres2[0].Center.X / 2, 0,  spheres2[0].Center.Z / 2), transformed.Radius / 3));
-                spheres2.Add(new BoundingSphere(transformed.Center - new Vector3( spheres2[1].Center.X / 2, 0, spheres2[1].Center.Z / 2), transformed.Radius / 3));
-                spheres2.Add(new BoundingSphere(transformed.Center - new Vector3( spheres2[2].Center.X / 2, 0,  spheres2[2].Center.Z / 2), transformed.Radius / 3));
-
+               
 
                sphere = BoundingSphere.CreateMerged(sphere, transformed);
                
             }
             
              
-            this.boundingSphere = sphere;
+            this.boundingSphere = new BoundingSphere(sphere.Center, sphere.Radius/2);
             this.spheres=spheres2;
         }
         public void BuildBoundingSphereMaterial()
@@ -409,19 +406,26 @@ namespace Logic
                        effect.World = localWorld;
                        effect.View = camera.View;
                        effect.Projection = camera.Projection;
-
-                       effect.DirectionalLight0.Enabled = true;
+                       effect.EnableDefaultLighting();
+                      /* effect.DirectionalLight0.Enabled = true;
                        effect.DirectionalLight0.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs(-1*(float)Math.Sin(MathHelper.ToRadians(time-1.58f))/light.LightPower)+1),0.3f,0.9f); // a red light
                        effect.DirectionalLight0.Direction = lightDir;  // coming along the x-axis
                        effect.DirectionalLight0.SpecularColor = new Vector3(1.0f, 1.0f, 1.0f) * MathHelper.Clamp((Math.Abs((float)Math.Sin(MathHelper.ToRadians(time - 1.58f)) / light.LightPower) + 1), 0.3f, 0.9f); ; // with green highlights
-                       if(Hit==true)
+                       * */
+                       if (Hit == true && snr == false)
                        {
                            effect.AmbientLightColor = new Vector3(255, 0, 0);
                        }
-                       else
+                       else if (Hit == false && snr == true)
                        {
-                           effect.AmbientLightColor = new Vector3(0, 0, 0);
+                           effect.AmbientLightColor = new Vector3(128, 128, 128);
                        }
+                       else if (Hit == false && snr == true)
+                       {
+                           effect.AmbientLightColor = new Vector3(200, 128, 128);
+                       }
+
+
                       
                        //effect.SpecularColor = new Vector3(0.25f);
                        //effect.SpecularPower = 16;

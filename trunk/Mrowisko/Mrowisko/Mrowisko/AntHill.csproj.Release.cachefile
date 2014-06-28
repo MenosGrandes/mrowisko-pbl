@@ -93,6 +93,8 @@ Content\Textures\treetex\szyszka1.xnb
 Content\Textures\treetex\szyszka2.xnb
 Content\Models\uvw1.xnb
 Content\Models\uvw2.xnb
+Content\Textures\Button\standardAntButton.xnb
+Content\Textures\Bars\bars_complex.xnb
 Content\Models\SkyDome\dome.xnb
 Content\Models\ant.xnb
 Content\Models\grasshopper.xnb
@@ -174,8 +176,6 @@ Content\Textures\treetex\szyszka1_0.xnb
 Content\Textures\treetex\szyszka2_0.xnb
 Content\Textures\treetex\tree_tex_0.xnb
 Content\Textures\treetex\tree2_tex_0.xnb
-Content\Textures\Button\standardAntButton.xnb
-Content\Textures\Bars\bars_complex.xnb
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
 Content\Cursors\TronBusy.ani

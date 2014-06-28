@@ -53,9 +53,9 @@ namespace Logic.Units.Allies
             circle.Scale = this.model.Scale.Y * 120;
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
-            this.Hp = 100;
+            this.Hp = 200;
             this.modelHeight = 30;
-            this.MaxHp = 100;
+            this.MaxHp = this.Hp;
             this.strength = 10;
         }
         public Beetle():base()
@@ -133,10 +133,24 @@ namespace Logic.Units.Allies
             //if (range <= Math.Abs(model.Position.X - a.Model.Position.Y) + Math.Abs(model.Position.X - a.Model.Position.Y))
             if (time > 2.0f)
             {
-                this.target.Hp -= (int)this.strength;
-                Console.WriteLine(this.target.Hp);
+                if (this.target.Hp <= 0)
+                {
+                    this.target = null;
+                    this.attacking = false;
+                    if (this.ImMoving)
+                        this.model.switchAnimation("Walk");
+                    else
+                    {
+                        this.model.switchAnimation("Idle");
+                    }
+                }
+                else
+                {
+                    this.target.Hp -= (int)this.strength;
+                    Console.WriteLine(this.target.Hp);
 
-                ((Unit)this.target).LifeBar.LifeLength -= ((Unit)this.target).LifeBar.LifeLength * ((100 * 1) / this.MaxHp);
+                    ((Unit)this.target).LifeBar.LifeLength -= ((Unit)this.target).LifeBar.LifeLength * ((this.strength) / this.MaxHp);
+                }
                 //  bullets.Add(new SpitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), target.Model.Position));
                 time = 0;
             }
