@@ -12,9 +12,9 @@ namespace Logic.Units.Predators
         private float time = 0.0f;
         private float time_to_move = 1.0f;
         private float time_dmg = 0.0f;
-        private Vector3 destination = new Vector3(50, 40, 50); //cel do ktorego ma isc rak
+        private Vector3 destination = new Vector3(100, 40, 500); //cel do ktorego ma isc rak
         private bool has_reached = false;
-        private int rgn = 120;
+        private int rgn = 350;
         private int damage = 30;
         public Cancer(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, int maxCapacity, float gaterTime, float atackInterval, float Scope, float AttackSpeed, int Damage)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
@@ -40,20 +40,21 @@ namespace Logic.Units.Predators
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if(has_reached == true)
+            if (has_reached == true)
             {
                 for (int i = 0; i < Ants.Count; i++)
                 {
-                    float spr = (float)Math.Sqrt(Math.Pow(Ants[i].Model.Position.X - this.Model.Position.X, 2.0) + (float)Math.Pow(Ants[i].Model.Position.Z - this.Model.Position.Z, 2.0));
+                    //float spr = (float)Math.Sqrt(Math.Pow(Ants[i].Model.Position.X - this.Model.Position.X, 2.0) + (float)Math.Pow(Ants[i].Model.Position.Z - this.Model.Position.Z, 2.0));
+                      float spr=Vector2.Distance(new Vector2(model.Position.X,model.Position.Z),new Vector2(Ants[i].Model.Position.X,Ants[i].Model.Position.Z));
                     if (spr <= rgn && this != Ants[i])
                     {
                         if (Ants[i] is Unit && !(Ants[i] is Predator))
                         {
                             if (!(this.Model.BoundingSphere.Intersects(Ants[i].Model.BoundingSphere)))
-                                this.reachTarget(gameTime, this, Ants[i].Model.Position);
+                                this.reachTargetAutonomus(gameTime, Ants[i].Model.Position);
                             else
                             {
-                                time_dmg += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                time_dmg += (float)gameTime.ElapsedGameTime.TotalMilliseconds/1000;
                                 if (time_dmg > 3.0f)
                                 {
                                     this.model.switchAnimation("Atack");
@@ -74,10 +75,14 @@ namespace Logic.Units.Predators
                 time += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (time > time_to_move)
                 {
-                    this.reachTarget(gameTime, this, destination);
+                    this.reachTargetAutonomus(gameTime, destination);
                     if (this.Model.Position.X == destination.X && this.Model.Position.Z == destination.Z)
                     {
                         has_reached = true;
+                    }
+                    else
+                    {
+                        has_reached = false;
                     }
                 }
             }

@@ -21,7 +21,7 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
-            this.modelHeight = 14;
+            this.modelHeight =0;
         }
         public StrongAnt(LoadModel model)
             : base(model)
@@ -35,7 +35,7 @@ namespace Logic.Units.Ants
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
-            this.modelHeight = 14;
+            this.modelHeight = 0;
             this.MaxHp = 100;
         }
         public StrongAnt(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)

@@ -386,6 +386,59 @@ namespace Logic
             this.model.switchAnimation("Idle");
         }
 
+        public void reachTargetAutonomus(GameTime gameTime,Vector3 target)
+        {
+          
+
+               
+                if (Vector2.Distance(new Vector2(Model.Position.X, Model.Position.Z), new Vector2(Model.playerTarget.X, Model.playerTarget.Z)) < 1)
+                {
+                    ImMoving = false;
+                    
+                }
+                float pullDistance = Vector2.Distance(new Vector2(target.X, target.Z), new Vector2(this.Model.Position.X, this.Model.Position.Y));
+
+                //Only do something if we are not already there
+                if (pullDistance > 1)
+                {
+                    Vector3 pull = (target - Model.Position) * (1 / pullDistance); //the target tries to 'pull us in'
+                    Vector3 totalPush = Vector3.Zero;
+
+                    int contenders = 0;
+                    for (int i = 0; i < obstacles.Count; ++i)
+                    {
+
+                        Vector3 push = Model.Position - obstacles[i].Model.Position;
+
+                        //calculate how much we are pushed away from this obstacle, the closer, the more push
+                        float distance = (Vector3.Distance(Model.Position, obstacles[i].Model.Position) - obstacles[i].Model.BoundingSphere.Radius) - Model.BoundingSphere.Radius;
+                        //only use push force if this object is close enough such that an effect is needed
+                        if (distance < Model.BoundingSphere.Radius * 2)
+                        {
+                            ++contenders; //note that this object is actively pushing
+
+                            if (distance < 0.0001f) //prevent division by zero errors and extreme pushes
+                            {
+                                distance = 0.0001f;
+                            }
+                            float weight = 1 / distance;
+
+                            totalPush += push * weight;
+                        }
+                    }
+
+                    pull *= Math.Max(1, 4 * contenders); //4 * contenders gives the pull enough force to pull stuff trough (tweak this setting for your game!)
+                    pull += totalPush;
+
+                    //Normalize the vector so that we get a vector that points in a certain direction, which we van multiply by our desired speed
+                    pull.Normalize();
+                    //Set the ships new position;
+                    float height = 0;
+
+                    Model.Position = new Vector3(Model.Position.X + (pull.X * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds, StaticHelpers.StaticHelper.GetHeightAt(Model.Position.X, Model.Position.Z) + height, Model.Position.Z + (pull.Z * 60) * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                }
+            }
+
         public void reachTarget(GameTime gameTime, InteractiveModel ship, Vector3 target)
         {
             float pullDistance = Vector2.Distance(new Vector2(target.X,target.Z), new Vector2(ship.Model.Position.X, ship.Model.Position.Y));
