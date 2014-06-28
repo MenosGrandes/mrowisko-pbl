@@ -106,6 +106,7 @@
     <Compile Include="PathFinder\Node.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PointInTime.cs" />
+    <Compile Include="Transporter.cs" />
     <Compile Include="Triggers\LaserTrigger.cs" />
     <Compile Include="Triggers\TimeTrigger.cs" />
     <Compile Include="Triggers\Trigger.cs" />

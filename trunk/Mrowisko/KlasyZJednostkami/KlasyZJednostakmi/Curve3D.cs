@@ -18,13 +18,13 @@ namespace Logic
 
         public Curve3D(List<PointInTime>points)
         {
-            curveX.PostLoop = CurveLoopType.Oscillate;
-            curveY.PostLoop = CurveLoopType.Oscillate;
-            curveZ.PostLoop = CurveLoopType.Oscillate;
+            curveX.PostLoop = CurveLoopType.Constant;
+            curveY.PostLoop = CurveLoopType.Constant;
+            curveZ.PostLoop = CurveLoopType.Constant;
 
-            curveX.PreLoop = CurveLoopType.Oscillate;
-            curveY.PreLoop = CurveLoopType.Oscillate;
-            curveZ.PreLoop = CurveLoopType.Oscillate;
+            curveX.PreLoop = CurveLoopType.Constant;
+            curveY.PreLoop = CurveLoopType.Constant;
+            curveZ.PreLoop = CurveLoopType.Constant;
            foreach(PointInTime point in points)
            {
                AddPoint(point);
@@ -96,6 +96,12 @@ namespace Logic
             point.Y = curveY.Evaluate(time);
             point.Z = curveZ.Evaluate(time);
             return point;
+        }
+        public void removePoints()
+        {
+            curveX.Keys.Clear();
+            curveY.Keys.Clear();
+            curveZ.Keys.Clear();
         }
        public void InitCurve()
         {   /*

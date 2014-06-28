@@ -11,10 +11,12 @@ namespace Logic.Units.Allies
 {    [Serializable]
     public class GrassHopper:Allie
    {
+
         private float Scope;
         private float ArmorBuffValue;
         private float time = 0.0f;
-
+        public Curve3D jumpPath;
+        public List<PointInTime> pointsForJump = new List<PointInTime>();
 
         public GrassHopper(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, int maxCapacity, float gaterTime, float atackInterval,float Scope,float ArmorBuff)
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
@@ -47,6 +49,25 @@ namespace Logic.Units.Allies
        public override void Update(GameTime time)
         {
             base.Update(time);
+           if(Jumping)
+           {
+               time2 += (float)time.ElapsedGameTime.TotalMilliseconds;
+
+               model.Position = jumpPath.GetPointOnCurve(time2);
+               if(new Vector2( model.Position.X,model.Position.Z) == new Vector2( pointsForJump.Last().point.X,pointsForJump.Last().point.Z))
+               {
+                   Jumping = false;
+                   pointsForJump.Clear();
+                   jumpPath.removePoints();
+                   myNode = getMyNode();
+                   ImMoving = false;
+                   destination = myNode.centerPosition;
+               }
+           }
+           else
+           {
+               time2 = 0;
+           }
         }
         public override string ToString()
         {
@@ -94,7 +115,9 @@ namespace Logic.Units.Allies
                 time = 0;
             }
         }
-    
-    }
+
+
+        public float time2 { get; set; }
+   }
 
 }

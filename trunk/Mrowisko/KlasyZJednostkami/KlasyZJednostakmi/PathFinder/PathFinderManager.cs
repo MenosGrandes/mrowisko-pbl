@@ -78,6 +78,16 @@ namespace Logic.PathFinderManagerNamespace
                         }
                         
                     }
+                    foreach(QuadNode n in QuadNodeController.QuadNodeList2)
+                    {
+                        if (tileList[i, J].Box.Intersects(n.Bounds))
+                        {
+                            if (n.Bounds.Max.Y < 20 || n.Bounds.Max.Y >70)
+                            {
+                            tileList[i, J].walkable = false;
+                                }
+                        }
+                    }
                 }
             }
         }
