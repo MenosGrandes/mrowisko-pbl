@@ -396,10 +396,7 @@ namespace Logic
             {
                 selectedObject = null;
             }
-            if (currentMouseState.LeftButton == ButtonState.Pressed)
-            {
-                selectedObject = null;
-            }
+
 
             lastMouseState = currentMouseState;
 

@@ -202,20 +202,11 @@ namespace Logic
         }
         public bool CheckRayIntersection(Ray ray)
         {
-            if (model.Spheres.Count > 0)
-            {
-                foreach (BoundingSphere sp in model.Spheres)
-                {
-                    if (ray.Intersects(sp) != null) return true;
 
-                }
-            }
-            else 
+            foreach (BoundingSphere sp in model.Spheres)
             {
-                if(ray.Intersects(model.BoundingSphere)!=null)
-                {
-                    return true;
-                }
+                if (ray.Intersects(sp) != null) return true;
+
             }
 
             if(model.B_Box!=null)
