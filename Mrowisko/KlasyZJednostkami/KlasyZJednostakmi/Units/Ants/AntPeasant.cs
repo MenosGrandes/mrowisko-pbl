@@ -123,6 +123,12 @@ namespace Logic.Units.Ants
         public override void Update(GameTime time)
         {
             base.Update(time);
+            if(ImGatering)
+            {
+                this.model.switchAnimation("Atack");
+
+            }
+
         }
 
         public override void Draw(GameCamera.FreeCamera camera, float time)

@@ -64,7 +64,8 @@ namespace AntHill
         public Camera camera;
         MouseState lastMouseState;
         Water water;
-        QuadTree quadTree;
+        List<QuadTree> quadTree = new List<QuadTree>();
+        
         MapRender mapR;
         //FPS COUNTER
         int licznik;
@@ -259,14 +260,18 @@ MathHelper.ToRadians(0), // Turned around 153 degrees
 MathHelper.ToRadians(-45), // Pitched up 13 degrees
 GraphicsDevice);
 
-            quadTree = new QuadTree(Vector3.Zero, texture, device,3, Content, (FreeCamera)camera);
-            quadTree.Cull = false;
+            quadTree.Add(new QuadTree(Vector2.Zero, texture, device, 3, Content, (FreeCamera)camera));
 
+            
+            
             water = new Water(device, Content, texture[4].Width, 3);
-
-            StaticHelpers.StaticHelper.heights = quadTree.Vertices.heightDataToControl;
-            StaticHelpers.StaticHelper.width = (int)Math.Sqrt(quadTree.Vertices.heightDataToControl.Length);
-            StaticHelpers.StaticHelper.length = (int)Math.Sqrt(quadTree.Vertices.heightDataToControl.Length);
+             foreach(QuadTree q in quadTree)
+             {
+                 q.Cull = true;
+             }
+            StaticHelpers.StaticHelper.heights = quadTree[0].Vertices.heightDataToControl;
+            StaticHelpers.StaticHelper.width = (int)Math.Sqrt(quadTree[0].Vertices.heightDataToControl.Length);
+            StaticHelpers.StaticHelper.length = (int)Math.Sqrt(quadTree[0].Vertices.heightDataToControl.Length);
             
             PathFinderManager.PathFinderManagerInitialize(128);
 
@@ -276,10 +281,11 @@ GraphicsDevice);
             Controlers.LoadModelsFromFile.Load();
             foreach (InteractiveModel i in LoadModelsFromFile.listOfAllInteractiveModelsFromFile)
             {
-
+               
                 // Console.WriteLine(models.GetType().BaseType.Name);
                 if (i.GetType().BaseType == typeof(Building) || i.GetType().BaseType == typeof(Material) || i.GetType().BaseType == typeof(EnviroModels))
                 {
+                   
                     IModel.Add(i);
                 }
                 else
@@ -404,7 +410,7 @@ GraphicsDevice);
           Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
 
 
-          control = new Logic.Control(texture[11], quadTree);
+          control = new Logic.Control(texture[11], quadTree[0]);
           gui = new MainGUI(StaticHelpers.StaticHelper.Content, control);
 
 
@@ -587,12 +593,16 @@ GraphicsDevice);
                     
                 }
               
-            quadTree.View = camera.View;
-            quadTree.Projection = camera.Projection;
-            quadTree.CameraPosition = ((FreeCamera)camera).Position;
-            quadTree.Update(gameTime);
-
-
+            
+            foreach(QuadTree tree in quadTree)
+            {
+                tree.View = camera.View;
+                tree.Projection = camera.Projection;
+                tree.CameraPosition = ((FreeCamera)camera).Position;
+                tree.Update(gameTime);
+            }
+           
+            
             control.View = camera.View;
             control.Projection = camera.Projection;
             control.cameraYaw = ((FreeCamera)camera).Yaw;
@@ -737,9 +747,9 @@ GraphicsDevice);
 
 
             #region Odbicie i rozproszenie wody
-            water.DrawRefractionMap((FreeCamera)camera, time, shadow, light,quadTree);
+            water.DrawRefractionMap((FreeCamera)camera, time, shadow, light,quadTree[0]);
 
-            water.DrawReflectionMap((FreeCamera)camera, time, shadow, light, quadTree);
+            water.DrawReflectionMap((FreeCamera)camera, time, shadow, light, quadTree[0]);
             #endregion
 
 
@@ -748,7 +758,10 @@ GraphicsDevice);
 
             water.sky.DrawSkyDome((FreeCamera)camera);
 
-            quadTree.Draw((FreeCamera)camera, time, shadow, light);
+           foreach(QuadTree tree in quadTree)
+           {
+               tree.Draw(((FreeCamera)camera), time, shadow, light);
+           }
 
             water.DrawWater(time, (FreeCamera)camera);
 
@@ -826,6 +839,7 @@ GraphicsDevice);
 
                 selected.DrawSelected((FreeCamera)camera);
                 selected.DrawSelectedCircle((FreeCamera)camera);
+                if(selected.GetType()==typeof(AntPeasant)){
                 if (control.selectedObject != null)
                 {
                     if (control.selectedObject.GetType().BaseType == typeof(Material))
@@ -838,6 +852,7 @@ GraphicsDevice);
                 {
                     selected.setGaterMaterial(null);
                 }
+                    }
             }
                                 
             if (control.selectedObjectMouseOnlyMove != null)
