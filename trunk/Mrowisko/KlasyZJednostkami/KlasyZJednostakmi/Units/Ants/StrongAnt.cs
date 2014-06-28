@@ -123,16 +123,15 @@ namespace Logic.Units.Ants
                 if (this == interactive)
                 { return; }
 
-                 foreach(BoundingSphere sphere in interactive.Model.Spheres)
-                 { 
-                    if (this.model.BoundingSphere.Intersects(sphere))
+                 
+                    if (this.model.BoundingSphere.Intersects(interactive.Model.BoundingSphere))
                     {
 
                         Hit(interactive);
                         Console.WriteLine(interactive.ToString());
                         
                     }
-                 }
+                 
                 
             }
             public void Hit(InteractiveModel b)
@@ -148,8 +147,11 @@ namespace Logic.Units.Ants
                         ((EnviroModel.EnviroModels)b).LifeBar.LifeLength -= 1;
                         b.hasBeenHit = true;
                         b.Model.Hit = true;
-                        b.Model.Rotation -= new Vector3(0, 0.01f, 0);
-                        b.Model.Position -= new Vector3(0.1f, 0, 0);
+                        b.Model.Rotation -= new Vector3(0, 0.1f, 0);
+                       
+                        b.Model.Position -= new Vector3(0, 0, 1f);
+
+
                     }
                    }
             }
