@@ -224,8 +224,12 @@ namespace Logic
             foreach (ModelMesh mesh in Model.Meshes)
             {
                 BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
-                
-               
+
+                spheres2.Add(new BoundingSphere(transformed.Center - new Vector3(transformed.Radius / 6, 0, 6 * transformed.Radius / 6), transformed.Radius / 3));
+                spheres2.Add(new BoundingSphere(transformed.Center - new Vector3(spheres2[0].Center.X / 2, 0, spheres2[0].Center.Z / 2), transformed.Radius / 3));
+                spheres2.Add(new BoundingSphere(transformed.Center - new Vector3(spheres2[1].Center.X / 2, 0, spheres2[1].Center.Z / 2), transformed.Radius / 3));
+                spheres2.Add(new BoundingSphere(transformed.Center - new Vector3(spheres2[2].Center.X / 2, 0, spheres2[2].Center.Z / 2), transformed.Radius / 3));
+
 
                sphere = BoundingSphere.CreateMerged(sphere, transformed);
                
