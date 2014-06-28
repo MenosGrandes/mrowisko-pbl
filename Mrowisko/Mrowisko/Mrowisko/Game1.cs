@@ -353,7 +353,7 @@ GraphicsDevice);
 
          // models[models.Count - 1].Model.switchAnimation("Idle");
 
-          models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/crab"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.4f), GraphicsDevice,  light), models));
+         // models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/crab"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.4f), GraphicsDevice,  light), models));
 
     
 
@@ -375,7 +375,7 @@ GraphicsDevice);
            ////models[models.Count - 1].Model.switchAnimation("Idle");
 
 
-           //// models.Add(new StrongAnt(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(120,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light)));
+           // models.Add(new StrongAnt(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(120,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light)));
            //// models[models.Count - 1].Model.switchAnimation("Idle");
 
 
