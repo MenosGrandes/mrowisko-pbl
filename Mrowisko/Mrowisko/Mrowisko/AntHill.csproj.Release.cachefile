@@ -95,6 +95,7 @@ Content\Models\uvw1.xnb
 Content\Models\uvw2.xnb
 Content\Textures\Button\standardAntButton.xnb
 Content\Textures\Bars\bars_complex.xnb
+Content\Models\fire.xnb
 Content\Models\SkyDome\dome.xnb
 Content\Models\ant.xnb
 Content\Models\grasshopper.xnb
@@ -105,6 +106,7 @@ Content\Models\beetle.xnb
 Content\Models\plujka.xnb
 Content\Models\tea.xnb
 Content\Models\rosiczka.xnb
+Content\Models\crab.xnb
 Content\Fonts\FPS.xnb
 Content\Effects\TexturedEffect.xnb
 Content\Effects\Bilboarding.xnb
@@ -167,6 +169,7 @@ Content\Models\plujka_diffuse_0.xnb
 Content\Models\uzi_diffuse_0.xnb
 Content\Models\uvw2_0.xnb
 Content\Models\uvw1_0.xnb
+Content\Models\fire_0.xnb
 Content\Models\stone2.fbm\stone2map_0.xnb
 Content\Textures\treetex\Hodowla_alpha_tex_0.xnb
 Content\Textures\treetex\h2_tex_0.xnb
@@ -176,9 +179,6 @@ Content\Textures\treetex\szyszka1_0.xnb
 Content\Textures\treetex\szyszka2_0.xnb
 Content\Textures\treetex\tree_tex_0.xnb
 Content\Textures\treetex\tree2_tex_0.xnb
-Content\Models\fire.xnb
-Content\Models\crab.xnb
-Content\Models\fire_0.xnb
 Content\Cursors\gam1232.ani
 Content\Cursors\TronAlternate.ani
 Content\Cursors\TronBusy.ani

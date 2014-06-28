@@ -12,7 +12,7 @@ namespace Logic.Units.Predators
         [NonSerialized]
         public List<InteractiveModel> Ants = new List<InteractiveModel>();
         [NonSerialized]
-        private int range = 120;
+        private int range = 250;
         [NonSerialized]
         private int snared_max = 3;
         [NonSerialized]
@@ -23,6 +23,8 @@ namespace Logic.Units.Predators
         private float attack_speed = 2.0f;
         [NonSerialized]
         private int damage = 30;
+        [NonSerialized]
+        private Vector3 home;
          public Spider():base()
        { }
        public Spider(LoadModel model):base(model)
@@ -33,6 +35,7 @@ namespace Logic.Units.Predators
            this.Hp = 100;
            this.modelHeight = 26;
            this.MaxHp = this.Hp;
+           this.home = this.model.Position;
 
        }
        public Spider(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model,float atackInterval)
@@ -51,6 +54,7 @@ namespace Logic.Units.Predators
             this.Hp = 100;
             this.MaxHp = this.Hp;
             this.modelHeight = 26;
+            this.home = this.model.Position;
         }
 
          public void removeMyself()
@@ -72,7 +76,7 @@ namespace Logic.Units.Predators
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
+            int counter = 0;
             
           
 
@@ -85,7 +89,9 @@ namespace Logic.Units.Predators
                 {
                     
                         Ants[i].Model.snr = true;
+                        Ants[i].Model.spiderTarget = true;
                         snared++;
+                        
                         //Console.WriteLine("unieruchomienie " + Ants[i].GetType());
                     
                 }
@@ -94,27 +100,48 @@ namespace Logic.Units.Predators
             
             for (int j = 0; j < Ants.Count; j++)
             {
-                if (Ants[j].Model.snr == true && !(Ants[j] is Predator))
+
+                if (Ants[j].Model.spiderTarget)
+                {
+                    counter++;
+                }
+
+                if ((Ants[j].Model.snr == true && !(Ants[j] is Predator) )|| Ants[j].Model.spiderTarget)
                  {
                      if (!(this.Model.BoundingSphere.Intersects(Ants[j].Model.BoundingSphere)))
                      {
-                         this.reachTarget(gameTime, this, Ants[j].Model.Position);
+                         this.model.switchAnimation("Walk");
+                         this.reachTargetAutonomus(gameTime, Ants[j].Model.Position);
                          this.model.Rotation = new Vector3(this.model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(this.model.Position.X,this.model.Position.Z), new Vector2(Ants[j].Model.Position.X,Ants[j].Model.Position.Z),this.model.Rotation.Y, 1.05f), model.Rotation.Z);
                      }
-                         else
+                     else if (this.Model.BoundingSphere.Intersects(Ants[j].Model.BoundingSphere))
                      {
                          time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                         this.model.switchAnimation("Atack");
                          if (time > 2.0f)
                          {
                              Ants[j].Hp -= damage;
                              Ants[j].hasBeenHit = true;
-                             this.model.switchAnimation("Atack");
                              ((Unit)Ants[j]).LifeBar.LifeLength -= ((Unit)Ants[j]).LifeBar.LifeLength * (((float)damage) / (float)Ants[j].Hp);
                              time = 0;
                          }
                      }
+                    
                      break;
                  }
+               
+            }
+
+            if (counter==0 && Vector2.Distance(new Vector2(this.Model.Position.X, this.Model.Position.Z), new Vector2(this.home.X, this.home.Z)) > this.model.BoundingSphere.Radius)
+            {
+                this.model.switchAnimation("Walk");
+                this.reachTargetAutonomus(gameTime, this.home);
+                this.model.Rotation = new Vector3(this.model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(this.model.Position.X, this.model.Position.Z), new Vector2(this.home.X, this.home.Z), this.model.Rotation.Y, 1.05f), model.Rotation.Z);
+
+            }
+            else if(counter==0 && Vector2.Distance(new Vector2(this.Model.Position.X, this.Model.Position.Z), new Vector2(this.home.X, this.home.Z)) <= this.model.BoundingSphere.Radius)
+            {
+                this.model.switchAnimation("Idle");
             }
         
         }

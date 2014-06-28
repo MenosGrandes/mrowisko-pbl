@@ -39,6 +39,7 @@ namespace Logic
         public Model Model;
         public Boolean Selected;
         public bool snr = false;
+        public bool spiderTarget = false;
         public Vector3 playerTarget;
         public ContentManager content;
         public Boolean animationChange = false;//true oznacza ze został wciśniety guzik do zmiany animacji i można ją zmienić
@@ -236,7 +237,7 @@ namespace Logic
             }
             
              
-            this.boundingSphere = new BoundingSphere(sphere.Center, sphere.Radius/2);
+            this.boundingSphere = new BoundingSphere(sphere.Center, sphere.Radius);
             this.spheres=spheres2;
         }
         public void BuildBoundingSphereMaterial()
