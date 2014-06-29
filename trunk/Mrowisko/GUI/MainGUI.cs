@@ -549,8 +549,8 @@ namespace GUI
                         ((BuildingPlace)selectedModel).Build1();
                     break;
                 case B2_BUTTON_IDX:
-                    //if ((selectedModel.GetType() == typeof(BuildingPlace)))
-                     //   ((BuildingPlace)selectedModel).BuildHyacyntFarm();
+                    if ((selectedModel.GetType() == typeof(BuildingPlace)))
+                        ((BuildingPlace)selectedModel).BuildHyacyntFarm();
                     break;
                 case B3_BUTTON_IDX:
                     if ((selectedModel.GetType() == typeof(BuildingPlace)))

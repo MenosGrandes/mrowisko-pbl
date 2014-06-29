@@ -59,6 +59,10 @@ namespace Logic.Units.Predators
                                 {
                                     this.model.switchAnimation("Atack");
                                     Ants[i].hasBeenHit = true;
+                                    if (Ants[i].foe == null)
+                                    {
+                                        Ants[i].foe = this;
+                                    }
                                     Ants[i].Hp -= damage;
                                     ((Unit)Ants[i]).LifeBar.LifeLength -= ((Unit)Ants[i]).LifeBar.LifeLength * ((float)damage / Ants[i].MaxHp);
                                     time_dmg = 0;

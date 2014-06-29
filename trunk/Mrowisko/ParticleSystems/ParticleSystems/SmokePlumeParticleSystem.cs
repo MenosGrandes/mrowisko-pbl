@@ -16,7 +16,7 @@ namespace Particles.ParticleSystems
         {
             settings.TextureName = "Textures/Particles/smoke";
 
-            settings.MaxParticles = 150;
+            settings.MaxParticles = 200;
 
             settings.Duration = TimeSpan.FromSeconds(4);
 
@@ -31,7 +31,7 @@ namespace Particles.ParticleSystems
             // Create a wind effect by tilting the gravity vector sideways.
             settings.Gravity = new Vector3(-20, -8, 0);
 
-            settings.MinColor = new Color(64, 96, 128, 64);
+            settings.MinColor = new Color(64, 96, 128, 90);
             settings.MaxColor = new Color(64, 64, 64, 16);
 
             settings.EndVelocity = 0.75f;

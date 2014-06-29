@@ -45,6 +45,7 @@ namespace Logic
         public bool selectable = true;
         public bool raisingBuilding = false;
         public InteractiveModel target;
+        public InteractiveModel foe;
 
         protected ContentManager content;
 
