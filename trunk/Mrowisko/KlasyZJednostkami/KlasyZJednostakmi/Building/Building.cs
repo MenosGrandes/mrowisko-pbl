@@ -9,6 +9,28 @@ namespace Logic.Building
     public class Building : InteractiveModel
     {
 
+        private bool productUnits=false;
+
+        public bool ProductUnits
+        {
+            get { return productUnits; }
+            set { productUnits = value; }
+        }
+        private bool productCrop=true;
+
+        public bool ProductCrop
+        {
+            get { return productCrop; }
+            set { productCrop = value; }
+        }
+        private bool built=false;
+
+        public bool Built
+        {
+            get { return built; }
+            set { built = value; }
+        }
+
         protected float buildingTime;
 
         public float BuildingTime
@@ -50,20 +72,17 @@ namespace Logic.Building
             this.capacity = _capacity;
             this.cost = _cost;
             this.buildingTime = _buildingTime;
-           // model.CreateBoudingBox();
         }
         public Building()
         {
             this.model = model;
 
-            //model.CreateBoudingBox();
         }
         public Building(LoadModel model)
             : base(model)
         {
             this.model = model;
 
-          //  model.CreateBoudingBox();
         }
         public override void Draw(GameCamera.FreeCamera camera)
         {
@@ -73,6 +92,7 @@ namespace Logic.Building
         {
 
             base.Update(gameTime);
+
         
         }
 

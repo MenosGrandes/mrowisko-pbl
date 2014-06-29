@@ -58,12 +58,12 @@ namespace Logic.Building
 
         public void BuildHyacyntFarm()
         {
-            this.house = new HyacyntFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h1"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius * 2, this.model.Position.Z), Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 100);
+            this.house = new HyacyntFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h1"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius * 2, this.model.Position.Z), Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 1000);
         }
 
         public void BuildDicentraFarm()
         {
-            this.house = new DicentraFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h2"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius*2, this.model.Position.Z), Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 100);
+            this.house = new DicentraFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h2"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius*2, this.model.Position.Z), Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 1000);
         }
 
         public override void Update(GameTime gameTime)
@@ -83,8 +83,21 @@ namespace Logic.Building
             else
             {
                 this.raisingBuilding = false;
+                if (this.house != null)
+                this.house.Built = true;
+            }
+            if (this.house!=null && House.Built )
+            {
+
+          
+            House.Update(gameTime);
+            if (House.GetType().BaseType == typeof(SeedFarm))
+            {
+                //if((((BuildingPlace)model).(SeedFarm)Building).timeElapsed > (((BuildingPlace)model).(SeedFarm)Building).CropTime))
+              
             }
 
+            }
 
         }
     }

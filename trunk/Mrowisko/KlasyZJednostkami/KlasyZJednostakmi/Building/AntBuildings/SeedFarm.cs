@@ -26,7 +26,14 @@ namespace Logic.Building.AntBuildings
 
         public override void Update(GameTime gameTime)
         {
-            ElapsedTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds/10;
+
+            base.Update(gameTime);
+            if (elapsedTime > (CropTime))
+            {
+                Logic.Player.Player.addMaterial(addCrop());
+                elapsedTime = 0;
+            }
+          //  ElapsedTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds/10;
            // timeElapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
         }
 

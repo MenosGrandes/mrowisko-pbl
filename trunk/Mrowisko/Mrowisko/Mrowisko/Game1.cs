@@ -43,7 +43,7 @@ namespace AntHill
 
         public bool showGrid = false;
         List<InteractiveModel> models = new List<InteractiveModel>();
-        List<InteractiveModel> inter = new List<InteractiveModel>(); 
+        List<InteractiveModel> inter = new List<InteractiveModel>();
         List<InteractiveModel> IModel = new List<InteractiveModel>();
         List<InteractiveModel> Enemys = new List<InteractiveModel>();
         List<LaserTrigger> timeTriggers = new List<LaserTrigger>();
@@ -64,11 +64,11 @@ namespace AntHill
         MouseState lastMouseState;
         Water water;
         List<QuadTree> quadTree = new List<QuadTree>();
-        
+
         MapRender mapR;
         //FPS COUNTER
         int licznik;
-        SpriteFont _spr_font;
+
         int _total_frames = 0;
         float _elapsed_time = 0.0f;
         int _fps = 0;
@@ -163,7 +163,7 @@ namespace AntHill
 
             MouseCursorController.stage = Controlers.CursorEnum.CursorStage.Normal;
             #endregion
-            
+
             #region Light Shadow
             light = new LightsAndShadows.Light(0.7f, 0.4f, new Vector3(-2800, 4000, -2800));
             shadow = new LightsAndShadows.Shadow();
@@ -176,14 +176,14 @@ namespace AntHill
             #endregion
             #region PointsForLaser
             pointsForLasers.Add(new List<PointInTime>());
-            pointsForLasers[0].Add(new PointInTime(new Vector3(75, 40, 450), 0)) ;
-            pointsForLasers[0].Add(new PointInTime(new Vector3(30, 40, 360), 2000)) ;
-            pointsForLasers[0].Add(new PointInTime(new Vector3(120, 40, 300), 4000)) ;
-            pointsForLasers[0].Add(new PointInTime(new Vector3(30, 40, 240), 6000) );
-            pointsForLasers[0].Add(new PointInTime(new Vector3(120, 40, 180), 8000) );
+            pointsForLasers[0].Add(new PointInTime(new Vector3(75, 40, 450), 0));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(30, 40, 360), 2000));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(120, 40, 300), 4000));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(30, 40, 240), 6000));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(120, 40, 180), 8000));
 
-            pointsForLasers[0].Add(new PointInTime(new Vector3(750, 40, 120), 10000)) ;
-            pointsForLasers[0].Add(new PointInTime(new Vector3(60, 40, 60), 12000)) ;
+            pointsForLasers[0].Add(new PointInTime(new Vector3(750, 40, 120), 10000));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(60, 40, 60), 12000));
 
 
             #endregion
@@ -200,12 +200,12 @@ namespace AntHill
             shadow.RenderTarget = new RenderTarget2D(device, 4096, 4096, false, pp.BackBufferFormat, DepthFormat.Depth24Stencil8);
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            _spr_font = Content.Load<SpriteFont>("Fonts/FPS");// you have on your project
+            StaticHelpers.StaticHelper._spr_font = Content.Load<SpriteFont>("Fonts/FPS");// you have on your project
 
 
             StaticHelpers.StaticHelper.Content = Content;
-            StaticHelpers.StaticHelper.Device = device;     
-   
+            StaticHelpers.StaticHelper.Device = device;
+
             #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
             //alphy do terenu
@@ -261,17 +261,17 @@ GraphicsDevice);
 
             quadTree.Add(new QuadTree(Vector2.Zero, texture, device, 3, Content, (FreeCamera)camera));
 
-            
-            
+
+
             water = new Water(device, Content, texture[4].Width, 3);
-             foreach(QuadTree q in quadTree)
-             {
-                 q.Cull = true;
-             }
+            foreach (QuadTree q in quadTree)
+            {
+                q.Cull = true;
+            }
             StaticHelpers.StaticHelper.heights = quadTree[0].Vertices.heightDataToControl;
             StaticHelpers.StaticHelper.width = (int)Math.Sqrt(quadTree[0].Vertices.heightDataToControl.Length);
             StaticHelpers.StaticHelper.length = (int)Math.Sqrt(quadTree[0].Vertices.heightDataToControl.Length);
-            
+
             PathFinderManager.PathFinderManagerInitialize(128);
 
 
@@ -280,21 +280,21 @@ GraphicsDevice);
             Controlers.LoadModelsFromFile.Load();
             foreach (InteractiveModel i in LoadModelsFromFile.listOfAllInteractiveModelsFromFile)
             {
-               
+
                 // Console.WriteLine(models.GetType().BaseType.Name);
                 if (i.GetType().BaseType == typeof(Building) || i.GetType().BaseType == typeof(Material) || i.GetType().BaseType == typeof(EnviroModels))
                 {
-                   
+
                     IModel.Add(i);
                 }
                 else
                 {
-                    if(i.GetType()==typeof(Beetle))
+                    if (i.GetType() == typeof(Beetle))
                     {
-                        ((Beetle)i).Ants=models;
+                        ((Beetle)i).Ants = models;
                         ((Beetle)i).removeMyself();
                     }
-                    else if(i.GetType()==typeof(Spider))
+                    else if (i.GetType() == typeof(Spider))
                     {
                         ((Spider)i).Ants = models;
                         ((Spider)i).removeMyself();
@@ -303,116 +303,120 @@ GraphicsDevice);
                     models.Add(i);
                 }
             }
-            #endregion   
-                PathFinderManager.blockAllNodes(IModel);
-                for (int i = 0; i < PathFinderManager.GridSize; i += 1)
+            #endregion
+            PathFinderManager.blockAllNodes(IModel);
+            for (int i = 0; i < PathFinderManager.GridSize; i += 1)
+            {
+                for (int J = 0; J < PathFinderManager.GridSize; J += 1)
                 {
-                    for (int J = 0; J < PathFinderManager.GridSize; J += 1)
+                    if (PathFinderManager.tileList[i, J].walkable == false || PathFinderManager.tileList[i, J].haveMineral == true || PathFinderManager.tileList[i, J].haveBuilding == true)
                     {
-                        if (PathFinderManager.tileList[i, J].walkable == false || PathFinderManager.tileList[i, J].haveMineral == true || PathFinderManager.tileList[i, J].haveBuilding == true)
-                    {
-                       // inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log2"),new Vector3(PathFinderManager.tileList[i,J].centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(PathFinderManager.tileList[i,J].centerPosition.X,PathFinderManager.tileList[i,J].centerPosition.Y),PathFinderManager.tileList[i,J].centerPosition.Y),Vector3.Zero,new Vector3(1f,0.3f,1f),device,light)));
-                    }
+                        // inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log2"),new Vector3(PathFinderManager.tileList[i,J].centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(PathFinderManager.tileList[i,J].centerPosition.X,PathFinderManager.tileList[i,J].centerPosition.Y),PathFinderManager.tileList[i,J].centerPosition.Y),Vector3.Zero,new Vector3(1f,0.3f,1f),device,light)));
                     }
                 }
+            }
 
 
 
-/////////////// nie wiem czy to powinno byæ czy nie wiêc zakomentowa³em tylko
-//
-//            mapR = new MapRender(texture[15], 3);
-//            Console.WriteLine(GraphicsDevice.Viewport.Bounds);
+            /////////////// nie wiem czy to powinno byæ czy nie wiêc zakomentowa³em tylko
+            //
+            //            mapR = new MapRender(texture[15], 3);
+            //            Console.WriteLine(GraphicsDevice.Viewport.Bounds);
 
             //e.Ant = models[0];
-           // e.Enemy = spider;
-          //  e.Ants = Enemys;
-         
+            // e.Enemy = spider;
+            //  e.Ants = Enemys;
 
-            
-           
+
+
+
             WindowController.setWindowSize(1366, 768, false);
-                //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
-           // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
+            //models.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/mrowka_01"), Vector3.Zero, Vector3.Zero, new Vector3(0.3f), StaticHelpers.StaticHelper.Device, light)));
+            // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
             ////models.Add(new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/grasshopper"), new Vector3(300,40,300), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
             ////models[models.Count - 1].Model.switchAnimation("Idle");
-          //  models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
-           
+            //  models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
+
             List<String> aa = new List<string>();
             aa.Add("s1");
             aa.Add("s2");
             aa.Add("Gater");
             SoundController.SoundController.content = Content;
-           SoundController.SoundController.Initialize(aa);
+            SoundController.SoundController.Initialize(aa);
 
-           List<String> PlayList = new List<string>();
-           PlayList.Add("Kwai");
-           PlayList.Add("MarketGarden");
-           PlayList.Add("Escape");
-           SoundController.SoundController.InitializeBackground(PlayList);
-
-
-          
-           
-         
-
-          
-
-         // models[models.Count - 1].Model.switchAnimation("Idle");
-
-         // models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/crab"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.4f), GraphicsDevice,  light), models));
-
-    
-
-        //  models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(150, 40, 300), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
-
-       //   models[models.Count - 1].Model.switchAnimation("Idle");
-
-         
-        // models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(120, 40, 120), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
-         //models[models.Count - 1].Model.switchAnimation("Idle");
-
-          // models.Add(new Spider(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(250, 40, 250), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
-          // models[models.Count - 1].Model.switchAnimation("Idle");
+            List<String> PlayList = new List<string>();
+            PlayList.Add("Kwai");
+            PlayList.Add("MarketGarden");
+            PlayList.Add("Escape");
+            SoundController.SoundController.InitializeBackground(PlayList);
 
 
 
 
-           ////models.Add(new Grasshopper(new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(50, 40, 50), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
-           ////models[models.Count - 1].Model.switchAnimation("Idle");
-
-
-           // models.Add(new StrongAnt(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(120,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light)));
-           //// models[models.Count - 1].Model.switchAnimation("Idle");
 
 
 
-          // models.Add(new AntPeasant(new LoadModel(Content.Load<Model>("Models/ant"), new Vector3(100, 40, 10), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light)));
 
-           //models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
-           //timeTriggers.Add(new LaserTrigger((Laser)models[models.Count - 1], 1));
+            // models[models.Count - 1].Model.switchAnimation("Idle");
 
-          Console.WriteLine("QuadNode: "+QuadNodeController.QuadNodeList.Count);
-
-          BBoxRender.InitializeBBoxDebuger(device);
-
-         
+            // models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/crab"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.4f), GraphicsDevice,  light), models));
 
 
 
-          Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
+            //  models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(150, 40, 300), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+
+            //   models[models.Count - 1].Model.switchAnimation("Idle");
 
 
-          control = new Logic.Control(texture[11], quadTree[0]);
-          gui = new MainGUI(StaticHelpers.StaticHelper.Content, control);
+            // models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(120, 40, 120), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
+            //models[models.Count - 1].Model.switchAnimation("Idle");
+
+            // models.Add(new Spider(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(250, 40, 250), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+            // models[models.Count - 1].Model.switchAnimation("Idle");
+
+
+
+
+            ////models.Add(new Grasshopper(new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(50, 40, 50), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+            ////models[models.Count - 1].Model.switchAnimation("Idle");
+
+
+            // models.Add(new StrongAnt(new LoadModel(Content.Load<Model>("Models/strongAnt"),new Vector3(120,40,20),new Vector3(0),new Vector3(0.4f),GraphicsDevice,Content,light)));
+            //// models[models.Count - 1].Model.switchAnimation("Idle");
+
+
+
+            // models.Add(new AntPeasant(new LoadModel(Content.Load<Model>("Models/ant"), new Vector3(100, 40, 10), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light)));
+
+            //models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
+            //timeTriggers.Add(new LaserTrigger((Laser)models[models.Count - 1], 1));
+
+            Console.WriteLine("QuadNode: " + QuadNodeController.QuadNodeList.Count);
+
+            BBoxRender.InitializeBBoxDebuger(device);
+
+
+
+
+
+            Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
+
+
+            control = new Logic.Control(texture[11], quadTree[0]);
+            gui = new MainGUI(StaticHelpers.StaticHelper.Content, control);
 
 
 
             control.Models_Colision = IModel;
 
-
+            Player.addMaterial(new Wood(),200);
+            Player.addMaterial(new Stone(), 200);
+            Player.addMaterial(new Hyacynt(), 200);
+            Player.addMaterial(new Dicentra(), 200);
+            Player.addMaterial(new Chelidonium(), 200);
         }
-        
-        
+
+
         /// <summary>w
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
@@ -429,85 +433,87 @@ GraphicsDevice);
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-         
-            if (Microsoft.Xna.Framework.Media.MediaPlayer.State.Equals(Microsoft.Xna.Framework.Media.MediaState.Stopped))
+
+            currentMouseState = Mouse.GetState();
+            KeyboardState keyState = Keyboard.GetState();
+            if (StaticHelpers.StaticHelper.pause == false)
             {
-                if (SoundController.SoundController.playqueue == 0)
+                if (Microsoft.Xna.Framework.Media.MediaPlayer.State.Equals(Microsoft.Xna.Framework.Media.MediaState.Stopped))
                 {
-                    Microsoft.Xna.Framework.Media.MediaPlayer.Play(SoundController.SoundController.BackgroundSongs[SoundController.SoundController.playqueue]);
-                    Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f; 
-                    SoundController.SoundController.playqueue = 1;
+                    if (SoundController.SoundController.playqueue == 0)
+                    {
+                        Microsoft.Xna.Framework.Media.MediaPlayer.Play(SoundController.SoundController.BackgroundSongs[SoundController.SoundController.playqueue]);
+                        Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f;
+                        SoundController.SoundController.playqueue = 1;
+                    }
+                    else if (SoundController.SoundController.playqueue == 1)
+                    {
+                        Microsoft.Xna.Framework.Media.MediaPlayer.Play(SoundController.SoundController.BackgroundSongs[SoundController.SoundController.playqueue]);
+                        Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f;
+                        SoundController.SoundController.playqueue = 2;
+                    }
+                    else if (SoundController.SoundController.playqueue == 2)
+                    {
+                        Microsoft.Xna.Framework.Media.MediaPlayer.Play(SoundController.SoundController.BackgroundSongs[SoundController.SoundController.playqueue]);
+                        Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f;
+                        SoundController.SoundController.playqueue = 0;
+                        //etc. etc. etc.;
+                    }
                 }
-                else if (SoundController.SoundController.playqueue == 1)
-                {
-                    Microsoft.Xna.Framework.Media.MediaPlayer.Play(SoundController.SoundController.BackgroundSongs[SoundController.SoundController.playqueue]);
-                    Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f; 
-                    SoundController.SoundController.playqueue = 2;
-                }
-                else if (SoundController.SoundController.playqueue == 2)
-                {
-                    Microsoft.Xna.Framework.Media.MediaPlayer.Play(SoundController.SoundController.BackgroundSongs[SoundController.SoundController.playqueue]);
-                    Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f; 
-                    SoundController.SoundController.playqueue = 0;
-                    //etc. etc. etc.;
-                }
-            }
- 
-            gui.Update(gameTime);
-            kolizja = false;
-                currentMouseState = Mouse.GetState();
-            
+
+
+                kolizja = false;
+
+
                 //if (timeTriggers.Count<1)
                 //{
                 //    UpdateFire();
                 //  //  UpdateExplosions(gameTime);
 
                 //   // UpdateProjectiles(gameTime);
-                   
+
                 //}
 
 
 
 
+                _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            KeyboardState keyState = Keyboard.GetState();
-            _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-           
-            
-           // time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-          //  IModel[1].Model.Position=curee.GetPointOnCurve(time);
 
-            // 1 Second has passed
-            if (_elapsed_time >= 1000.0f)
-            {
-                _fps = _total_frames;
-                _total_frames = 0;
-                _elapsed_time = 0;
-            }
-                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
-                this.Exit();
-            #region timeTrigger
+                // time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                //  IModel[1].Model.Position=curee.GetPointOnCurve(time);
 
-            for (int i = 0; i < timeTriggers.Count;i++ )
-            {
-
-                timeTriggers[i].Update(gameTime);
-                //Console.WriteLine(timeTriggers[i].laser.Model.Position);
-                if(timeTriggers[i].used==true)
+                // 1 Second has passed
+                if (_elapsed_time >= 1000.0f)
                 {
-                    timeTriggers.Remove(timeTriggers[i]);
+                    _fps = _total_frames;
+                    _total_frames = 0;
+                    _elapsed_time = 0;
                 }
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                    this.Exit();
+                #region timeTrigger
 
-            }
-            #endregion
-            for (int i = 0; i < models.Count;i++ )
+                for (int i = 0; i < timeTriggers.Count; i++)
+                {
+
+                    timeTriggers[i].Update(gameTime);
+                    //Console.WriteLine(timeTriggers[i].laser.Model.Position);
+                    if (timeTriggers[i].used == true)
+                    {
+                        timeTriggers.Remove(timeTriggers[i]);
+                    }
+
+                }
+                #endregion
+                for (int i = 0; i < models.Count; i++)
                 {
                     models[i].Update(gameTime);
                     models[i].Model.Update(gameTime);
-                   if(models[i].Model.Position.Y<40)
-                   {
-                       Console.WriteLine("WODA");
-                   }
+                    if (models[i].Model.Position.Y < 40)
+                    {
+                        Console.WriteLine("WODA");
+                    }
 
                     if (models[i].attacking)
                     {
@@ -546,24 +552,24 @@ GraphicsDevice);
                     //{
                     //    models[i].Intersect(models[j]);
                     //}
-                   // if(models[i].Hp<=0 && models[i].GetType().BaseType.BaseType==typeof(Unit))
-             
-      
-                for (int kj = 0; kj < IModel.Count; kj++)
+                    // if(models[i].Hp<=0 && models[i].GetType().BaseType.BaseType==typeof(Unit))
+
+
+                    for (int kj = 0; kj < IModel.Count; kj++)
                     {
                         models[i].Intersect(IModel[kj]);
 
                     }
-               
+
 
 
 
                     if (models[i].Hp <= 0 && models[i] is Unit)
                     {
 
-                        Console.WriteLine("Zjadl "+ models[i].GetType());
-                        models[i].Model.switchAnimation("Death",1);
-                        foreach(InteractiveModel unit in control.SelectedModels)
+                        Console.WriteLine("Zjadl " + models[i].GetType());
+                        models[i].Model.switchAnimation("Death", 1);
+                        foreach (InteractiveModel unit in control.SelectedModels)
                         {
                             if (models[i] == unit)
                                 control.SelectedModels.Remove((Unit)unit);
@@ -571,90 +577,77 @@ GraphicsDevice);
                         }
                         //models[i] = null;
                         models.RemoveAt(i);
-                        
+
                     }
 
-                     
+
                 }
-             
-                 
-                 
+
+
+
                 foreach (InteractiveModel model in IModel)
                 {
-                  
-                        model.Update(gameTime);
-                        model.Model.Update(gameTime);
-                        if (model.raisingBuilding)
-                        {
-                            UpdateSmokePlumeBuilding(model);
-                        }
 
-                     if(model.GetType().IsSubclassOf(typeof(Building)))
-                     {
-                         if(model.GetType()==typeof(TownCenter))
-                         {
-                             continue;
-                         }
-                         if (((BuildingPlace)model).House!=null)
-                        {
-                            ((BuildingPlace)model).House.Update(gameTime);
-                            if (((BuildingPlace)model).House.GetType().BaseType == typeof(SeedFarm))
-                            {
-                                //if((((BuildingPlace)model).(SeedFarm)Building).timeElapsed > (((BuildingPlace)model).(SeedFarm)Building).CropTime))
-                                if (((BuildingPlace)model).House.ElapsedTime >  (((BuildingPlace)model).House.CropTime))
-                                   
-                                {
-                                    Logic.Player.Player.addMaterial(((BuildingPlace)model).House.addCrop());
-                                    ((BuildingPlace)model).House.ElapsedTime = 0;
-                                }
-                            }
-                        }
-                     }
-                    
+                    model.Update(gameTime);
+                    model.Model.Update(gameTime);
+                    if (model.raisingBuilding)
+                    {
+                        UpdateSmokePlumeBuilding(model);
+                    }
+
+                   
+
                 }
-              
-            
-            foreach(QuadTree tree in quadTree)
+
+
+
+
+
+                control.View = camera.View;
+                control.Projection = camera.Projection;
+                control.cameraYaw = ((FreeCamera)camera).Yaw;
+                control.cameraPitch = ((FreeCamera)camera).Pitch;
+                control.models = models;
+                control.device = device;
+
+                control.Update(gameTime);
+
+                foreach (Unit unit in control.SelectedModels)
+                {
+
+                    //  unit.obstaclesOnRoad(control.filtrObstacles(models));
+                    //unit.obstaclesOnRoad(IModel);
+
+
+
+                }
+
+
+
+                //  e.gameTime = gameTime;
+                //  e.Update();
+
+                MouseCursorController.Update();
+
+
+
+
+            }
+            if (MainGUI.exit)
+            {
+                this.Exit();
+            }
+            gui.Update(gameTime);
+            foreach (QuadTree tree in quadTree)
             {
                 tree.View = camera.View;
                 tree.Projection = camera.Projection;
                 tree.CameraPosition = ((FreeCamera)camera).Position;
                 tree.Update(gameTime);
             }
-           
-            
-            control.View = camera.View;
-            control.Projection = camera.Projection;
-            control.cameraYaw = ((FreeCamera)camera).Yaw;
-            control.cameraPitch = ((FreeCamera)camera).Pitch;
-            control.models = models;
-            control.device = device;
-
-            control.Update(gameTime);
-
-            foreach (Unit unit in control.SelectedModels)
-            {
-                
-                    //  unit.obstaclesOnRoad(control.filtrObstacles(models));
-                    //unit.obstaclesOnRoad(IModel);
-               
-
-
-            }
-           
-           
-
-          //  e.gameTime = gameTime;
-          //  e.Update();
-
-            MouseCursorController.Update();
-
             camera.Update(gameTime);
+
             base.Update(gameTime);
-
-
-
-
 
         }
 
@@ -664,7 +657,7 @@ GraphicsDevice);
             //RasterizerState rasterizerState = new RasterizerState();
             //rasterizerState.FillMode = FillMode.WireFrame;
             //GraphicsDevice.RasterizerState = rasterizerState;
-                       float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
+            float time = (float)gameTime.TotalGameTime.TotalMilliseconds / 100.0f;
 
             explosionParticles.SetCamera((FreeCamera)camera);
             explosionSmokeParticles.SetCamera((FreeCamera)camera);
@@ -690,84 +683,84 @@ GraphicsDevice);
 
             _total_frames++;
 
-            
-             shadow.UpdateLightData(0.6f, light.lightPosChange(time), (FreeCamera)camera);
-             shadow.setShadowMap();
-             device.SetRenderTarget(shadow.RenderTarget);
-            
-             
-             animHiDefShadowEffect.CurrentTechnique = animHiDefShadowEffect.Techniques["Technique1"];
 
-            
-            
-            
+            shadow.UpdateLightData(0.6f, light.lightPosChange(time), (FreeCamera)camera);
+            shadow.setShadowMap();
+            device.SetRenderTarget(shadow.RenderTarget);
 
 
-             foreach (InteractiveModel model in models)
-             {
-                 
-                 hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["Technique1"];
-                 //hiDefShadowEffect.Parameters["Model"].SetValue(true);
-                 hiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
-                 hiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
-                 animHiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
-                 animHiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
-                 // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
-                 //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
-                 //hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
-
-                 if (model.Model.Player == null)
-                 {
-                     foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
-                     {
-                         // pass.Apply();
-                         // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
-                         //  {
+            animHiDefShadowEffect.CurrentTechnique = animHiDefShadowEffect.Techniques["Technique1"];
 
 
-                         foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
-                         {
-                             hiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
-                             pass.Apply();
-                             device.SetVertexBuffer(shadowCaster.VertexBuffer);
-                             device.Indices = shadowCaster.IndexBuffer;
-                             device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
-                         }
-                     }
-                 }
-                 else
-                 {
-                    
-                     foreach (EffectPass pass in animHiDefShadowEffect.CurrentTechnique.Passes)
-                     {
-                         // pass.Apply();
-                         // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
-                         //  {
 
 
-                         foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
-                         {
-                            
-                             animHiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
-                             animHiDefShadowEffect.Parameters["Bones"].SetValue(model.Model.Player.GetSkinTransforms());
-                             pass.Apply();
-                             device.SetVertexBuffer(shadowCaster.VertexBuffer);
-                             device.Indices = shadowCaster.IndexBuffer;
-                             device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
-                         }
-                     }
-                 }
-             }
-            
-             shadow.setShadowMap();   
+
+
+            foreach (InteractiveModel model in models)
+            {
+
+                hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["Technique1"];
+                //hiDefShadowEffect.Parameters["Model"].SetValue(true);
+                hiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
+                hiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
+                animHiDefShadowEffect.Parameters["LightView"].SetValue(shadow.lightsView);
+                animHiDefShadowEffect.Parameters["LightProjection"].SetValue(shadow.lightsProjection);
+                // hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * (Matrix.Identity* model.Model.baseWorld));
+                //hiDefShadowEffect.Parameters["xWorldViewProjection"].SetValue(Matrix.Identity * camera.View * camera.Projection);
+                //hiDefShadowEffect.Parameters["xShadowMap"].SetValue(shadow.ShadowMap);
+
+                if (model.Model.Player == null)
+                {
+                    foreach (EffectPass pass in hiDefShadowEffect.CurrentTechnique.Passes)
+                    {
+                        // pass.Apply();
+                        // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                        //  {
+
+
+                        foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
+                        {
+                            hiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
+                            pass.Apply();
+                            device.SetVertexBuffer(shadowCaster.VertexBuffer);
+                            device.Indices = shadowCaster.IndexBuffer;
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
+                        }
+                    }
+                }
+                else
+                {
+
+                    foreach (EffectPass pass in animHiDefShadowEffect.CurrentTechnique.Passes)
+                    {
+                        // pass.Apply();
+                        // if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
+                        //  {
+
+
+                        foreach (ShadowCasterObject shadowCaster in model.Model.shadowCasters)
+                        {
+
+                            animHiDefShadowEffect.Parameters["World"].SetValue(shadowCaster.World);
+                            animHiDefShadowEffect.Parameters["Bones"].SetValue(model.Model.Player.GetSkinTransforms());
+                            pass.Apply();
+                            device.SetVertexBuffer(shadowCaster.VertexBuffer);
+                            device.Indices = shadowCaster.IndexBuffer;
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, shadowCaster.StreamOffset, 0, shadowCaster.VerticesCount, shadowCaster.StartIndex, shadowCaster.PrimitiveCount);
+                        }
+                    }
+                }
+            }
+
+            shadow.setShadowMap();
             device.SetRenderTarget(null);
 
-          
-          //  device.SetRenderTarget()
+
+            //  device.SetRenderTarget()
 
 
             #region Odbicie i rozproszenie wody
-            water.DrawRefractionMap((FreeCamera)camera, time, shadow, light,quadTree[0]);
+            water.DrawRefractionMap((FreeCamera)camera, time, shadow, light, quadTree[0]);
 
             water.DrawReflectionMap((FreeCamera)camera, time, shadow, light, quadTree[0]);
             #endregion
@@ -778,10 +771,10 @@ GraphicsDevice);
 
             water.sky.DrawSkyDome((FreeCamera)camera);
 
-           foreach(QuadTree tree in quadTree)
-           {
-               tree.Draw(((FreeCamera)camera), time, shadow, light);
-           }
+            foreach (QuadTree tree in quadTree)
+            {
+                tree.Draw(((FreeCamera)camera), time, shadow, light);
+            }
 
             water.DrawWater(time, (FreeCamera)camera);
 
@@ -806,21 +799,21 @@ GraphicsDevice);
                     q.Draw((FreeCamera)camera);
                 }
             }
-                
+
             foreach (InteractiveModel model in models)
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
-                    if (model.Model.Player==null)
+                    if (model.Model.Player == null)
                     { model.Draw((FreeCamera)camera); }
                     else
                     { model.Draw((FreeCamera)camera, time); }
 
-                   // BBoxRender.DrawBBox(model.Model.B_Box, camera.Projection, camera.View, Matrix.Identity,Color.Black);
+                    // BBoxRender.DrawBBox(model.Model.B_Box, camera.Projection, camera.View, Matrix.Identity,Color.Black);
 
-                      BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                       Color.Green, Color.Aquamarine, Color.White);
-                  //   BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
+                    BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                     Color.Green, Color.Aquamarine, Color.White);
+                    //   BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
                 }
             }
 
@@ -828,10 +821,10 @@ GraphicsDevice);
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
-                     BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
-                   BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                    BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                    BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
 
-                    BBoxRender.DrawBBox(model.Model.boundingBoxes, camera.Projection, camera.View,Matrix.Identity);
+                    BBoxRender.DrawBBox(model.Model.boundingBoxes, camera.Projection, camera.View, Matrix.Identity);
                     model.Draw((FreeCamera)camera);
 
 
@@ -839,18 +832,18 @@ GraphicsDevice);
 
             }
 
-           // spider.Draw((FreeCamera)camera);
+            // spider.Draw((FreeCamera)camera);
             if (control.selectedObjectMouseOnlyMove != null)
             {
                 control.selectedObjectMouseOnlyMove.DrawSelected((FreeCamera)camera);
 
-               // Console.WriteLine(control.selectedObjectMouseOnlyMove);
+                // Console.WriteLine(control.selectedObjectMouseOnlyMove);
                 switch (control.selectedObjectMouseOnlyMove.GetType().BaseType.Name)
                 {
                     case "Material":
-                       // SoundController.SoundController.Play(SoundEnum.SelectedMaterial);
+                        // SoundController.SoundController.Play(SoundEnum.SelectedMaterial);
                         break;
-                  
+
                 }
             }
 
@@ -859,69 +852,69 @@ GraphicsDevice);
 
                 selected.DrawSelected((FreeCamera)camera);
                 selected.DrawSelectedCircle((FreeCamera)camera);
-                if(selected.GetType()==typeof(AntPeasant)){
-                if (control.selectedObject != null)
+                if (selected.GetType() == typeof(AntPeasant))
                 {
-                    if (control.selectedObject.GetType().BaseType == typeof(Material))
+                    if (control.selectedObject != null)
                     {
-                        selected.setGaterMaterial((Material)control.selectedObject);
-                    }
+                        if (control.selectedObject.GetType().BaseType == typeof(Material))
+                        {
+                            selected.setGaterMaterial((Material)control.selectedObject);
+                        }
 
-                }
-                else
-                {
-                    selected.setGaterMaterial(null);
-                }
                     }
+                    else
+                    {
+                        selected.setGaterMaterial(null);
+                    }
+                }
             }
-                                
+
             if (control.selectedObjectMouseOnlyMove != null)
             {
                 control.selectedObjectMouseOnlyMove.DrawSelected((FreeCamera)camera);
             }
             spriteBatch.Begin();
-            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps),
-                 new Vector2(10.0f, 20.0f), Color.Tomato);
-            
-          /*  spriteBatch.DrawString(_spr_font, string.Format("indes {0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 140.0f), Color.Pink);
+            MouseState current_mouse = Mouse.GetState();
+            Vector2 pos = new Vector2(current_mouse.X, current_mouse.Y);
+            spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", pos), new Vector2(100.0f, 100.0f), Color.Pink);
 
-
+            /*
             spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.stone), new Vector2(130.0f, 240.0f), Color.Pink);
             spriteBatch.DrawString(_spr_font, string.Format("K g={0}", Player.wood), new Vector2(230.0f, 240.0f), Color.Pink);
 
               spriteBatch.DrawString(_spr_font, string.Format("h g={0}", Player.hyacynt), new Vector2(340.0f, 240.0f), Color.Pink);
                spriteBatch.DrawString(_spr_font, string.Format("d g={0}", Player.dicentra), new Vector2(450.0f, 240.0f), Color.Pink);
                spriteBatch.DrawString(_spr_font, string.Format("heli g={0}", Player.chelidonium), new Vector2(550.0f, 240.0f), Color.Pink);*/
-               /* 
-             spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
-             spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
+            /* 
+          spriteBatch.DrawString(_spr_font, string.Format("Drewno w klodzie={0}", ((Log)models[1]).ClusterSize), new Vector2(10.0f, 180.0f), Color.Pink);
+          spriteBatch.DrawString(_spr_font, string.Format("Kamien w skale={0}", ((Rock)models[2]).ClusterSize), new Vector2(10.0f, 220.0f), Color.Pink);
            
-           spriteBatch.DrawString(_spr_font, string.Format("iloscMrowek={0}", models.Count), new Vector2(10.0f, 220.0f), Color.Pink);
-           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
-           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Yaw), new Vector2(10.0f, 150.0f), Color.Tomato);
-           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
-           spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
+        spriteBatch.DrawString(_spr_font, string.Format("iloscMrowek={0}", models.Count), new Vector2(10.0f, 220.0f), Color.Pink);
+        spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", licznik), new Vector2(10.0f, 50.0f), Color.Tomato);
+        spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Yaw), new Vector2(10.0f, 150.0f), Color.Tomato);
+        spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Pitch), new Vector2(10.0f, 250.0f), Color.Tomato);
+        spriteBatch.DrawString(_spr_font, string.Format("Widac mrowke? ={0}", ((FreeCamera)camera).Position), new Vector2(10.0f, 350.0f), Color.Tomato);
           
-            spriteBatch.DrawString(_spr_font, string.Format("mouse3d ={0}", control.mouse3d2), new Vector2(10.0f, 80.0f), Color.Pink);
-            spriteBatch.DrawString(_spr_font, string.Format("position3d ={0}", control.position3d), new Vector2(10.0f, 120.0f), Color.Pink);
-           */
-             control.Draw(spriteBatch,(FreeCamera)camera);
+         spriteBatch.DrawString(_spr_font, string.Format("mouse3d ={0}", control.mouse3d2), new Vector2(10.0f, 80.0f), Color.Pink);
+         spriteBatch.DrawString(_spr_font, string.Format("position3d ={0}", control.position3d), new Vector2(10.0f, 120.0f), Color.Pink);
+        */
+            control.Draw(spriteBatch, (FreeCamera)camera);
             gui.Draw(spriteBatch);
             spriteBatch.End();
-           /* 
-           foreach(InteractiveModel model in models)
-           {
-               if(model.GetType()!=typeof(Beetle))
-               {
-                   continue;
-               }
-               model.DrawOpaque((FreeCamera)camera, 0.1f, ((Beetle)model).sfereModel.Model);
+            /* 
+            foreach(InteractiveModel model in models)
+            {
+                if(model.GetType()!=typeof(Beetle))
+                {
+                    continue;
+                }
+                model.DrawOpaque((FreeCamera)camera, 0.1f, ((Beetle)model).sfereModel.Model);
 
-           }
-              */
+            }
+               */
             base.Draw(gameTime);
-            
-            
+
+
         }
 
 
@@ -929,7 +922,7 @@ GraphicsDevice);
         {
 
             hiDefShadowEffect.CurrentTechnique = hiDefShadowEffect.Techniques["ShadowMap"];
-            
+
             hiDefShadowEffect.Parameters["xView"].SetValue(camera.View);
             hiDefShadowEffect.Parameters["xProjection"].SetValue(camera.Projection);
             hiDefShadowEffect.Parameters["xLightsWorldViewProjection"].SetValue(shadow.lightsViewProjectionMatrix * Matrix.Identity);
@@ -948,35 +941,35 @@ GraphicsDevice);
 
             if (timeToNextProjectile <= TimeSpan.Zero)
             {
-            // Create a new projectile once per second. The real work of moving
-            // and creating particles is handled inside the Projectile class.
-            projectiles.Add(new Particles.Projectile(explosionParticles,
-                                           explosionSmokeParticles,
-                                           projectileTrailParticles));
+                // Create a new projectile once per second. The real work of moving
+                // and creating particles is handled inside the Projectile class.
+                projectiles.Add(new Particles.Projectile(explosionParticles,
+                                               explosionSmokeParticles,
+                                               projectileTrailParticles));
 
-             timeToNextProjectile += TimeSpan.FromSeconds(1);
-             }
+                timeToNextProjectile += TimeSpan.FromSeconds(1);
+            }
         }
 
         void UpdateSpit(Vector3 pos, bool explode)
         {
             int amountPerFrame = 30;
-            if(explode)
+            if (explode)
             {
                 for (int i = 0; i < amountPerFrame; i++)
                 {
                     explosionParticles.AddParticle(pos, Vector3.Zero);
                 }
-                for (int i = 0; i < amountPerFrame/2; i++)
+                for (int i = 0; i < amountPerFrame / 2; i++)
                 {
                     smokePlumeParticles.AddParticle(pos, Vector3.Zero);
                 }
             }
             else
             {
-                for (int i = 0; i < amountPerFrame+15; i++)
+                for (int i = 0; i < amountPerFrame + 15; i++)
                 {
-                    projectileTrailParticles.AddParticle(pos+new Vector3(0,5,0), new Vector3(1,0,1));
+                    projectileTrailParticles.AddParticle(pos + new Vector3(0, 5, 0), new Vector3(1, 0, 1));
                 }
             }
         }
@@ -1030,14 +1023,14 @@ GraphicsDevice);
             const int fireParticlesPerFrame = 10;
 
             // Create a number of fire particles, randomly positioned around a circle.
-            for (int i = 0; i < fireParticlesPerFrame/4; i++)
+            for (int i = 0; i < fireParticlesPerFrame / 4; i++)
             {
                 fireParticles.AddParticle(RandomPointOnCircle(), Vector3.One);
             }
-            for (int i = 0; i < fireParticlesPerFrame/6; i++)
+            for (int i = 0; i < fireParticlesPerFrame / 6; i++)
             {
                 // Create one smoke particle per frmae, too.
-                smokePlumeParticles.AddParticle(RandomPointOnCircle()+ new Vector3(0,20,0), Vector3.Zero);
+                smokePlumeParticles.AddParticle(RandomPointOnCircle() + new Vector3(0, 20, 0), Vector3.Zero);
             }
         }
 
@@ -1054,8 +1047,8 @@ GraphicsDevice);
             double angle = random.NextDouble() * Math.PI * 2;
             double angle2 = random.NextDouble() * Math.PI;
 
-            float x = (float)Math.Cos(angle)*(float)Math.Sin(angle2);
-            float y = (float)Math.Sin(angle)*(float)Math.Sin(angle2);
+            float x = (float)Math.Cos(angle) * (float)Math.Sin(angle2);
+            float y = (float)Math.Sin(angle) * (float)Math.Sin(angle2);
             float z = (float)Math.Cos(angle2);
 
 
@@ -1064,10 +1057,10 @@ GraphicsDevice);
 
         Vector3 RandomPointOnCircleBuilding(InteractiveModel building)
         {
-            
+
 
             double angle = random.NextDouble() * Math.PI * 2;
-            
+
 
             float x = (float)Math.Sin(angle);
             float z = (float)Math.Cos(angle);
