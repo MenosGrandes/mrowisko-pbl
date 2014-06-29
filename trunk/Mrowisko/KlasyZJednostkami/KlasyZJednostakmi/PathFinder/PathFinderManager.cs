@@ -82,7 +82,7 @@ namespace Logic.PathFinderManagerNamespace
                     {
                         if (tileList[i, J].Box.Intersects(n.Bounds))
                         {
-                            if (n.Bounds.Max.Y < 20 || n.Bounds.Max.Y >70)
+                            if ( n.Bounds.Max.Y >70)
                             {
                             tileList[i, J].walkable = false;
                                 }

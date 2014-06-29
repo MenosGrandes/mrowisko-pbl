@@ -379,8 +379,6 @@ GraphicsDevice);
            //// models[models.Count - 1].Model.switchAnimation("Idle");
 
 
-           //models.Add(new Grasshopper(new LoadModel(Content.Load<Model>("Models/grasshopper"), new Vector3(50, 40, 50), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
-           //models[models.Count - 1].Model.switchAnimation("Idle");
 
           // models.Add(new AntPeasant(new LoadModel(Content.Load<Model>("Models/ant"), new Vector3(100, 40, 10), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light)));
 
@@ -404,6 +402,7 @@ GraphicsDevice);
 
 
             control.Models_Colision = IModel;
+
 
         }
         
@@ -475,7 +474,10 @@ GraphicsDevice);
                 {
                     models[i].Update(gameTime);
                     models[i].Model.Update(gameTime);
-
+                   if(models[i].Model.Position.Y<40)
+                   {
+                       Console.WriteLine("WODA");
+                   }
 
                     if (models[i].attacking)
                     {
@@ -763,17 +765,17 @@ GraphicsDevice);
             //}
 
 
-          
 
-            //foreach (InteractiveModel q in inter)
-            //{
-            //    if (camera.BoundingVolumeIsInView(q.Model.BoundingSphere))
-            //    {
-            //               //BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
-            //       // BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
-            //        q.Draw((FreeCamera)camera);
-            //    }
-            //}
+
+            foreach (InteractiveModel q in inter)
+            {
+                if (camera.BoundingVolumeIsInView(q.Model.BoundingSphere))
+                {
+                    //BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
+                    // BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
+                    q.Draw((FreeCamera)camera);
+                }
+            }
                 
             foreach (InteractiveModel model in models)
             {
