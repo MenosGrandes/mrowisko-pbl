@@ -344,6 +344,12 @@ GraphicsDevice);
             SoundController.SoundController.content = Content;
            SoundController.SoundController.Initialize(aa);
 
+           List<String> PlayList = new List<string>();
+           PlayList.Add("Kwai");
+           PlayList.Add("MarketGarden");
+           PlayList.Add("Escape");
+           SoundController.SoundController.InitializeBackground(PlayList);
+
 
           
            
@@ -423,10 +429,34 @@ GraphicsDevice);
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+         
+            if (Microsoft.Xna.Framework.Media.MediaPlayer.State.Equals(Microsoft.Xna.Framework.Media.MediaState.Stopped))
+            {
+                if (SoundController.SoundController.playqueue == 0)
+                {
+                    Microsoft.Xna.Framework.Media.MediaPlayer.Play(SoundController.SoundController.BackgroundSongs[SoundController.SoundController.playqueue]);
+                    Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f; 
+                    SoundController.SoundController.playqueue = 1;
+                }
+                else if (SoundController.SoundController.playqueue == 1)
+                {
+                    Microsoft.Xna.Framework.Media.MediaPlayer.Play(SoundController.SoundController.BackgroundSongs[SoundController.SoundController.playqueue]);
+                    Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f; 
+                    SoundController.SoundController.playqueue = 2;
+                }
+                else if (SoundController.SoundController.playqueue == 2)
+                {
+                    Microsoft.Xna.Framework.Media.MediaPlayer.Play(SoundController.SoundController.BackgroundSongs[SoundController.SoundController.playqueue]);
+                    Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f; 
+                    SoundController.SoundController.playqueue = 0;
+                    //etc. etc. etc.;
+                }
+            }
  
             gui.Update(gameTime);
             kolizja = false;
                 currentMouseState = Mouse.GetState();
+            
                 //if (timeTriggers.Count<1)
                 //{
                 //    UpdateFire();

@@ -17,7 +17,9 @@ namespace SoundController
             
             public static List<SoundEffect> sounds = new List<SoundEffect>();
             public static List<SoundEffectInstance> s_instance = new List<SoundEffectInstance>();
+            public static List<Song> BackgroundSongs = new List<Song>();
             public static ContentManager content;
+            public static int playqueue = 0;
             public static void Initialize(List<String> soundString)
             {
                 foreach (String soun in soundString)
@@ -27,6 +29,19 @@ namespace SoundController
                 foreach (SoundEffect se in sounds)
                 {
                     s_instance.Add(se.CreateInstance());
+                }
+
+               
+
+
+            }
+
+            public static void InitializeBackground(List<String> soundString)
+            {
+                foreach (String soun in soundString)
+                {
+                    BackgroundSongs.Add(content.Load<Song>("Songs/" + soun));
+                    
                 }
             }
             public static void Play(SoundEnum se)
