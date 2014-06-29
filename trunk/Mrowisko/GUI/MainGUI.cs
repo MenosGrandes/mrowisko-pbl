@@ -11,14 +11,22 @@ using Microsoft.Xna.Framework.Media;
 using Logic;
 using Logic.Building;
 using Logic.Player;
+using Logic.Building.AntBuildings.SeedFarms;
+using Logic.Building.AntBuildings.Granary;
+using Logic.Building.AntBuildings;
+using Logic.Units.Ants;
+using Logic.Meterials;
 
 namespace GUI
 {
     public class MainGUI
     {
+        bool hyacyntFarmOn = false, dicentraFarmOn = false, mainBuildingOn = false;
+        public List<InteractiveModel> modelsFromMain;
+        public String description;
         public static bool exit = false;
         public InteractiveModel selectedModel;
-        public List<Unit> selectedModels=new List<Unit>();
+        public List<Unit> selectedModels = new List<Unit>();
         private Control control;
         public Control Control
         {
@@ -92,8 +100,9 @@ namespace GUI
         Rectangle[] bar_rectangle = new Rectangle[NUMBER_OF_BARS];
         Texture2D[] bar_texture = new Texture2D[NUMBER_OF_BARS];
 
-        public MainGUI(ContentManager content, Control c)
+        public MainGUI(ContentManager content, Control c, List<InteractiveModel> modelos)
         {
+            modelsFromMain = modelos;
             Initialize();
             LoadContent(content);
             this.control = c;
@@ -221,14 +230,14 @@ namespace GUI
             button_state[ATTACK_ANT_BUTTON_IDX] = BState.UP;
             button_color[ATTACK_ANT_BUTTON_IDX] = Color.White;
             button_timer[ATTACK_ANT_BUTTON_IDX] = 0.0;
-            button_rectangle[ATTACK_ANT_BUTTON_IDX] = new Rectangle(846, 691, 69, 69);
+            button_rectangle[ATTACK_ANT_BUTTON_IDX] = new Rectangle(756, 691, 69, 69);
 
             // RUN
 
             button_state[RUN_ANT_BUTTON_IDX] = BState.UP;
             button_color[RUN_ANT_BUTTON_IDX] = Color.White;
             button_timer[RUN_ANT_BUTTON_IDX] = 0.0;
-            button_rectangle[RUN_ANT_BUTTON_IDX] = new Rectangle(936, 691, 69, 69);
+            button_rectangle[RUN_ANT_BUTTON_IDX] = new Rectangle(756, 691, 69, 69);
 
 
             //=== menu wyœwietlane -------------------------------------------------
@@ -298,7 +307,7 @@ namespace GUI
                Content.Load<Texture2D>(@"Textures/Button/standardAntButton");
             button_texture[UNIT5_BUTTON_IDX] =
                Content.Load<Texture2D>(@"Textures/Button/standardAntButton");
-            
+
             button_texture[B1_BUTTON_IDX] =
                 Content.Load<Texture2D>(@"Textures/Button/b1Button");
             button_texture[B2_BUTTON_IDX] =
@@ -344,18 +353,49 @@ namespace GUI
             if (control.selectedObject != null)
             {
                 selectedModel = control.selectedObject;
-                if (selectedModel.GetType().IsSubclassOf(typeof(Unit)))
-                {
-                    unitMenuON = true;
-                    buildMenuON = false;
-                }
-                else if (selectedModel.GetType().IsSubclassOf(typeof(Building)))
+                description = selectedModel.ToString();
+
+                if (selectedModel.GetType() == (typeof(BuildingPlace)))
                 {
                     buildMenuON = true;
-                    unitMenuON = false;
+
+                }
+                else if (selectedModel.GetType() != typeof(BuildingPlace) && selectedModel.GetType().IsSubclassOf(typeof(Building)))
+                {
+                    description = selectedModel.ToString();
+                    if (selectedModel.GetType() == typeof(HyacyntFarm))
+                    {
+
+                        hyacyntFarmOn = true;
+                        dicentraFarmOn = false;
+                        mainBuildingOn = false;
+                        buildMenuON = false;
+                        unitMenuON = false;
+
+                    }
+                    else if (selectedModel.GetType() == typeof(DicentraFarm))
+                    {
+                        hyacyntFarmOn = false;
+                        dicentraFarmOn = true;
+                        mainBuildingOn = false;
+                        buildMenuON = false;
+                        unitMenuON = false;
+                    }
+                    else
+                    {
+                        hyacyntFarmOn = false;
+                        dicentraFarmOn = false;
+                        mainBuildingOn = true;
+                        buildMenuON = false;
+                        unitMenuON = false;
+                    }
 
                 }
 
+            }
+            else
+            {
+                description = "";
             }
             if (control.SelectedModels.Count > 0)
             {
@@ -403,24 +443,28 @@ namespace GUI
             if (unitSelected)
             {
                 spriteBatch.Draw(button_texture[UNIT1_BUTTON_IDX], button_rectangle[UNIT1_BUTTON_IDX], button_color[UNIT1_BUTTON_IDX]);
-               
+
             }
 
             //panel budynków
-            if (buildMenuON==true && unitMenuON==false)
+            if (buildMenuON == true)
             {
                 spriteBatch.Draw(button_texture[B1_BUTTON_IDX], button_rectangle[B1_BUTTON_IDX], button_color[B1_BUTTON_IDX]);
                 spriteBatch.Draw(button_texture[B2_BUTTON_IDX], button_rectangle[B2_BUTTON_IDX], button_color[B2_BUTTON_IDX]);
                 spriteBatch.Draw(button_texture[B3_BUTTON_IDX], button_rectangle[B3_BUTTON_IDX], button_color[B3_BUTTON_IDX]);
             }
-            else if(unitMenuON==true  && buildMenuON==false)//panel ob³ugi jednostek
+            else if (dicentraFarmOn == true)//panel ob³ugi jednostek
             {
                 spriteBatch.Draw(button_texture[ATTACK_ANT_BUTTON_IDX], button_rectangle[ATTACK_ANT_BUTTON_IDX], button_color[ATTACK_ANT_BUTTON_IDX]);
+            }
+            else if (hyacyntFarmOn == true)//panel ob³ugi jednostek
+            {
                 spriteBatch.Draw(button_texture[DEFENCE_ANT_BUTTON_IDX], button_rectangle[DEFENCE_ANT_BUTTON_IDX], button_color[DEFENCE_ANT_BUTTON_IDX]);
+            }
+            else if (mainBuildingOn == true)//panel ob³ugi jednostek
+            {
                 spriteBatch.Draw(button_texture[RUN_ANT_BUTTON_IDX], button_rectangle[RUN_ANT_BUTTON_IDX], button_color[RUN_ANT_BUTTON_IDX]);
             }
-
-
 
 
             //Pause Menu ----------
@@ -431,18 +475,24 @@ namespace GUI
                     spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
             }
             #region iloscSurowcow
-            spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}",Player.wood), new Vector2(254.0f, 0.0f), Color.Pink);
+            spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", Player.wood), new Vector2(254.0f, 0.0f), Color.Pink);
             spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", Player.stone), new Vector2(484.0f, 0.0f), Color.Pink);
             spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", Player.hyacynt), new Vector2(731.0f, 0.0f), Color.Pink);
             spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", Player.dicentra), new Vector2(943.0f, 0.0f), Color.Pink);
             spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", Player.chelidonium), new Vector2(1174.0f, 0.0f), Color.Pink);
             #endregion
             #region iloscZaznaczonych
-            if(selectedModels.Count>0)
+            if (selectedModels.Count > 0)
                 spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", selectedModels.Count), new Vector2(111.0f, 691.0f), Color.Pink);
             else
                 spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", 0), new Vector2(111.0f, 691.0f), Color.Pink);
             #endregion
+            spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", description), new Vector2(491.0f, 681.0f), Color.BlanchedAlmond);
+
+            if (selectedModel == null)
+            {
+                description = "";
+            }
 
         }
 
@@ -546,26 +596,37 @@ namespace GUI
                     break;
 
                 case ATTACK_ANT_BUTTON_IDX:
-                    Console.WriteLine("attack!!@");
+                    if (Player.dicentra >= 20 && ((selectedModel.GetType() == typeof(DicentraFarm))))
+                    {
+                        modelsFromMain.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), RandomPointOnCircleBuilding(selectedModel), new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
+
+                        Player.removeMaterial(20, typeof(Dicentra));
+                    }
                     break;
                 case DEFENCE_ANT_BUTTON_IDX:
-                    Console.WriteLine("attack!!@");
-                    break;
+                    if (Player.chelidonium >= 20 && ((selectedModel.GetType() == typeof(ChelidoniumFarm))))
+                    {
+                        modelsFromMain.Add(new StrongAnt(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/strongAnt"), RandomPointOnCircleBuilding(selectedModel), new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
+                        Player.removeMaterial(20, typeof(Chelidonium));
+                    } break;
                 case RUN_ANT_BUTTON_IDX:
-                    Console.WriteLine("run!!@");
-                    break;
+                    if (Player.hyacynt >= 20 && ((selectedModel.GetType() == typeof(HyacyntFarm))))
+                    {
+                        modelsFromMain.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/plujka"), RandomPointOnCircleBuilding(selectedModel), new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
+                        Player.removeMaterial(20, typeof(Hyacynt));
+                    } break;
 
                 case B1_BUTTON_IDX:
-                    if ((selectedModel.GetType() == typeof(BuildingPlace)) && Player.wood>20)
+                    if ((selectedModel.GetType() == typeof(BuildingPlace)) && Player.wood > 20)
                     {
-                        ((BuildingPlace)selectedModel).Build1();
+                        ((BuildingPlace)selectedModel).BuildAntGranary();
                         Console.WriteLine("BUILD1");
-                        Player.removeMaterial(20,typeof(Logic.Meterials.Wood));
+                        Player.removeMaterial(20, typeof(Logic.Meterials.Wood));
                     }
                     break;
                 case B2_BUTTON_IDX:
                     if ((selectedModel.GetType() == typeof(BuildingPlace)) && Player.wood > 10 && Player.stone > 20)
-                    { 
+                    {
                         ((BuildingPlace)selectedModel).BuildHyacyntFarm();
                         Console.WriteLine("BUILD2");
                         Player.removeMaterial(10, typeof(Logic.Meterials.Wood));
@@ -596,10 +657,10 @@ namespace GUI
                     break;
 
                 case RESUME_T_BUTTON_IDX:
-                    { 
+                    {
                         mainMenuOn = false;
                         StaticHelpers.StaticHelper.pause = false;
-  
+
                     }
 
                     break;
@@ -615,6 +676,19 @@ namespace GUI
                 default:
                     break;
             }
+        }
+        public static Vector3 RandomPointOnCircleBuilding(InteractiveModel building)
+        {
+
+            Random random = new Random();
+            double angle = random.NextDouble() * Math.PI * 2;
+
+
+            float x = (float)Math.Sin(angle);
+            float z = (float)Math.Cos(angle);
+
+
+            return new Vector3(building.Model.Position.X + x * building.Model.BoundingSphere.Radius, StaticHelpers.StaticHelper.GetHeightAt(building.Model.Position.X + x * building.Model.BoundingSphere.Radius, building.Model.Position.Z + z * building.Model.BoundingSphere.Radius), building.Model.Position.Z + z * building.Model.BoundingSphere.Radius);
         }
     }
 }

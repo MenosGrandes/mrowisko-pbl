@@ -25,7 +25,10 @@ namespace Logic.Building.AntBuildings.Granary
         {
 
         }
-
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
 
     }
 }

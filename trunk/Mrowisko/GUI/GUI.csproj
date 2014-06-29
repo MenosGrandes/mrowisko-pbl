@@ -60,12 +60,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainGUI.cs" />
+    <Compile Include="MiniMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KlasyZJednostkami\KlasyZJednostakmi\Logic.csproj">
       <Project>{b398f88c-483b-457f-aaec-a71d70280724}</Project>
       <Name>Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightsAndShadows\LightsAndShadows\LightsAndShadows.csproj">
+      <Project>{1a340602-b76b-4213-9f41-a777cc928fea}</Project>
+      <Name>LightsAndShadows</Name>
     </ProjectReference>
     <ProjectReference Include="..\StaticHelpers\StaticHelpers.csproj">
       <Project>{adb8cf44-88f0-42de-ae42-62e5b9704438}</Project>

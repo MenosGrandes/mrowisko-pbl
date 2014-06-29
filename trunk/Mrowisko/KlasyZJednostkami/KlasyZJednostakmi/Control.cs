@@ -80,7 +80,7 @@ namespace Logic
               }
             foreach (InteractiveModel unit in SelectedModels)
             {
-                if (unit.target != null && unit.GetType() != typeof(AntSpitter) && unit.Model.BoundingSphere.Intersects(unit.target.Model.BoundingSphere))
+                if (unit.target != null && unit.GetType() != typeof(AntSpitter) && Vector2.Distance(new Vector2(unit.Model.Position.X,unit.Model.Position.Z),new Vector2(unit.target.Model.Position.X,unit.target.Model.Position.Z))<= unit.Model.BoundingSphere.Radius) //unit.Model.BoundingSphere.Intersects(unit.target.Model.BoundingSphere))
                 {
                     unit.attacking = true;
                     unit.ImMoving = false;
@@ -371,26 +371,6 @@ namespace Logic
                // }
             }
 
-            //if (currentKeyboardState.IsKeyDown(Keys.Space))
-            //{
-            //    if (currentMouseState.LeftButton == ButtonState.Pressed)
-            //    {
-            //        foreach (Unit jumpModel in SelectedModels)
-            //        {
-            //           if (jumpModel.GetType()==typeof(Grasshopper))
-            //            {
-            //                jumpModel.destination = new Vector2(mouse3d2.X,mouse3d2.Z);
-            //                jumpModel.direction = new Vector2(jumpModel.Model.playerTarget.X - jumpModel.Model.Position.X, jumpModel.Model.playerTarget.Z - jumpModel.Model.Position.Z);
-            //                jumpModel.direction.Normalize();
-            //                jumpModel.middlePoint = new Vector2((jumpModel.Model.playerTarget.X - jumpModel.Model.Position.X)/2+jumpModel.Model.playerTarget.X, (jumpModel.Model.playerTarget.Z - jumpModel.Model.Position.Z)/2 + jumpModel.Model.playerTarget.Z);
-            //                jumpModel.tempHeight = StaticHelpers.StaticHelper.GetHeightAt(jumpModel.Model.Position.X, jumpModel.Model.Position.Z);
-            //                jumpModel.Model.switchAnimation("Jump");
-            //                jumpModel.Jumping= true;
-                          
-            //            }
-            //        }
-            //    }
-            //}
 
             #region Skakanie
            if (currentKeyboardState.IsKeyDown(Keys.Space)&&lastKeyboardState.IsKeyUp(Keys.Space))

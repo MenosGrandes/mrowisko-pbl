@@ -36,7 +36,10 @@ namespace Logic.Building.AntBuildings
           //  ElapsedTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds/10;
            // timeElapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
         }
-
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
        
     }
 }

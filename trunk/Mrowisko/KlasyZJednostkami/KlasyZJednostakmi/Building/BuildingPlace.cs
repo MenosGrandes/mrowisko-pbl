@@ -50,7 +50,7 @@ namespace Logic.Building
 
             }
         }
-        public void Build1()
+        public void BuildAntGranary()
         {
             this.house = new AntBuildings.Granary.AntGranary(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/kopiec"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius * 2, this.model.Position.Z), Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light));
         }

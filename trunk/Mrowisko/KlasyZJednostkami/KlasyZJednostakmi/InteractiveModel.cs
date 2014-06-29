@@ -17,7 +17,7 @@ namespace Logic
     [Serializable]
     public class InteractiveModel
     {
-
+        public Vector2 miniMapPosition;
         protected Node myNode;
 
         public Node MyNode
