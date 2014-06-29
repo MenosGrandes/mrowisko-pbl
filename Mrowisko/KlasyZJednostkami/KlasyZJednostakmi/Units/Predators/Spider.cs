@@ -122,6 +122,10 @@ namespace Logic.Units.Predators
                          {
                              Ants[j].Hp -= damage;
                              Ants[j].hasBeenHit = true;
+                             if (Ants[j].foe == null)
+                             {
+                                 Ants[j].foe = this;
+                             }
                              ((Unit)Ants[j]).LifeBar.LifeLength -= ((Unit)Ants[j]).LifeBar.LifeLength * (((float)damage) / (float)Ants[j].Hp);
                              time = 0;
                          }

@@ -311,7 +311,7 @@ GraphicsDevice);
                     {
                         if (PathFinderManager.tileList[i, J].walkable == false || PathFinderManager.tileList[i, J].haveMineral == true || PathFinderManager.tileList[i, J].haveBuilding == true)
                     {
-                        inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log2"),new Vector3(PathFinderManager.tileList[i,J].centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(PathFinderManager.tileList[i,J].centerPosition.X,PathFinderManager.tileList[i,J].centerPosition.Y),PathFinderManager.tileList[i,J].centerPosition.Y),Vector3.Zero,new Vector3(1f,0.3f,1f),device,light)));
+                       // inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log2"),new Vector3(PathFinderManager.tileList[i,J].centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(PathFinderManager.tileList[i,J].centerPosition.X,PathFinderManager.tileList[i,J].centerPosition.Y),PathFinderManager.tileList[i,J].centerPosition.Y),Vector3.Zero,new Vector3(1f,0.3f,1f),device,light)));
                     }
                     }
                 }
@@ -556,7 +556,7 @@ GraphicsDevice);
                         model.Model.Update(gameTime);
                         if (model.raisingBuilding)
                         {
-
+                            UpdateSmokePlumeBuilding(model);
                         }
 
                      if(model.GetType().IsSubclassOf(typeof(Building)))
