@@ -7,7 +7,7 @@
     <OriginalClipName>Animation0</OriginalClipName>
 
     <!-- The total number of frames in the original clip -->
-    <OriginalFrameCount>200</OriginalFrameCount>
+    <OriginalFrameCount>155</OriginalFrameCount>
 
     <!-- The new parts we want -->
     <ClipParts>
@@ -16,46 +16,34 @@
       <Item>
         <ClipName>Idle</ClipName>
         <StartFrame>0</StartFrame>
-        <EndFrame>40</EndFrame>
+        <EndFrame>26</EndFrame>
       </Item>
 	   <Item>
         <ClipName>Death</ClipName>
-        <StartFrame>41</StartFrame>
-        <EndFrame>80</EndFrame>
+        <StartFrame>27</StartFrame>
+        <EndFrame>58</EndFrame>
       </Item>
 	   <Item>
         <ClipName>Jump</ClipName>
-        <StartFrame>81</StartFrame>
-        <EndFrame>110</EndFrame>
+        <StartFrame>59</StartFrame>
+        <EndFrame>77</EndFrame>
       </Item>
      <Item>
         <ClipName>Atack</ClipName>
-        <StartFrame>111</StartFrame>
-        <EndFrame>155</EndFrame>
+        <StartFrame>78</StartFrame>
+        <EndFrame>106</EndFrame>
       </Item>
 	<Item>
         <ClipName>Walk</ClipName>
-        <StartFrame>156</StartFrame>
-        <EndFrame>200</EndFrame>
+        <StartFrame>107</StartFrame>
+        <EndFrame>129</EndFrame>
       </Item>
-      <!--
-      <Item>
-        <ClipName>Fire</ClipName>
-        <StartFrame>51</StartFrame>
-        <EndFrame>99</EndFrame>
--->
-      <!-- We can register events in this clip, so we can know when certain frames are hit -->
-      <!--
-        <Events>
-          <Item>
-            <Name>FireFrame</Name>
-            <Keyframe>70</Keyframe>
-          </Item>
-        </Events>
-
+	  <Item>
+        <ClipName>WingsMove</ClipName>
+        <StartFrame>130</StartFrame>
+        <EndFrame>155</EndFrame>
       </Item>
--->
-    </ClipParts>
+   </ClipParts>
 
   </Asset>
 
