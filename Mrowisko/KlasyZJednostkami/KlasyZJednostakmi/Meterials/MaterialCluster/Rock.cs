@@ -50,7 +50,7 @@ namespace Logic.Meterials.MaterialCluster
         }
         public override string ToString()
         {
-            return this.GetType().Name + " " + model.Position + " " + ClusterSize;
+            return this.GetType().Name + " \n Capacity:" + ClusterSize;
         }
 
     }

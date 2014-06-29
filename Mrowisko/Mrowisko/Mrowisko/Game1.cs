@@ -403,7 +403,7 @@ GraphicsDevice);
 
 
             control = new Logic.Control(texture[11], quadTree[0]);
-            gui = new MainGUI(StaticHelpers.StaticHelper.Content, control);
+            gui = new MainGUI(StaticHelpers.StaticHelper.Content, control,models);
 
 
 
@@ -414,6 +414,9 @@ GraphicsDevice);
             Player.addMaterial(new Hyacynt(), 200);
             Player.addMaterial(new Dicentra(), 200);
             Player.addMaterial(new Chelidonium(), 200);
+
+
+            miniMap = new MiniMap(models);
         }
 
 
@@ -637,6 +640,7 @@ GraphicsDevice);
             {
                 this.Exit();
             }
+            miniMap.UpdateMinimap(gameTime,new Vector2(((FreeCamera)camera).Position.X,(((FreeCamera)camera).Position.Z)));
             gui.Update(gameTime);
             foreach (QuadTree tree in quadTree)
             {
@@ -900,6 +904,7 @@ GraphicsDevice);
         */
             control.Draw(spriteBatch, (FreeCamera)camera);
             gui.Draw(spriteBatch);
+            miniMap.Draw(spriteBatch);
             spriteBatch.End();
             /* 
             foreach(InteractiveModel model in models)
@@ -1079,6 +1084,8 @@ GraphicsDevice);
         public PathFinder pf { get; set; }
 
         public float _elapsed_time2 { get; set; }
+
+        public MiniMap miniMap { get; set; }
     }
 }
 
