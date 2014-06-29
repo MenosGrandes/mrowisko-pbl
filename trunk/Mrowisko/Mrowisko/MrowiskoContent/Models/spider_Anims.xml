@@ -7,7 +7,7 @@
     <OriginalClipName>Animation0</OriginalClipName>
 
     <!-- The total number of frames in the original clip -->
-    <OriginalFrameCount>215</OriginalFrameCount>
+    <OriginalFrameCount>130</OriginalFrameCount>
 
     <!-- The new parts we want -->
     <ClipParts>
@@ -16,27 +16,27 @@
       <Item>
         <ClipName>Jump</ClipName>
         <StartFrame>0</StartFrame>
-        <EndFrame>30</EndFrame>
+        <EndFrame>22</EndFrame>
       </Item>
       <Item>
         <ClipName>Death</ClipName>
-        <StartFrame>31</StartFrame>
-        <EndFrame>70</EndFrame>
+        <StartFrame>23</StartFrame>
+        <EndFrame>50</EndFrame>
       </Item>
       <Item>
         <ClipName>Idle</ClipName>
-        <StartFrame>71</StartFrame>
-        <EndFrame>102</EndFrame>
+        <StartFrame>51</StartFrame>
+        <EndFrame>74</EndFrame>
       </Item>
 	 <Item>
         <ClipName>Atack</ClipName>
-        <StartFrame>103</StartFrame>
-        <EndFrame>135</EndFrame>
+        <StartFrame>75</StartFrame>
+        <EndFrame>98</EndFrame>
       </Item>
 	   <Item>
         <ClipName>Walk</ClipName>
-        <StartFrame>136</StartFrame>
-        <EndFrame>215</EndFrame>
+        <StartFrame>99</StartFrame>
+        <EndFrame>130</EndFrame>
       </Item>
     </ClipParts>
 

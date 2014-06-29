@@ -23,6 +23,7 @@ namespace Logic
     public class LoadModel                                                                                      
     {
         public bool Hit=false;
+        public AnimationObject animObj = null;
         private BoundingBox b_box;
         public BoundingBox B_Box
         {
@@ -440,12 +441,22 @@ namespace Logic
             }
 
         }
+           public void Animate(Vector3 EndPosition, Vector3 EndRotation, TimeSpan Duration, bool Loop)
+           {
+               animObj = new AnimationObject(this.Position, EndPosition, this.Rotation, EndRotation, Duration, Loop);
+           }
         /// <summary>
         /// Update metod for Animations
         /// </summary>
         /// <param name="gameTime"></param>
            public void Update(GameTime gameTime)
            {
+               if (animObj != null)
+               {
+                   animObj.Update(gameTime.ElapsedGameTime);
+                   this.Position = animObj.Position;
+                   this.Rotation = animObj.Rotation;
+               }
                if (list!=null && Player.end)
                {
                   // Console.Out.WriteLine(Player.CurrentClip.Duration.TotalMilliseconds - Player.CurrentTime.TotalMilliseconds);

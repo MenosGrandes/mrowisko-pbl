@@ -129,6 +129,7 @@ namespace Controlers
 
 
                             s.Model.switchAnimation("Idle");
+                          //  s.Model.Animate(s.Model.Position, new Vector3(0, -MathHelper.TwoPi, 0), TimeSpan.FromSeconds(3), true);
                             listOfAllInteractiveModelsFromFile.Add(s);
 
 
