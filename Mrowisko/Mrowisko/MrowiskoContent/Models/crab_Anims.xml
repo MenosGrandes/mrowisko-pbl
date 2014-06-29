@@ -15,19 +15,29 @@
       <!-- Each item is one of our new clips -->
      
 	   <Item>
-        <ClipName>Kill</ClipName>
+        <ClipName>Atack</ClipName>
         <StartFrame>0</StartFrame>
         <EndFrame>35</EndFrame>
       </Item>
 	   <Item>
-        <ClipName>Relax</ClipName>
+        <ClipName>Idle</ClipName>
         <StartFrame>36</StartFrame>
         <EndFrame>70</EndFrame>
       </Item>
- <Item>
-        <ClipName>Idle</ClipName>
+	<Item>
+        <ClipName>Death</ClipName>
         <StartFrame>71</StartFrame>
-        <EndFrame>90</EndFrame>
+        <EndFrame>95</EndFrame>
+      </Item>
+	  <Item>
+        <ClipName>Walk</ClipName>
+        <StartFrame>96</StartFrame>
+        <EndFrame>130</EndFrame>
+      </Item>
+	   <Item>
+        <ClipName>Jump</ClipName>
+        <StartFrame>131</StartFrame>
+        <EndFrame>150</EndFrame>
       </Item>
     </ClipParts>
 

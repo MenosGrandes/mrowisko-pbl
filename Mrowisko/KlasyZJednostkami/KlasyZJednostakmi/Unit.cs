@@ -207,7 +207,6 @@ namespace Logic
         public override void Update(GameTime time)
         {
             base.Update(time);
-
             if (this.Model.snr == true)
             {
 
@@ -225,7 +224,6 @@ namespace Logic
             MyNode = this.getMyNode();
             if (this.Model.snr == false && this.attacking == false)
             {
-               // MyNode = this.getMyNode();
                 if (ArmorBuff)
                 {
                     armor = armorAfterBuff;
