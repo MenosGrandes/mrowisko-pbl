@@ -67,6 +67,10 @@
       <Project>{b398f88c-483b-457f-aaec-a71d70280724}</Project>
       <Name>Logic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StaticHelpers\StaticHelpers.csproj">
+      <Project>{adb8cf44-88f0-42de-ae42-62e5b9704438}</Project>
+      <Name>StaticHelpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

@@ -13,6 +13,10 @@ namespace StaticHelpers
 {
     public static class StaticHelper
     {
+
+
+        public static SpriteFont _spr_font;
+        public static bool pause = false;
         public static ContentManager Content;
         public static GraphicsDevice Device;
         public static GraphicsDeviceManager DeviceManager;

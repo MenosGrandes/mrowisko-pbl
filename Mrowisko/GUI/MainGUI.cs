@@ -10,14 +10,15 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Logic;
 using Logic.Building;
+using Logic.Player;
 
 namespace GUI
 {
     public class MainGUI
     {
-
+        public static bool exit = false;
         public InteractiveModel selectedModel;
-        public List<Unit> selectedModels;
+        public List<Unit> selectedModels=new List<Unit>();
         private Control control;
         public Control Control
         {
@@ -192,20 +193,20 @@ namespace GUI
             button_state[B1_BUTTON_IDX] = BState.UP;
             button_color[B1_BUTTON_IDX] = Color.White;
             button_timer[B1_BUTTON_IDX] = 0.0;
-            button_rectangle[B1_BUTTON_IDX] = new Rectangle(691, 756, 69, 69);
+            button_rectangle[B1_BUTTON_IDX] = new Rectangle(756, 691, 69, 69);
 
             // B2
 
             button_state[B2_BUTTON_IDX] = BState.UP;
             button_color[B2_BUTTON_IDX] = Color.White;
             button_timer[B2_BUTTON_IDX] = 0.0;
-            button_rectangle[B1_BUTTON_IDX] = new Rectangle(691, 856, 69, 69);
+            button_rectangle[B2_BUTTON_IDX] = new Rectangle(846, 691, 69, 69);
             // B3
 
             button_state[B3_BUTTON_IDX] = BState.UP;
             button_color[B3_BUTTON_IDX] = Color.White;
             button_timer[B3_BUTTON_IDX] = 0.0;
-            button_rectangle[B3_BUTTON_IDX] = new Rectangle(691, 956, 69, 69);
+            button_rectangle[B3_BUTTON_IDX] = new Rectangle(936, 691, 69, 69);
             //=== BUDYNKI -----------------------------------------------------------
 
             // defense
@@ -343,7 +344,7 @@ namespace GUI
             if (control.selectedObject != null)
             {
                 selectedModel = control.selectedObject;
-                if (selectedModel.GetType().IsSubclassOf(typeof(Ant)))
+                if (selectedModel.GetType().IsSubclassOf(typeof(Unit)))
                 {
                     unitMenuON = true;
                     buildMenuON = false;
@@ -402,20 +403,17 @@ namespace GUI
             if (unitSelected)
             {
                 spriteBatch.Draw(button_texture[UNIT1_BUTTON_IDX], button_rectangle[UNIT1_BUTTON_IDX], button_color[UNIT1_BUTTON_IDX]);
-                spriteBatch.Draw(button_texture[UNIT2_BUTTON_IDX], button_rectangle[UNIT2_BUTTON_IDX], button_color[UNIT2_BUTTON_IDX]);
-                spriteBatch.Draw(button_texture[UNIT3_BUTTON_IDX], button_rectangle[UNIT3_BUTTON_IDX], button_color[UNIT3_BUTTON_IDX]);
-                spriteBatch.Draw(button_texture[UNIT4_BUTTON_IDX], button_rectangle[UNIT4_BUTTON_IDX], button_color[UNIT4_BUTTON_IDX]);
-                spriteBatch.Draw(button_texture[UNIT5_BUTTON_IDX], button_rectangle[UNIT5_BUTTON_IDX], button_color[UNIT5_BUTTON_IDX]);
+               
             }
 
             //panel budynków
-            if (buildMenuON)
+            if (buildMenuON==true && unitMenuON==false)
             {
                 spriteBatch.Draw(button_texture[B1_BUTTON_IDX], button_rectangle[B1_BUTTON_IDX], button_color[B1_BUTTON_IDX]);
                 spriteBatch.Draw(button_texture[B2_BUTTON_IDX], button_rectangle[B2_BUTTON_IDX], button_color[B2_BUTTON_IDX]);
                 spriteBatch.Draw(button_texture[B3_BUTTON_IDX], button_rectangle[B3_BUTTON_IDX], button_color[B3_BUTTON_IDX]);
             }
-            else //panel ob³ugi jednostek
+            else if(unitMenuON==true  && buildMenuON==false)//panel ob³ugi jednostek
             {
                 spriteBatch.Draw(button_texture[ATTACK_ANT_BUTTON_IDX], button_rectangle[ATTACK_ANT_BUTTON_IDX], button_color[ATTACK_ANT_BUTTON_IDX]);
                 spriteBatch.Draw(button_texture[DEFENCE_ANT_BUTTON_IDX], button_rectangle[DEFENCE_ANT_BUTTON_IDX], button_color[DEFENCE_ANT_BUTTON_IDX]);
@@ -432,6 +430,20 @@ namespace GUI
                 for (int i = RESUME_T_BUTTON_IDX; i <= EXIT_T_BUTTON_IDX; i++)
                     spriteBatch.Draw(button_texture[i], button_rectangle[i], button_color[i]);
             }
+            #region iloscSurowcow
+            spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}",Player.wood), new Vector2(254.0f, 0.0f), Color.Pink);
+            spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", Player.stone), new Vector2(484.0f, 0.0f), Color.Pink);
+            spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", Player.hyacynt), new Vector2(731.0f, 0.0f), Color.Pink);
+            spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", Player.dicentra), new Vector2(943.0f, 0.0f), Color.Pink);
+            spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", Player.chelidonium), new Vector2(1174.0f, 0.0f), Color.Pink);
+            #endregion
+            #region iloscZaznaczonych
+            if(selectedModels.Count>0)
+                spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", selectedModels.Count), new Vector2(111.0f, 691.0f), Color.Pink);
+            else
+                spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", 0), new Vector2(111.0f, 691.0f), Color.Pink);
+            #endregion
+
         }
 
         // wrapper for hit_image_alpha taking Rectangle and Texture
@@ -529,9 +541,8 @@ namespace GUI
             {
                 case MENU_BUTTON_IDX:
                     mainMenuOn = true;
-                    //zatrzymaj grê
-                    //wyrysuj obrazek
-                    //w³¹cz menu
+                    StaticHelpers.StaticHelper.pause = true;
+
                     break;
 
                 case ATTACK_ANT_BUTTON_IDX:
@@ -545,16 +556,31 @@ namespace GUI
                     break;
 
                 case B1_BUTTON_IDX:
-                    if ((selectedModel.GetType() == typeof(BuildingPlace)))
+                    if ((selectedModel.GetType() == typeof(BuildingPlace)) && Player.wood>20)
+                    {
                         ((BuildingPlace)selectedModel).Build1();
+                        Console.WriteLine("BUILD1");
+                        Player.removeMaterial(20,typeof(Logic.Meterials.Wood));
+                    }
                     break;
                 case B2_BUTTON_IDX:
-                    if ((selectedModel.GetType() == typeof(BuildingPlace)))
+                    if ((selectedModel.GetType() == typeof(BuildingPlace)) && Player.wood > 10 && Player.stone > 20)
+                    { 
                         ((BuildingPlace)selectedModel).BuildHyacyntFarm();
+                        Console.WriteLine("BUILD2");
+                        Player.removeMaterial(10, typeof(Logic.Meterials.Wood));
+                        Player.removeMaterial(20, typeof(Logic.Meterials.Stone));
+
+                    }
                     break;
                 case B3_BUTTON_IDX:
-                    if ((selectedModel.GetType() == typeof(BuildingPlace)))
+                    if ((selectedModel.GetType() == typeof(BuildingPlace)) && Player.stone > 20)
+                    {
+                        Console.WriteLine("BUILD3");
                         ((BuildingPlace)selectedModel).BuildDicentraFarm();
+                        Player.removeMaterial(20, typeof(Logic.Meterials.Stone));
+
+                    }
 
 
                     break;
@@ -562,12 +588,20 @@ namespace GUI
                 case SAVE_BUTTON_IDX:
                     break;
                 case PAUSE_BUTTON_IDX:
+                    StaticHelpers.StaticHelper.pause = true;
                     break;
                 case PLAY_BUTTON_IDX:
+                    StaticHelpers.StaticHelper.pause = false;
+
                     break;
 
                 case RESUME_T_BUTTON_IDX:
-                    mainMenuOn = false;
+                    { 
+                        mainMenuOn = false;
+                        StaticHelpers.StaticHelper.pause = false;
+  
+                    }
+
                     break;
                 case SAVE_T_BUTTON_IDX:
                     break;
@@ -576,7 +610,7 @@ namespace GUI
                 case OPTIONS_T_BUTTON_IDX:
                     break;
                 case EXIT_T_BUTTON_IDX:
-                    //this.Exit();
+                    exit = true;
                     break;
                 default:
                     break;

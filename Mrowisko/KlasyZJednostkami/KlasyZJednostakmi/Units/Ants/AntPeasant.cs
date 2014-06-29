@@ -175,7 +175,7 @@ namespace Logic.Units.Ants
                         {
                             ImGatering = true;
                             gaterMaterial((Material)gaterMaterialObject);
-                            SoundController.SoundController.Play(SoundController.SoundEnum.Gater);
+                           // SoundController.SoundController.Play(SoundController.SoundEnum.Gater);
                             Logic.Player.Player.addMaterial(releaseMaterial());
                             materials.Clear();
                         }

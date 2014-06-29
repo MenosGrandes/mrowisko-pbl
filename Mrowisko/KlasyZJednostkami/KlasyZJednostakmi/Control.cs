@@ -74,7 +74,10 @@ namespace Logic
         public void Update(GameTime gameTime)
         {
 
-
+              if(selectedObject!=null)
+              {
+                  Console.WriteLine(selectedObject);
+              }
             foreach (InteractiveModel unit in SelectedModels)
             {
                 if (unit.target != null && unit.GetType() != typeof(AntSpitter) && unit.Model.BoundingSphere.Intersects(unit.target.Model.BoundingSphere))

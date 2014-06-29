@@ -147,6 +147,9 @@ Content\Models\log2.xnb
 Content\Sounds\s1.xnb
 Content\Sounds\s2.xnb
 Content\Sounds\Gater.xnb
+Content\Songs\Escape.xnb
+Content\Songs\Kwai.xnb
+Content\Songs\MarketGarden.xnb
 Content\Models\grasshopper_Anims.xnb
 Content\Models\queen_Anims.xnb
 Content\Models\spider_Anims.xnb
@@ -179,9 +182,6 @@ Content\Textures\treetex\szyszka1_0.xnb
 Content\Textures\treetex\szyszka2_0.xnb
 Content\Textures\treetex\tree_tex_0.xnb
 Content\Textures\treetex\tree2_tex_0.xnb
-Content\Songs\Escape.xnb
-Content\Songs\Kwai.xnb
-Content\Songs\MarketGarden.xnb
 Content\Songs\Escape.wma
 Content\Songs\Kwai.wma
 Content\Songs\MarketGarden.wma
