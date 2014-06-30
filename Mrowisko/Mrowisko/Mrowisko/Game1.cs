@@ -41,7 +41,7 @@ namespace AntHill
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-
+        public bool startGame = false;
         public bool showGrid = false;
         List<InteractiveModel> models = new List<InteractiveModel>();
         List<InteractiveModel> inter = new List<InteractiveModel>();
@@ -68,11 +68,12 @@ namespace AntHill
 
         MapRender mapR;
         //FPS COUNTER
-        int licznik;
+        int licznik=0;
         bool endGame = false;
         public Trigger theEnd;
         public Texture2D endGamePicture;
-
+        public List<Texture2D> intro;
+        public Texture2D _intro;
         int _total_frames = 0;
         float _elapsed_time = 0.0f;
         int _fps = 0;
@@ -180,14 +181,14 @@ namespace AntHill
             #endregion
             #region PointsForLaser
             pointsForLasers.Add(new List<PointInTime>());
-            pointsForLasers[0].Add(new PointInTime(new Vector3(75, 40, 450), 0));
-            pointsForLasers[0].Add(new PointInTime(new Vector3(30, 40, 360), 2000));
-            pointsForLasers[0].Add(new PointInTime(new Vector3(120, 40, 300), 4000));
-            pointsForLasers[0].Add(new PointInTime(new Vector3(30, 40, 240), 6000));
-            pointsForLasers[0].Add(new PointInTime(new Vector3(120, 40, 180), 8000));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(100, 40, 100), 0));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(1600, 40, 300), 20000));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(3000, 40, 260), 40000));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(1300, 40, 900), 60000));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(400, 40, 1500), 80000));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(1299, 40, 1900), 100000));
+            pointsForLasers[0].Add(new PointInTime(new Vector3(100, 40, 3000), 120000));
 
-            pointsForLasers[0].Add(new PointInTime(new Vector3(750, 40, 120), 10000));
-            pointsForLasers[0].Add(new PointInTime(new Vector3(60, 40, 60), 12000));
 
 
             #endregion
@@ -319,7 +320,7 @@ GraphicsDevice);
                 {
                     if (PathFinderManager.tileList[i, J].walkable == false || PathFinderManager.tileList[i, J].haveMineral == true || PathFinderManager.tileList[i, J].haveBuilding == true)
                     {
-                        // inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log2"),new Vector3(PathFinderManager.tileList[i,J].centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(PathFinderManager.tileList[i,J].centerPosition.X,PathFinderManager.tileList[i,J].centerPosition.Y),PathFinderManager.tileList[i,J].centerPosition.Y),Vector3.Zero,new Vector3(1f,0.3f,1f),device,light)));
+                        inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log2"),new Vector3(PathFinderManager.tileList[i,J].centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(PathFinderManager.tileList[i,J].centerPosition.X,PathFinderManager.tileList[i,J].centerPosition.Y),PathFinderManager.tileList[i,J].centerPosition.Y),Vector3.Zero,new Vector3(1f,0.3f,1f),device,light)));
                     }
                 }
             }
@@ -407,14 +408,16 @@ GraphicsDevice);
 
 
 
-            IModel.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(2f), GraphicsDevice, light)), curvesForLaser[0]));
-            timeTriggers.Add(new LaserTrigger((Laser)IModel[IModel.Count - 1], 1));
+
             Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
 
             #region trigger end game
             theEnd = new Trigger((new LoadModel(Content.Load<Model>("Models/endNode"), new Vector3(2600, 40, 2600), new Vector3(0), new Vector3(4f), GraphicsDevice, light)));
             IModel.Add(theEnd);
             #endregion
+
+            IModel.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(2f), GraphicsDevice, light)), curvesForLaser[0]));
+            timeTriggers.Add(new LaserTrigger((Laser)IModel[IModel.Count - 1], 1));
 
             control = new Logic.Control(texture[11], quadTree[0]);
             gui = new MainGUI(StaticHelpers.StaticHelper.Content, control,models);
@@ -435,6 +438,13 @@ GraphicsDevice);
                 if (m is Laser || m is GrassHopperBuilding || m is BeetleBuilding)
                     miniMap.addObjects(m);
                 }
+            intro = new List<Texture2D>();
+            intro.Add( Content.Load<Texture2D>("Textures/1"));
+            intro.Add(Content.Load<Texture2D>("Textures/2"));
+            intro.Add(Content.Load<Texture2D>("Textures/3"));
+            intro.Add(Content.Load<Texture2D>("Textures/4"));
+
+            _intro = intro[0];
         }
 
 
@@ -458,6 +468,7 @@ GraphicsDevice);
 
             currentMouseState = Mouse.GetState();
             KeyboardState keyState = Keyboard.GetState();
+            if(startGame==true)   {
             if (StaticHelpers.StaticHelper.pause == false)
             {
                 if (Microsoft.Xna.Framework.Media.MediaPlayer.State.Equals(Microsoft.Xna.Framework.Media.MediaState.Stopped))
@@ -623,7 +634,6 @@ GraphicsDevice);
                     if (models[i].Hp <= 0 && models[i] is Unit)
                     {
 
-                        Console.WriteLine("Zjadl " + models[i].GetType());
 
                         if (models[i].GetType() == typeof(SunDew))
                         {
@@ -712,7 +722,19 @@ GraphicsDevice);
                 tree.Update(gameTime);
             }
             camera.Update(gameTime);
+        }
+                 if(licznik==4)
+                {
+                    startGame = true;
+                }
+                 else if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter) && lasKeyState.IsKeyUp(Microsoft.Xna.Framework.Input.Keys.Enter))
+                     {
 
+                         
+                         _intro = intro[licznik];
+                         licznik++;
+                     }
+                 lasKeyState = keyState;
             base.Update(gameTime);
 
         }
@@ -742,7 +764,6 @@ GraphicsDevice);
             //device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
 
 
-            licznik = 0;
 
             RasterizerState rs = new RasterizerState();
             rs.CullMode = CullMode.None;
@@ -939,7 +960,9 @@ GraphicsDevice);
             {
                 control.selectedObjectMouseOnlyMove.DrawSelected((FreeCamera)camera);
             }
-            spriteBatch.Begin();
+            if (startGame == true) {
+                spriteBatch.Begin();
+
             MouseState current_mouse = Mouse.GetState();
             Vector2 pos = new Vector2(current_mouse.X, current_mouse.Y);
             spriteBatch.DrawString(StaticHelpers.StaticHelper._spr_font, string.Format(" {0}", pos), new Vector2(100.0f, 100.0f), Color.Pink);
@@ -975,8 +998,9 @@ GraphicsDevice);
                  
             }
 
+
             spriteBatch.End();
-           
+
             foreach(InteractiveModel model in models)
             {
                 if (model.GetType() == typeof(Beetle))
@@ -994,7 +1018,15 @@ GraphicsDevice);
                     model.DrawOpaque((FreeCamera)camera, 0.4f, model.Model);
                 }
             }
-              
+            }
+            else
+            {
+                spriteBatch.Begin();
+                spriteBatch.Draw(_intro, new Rectangle(0, 0, 1366, 768), Color.White);
+                spriteBatch.End();
+            }
+
+
             base.Draw(gameTime);
 
 
@@ -1164,6 +1196,8 @@ GraphicsDevice);
         public float _elapsed_time2 { get; set; }
 
         public MiniMap miniMap { get; set; }
+
+        public KeyboardState lasKeyState { get; set; }
     }
 }
 

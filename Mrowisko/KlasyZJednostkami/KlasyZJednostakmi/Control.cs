@@ -427,36 +427,36 @@ namespace Logic
                }
            }
             #endregion
-           #region TRANSPORTOWIEC
-           if (currentKeyboardState.IsKeyDown(Keys.R) && lastKeyboardState.IsKeyUp(Keys.R))
-           {
-               if (SelectedModels.Count >= 2)
-               {
-                   models.Add(new Transporter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/log2"), SelectedModels[0].Model.Position, Vector3.Zero, Vector3.One, StaticHelpers.StaticHelper.Device, SelectedModels[0].Model.light),SelectedModels));
+           //#region TRANSPORTOWIEC
+           //if (currentKeyboardState.IsKeyDown(Keys.R) && lastKeyboardState.IsKeyUp(Keys.R))
+           //{
+           //    if (SelectedModels.Count >= 2)
+           //    {
+           //        models.Add(new Transporter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/log2"), SelectedModels[0].Model.Position, Vector3.Zero, Vector3.One, StaticHelpers.StaticHelper.Device, SelectedModels[0].Model.light),SelectedModels));
 
-                   //foreach(InteractiveModel model in models)
-                   for (int i = 0; i < models.Count; i++)
-                   {
-                       foreach (InteractiveModel m in SelectedModels)
-                       {
-                           if (m == models[i])
-                           {
-                               models.Remove(models[i]);
-                           }
-                       }
-                   }
-               }
-           }
+           //        //foreach(InteractiveModel model in models)
+           //        for (int i = 0; i < models.Count; i++)
+           //        {
+           //            foreach (InteractiveModel m in SelectedModels)
+           //            {
+           //                if (m == models[i])
+           //                {
+           //                    models.Remove(models[i]);
+           //                }
+           //            }
+           //        }
+           //    }
+           //}
 
-           if (currentKeyboardState.IsKeyDown(Keys.T) && lastKeyboardState.IsKeyUp(Keys.T))
-           {
-               if (SelectedModels.Count == 1 && SelectedModels[0].GetType() == typeof(Transporter))
-               {
-                   SelectedModels[0].releaseAnts(ref models);
-               }
+           //if (currentKeyboardState.IsKeyDown(Keys.T) && lastKeyboardState.IsKeyUp(Keys.T))
+           //{
+           //    if (SelectedModels.Count == 1 && SelectedModels[0].GetType() == typeof(Transporter))
+           //    {
+           //        models.AddRange(SelectedModels[0].releaseAnts());
+           //    }
 
-           }
-           #endregion
+           //}
+           //#endregion
 
            if (formation!=null)
             {
