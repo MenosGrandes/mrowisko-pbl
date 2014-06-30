@@ -345,7 +345,7 @@ namespace Logic
                 {
                     SelectedModels[0].transportTarget = mouse3d2;
                 }
-                else
+                else 
                 {
 
                 if (SelectedModels.Count > 0)
@@ -368,6 +368,7 @@ namespace Logic
                                     endNode = PathFinderManagerNamespace.PathFinderManager.getNodeIntersected(mouseRay);
                                 }
                             }
+                           
                             endNode = unit.MyNode;
                             targetSet = true;
                            // Console.WriteLine("weszlo w pajaka");
@@ -445,6 +446,15 @@ namespace Logic
                        }
                    }
                }
+           }
+
+           if (currentKeyboardState.IsKeyDown(Keys.T) && lastKeyboardState.IsKeyUp(Keys.T))
+           {
+               if (SelectedModels.Count == 1 && SelectedModels[0].GetType() == typeof(Transporter))
+               {
+                   SelectedModels[0].releaseAnts(ref models);
+               }
+
            }
            #endregion
 

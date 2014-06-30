@@ -42,7 +42,7 @@ namespace Logic
         {
             base.Draw(camera, time);
         }
-        public void releaseAnts(ref List<InteractiveModel> models)
+        public override void releaseAnts(ref List<InteractiveModel> models)
         {
             models.AddRange(transportAnt);
 
