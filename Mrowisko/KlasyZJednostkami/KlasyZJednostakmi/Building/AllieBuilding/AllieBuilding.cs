@@ -22,5 +22,9 @@ namespace Logic.Building.AllieBuilding
                     hasBeenVisited = true;
             }
         }
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
     }
 }

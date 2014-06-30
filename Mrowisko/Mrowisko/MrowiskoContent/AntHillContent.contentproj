@@ -519,13 +519,13 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Models\h4.FBX">
-      <Name>h4</Name>
+    <Compile Include="Models\kopiec_lisci.FBX">
+      <Name>kopiec_lisci</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Models\kopiec_lisci.FBX">
-      <Name>kopiec_lisci</Name>
+    <Compile Include="Models\h4_b.FBX">
+      <Name>h4_b</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -1024,6 +1024,13 @@
     </Compile>
     <Compile Include="Models\liście1.jpg">
       <Name>liście1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\h4_t.jpg">
+      <Name>h4_t</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

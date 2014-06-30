@@ -39,6 +39,7 @@ namespace Logic.Units.Allies
             this.modelHeight = 28;
             this.strength = 5;
             this.armor = 20;
+            this.model.switchAnimation("Idle");
         }
         public GrassHopper()
             : base()
