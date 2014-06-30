@@ -17,6 +17,7 @@ namespace StaticHelpers
 
         public static SpriteFont _spr_font;
         public static bool pause = false;
+        public static bool buffOn = false;
         public static ContentManager Content;
         public static GraphicsDevice Device;
         public static GraphicsDeviceManager DeviceManager;
