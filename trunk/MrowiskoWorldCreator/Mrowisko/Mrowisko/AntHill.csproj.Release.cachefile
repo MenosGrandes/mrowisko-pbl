@@ -24,6 +24,7 @@ Content\Models\h3.xnb
 Content\Models\apple_pack.xnb
 Content\Models\buildRing.xnb
 Content\Models\kopiec_lisci.xnb
+Content\Models\h4.xnb
 Content\Textures\Ground\sand.xnb
 Content\Textures\Ground\snow.xnb
 Content\HeighMaps\treeMap.xnb
@@ -122,6 +123,7 @@ Content\uzi_diffuse_0.xnb
 Content\Models\h3_tex_0.xnb
 Content\Models\apfel_tex_0.xnb
 Content\Models\buildRing_tex_0.xnb
+Content\Models\h4_t_0.xnb
 Content\Models\SkyDome\cloudMap_0.xnb
 Content\Models\spiderUVW_0.xnb
 Content\Models\diffuse_map_0.xnb
@@ -134,5 +136,3 @@ Content\Models\temp_0.xnb
 Content\Models\body_diffuse_0.xnb
 Content\Models\crownDiffuseMap_0.xnb
 Content\Models\mrowka_diffuse_map_0.xnb
-Content\Models\h4.xnb
-Content\Models\h4_t_0.xnb
