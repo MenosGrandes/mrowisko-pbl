@@ -201,9 +201,9 @@ namespace Logic
             
         }
 
-        public virtual void releaseAnts(ref List<InteractiveModel> models)
+        public virtual List<Unit> releaseAnts()
         {
-           
+            return new List<Unit>();
 
         }
 

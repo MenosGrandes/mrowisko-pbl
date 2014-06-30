@@ -71,7 +71,7 @@ namespace Controlers
                        case "Log":
 
                           Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//apple_pack"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
-                           g.Model.BuildBoundingSphereMaterial();
+                           g.Model.BuildBoundingSphereMaterial(3);
                            listOfAllInteractiveModelsFromFile.Add(g);
 
                            break;

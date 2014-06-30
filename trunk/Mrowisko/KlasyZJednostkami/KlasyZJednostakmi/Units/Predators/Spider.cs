@@ -88,13 +88,13 @@ namespace Logic.Units.Predators
                 }
             }
           
-
+           
             for(int i=0;i<Ants.Count;i++)
             {
 
                 float spr = Vector2.Distance(new Vector2(Ants[i].Model.Position.X, Ants[i].Model.Position.Z), new Vector2(this.Model.Position.X, this.Model.Position.Z));
                // Console.WriteLine(spr +" "+ Ants[i].GetType());
-                if (spr <= range && snared < snared_max && Ants[i].Model.snr==false && !(Ants[i] is Predator))
+                if (spr <= range && snared < snared_max && Ants[i].Model.snr == false && !(Ants[i] is Predator) && !(Ants[i] is Laser))
                 {
                     
                         Ants[i].Model.snr = true;
@@ -148,7 +148,7 @@ namespace Logic.Units.Predators
             if (counter==0 && Vector2.Distance(new Vector2(this.Model.Position.X, this.Model.Position.Z), new Vector2(this.home.X, this.home.Z)) > this.model.BoundingSphere.Radius)
             {
                 this.model.switchAnimation("Walk");
-               // this.reachTargetAutonomus(gameTime, this.home);
+               this.reachTargetAutonomus(gameTime, this.home);
                 this.model.Rotation = new Vector3(this.model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(this.model.Position.X, this.model.Position.Z), new Vector2(this.home.X, this.home.Z), this.model.Rotation.Y, 1.05f), model.Rotation.Z);
 
             }

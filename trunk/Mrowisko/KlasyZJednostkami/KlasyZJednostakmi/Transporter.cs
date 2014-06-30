@@ -33,18 +33,14 @@ namespace Logic
             base.Update(time);
             MyNode = this.getMyNode();
 
-            if(transportAnt.Count==2)
-            {
-                Console.WriteLine("TRANSFORM");
-            }
         }
         public override void Draw(GameCamera.FreeCamera camera, float time)
         {
             base.Draw(camera, time);
         }
-        public override void releaseAnts(ref List<InteractiveModel> models)
+        public override List<Unit> releaseAnts()
         {
-            models.AddRange(transportAnt);
+            return transportAnt;
 
         }
         public override void DrawSelected(GameCamera.FreeCamera camera)
