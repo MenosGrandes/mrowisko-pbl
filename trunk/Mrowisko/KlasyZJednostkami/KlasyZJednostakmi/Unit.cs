@@ -228,7 +228,7 @@ namespace Logic
                 if (this.foe.Hp > 0 && this.hasBeenHit)
                 {
                     this.target = foe;
-                    attacking = true;
+                    //attacking = true;
                     model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), new Vector2(this.foe.Model.Position.X, this.foe.Model.Position.Z), model.Rotation.Y, 1.05f), model.Rotation.Z);
                 }
                 else
@@ -404,7 +404,7 @@ namespace Logic
           
 
                
-                if (Vector2.Distance(new Vector2(Model.Position.X, Model.Position.Z), new Vector2(Model.playerTarget.X, Model.playerTarget.Z)) < 1)
+                if (Vector2.Distance(new Vector2(Model.Position.X, Model.Position.Z), new Vector2(target.X, target.Z)) < 1)
                 {
                     ImMoving = false;
                     

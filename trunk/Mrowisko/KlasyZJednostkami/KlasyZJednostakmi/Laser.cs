@@ -46,7 +46,7 @@ namespace Logic
                          if (this.model.Spheres[0].Intersects(interactive.Model.BoundingSphere))
                          {
                              interactive.Hp -= (int)1;
-                             ((Unit)interactive).LifeBar.LifeLength -= ((Unit)interactive).LifeBar.LifeLength * (1 / interactive.MaxHp);
+                             ((Unit)interactive).LifeBar.LifeLength = ((Unit)interactive).LifeBar.LifeLength - ((Unit)interactive).LifeBar.LifeLength * ((float)5 / interactive.MaxHp);
                          }
                  
         }
@@ -60,7 +60,7 @@ namespace Logic
              if (canStart == false)
              { return; }
              time += (float)_time.ElapsedGameTime.TotalMilliseconds;
-             model.Position = movementPath.GetPointOnCurve(time);
+             model.Position = new Vector3(movementPath.GetPointOnCurve(time).X, StaticHelpers.StaticHelper.GetHeightAt(movementPath.GetPointOnCurve(time).X, movementPath.GetPointOnCurve(time).Z), movementPath.GetPointOnCurve(time).Z);
          }
         public void Start()
          {

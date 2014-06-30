@@ -388,8 +388,7 @@ GraphicsDevice);
 
             // models.Add(new AntPeasant(new LoadModel(Content.Load<Model>("Models/ant"), new Vector3(100, 40, 10), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light)));
 
-            IModel.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(1f), GraphicsDevice, light)), curvesForLaser[0]));
-            timeTriggers.Add(new LaserTrigger((Laser)IModel[IModel.Count - 1], 1));
+           
 
             Console.WriteLine("QuadNode: " + QuadNodeController.QuadNodeList.Count);
 
@@ -397,7 +396,8 @@ GraphicsDevice);
 
             IModel.Add(new BeetleBuilding(new LoadModel(Content.Load<Model>("Models/h3"), new Vector3(700, 40, 900), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
 
-
+            IModel.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(1f), GraphicsDevice, light)), curvesForLaser[0]));
+            timeTriggers.Add(new LaserTrigger((Laser)IModel[IModel.Count - 1], 1));
             Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
 
 
@@ -472,14 +472,14 @@ GraphicsDevice);
                 kolizja = false;
 
 
-                //if (timeTriggers.Count<1)
-                //{
-                //    UpdateFire();
-                //  //  UpdateExplosions(gameTime);
+                if (timeTriggers.Count<1)
+                {
+                    UpdateFire();
+                  //  UpdateExplosions(gameTime);
 
-                //   // UpdateProjectiles(gameTime);
+                   // UpdateProjectiles(gameTime);
 
-                //}
+                }
 
 
 
@@ -1066,7 +1066,7 @@ GraphicsDevice);
             float z = (float)Math.Cos(angle2);
 
 
-            return new Vector3(models[models.Count - 1].Model.Position.X + x * radius, models[models.Count - 1].Model.Position.Y - (y * radius + height), models[models.Count - 1].Model.Position.Z + z * radius);
+            return new Vector3(IModel[IModel.Count - 1].Model.Position.X + x * radius, IModel[IModel.Count - 1].Model.Position.Y - (y * radius + height), IModel[IModel.Count - 1].Model.Position.Z + z * radius);
         }
 
         Vector3 RandomPointOnCircleBuilding(InteractiveModel building)
