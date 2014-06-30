@@ -597,22 +597,22 @@ namespace GUI
 
                 case ATTACK_ANT_BUTTON_IDX:
                     if (Player.dicentra >= 20 && ((selectedModel.GetType() == typeof(DicentraFarm))))
-                    {
-                        modelsFromMain.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), RandomPointOnCircleBuilding(selectedModel), new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
+                    {    Vector3 modelPos=RandomPointOnCircleBuilding(selectedModel);
+                        modelsFromMain.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), modelPos, new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
 
                         Player.removeMaterial(20, typeof(Dicentra));
                     }
                     break;
                 case DEFENCE_ANT_BUTTON_IDX:
                     if (Player.chelidonium >= 20 && ((selectedModel.GetType() == typeof(ChelidoniumFarm))))
-                    {
-                        modelsFromMain.Add(new StrongAnt(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/strongAnt"), RandomPointOnCircleBuilding(selectedModel), new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
+                    {   Vector3 modelPos=RandomPointOnCircleBuilding(selectedModel);
+                    modelsFromMain.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/plujka"), modelPos, new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
                         Player.removeMaterial(20, typeof(Chelidonium));
                     } break;
                 case RUN_ANT_BUTTON_IDX:
                     if (Player.hyacynt >= 20 && ((selectedModel.GetType() == typeof(HyacyntFarm))))
-                    {
-                        modelsFromMain.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/plujka"), RandomPointOnCircleBuilding(selectedModel), new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
+                    {   Vector3 modelPos=RandomPointOnCircleBuilding(selectedModel);
+                    modelsFromMain.Add(new StrongAnt(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/strongAnt"), new Vector3( modelPos.X,modelPos.Y,modelPos.Z), new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
                         Player.removeMaterial(20, typeof(Hyacynt));
                     } break;
 
@@ -671,6 +671,7 @@ namespace GUI
                 case OPTIONS_T_BUTTON_IDX:
                     break;
                 case EXIT_T_BUTTON_IDX:
+                    if(mainMenuOn)
                     exit = true;
                     break;
                 default:
@@ -688,7 +689,7 @@ namespace GUI
             float z = (float)Math.Cos(angle);
 
 
-            return new Vector3(building.Model.Position.X + x * building.Model.BoundingSphere.Radius, StaticHelpers.StaticHelper.GetHeightAt(building.Model.Position.X + x * building.Model.BoundingSphere.Radius, building.Model.Position.Z + z * building.Model.BoundingSphere.Radius), building.Model.Position.Z + z * building.Model.BoundingSphere.Radius);
+            return new Vector3(building.Model.Position.X + x * building.Model.BoundingSphere.Radius+50, StaticHelpers.StaticHelper.GetHeightAt(building.Model.Position.X + x * building.Model.BoundingSphere.Radius+50, building.Model.Position.Z + z * building.Model.BoundingSphere.Radius+50), building.Model.Position.Z + z * building.Model.BoundingSphere.Radius+50);
         }
     }
 }

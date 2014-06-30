@@ -16,15 +16,15 @@ namespace Logic
         public Curve curveY = new Curve();
         public Curve curveZ = new Curve();
 
-        public Curve3D(List<PointInTime>points)
+        public Curve3D(List<PointInTime>points,CurveLoopType type)
         {
-            curveX.PostLoop = CurveLoopType.Constant;
-            curveY.PostLoop = CurveLoopType.Constant;
-            curveZ.PostLoop = CurveLoopType.Constant;
+            curveX.PostLoop = type  ;
+            curveY.PostLoop = type;
+            curveZ.PostLoop = type ;
 
-            curveX.PreLoop = CurveLoopType.Constant;
-            curveY.PreLoop = CurveLoopType.Constant;
-            curveZ.PreLoop = CurveLoopType.Constant;
+            curveX.PreLoop = type ;
+            curveY.PreLoop = type;
+            curveZ.PreLoop = type;
            foreach(PointInTime point in points)
            {
                AddPoint(point);

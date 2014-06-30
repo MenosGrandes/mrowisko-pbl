@@ -38,19 +38,17 @@ namespace Logic
 
         public override void Intersect(InteractiveModel interactive)
         { 
-                 if(this==interactive)
+                 if(this==interactive || !interactive.GetType().IsSubclassOf(typeof(Unit)))
             { return ; }
-                 foreach (BoundingSphere b in model.Spheres)
-                 {
-
-                     foreach (BoundingSphere b2 in interactive.Model.Spheres)
-                     {
 
 
-                         if (b.Intersects(b2))
-                         { }
-                     }
-                 }
+
+                         if (this.model.Spheres[0].Intersects(interactive.Model.BoundingSphere))
+                         {
+                             interactive.Hp -= (int)1;
+                             ((Unit)interactive).LifeBar.LifeLength -= ((Unit)interactive).LifeBar.LifeLength * (1 / interactive.MaxHp);
+                         }
+                 
         }
          public override void Draw( GameCamera.FreeCamera camera)
         {  if(canStart==false)

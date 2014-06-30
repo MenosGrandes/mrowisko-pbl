@@ -114,10 +114,6 @@ namespace Logic.Units.Ants
             circle.CreateBillboardVerticesFromList(model.Position + new Vector3(-2, 0.1f, -0.1f) * model.Scale * 50);
             circle.healthDraw(camera);
         }
-        public override string ToString()
-        {
-            return this.GetType().Name + " " + armor;
-        }
 
       
             public override void Intersect(InteractiveModel interactive)
@@ -130,7 +126,6 @@ namespace Logic.Units.Ants
                     {
 
                         Hit(interactive);
-                        Console.WriteLine(interactive.ToString());
                         
                     }
                  
@@ -160,6 +155,10 @@ namespace Logic.Units.Ants
             public override void Draw(GameCamera.FreeCamera camera)
             {
                 model.Draw(camera);
+            }
+            public override string ToString()
+            {
+                return GetType().Name + " " + hp;
             }
         }
      
