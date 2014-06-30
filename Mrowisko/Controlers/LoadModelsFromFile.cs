@@ -1,5 +1,6 @@
 ﻿using Logic;
 using Logic.Building;
+using Logic.Building.AllieBuilding;
 using Logic.Building.AntBuildings.Granary;
 using Logic.EnviroModel;
 using Logic.Meterials.MaterialCluster;
@@ -69,16 +70,16 @@ namespace Controlers
                           break;
                        case "Log":
 
-                           Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//log"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
-                         //  g.Model.BuildBoundingSphereMaterial();
+                           Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//h3"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
+                           g.Model.BuildBoundingSphereMaterial();
                            listOfAllInteractiveModelsFromFile.Add(g);
 
                            break;
                        case "Rock":
 
 
-                           Rock q = new Rock(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//stone2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Rock)model).ClusterSize);
-                         //   q.Model.BuildBoundingSphereMaterial()  ;
+                           Rock q = new Rock(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//apple_pack"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Rock)model).ClusterSize);
+                            q.Model.BuildBoundingSphereMaterial(2)  ;
                            listOfAllInteractiveModelsFromFile.Add(q);
 
 
@@ -88,8 +89,8 @@ namespace Controlers
                        case "BuildingPlace":
 
 
-                           BuildingPlace w = new BuildingPlace( new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//buildingPlace"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
-                         //  w.Model.BuildBoundingSphereMaterial();
+                           BuildingPlace w = new BuildingPlace(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//buildRing"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
+                          w.Model.BuildBoundingSphereMaterial();
 
                            listOfAllInteractiveModelsFromFile.Add(w);
 
@@ -204,6 +205,22 @@ namespace Controlers
                            // c1.Model.CreateBoudingBox();
                            beetle.Model.switchAnimation("Idle");
                            listOfAllInteractiveModelsFromFile.Add(beetle);
+
+                           break;
+                       case "BeetleBuilding":
+
+                           BeetleBuilding bb = new BeetleBuilding(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//beetle"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
+                           //   beetle.sfereModel.Model.Scale = new Vector3(33);
+                           // c1.Model.CreateBoudingBox();
+                           listOfAllInteractiveModelsFromFile.Add(bb);
+
+                           break;
+                       case "GrassHopperBuilding":
+
+                           GrassHopperBuilding ghb = new GrassHopperBuilding(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//beetle"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,  _light));
+                           //   beetle.sfereModel.Model.Scale = new Vector3(33);
+                           // c1.Model.CreateBoudingBox();
+                           listOfAllInteractiveModelsFromFile.Add(ghb);
 
                            break;
                    

@@ -241,7 +241,7 @@ namespace Logic
             this.boundingSphere = new BoundingSphere(sphere.Center, sphere.Radius);
             this.spheres=spheres2;
         }
-        public void BuildBoundingSphereMaterial()
+        public void BuildBoundingSphereMaterial(int divide=1)
         {
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
             List<BoundingSphere> spheres2 = new List<BoundingSphere>();
@@ -250,7 +250,7 @@ namespace Logic
             {
                 BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
 
-                spheres2.Add(new BoundingSphere(transformed.Center, transformed.Radius/4 ));
+                spheres2.Add(new BoundingSphere(transformed.Center, transformed.Radius/divide ));
                 sphere = BoundingSphere.CreateMerged(sphere, transformed);
 
             }
