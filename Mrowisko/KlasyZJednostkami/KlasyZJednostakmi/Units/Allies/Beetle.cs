@@ -30,6 +30,7 @@ namespace Logic.Units.Allies
     }
         public Beetle(LoadModel model,List<InteractiveModel>ants):base(model)
         {
+
             sfereModel=new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/sferazuka"),model.Position,Vector3.Zero,new Vector3(4.5f),StaticHelpers.StaticHelper.Device,model.light));
             Scope = 300;
             ArmorBuffValue = 100;
@@ -67,10 +68,12 @@ namespace Logic.Units.Allies
         }
         public override void DrawOpaque(GameCamera.FreeCamera camera, float Alpha,LoadModel model2)
          {
- 	         
-             StaticHelpers.StaticHelper.Device.BlendState = BlendState.AlphaBlend;
-             base.DrawOpaque(camera, Alpha,model2);
-             StaticHelpers.StaticHelper.Device.BlendState = BlendState.Opaque;
+             if (StaticHelpers.StaticHelper.buffOn)
+             {
+                 StaticHelpers.StaticHelper.Device.BlendState = BlendState.AlphaBlend;
+                 base.DrawOpaque(camera, Alpha, model2);
+                 StaticHelpers.StaticHelper.Device.BlendState = BlendState.Opaque;
+             }
 
         }
 
@@ -89,15 +92,17 @@ namespace Logic.Units.Allies
         {
             base.Update(time);
             sfereModel.Model.Position = this.model.Position;
-                foreach(InteractiveModel model2 in Ants)
+            if (StaticHelpers.StaticHelper.buffOn)
+            {
+                foreach (InteractiveModel model2 in Ants)
                 {
                     if (Ants.GetType() == typeof(AntSpitter) || Ants.GetType() == typeof(AntPeasant))
                     {
                         continue;
                     }
-                    float lenght = Vector2.Distance(new Vector2(model2.Model.Position.X,model2.Model.Position.Z),new Vector2(Model.Position.X,Model.Position.Z));
+                    float lenght = Vector2.Distance(new Vector2(model2.Model.Position.X, model2.Model.Position.Z), new Vector2(Model.Position.X, Model.Position.Z));
                     //float lenght = (float)Math.Sqrt(Math.Pow(model.Model.Position.X - this.Model.Position.X, 2.0f) + Math.Pow(model.Model.Position.Z - this.Model.Position.Z, 2.0f));
-                    if (lenght <= Scope )
+                    if (lenght <= Scope)
                     {
                         model2.ArmorBuff = true;
                     }
@@ -108,6 +113,7 @@ namespace Logic.Units.Allies
                     }
 
                 }
+            }
 
 
         }

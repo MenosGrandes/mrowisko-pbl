@@ -61,6 +61,7 @@ namespace Logic
         MouseState currentMouseState, lastMouseState;
         KeyboardState currentKeyboardState;
         private bool mouseDown;
+        
         private Vector3 startRectangle;
         private Vector3 endRectangle;
         public Vector3 mouse3d2;
@@ -73,6 +74,8 @@ namespace Logic
         }
         public void Update(GameTime gameTime)
         {
+           
+
 
               if(selectedObject!=null)
               {
@@ -108,7 +111,17 @@ namespace Logic
             mouseRay = GetMouseRay(new Vector2(currentMouseState.X, currentMouseState.Y));
 
 
-            
+            if (lastKeyboardState.IsKeyUp(Keys.B) && currentKeyboardState.IsKeyDown(Keys.B))
+            {
+                if (StaticHelpers.StaticHelper.buffOn)
+                {
+                    StaticHelpers.StaticHelper.buffOn = false;
+                }
+                else
+                {
+                    StaticHelpers.StaticHelper.buffOn = true;
+                }
+            }
             
             
             Vector3 mouse3d2 = QuadNodeController.getIntersectedQuadNode(mouseRay);

@@ -44,6 +44,7 @@ namespace Logic
         public float temp_time;
         public bool selectable = true;
         public bool raisingBuilding = false;
+       
         public InteractiveModel target;
         public InteractiveModel foe;
 

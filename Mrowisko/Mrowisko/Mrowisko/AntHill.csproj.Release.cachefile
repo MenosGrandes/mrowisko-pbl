@@ -102,6 +102,8 @@ Content\Models\leaftexture.xnb
 Content\Models\patyk_tex.xnb
 Content\Models\apfel_tex_schemed.xnb
 Content\Models\h4_tex.xnb
+Content\Models\grass_tex.xnb
+Content\Models\liście1.xnb
 Content\Models\SkyDome\dome.xnb
 Content\Models\ant.xnb
 Content\Models\grasshopper.xnb
@@ -152,6 +154,7 @@ Content\Models\tree2.xnb
 Content\Models\log2.xnb
 Content\Models\h3.xnb
 Content\Models\h4.xnb
+Content\Models\kopiec_lisci.xnb
 Content\Sounds\s1.xnb
 Content\Sounds\s2.xnb
 Content\Sounds\Gater.xnb
@@ -194,9 +197,6 @@ Content\Models\apfel_tex_0.xnb
 Content\Models\apfel_tex_schemed_0.xnb
 Content\Models\patyk_tex_0.xnb
 Content\Models\h4_tex_0.xnb
-Content\Models\grass_tex.xnb
-Content\Models\liście1.xnb
-Content\Models\kopiec_lisci.xnb
 Content\Models\licie1_0.xnb
 Content\Models\grass_tex_0.xnb
 Content\Songs\Escape.wma
