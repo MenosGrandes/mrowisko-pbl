@@ -30,8 +30,8 @@ namespace Logic.Units.Allies
     }
         public Beetle(LoadModel model,List<InteractiveModel>ants):base(model)
         {
-            sfereModel=new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/sferazuka"),model.Position,Vector3.Zero,Vector3.One,StaticHelpers.StaticHelper.Device,model.light));
-            Scope = 100;
+            sfereModel=new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/sferazuka"),model.Position,Vector3.Zero,new Vector3(4.5f),StaticHelpers.StaticHelper.Device,model.light));
+            Scope = 300;
             ArmorBuffValue = 100;
             this.Ants = ants;
             LifeBar.LifeLength = model.Scale.X * 100;
@@ -43,12 +43,13 @@ namespace Logic.Units.Allies
             this.MaxHp = 100;
             this.strength = 10;
             model.switchAnimation("Idle");
+            
         }
         public Beetle(LoadModel model)
             : base(model)
         {
-            sfereModel = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/sferazuka"), model.Position, Vector3.Zero, Vector3.One, StaticHelpers.StaticHelper.Device, model.light));
-            Scope = 100;
+            sfereModel = new InteractiveModel(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/sferazuka"), model.Position, Vector3.Zero, new Vector3(4.5f), StaticHelpers.StaticHelper.Device, model.light));
+            Scope = 300;
             ArmorBuffValue = 100;
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
@@ -87,21 +88,22 @@ namespace Logic.Units.Allies
         public override void Update(GameTime time)
         {
             base.Update(time);
-          
-                foreach(InteractiveModel model in Ants)
+            sfereModel.Model.Position = this.model.Position;
+                foreach(InteractiveModel model2 in Ants)
                 {
                     if (Ants.GetType() == typeof(AntSpitter) || Ants.GetType() == typeof(AntPeasant))
                     {
                         continue;
                     }
-                    float lenght = (float)Math.Sqrt(Math.Pow(model.Model.Position.X - this.Model.Position.X, 2.0f) + Math.Pow(model.Model.Position.Z - this.Model.Position.Z, 2.0f));
+                    float lenght = Vector2.Distance(new Vector2(model2.Model.Position.X,model2.Model.Position.Z),new Vector2(Model.Position.X,Model.Position.Z));
+                    //float lenght = (float)Math.Sqrt(Math.Pow(model.Model.Position.X - this.Model.Position.X, 2.0f) + Math.Pow(model.Model.Position.Z - this.Model.Position.Z, 2.0f));
                     if (lenght <= Scope )
                     {
-                        model.ArmorBuff = true;
+                        model2.ArmorBuff = true;
                     }
                     else
                     {
-                        model.ArmorBuff = false;
+                        model2.ArmorBuff = false;
 
                     }
 

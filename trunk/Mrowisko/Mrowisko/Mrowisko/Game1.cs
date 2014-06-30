@@ -565,12 +565,28 @@ GraphicsDevice);
                     {
                         models[i].Intersect(IModel[kj]);
 
+                        IModel[kj].Intersect(models[i]);
+                        
                     }
-                    foreach(InteractiveModel m in IModel)
+
+                    if (models[i] is AntSpitter)
                     {
-                        if(m is Laser || m.GetType().IsSubclassOf(typeof(AllieBuilding)))
+                        foreach (InteractiveModel m in models)
+                        {  if(Vector2.Distance(new Vector2(m.Model.Position.X,m.Model.Position.Z),new Vector2(models[i].Model.Position.X,models[i].Model.Position.Z))>200 && !m.GetType().IsSubclassOf(typeof(Predator)) )
                         {
-                            m.Intersect(models[i]);
+                            continue;
+                        }
+                            models[i].Intersect(m);
+                        }
+                        foreach (Vector4 pos in models[i].spitPos())
+                        {
+                            // if()
+                            Vector3 tmpPos = new Vector3(pos.X, pos.Y, pos.Z);
+                            if (pos.W == 0)
+                                UpdateSpit(tmpPos, false);
+                            else
+                                UpdateSpit(tmpPos, true);
+
                         }
                     }
 
@@ -708,7 +724,7 @@ GraphicsDevice);
 
 
 
-
+            #region shadow
             foreach (InteractiveModel model in models)
             {
 
@@ -767,7 +783,7 @@ GraphicsDevice);
 
             shadow.setShadowMap();
             device.SetRenderTarget(null);
-
+            #endregion shadow
 
             //  device.SetRenderTarget()
 
@@ -915,7 +931,7 @@ GraphicsDevice);
             gui.Draw(spriteBatch);
             miniMap.Draw(spriteBatch);
             spriteBatch.End();
-            /* 
+           
             foreach(InteractiveModel model in models)
             {
                 if(model.GetType()!=typeof(Beetle))
@@ -925,7 +941,7 @@ GraphicsDevice);
                 model.DrawOpaque((FreeCamera)camera, 0.1f, ((Beetle)model).sfereModel.Model);
 
             }
-               */
+              
             base.Draw(gameTime);
 
 

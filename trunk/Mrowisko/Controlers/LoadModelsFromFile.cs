@@ -190,7 +190,8 @@ namespace Controlers
                        case "GrassHopper":
 
                            GrassHopper gr1 = new GrassHopper(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//grasshopper"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,StaticHelpers.StaticHelper.Content, _light));
-                          
+                           gr1.Armor = 20;
+                           gr1.ArmorAfterBuff = 40;
                         // c1.Model.CreateBoudingBox();
                            gr1.Model.switchAnimation("Idle");
                            listOfAllInteractiveModelsFromFile.Add(gr1);
@@ -199,7 +200,7 @@ namespace Controlers
                        case "Beetle":
 
                            Beetle beetle = new Beetle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//beetle"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, _light));
-
+                        //   beetle.sfereModel.Model.Scale = new Vector3(33);
                            // c1.Model.CreateBoudingBox();
                            beetle.Model.switchAnimation("Idle");
                            listOfAllInteractiveModelsFromFile.Add(beetle);

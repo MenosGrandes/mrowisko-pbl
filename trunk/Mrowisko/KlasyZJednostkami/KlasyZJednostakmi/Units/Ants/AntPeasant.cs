@@ -51,7 +51,6 @@ namespace Logic.Units.Ants
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             circle.Scale = model.Scale.X * 10;
             this.Model.switchAnimation("Idle");
-            this.armorAfterBuff = armor * 2;
             this.modelHeight = 14;
            this.MaxHp = 100;
         }

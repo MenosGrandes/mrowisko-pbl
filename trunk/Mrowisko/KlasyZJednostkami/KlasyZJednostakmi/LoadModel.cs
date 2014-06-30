@@ -352,14 +352,13 @@ namespace Logic
         {
 
 
-            this.baseWorld = Matrix.CreateScale(Scale) * Matrix.CreateRotationX(Rotation.X)
-            * Matrix.CreateRotationY(Rotation.Y) *
-            Matrix.CreateRotationZ(Rotation.Z) *
-            Matrix.CreateTranslation(Position);
+            this.baseWorld = Matrix.CreateScale(model2.Scale) * Matrix.CreateRotationX(model2.Rotation.X)
+            * Matrix.CreateRotationY(model2.Rotation.Y) *
+            Matrix.CreateRotationZ(model2.Rotation.Z) *
+            Matrix.CreateTranslation(model2.Position);
             foreach (ModelMesh mesh in model2.Model.Meshes)
             {
-                if (!mesh.Name.Contains("Bounding"))
-                {
+                
                     Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
                    * baseWorld;
                     this.localWorld = localWorld;
@@ -393,7 +392,6 @@ namespace Logic
 
                     mesh.Draw();
                 }
-            }
         }
 
            /// <summary>

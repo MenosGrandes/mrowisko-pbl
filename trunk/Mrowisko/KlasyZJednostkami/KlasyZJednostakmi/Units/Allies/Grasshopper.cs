@@ -13,7 +13,6 @@ namespace Logic.Units.Allies
    {
 
         private float Scope;
-        private float ArmorBuffValue;
         private float time = 0.0f;
         public Curve3D jumpPath;
         public List<PointInTime> pointsForJump = new List<PointInTime>();
@@ -22,16 +21,15 @@ namespace Logic.Units.Allies
             : base(hp, armor, strength, range, cost, buildingTime, model, atackInterval)
     {
         this.Scope = Scope;
-        this.ArmorBuffValue = ArmorBuff;
         hp = 80;
         this.MaxHp = 80;
         this.modelHeight = 28;
         this.strength = 5;
+        this.armor = 20;
     }
         public GrassHopper(LoadModel model):base(model)
         {
             Scope = 100;
-            ArmorBuffValue = 100;
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
@@ -40,6 +38,7 @@ namespace Logic.Units.Allies
             this.MaxHp = 80;
             this.modelHeight = 28;
             this.strength = 5;
+            this.armor = 20;
         }
         public GrassHopper()
             : base()
@@ -71,7 +70,7 @@ namespace Logic.Units.Allies
         }
         public override string ToString()
         {
-            return this.GetType().Name + base.model.Selected;
+            return this.GetType().Name + " " + hp + "/" + maxHp + "\n" + armor;
         }
         public override void DrawSelected(GameCamera.FreeCamera camera)
         {

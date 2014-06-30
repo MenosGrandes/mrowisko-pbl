@@ -50,7 +50,7 @@ namespace Logic.Units.Predators
                     {
                         if (Ants[i] is Unit && !(Ants[i] is Predator))
                         {
-                            if (Vector2.Distance(new Vector2(this.Model.BoundingSphere.Center.X, this.Model.BoundingSphere.Center.Z), new Vector2(Ants[i].Model.BoundingSphere.Center.X, Ants[i].Model.BoundingSphere.Center.Z)) > this.Model.BoundingSphere.Radius * 1.5)
+                            if (Vector2.Distance(new Vector2(this.Model.BoundingSphere.Center.X, this.Model.BoundingSphere.Center.Z), new Vector2(Ants[i].Model.BoundingSphere.Center.X, Ants[i].Model.BoundingSphere.Center.Z)) > this.Model.BoundingSphere.Radius * 1.75)
                                 this.reachTargetAutonomus(gameTime, Ants[i].Model.Position);
                             else
                             {
