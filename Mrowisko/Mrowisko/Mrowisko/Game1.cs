@@ -370,9 +370,9 @@ GraphicsDevice);
 
 
 
-            //  models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(150, 40, 300), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+              models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(150, 40, 300), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
 
-            //   models[models.Count - 1].Model.switchAnimation("Idle");
+               models[models.Count - 1].Model.switchAnimation("Idle");
 
 
              models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/rosiczka"), new Vector3(120, 40, 120), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
