@@ -483,7 +483,7 @@ namespace GUI
             {
                 spriteBatch.Draw(button_texture[ATTACK_ANT_BUTTON_IDX], button_rectangle[ATTACK_ANT_BUTTON_IDX], button_color[ATTACK_ANT_BUTTON_IDX]);
             }
-            else if (hyacyntFarmOn == true)//panel ob³ugi jednostek
+            else if (hyacyntFarmOn == true || grassHopperBuildingOn == true)//panel ob³ugi jednostek
             {
                 spriteBatch.Draw(button_texture[DEFENCE_ANT_BUTTON_IDX], button_rectangle[DEFENCE_ANT_BUTTON_IDX], button_color[DEFENCE_ANT_BUTTON_IDX]);
             }
@@ -630,10 +630,10 @@ namespace GUI
 
                         Player.removeMaterial(20, typeof(Dicentra));
                     }
-                    if(selectedModel.GetType()==typeof(BeetleBuilding) && ((BeetleBuilding)selectedModel).hasBeenVisited==true &&Player.chelidonium>=200)
+                    else if(selectedModel.GetType()==typeof(BeetleBuilding) && ((BeetleBuilding)selectedModel).hasBeenVisited==true &&Player.chelidonium>=200)
                     {
                         Vector3 modelPos = RandomPointOnCircleBuilding(selectedModel);
-                        modelsFromMain.Add(new Beetle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/beetle"), modelPos, new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
+                        modelsFromMain.Add(new Beetle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/beetle"), modelPos, new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light),modelsFromMain));
                         Player.removeMaterial(200, typeof(Chelidonium));                                                                                                                                
                     }
                     break;
@@ -642,7 +642,15 @@ namespace GUI
                     {   Vector3 modelPos=RandomPointOnCircleBuilding(selectedModel);
                     modelsFromMain.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/plujka"), modelPos, new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
                         Player.removeMaterial(20, typeof(Chelidonium));
-                    } break;
+                    }
+                    else if (selectedModel.GetType() == typeof(GrassHopperBuilding) && ((GrassHopperBuilding)selectedModel).hasBeenVisited == true && Player.dicentra >= 200)
+                    {
+                        Vector3 modelPos = RandomPointOnCircleBuilding(selectedModel);
+                        modelsFromMain.Add(new GrassHopper(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/grasshopper"), modelPos, new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
+                        Player.removeMaterial(200, typeof(Dicentra));
+                    }
+                    
+                    break;
                 case RUN_ANT_BUTTON_IDX:
                     if (Player.hyacynt >= 20 && ((selectedModel.GetType() == typeof(HyacyntFarm))))
                     {   Vector3 modelPos=RandomPointOnCircleBuilding(selectedModel);

@@ -63,7 +63,7 @@ namespace Logic.Units.Allies
             model.switchAnimation("Idle");
         }
         public Beetle():base()
-        {
+        {                               
 
         }
         public override void DrawOpaque(GameCamera.FreeCamera camera, float Alpha,LoadModel model2)

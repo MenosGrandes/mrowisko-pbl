@@ -394,7 +394,8 @@ GraphicsDevice);
 
             BBoxRender.InitializeBBoxDebuger(device);
 
-            IModel.Add(new BeetleBuilding(new LoadModel(Content.Load<Model>("Models/h3"), new Vector3(700, 40, 900), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
+            IModel.Add(new BeetleBuilding(new LoadModel(Content.Load<Model>("Models/log2"), new Vector3(700, 40, 900), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
+            IModel.Add(new GrassHopperBuilding(new LoadModel(Content.Load<Model>("Models/h4_b"), new Vector3(900, 40, 1100), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
 
             IModel.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(1f), GraphicsDevice, light)), curvesForLaser[0]));
             timeTriggers.Add(new LaserTrigger((Laser)IModel[IModel.Count - 1], 1));
