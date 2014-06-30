@@ -32,18 +32,19 @@ namespace Logic.Units.Ants
         public AntSpitter(LoadModel model)
             : base(model)
         {
-            this.armor = 20; bullets = new List<SpitMissle>();
+            this.armor = 20; bullets = new List<SpitMissle>();                                                                          
             LifeBar.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/health_bar"));
             circle.update(StaticHelpers.StaticHelper.Content.Load<Microsoft.Xna.Framework.Graphics.Texture2D>("Textures/HudTextures/elipsa"));
             hp = 100;
             range = 1000;
-            atackInterval = 60;
+            atackInterval = 6000;
             LifeBar.LifeLength = model.Scale.X * 100;
             circle.Scale = this.model.Scale.Y * 120;
             this.armorAfterBuff = armor * 2;
             this.modelHeight = 14;
             this.MaxHp = 100;
-            this.Model.switchAnimation("Idle");
+            this.Model.switchAnimation("Idle"); 
+            this.rangeOfSight=300;
 
         }
         public AntSpitter(int hp, float armor, float strength, float range, int cost, float buildingTime, LoadModel model, float atackInterval)
@@ -71,13 +72,16 @@ namespace Logic.Units.Ants
                     bullets.RemoveAt(i);
                 }
             }
-
+           if(target!=null && target.Hp<=0)
+           {
+               target = null;
+           }
 
         }
         public override void Attack(GameTime gameTime)
         {
             //if (range <= Math.Abs(model.Position.X - a.Model.Position.Y) + Math.Abs(model.Position.X - a.Model.Position.Y))
-            if (elapsedTime >= atackInterval)
+            if (elapsedTime >= atackInterval && Vector2.Distance(new Vector2(model.Position.X,model.Position.Z),new Vector2(target.Model.Position.X,target.Model.Position.Z))<3000)
             {
                 bullets.Add(new SpitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), target.Model.Position));
                 elapsedTime = 0;
@@ -110,22 +114,16 @@ namespace Logic.Units.Ants
             {
                 sm.Intersect(interactive);
             }
-            foreach (BoundingSphere b in model.Spheres)
-            {
-
-                foreach (BoundingSphere b2 in interactive.Model.Spheres)
-                {
-                    if (b.Intersects(b2))
+         
+                    if (model.BoundingSphere.Intersects(interactive.Model.BoundingSphere))
                     {
-                        Console.WriteLine("Plujka");
                     }
-                }
-            }
+        
 
         }
-        public override void Draw(GameCamera.FreeCamera camera)
+        public override void Draw(GameCamera.FreeCamera camera,float time)
         {
-            model.Draw(camera);
+            model.Draw(camera, time);
             foreach (SpitMissle sm in bullets)
             {
                 sm.Draw(camera);
@@ -147,7 +145,7 @@ namespace Logic.Units.Ants
         }
         public override string ToString()
         {
-            return this.GetType().Name + " " + armor;
+            return this.GetType().Name + " " + Hp;
         }
 
         #region SpitMissle
@@ -163,10 +161,10 @@ namespace Logic.Units.Ants
             public SpitMissle(LoadModel model, Vector3 targtPosition)
                 : base(model)
             {
-                float distance = Math.Abs(model.Position.Y - targtPosition.Y) - Math.Abs(targtPosition.X - model.Position.X);
-                time_to_point =  distance/speed;
+                float d = Vector2.Distance(new Vector2(model.Position.X, model.Position.Z), new Vector2(targtPosition.X, targtPosition.Z));
+                float time = d / 0.2f;
                 points.Add(new PointInTime(model.Position, 0));
-                points.Add(new PointInTime(targtPosition,2000));
+                points.Add(new PointInTime(targtPosition,time));
                 trajectory = new Curve3D(points,CurveLoopType.Constant);
                 
             }
@@ -177,36 +175,32 @@ namespace Logic.Units.Ants
             {
                 if (this == interactive)
                 { return; }
+               
 
-                 foreach(BoundingSphere sphere in interactive.Model.Spheres)
-                 { 
-                    if (this.model.BoundingSphere.Intersects(sphere))
+                    if (this.model.BoundingSphere.Intersects(interactive.Model.BoundingSphere))
                     {
 
                         Hit(interactive);
-                        Console.WriteLine(interactive.ToString());
                         hit = true;
                     }
-                 }
+               
                 
             }
             public void Hit(InteractiveModel b)
             {
                 if(b.GetType().IsSubclassOf(typeof(Unit)))
                 { 
-                b.Hp -= 1;
-                Console.WriteLine("Dostałą z kulki!");
-                ((Unit)b).LifeBar.LifeLength -= ((Unit)b).LifeBar.LifeLength * ((100*1)/b.Hp );
+                b.Hp -= 10;
+                ((Unit)b).LifeBar.LifeLength -= ((Unit)b).LifeBar.LifeLength * ((10)/b.Hp );
                 b.hasBeenHit = true;
                 b.Model.Hit = true;
-                SoundController.SoundController.Play(SoundController.SoundEnum.RangeHit);
+               // SoundController.SoundController.Play(SoundController.SoundEnum.RangeHit);
                 }
             }
             public override void Update(GameTime time)
             {
                 base.Update(time);
                 time_ += (float)time.ElapsedGameTime.TotalMilliseconds;
-                //model.Position = trajectory.GetPointOnCurve(time_);
                 model.Position = new Vector3(trajectory.GetPointOnCurve(time_).X, StaticHelpers.StaticHelper.GetHeightAt(trajectory.GetPointOnCurve(time_).X, trajectory.GetPointOnCurve(time_).Z), trajectory.GetPointOnCurve(time_).Z);
 
             }

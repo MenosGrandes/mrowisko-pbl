@@ -80,7 +80,7 @@ namespace Logic
               }
             foreach (InteractiveModel unit in SelectedModels)
             {
-                if (unit.target != null && unit.GetType() != typeof(AntSpitter) && Vector2.Distance(new Vector2(unit.Model.BoundingSphere.Center.X, unit.Model.BoundingSphere.Center.Z), new Vector2(unit.target.Model.BoundingSphere.Center.X, unit.target.Model.BoundingSphere.Center.Z)) <= unit.Model.BoundingSphere.Radius * 1.5) //unit.Model.BoundingSphere.Intersects(unit.target.Model.BoundingSphere))
+                if (unit.target != null && unit.GetType() != typeof(AntSpitter) && Vector2.Distance(new Vector2(unit.Model.BoundingSphere.Center.X, unit.Model.BoundingSphere.Center.Z), new Vector2(unit.target.Model.BoundingSphere.Center.X, unit.target.Model.BoundingSphere.Center.Z)) <= unit.Model.BoundingSphere.Radius * 1.75) //unit.Model.BoundingSphere.Intersects(unit.target.Model.BoundingSphere))
                 {
                     unit.attacking = true;
                     unit.ImMoving = false;

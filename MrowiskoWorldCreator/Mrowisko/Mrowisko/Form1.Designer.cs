@@ -513,6 +513,8 @@
             "Trawa",
             "Zuk",
             "Konik",
+            "DomKoników",
+            "DomZukow",
             "Plujka",
             "Królowa",
             "Silacz"});
