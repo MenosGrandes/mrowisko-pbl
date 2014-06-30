@@ -81,7 +81,7 @@ namespace Logic.Units.Ants
         public override void Attack(GameTime gameTime)
         {
             //if (range <= Math.Abs(model.Position.X - a.Model.Position.Y) + Math.Abs(model.Position.X - a.Model.Position.Y))
-            if (elapsedTime >= atackInterval && Vector2.Distance(new Vector2(model.Position.X,model.Position.Z),new Vector2(target.Model.Position.X,target.Model.Position.Z))<3000)
+            if (target!=null&&  elapsedTime >= atackInterval && Vector2.Distance(new Vector2(model.Position.X,model.Position.Z),new Vector2(target.Model.Position.X,target.Model.Position.Z))<3000)
             {
                 bullets.Add(new SpitMissle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/shoot"), this.getPosition(), this.getRotation(), new Vector3(0.3f), StaticHelpers.StaticHelper.Device, this.model.light), target.Model.Position));
                 elapsedTime = 0;
@@ -188,10 +188,10 @@ namespace Logic.Units.Ants
             }
             public void Hit(InteractiveModel b)
             {
-                if(b.GetType().IsSubclassOf(typeof(Unit)))
+                if(b.GetType().IsSubclassOf(typeof(Unit)) )
                 { 
                 b.Hp -= 10;
-                ((Unit)b).LifeBar.LifeLength -= ((Unit)b).LifeBar.LifeLength * ((10)/b.Hp );
+                ((Unit)b).LifeBar.LifeLength -= ((Unit)b).LifeBar.LifeLength * ((10)/b.MaxHp );
                 b.hasBeenHit = true;
                 b.Model.Hit = true;
                // SoundController.SoundController.Play(SoundController.SoundEnum.RangeHit);

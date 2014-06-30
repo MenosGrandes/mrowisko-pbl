@@ -23,7 +23,7 @@ namespace GUI
 {
     public class MainGUI
     {
-        bool hyacyntFarmOn = false, dicentraFarmOn = false, mainBuildingOn = false,grassHopperBuildingOn=false,beetleBuildingOn=false;
+        bool hyacyntFarmOn = false, dicentraFarmOn = false, mainBuildingOn = false,grassHopperBuildingOn=false,beetleBuildingOn=false,helidoniumFarmOn=false;
         public List<InteractiveModel> modelsFromMain;
         public String description;
         public static bool exit = false;
@@ -375,6 +375,8 @@ namespace GUI
                         unitMenuON = false;
                         beetleBuildingOn=false;
                         grassHopperBuildingOn=false;
+                        helidoniumFarmOn = false;
+
 
                     }
                     else if (selectedModel.GetType() == typeof(DicentraFarm))
@@ -384,6 +386,8 @@ namespace GUI
                         mainBuildingOn = false;
                         buildMenuON = false;
                         unitMenuON = false;
+                        helidoniumFarmOn = false;
+
                     }
                     else   if (selectedModel.GetType() == typeof(BeetleBuilding))
                     {
@@ -394,6 +398,8 @@ namespace GUI
                         unitMenuON = false;
                         beetleBuildingOn = true;
                         grassHopperBuildingOn = false;
+                        helidoniumFarmOn = false;
+
                     }
                     else if (selectedModel.GetType() == typeof(GrassHopperBuilding))
                     {
@@ -404,6 +410,17 @@ namespace GUI
                         unitMenuON = false;
                         beetleBuildingOn = false;
                         grassHopperBuildingOn = true;
+                        helidoniumFarmOn = false;
+
+                    }
+                    else if (selectedModel.GetType() == typeof(ChelidoniumFarm))
+                    {
+                        hyacyntFarmOn = false;
+                        dicentraFarmOn = false;
+                        mainBuildingOn = false;
+                        buildMenuON = false;
+                        unitMenuON = false;
+                        helidoniumFarmOn = true;
                     }
                     else
                     {
@@ -412,6 +429,8 @@ namespace GUI
                         mainBuildingOn = false;
                         buildMenuON = false;
                         unitMenuON = false;
+                        helidoniumFarmOn = false;
+
                     }
 
                 }
@@ -487,7 +506,7 @@ namespace GUI
             {
                 spriteBatch.Draw(button_texture[DEFENCE_ANT_BUTTON_IDX], button_rectangle[DEFENCE_ANT_BUTTON_IDX], button_color[DEFENCE_ANT_BUTTON_IDX]);
             }
-            else if (mainBuildingOn == true)//panel ob³ugi jednostek
+            else if (mainBuildingOn == true || helidoniumFarmOn==true)//panel ob³ugi jednostek
             {
                 spriteBatch.Draw(button_texture[RUN_ANT_BUTTON_IDX], button_rectangle[RUN_ANT_BUTTON_IDX], button_color[RUN_ANT_BUTTON_IDX]);
             }
@@ -731,7 +750,7 @@ namespace GUI
             float z = (float)Math.Cos(angle);
 
 
-            return new Vector3(building.Model.Position.X + x * building.Model.BoundingSphere.Radius+50, StaticHelpers.StaticHelper.GetHeightAt(building.Model.Position.X + x * building.Model.BoundingSphere.Radius+50, building.Model.Position.Z + z * building.Model.BoundingSphere.Radius+50), building.Model.Position.Z + z * building.Model.BoundingSphere.Radius+50);
+            return new Vector3(building.Model.Position.X + x * (building.Model.BoundingSphere.Radius+50), StaticHelpers.StaticHelper.GetHeightAt(building.Model.Position.X + x * (building.Model.BoundingSphere.Radius), building.Model.Position.Z + z * (building.Model.BoundingSphere.Radius)), building.Model.Position.Z + z * (building.Model.BoundingSphere.Radius+50));
         }
     }
 }

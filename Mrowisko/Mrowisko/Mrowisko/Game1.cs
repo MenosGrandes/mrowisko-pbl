@@ -314,16 +314,16 @@ GraphicsDevice);
             }
             #endregion
             PathFinderManager.blockAllNodes(IModel);
-            for (int i = 0; i < PathFinderManager.GridSize; i += 1)
-            {
-                for (int J = 0; J < PathFinderManager.GridSize; J += 1)
-                {
-                    if (PathFinderManager.tileList[i, J].walkable == false || PathFinderManager.tileList[i, J].haveMineral == true || PathFinderManager.tileList[i, J].haveBuilding == true)
-                    {
-                        inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log2"),new Vector3(PathFinderManager.tileList[i,J].centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(PathFinderManager.tileList[i,J].centerPosition.X,PathFinderManager.tileList[i,J].centerPosition.Y),PathFinderManager.tileList[i,J].centerPosition.Y),Vector3.Zero,new Vector3(1f,0.3f,1f),device,light)));
-                    }
-                }
-            }
+            //for (int i = 0; i < PathFinderManager.GridSize; i += 1)
+            //{
+            //    for (int J = 0; J < PathFinderManager.GridSize; J += 1)
+            //    {
+            //        if (PathFinderManager.tileList[i, J].walkable == false || PathFinderManager.tileList[i, J].haveMineral == true || PathFinderManager.tileList[i, J].haveBuilding == true)
+            //        {
+            //            inter.Add(new InteractiveModel(new LoadModel(Content.Load<Model>("Models/log2"),new Vector3(PathFinderManager.tileList[i,J].centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(PathFinderManager.tileList[i,J].centerPosition.X,PathFinderManager.tileList[i,J].centerPosition.Y),PathFinderManager.tileList[i,J].centerPosition.Y),Vector3.Zero,new Vector3(1f,0.3f,1f),device,light)));
+            //        }
+            //    }
+            //}
 
 
 
@@ -371,14 +371,22 @@ GraphicsDevice);
 
 
 
-              models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(150, 40, 300), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+              models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(1375, 40, 2500), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
 
-               models[models.Count - 1].Model.switchAnimation("Idle");
+              models[models.Count - 1].Model.switchAnimation("Idle");
+
+              models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(1400, 40, 2700), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+
+              models[models.Count - 1].Model.switchAnimation("Idle");
 
 
-             models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/rosiczka"), new Vector3(120, 40, 120), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
+
+             models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/rosiczka"), new Vector3(1574, 40, 2100), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
             models[models.Count - 1].Model.switchAnimation("Idle");
-
+            models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/rosiczka"), new Vector3(2400, 40, 805), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
+            models[models.Count - 1].Model.switchAnimation("Idle");
+            models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/rosiczka"), new Vector3(1700, 40, 1111), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
+            models[models.Count - 1].Model.switchAnimation("Idle");
             // models.Add(new Spider(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(250, 40, 250), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
             // models[models.Count - 1].Model.switchAnimation("Idle");
 
@@ -398,7 +406,7 @@ GraphicsDevice);
 
            
 
-            Console.WriteLine("QuadNode: " + QuadNodeController.QuadNodeList.Count);
+           // Console.WriteLine("QuadNode: " + QuadNodeController.QuadNodeList.Count);
 
             BBoxRender.InitializeBBoxDebuger(device);
 
@@ -412,12 +420,12 @@ GraphicsDevice);
             Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
 
             #region trigger end game
-            theEnd = new Trigger((new LoadModel(Content.Load<Model>("Models/endNode"), new Vector3(2600, 40, 2600), new Vector3(0), new Vector3(4f), GraphicsDevice, light)));
+            theEnd = new Trigger((new LoadModel(Content.Load<Model>("Models/endNode"), new Vector3(1375, 40, 2500), new Vector3(0), new Vector3(4f), GraphicsDevice, light)));
             IModel.Add(theEnd);
             #endregion
 
             IModel.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(2f), GraphicsDevice, light)), curvesForLaser[0]));
-            timeTriggers.Add(new LaserTrigger((Laser)IModel[IModel.Count - 1], 1));
+            timeTriggers.Add(new LaserTrigger((Laser)IModel[IModel.Count - 1], 100));
 
             control = new Logic.Control(texture[11], quadTree[0]);
             gui = new MainGUI(StaticHelpers.StaticHelper.Content, control,models);
@@ -646,7 +654,7 @@ GraphicsDevice);
                         
                         foreach (InteractiveModel unit in control.SelectedModels)
                         {
-                            if (models[i] == unit)
+                            if (models[i] == unit && models[i].Model.Player.end)
                                 control.SelectedModels.Remove((Unit)unit);
                             break;
                         }
@@ -877,15 +885,15 @@ GraphicsDevice);
 
 
 
-            foreach (InteractiveModel q in inter)
-            {
-                if (camera.BoundingVolumeIsInView(q.Model.BoundingSphere))
-                {
-                    //BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
-                    // BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
-                    q.Draw((FreeCamera)camera);
-                }
-            }
+            //foreach (InteractiveModel q in inter)
+            //{
+            //    if (camera.BoundingVolumeIsInView(q.Model.BoundingSphere))
+            //    {
+            //        BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red);
+            //        BBoxRender.DrawBBox(q.Bounds, camera.Projection, camera.View, Matrix.Identity, Color.BlueViolet);
+            //        q.Draw((FreeCamera)camera);
+            //    }
+            //}
 
             foreach (InteractiveModel model in models)
             {
@@ -898,8 +906,8 @@ GraphicsDevice);
 
                     // BBoxRender.DrawBBox(model.Model.B_Box, camera.Projection, camera.View, Matrix.Identity,Color.Black);
 
-                    BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
-                     Color.Green, Color.Aquamarine, Color.White);
+                 //   BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection,
+                 //    Color.Green, Color.Aquamarine, Color.White);
                     //   BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, Color.Black, Color.Yellow, Color.Red   );
                 }
             }
@@ -908,10 +916,10 @@ GraphicsDevice);
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
-                    BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
-                    BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                  //  BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
+                  //  BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
 
-                    BBoxRender.DrawBBox(model.Model.boundingBoxes, camera.Projection, camera.View, Matrix.Identity);
+                    //BBoxRender.DrawBBox(model.Model.boundingBoxes, camera.Projection, camera.View, Matrix.Identity);
                     model.Draw((FreeCamera)camera);
 
 
