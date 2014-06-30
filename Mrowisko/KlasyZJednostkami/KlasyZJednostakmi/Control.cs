@@ -385,10 +385,10 @@ namespace Logic
                        Vector2 centerPoint = new Vector2((jumpModel.Model.Position.X+endNode.centerPosition.X)/2, (jumpModel.Model.Position.Z+endNode.centerPosition.Y)/2);
 
                       ((GrassHopper)jumpModel).pointsForJump.Add(new PointInTime(jumpModel.Model.Position,1000));
-                        ((GrassHopper)jumpModel).pointsForJump.Add(new PointInTime(new Vector3(centerPoint.X, 500f, centerPoint.Y), 2000));
+                        ((GrassHopper)jumpModel).pointsForJump.Add(new PointInTime(new Vector3(centerPoint.X, 200f, centerPoint.Y), 2000));
                        ((GrassHopper)jumpModel).pointsForJump.Add(new PointInTime(new Vector3(endNode.centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(endNode.centerPosition.X,endNode.centerPosition.Y)+jumpModel.modelHeight,endNode.centerPosition.Y), 3000));
 
-                       ((GrassHopper)jumpModel).jumpPath = new Curve3D(((GrassHopper)jumpModel).pointsForJump);
+                       ((GrassHopper)jumpModel).jumpPath = new Curve3D(((GrassHopper)jumpModel).pointsForJump,CurveLoopType.Constant);
                        jumpModel.MovementPath.Clear();
 
                    }

@@ -58,7 +58,7 @@ namespace Logic.Building
 
         public void BuildHyacyntFarm()
         {
-            this.house = new HyacyntFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h1"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius * 2, this.model.Position.Z), Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 1000);
+            this.house = new HyacyntFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h1"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius * 2, this.model.Position.Z), Vector3.Zero, new Vector3(this.model.Scale.X+0.5f,this.model.Scale.Y+0.5f,this.model.Scale.Z+0.5f), StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 1000);
         }
 
         public void BuildDicentraFarm()

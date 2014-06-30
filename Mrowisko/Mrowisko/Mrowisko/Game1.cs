@@ -188,7 +188,7 @@ namespace AntHill
 
             #endregion
             #region Curve
-            curvesForLaser.Add(new Curve3D(pointsForLasers[0]));
+            curvesForLaser.Add(new Curve3D(pointsForLasers[0],CurveLoopType.Oscillate));
             #endregion
             #region Laser
 
@@ -335,7 +335,6 @@ GraphicsDevice);
             // models.Add(new TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/domek"), Vector3.Zero, Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, light)));
             ////models.Add(new Queen(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/grasshopper"), new Vector3(300,40,300), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content,light)));
             ////models[models.Count - 1].Model.switchAnimation("Idle");
-            //  models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
 
             List<String> aa = new List<string>();
             aa.Add("s1");
@@ -388,15 +387,15 @@ GraphicsDevice);
 
             // models.Add(new AntPeasant(new LoadModel(Content.Load<Model>("Models/ant"), new Vector3(100, 40, 10), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light)));
 
-            //models.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(0.3f), GraphicsDevice, light)), curvesForLaser[0]));
-            //timeTriggers.Add(new LaserTrigger((Laser)models[models.Count - 1], 1));
+            IModel.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(1f), GraphicsDevice, light)), curvesForLaser[0]));
+            timeTriggers.Add(new LaserTrigger((Laser)IModel[IModel.Count - 1], 1));
 
             Console.WriteLine("QuadNode: " + QuadNodeController.QuadNodeList.Count);
 
             BBoxRender.InitializeBBoxDebuger(device);
 
-
-
+             models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/plujka"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
+           models[models.Count - 1].Model.switchAnimation("Idle");
 
 
             Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
@@ -493,8 +492,7 @@ GraphicsDevice);
                     _total_frames = 0;
                     _elapsed_time = 0;
                 }
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
-                    this.Exit();
+                    
                 #region timeTrigger
 
                 for (int i = 0; i < timeTriggers.Count; i++)
@@ -513,10 +511,10 @@ GraphicsDevice);
                 {
                     models[i].Update(gameTime);
                     models[i].Model.Update(gameTime);
-                    if (models[i].Model.Position.Y < 40)
-                    {
-                        Console.WriteLine("WODA");
-                    }
+                    //if (models[i].Model.Position.Y < 40)
+                    //{
+                    //    Console.WriteLine("WODA");
+                    //}
 
                     if (models[i].attacking)
                     {
@@ -563,7 +561,13 @@ GraphicsDevice);
                         models[i].Intersect(IModel[kj]);
 
                     }
-
+                    foreach(InteractiveModel m in IModel)
+                    {
+                        if(m is Laser)
+                        {
+                            m.Intersect(models[i]);
+                        }
+                    }
 
 
 

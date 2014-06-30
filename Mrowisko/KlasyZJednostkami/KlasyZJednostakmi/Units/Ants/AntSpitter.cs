@@ -167,7 +167,7 @@ namespace Logic.Units.Ants
                 time_to_point =  distance/speed;
                 points.Add(new PointInTime(model.Position, 0));
                 points.Add(new PointInTime(targtPosition,2000));
-                trajectory = new Curve3D(points);
+                trajectory = new Curve3D(points,CurveLoopType.Constant);
                 
             }
             public SpitMissle()

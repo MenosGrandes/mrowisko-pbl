@@ -88,7 +88,11 @@ namespace Logic.PathFinderNamespace
 
             while (parent != startNode )
             {
-                
+                if (finalPath[finalPath.Count - 1].parent==null)
+                {
+                    return false;
+                }
+
                     parent = finalPath[finalPath.Count - 1].parent;
                     finalPath.Add(parent);
                 
