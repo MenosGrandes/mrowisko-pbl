@@ -32,6 +32,10 @@ namespace Logic.Triggers
                 //Console.WriteLine("Wlazło w pułapke");
             }
         }
+        public override void DrawOpaque(GameCamera.FreeCamera camera, float Alpha, LoadModel model2)
+        {
+            base.DrawOpaque(camera, Alpha, this.model);
+        }
     }
 }
 

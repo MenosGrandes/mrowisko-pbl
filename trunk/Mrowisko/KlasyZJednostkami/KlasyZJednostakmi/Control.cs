@@ -128,7 +128,6 @@ namespace Logic
 
             Node n = PathFinderManagerNamespace.PathFinderManager.getNodeIntersected(mouseRay);
             Vector3 mouseNodeSelectedVector = new Vector3(n.centerPosition.X, n.Height, n.centerPosition.Y);
-            // int intersectedTileNumber = QuadNodeController.getIntersectedQuadNodeForMove(mouseRay);
             // modelos.Model.Position = mouse3d2;
             modelos.Model.Position = mouseNodeSelectedVector;
             //modelos.Model.Position = new Vector3(mouse3d2.X, StaticHelpers.StaticHelper.GetHeightAt(mouse3d2.X,mouse3d2.Z), mouse3d2.Z);

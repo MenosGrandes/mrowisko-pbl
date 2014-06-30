@@ -165,7 +165,7 @@ namespace Logic.Units.Ants
 
             if (interactive.GetType().IsSubclassOf(typeof(Material)))
             {
-                if (model.BoundingSphere.Intersects(new BoundingSphere(interactive.Model.Spheres[0].Center, interactive.Model.Spheres[0].Radius + 24)))
+                if (model.BoundingSphere.Intersects(interactive.Model.BoundingSphere)) 
                 {
                     if (gaterMaterialObject == interactive)
                     {
