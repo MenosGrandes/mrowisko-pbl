@@ -59,5 +59,7 @@ namespace Logic
             circle.CreateBillboardVerticesFromList(model.Position + new Vector3(-2, 0.1f, -0.1f) * model.Scale * 50);
             circle.healthDraw(camera);
         }
+
+
     }
 }
