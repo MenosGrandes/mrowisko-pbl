@@ -341,6 +341,13 @@ namespace Logic
 
             if (lastMouseState.LeftButton == ButtonState.Pressed && currentMouseState.LeftButton == ButtonState.Released )
             {
+                if (SelectedModels.Count == 1 && SelectedModels[0].GetType() == typeof(Transporter))
+                {
+                    SelectedModels[0].transportTarget = mouse3d2;
+                }
+                else
+                {
+
                 if (SelectedModels.Count > 0)
                 {
                     formation = new UnitFormation(SelectedModels);
@@ -366,6 +373,8 @@ namespace Logic
                            // Console.WriteLine("weszlo w pajaka");
                             break;
                         }
+
+
                     }
                     if (!targetSet)
                     {
@@ -388,7 +397,7 @@ namespace Logic
                     }
                 }
 
-               // }
+                }
             }
 
 
@@ -409,7 +418,7 @@ namespace Logic
                        ((GrassHopper)jumpModel).pointsForJump.Add(new PointInTime(new Vector3(endNode.centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(endNode.centerPosition.X,endNode.centerPosition.Y)+jumpModel.modelHeight,endNode.centerPosition.Y), 3000));
 
                        ((GrassHopper)jumpModel).jumpPath = new Curve3D(((GrassHopper)jumpModel).pointsForJump,CurveLoopType.Constant);
-                  //     if (jumpModel.MovementPath!=null)
+                       if (jumpModel.MovementPath!=null)
                        jumpModel.MovementPath.Clear();
 
                    }

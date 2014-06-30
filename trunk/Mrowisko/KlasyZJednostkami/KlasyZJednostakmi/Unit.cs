@@ -207,57 +207,68 @@ namespace Logic
         public override void Update(GameTime time)
         {
             base.Update(time);
-            if (this.Model.snr == true)
+
+            if (this.GetType() == typeof(Transporter))
             {
-
-                temp_time += (float)time.ElapsedGameTime.Milliseconds / 1000;
-                if (temp_time > 4)
-                {
-                    this.Model.snr = false;
-
-                    temp_time = 0.0f;
-                  
-                }
+                if (Vector2.Distance(new Vector2(this.Model.BoundingSphere.Center.X, this.Model.BoundingSphere.Center.Z), new Vector2(this.transportTarget.X, this.transportTarget.Z)) >= this.Model.BoundingSphere.Radius)
+                this.reachTargetTransporter(time, this.transportTarget);
 
             }
-            
-            MyNode = this.getMyNode();
-
-            if(this.foe!= null)
+            else
             {
-                if (this.foe.Hp > 0 && this.hasBeenHit)
-                {
-                    this.target = foe;
-                    //attacking = true;
-                    model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), new Vector2(this.foe.Model.Position.X, this.foe.Model.Position.Z), model.Rotation.Y, 1.05f), model.Rotation.Z);
-                }
-                else
-                {
-                    this.foe = null;
-                }
-            }
 
-            if (this.Model.snr == false && this.attacking == false)
-            {
-                if (ArmorBuff)
+                if (this.Model.snr == true)
                 {
-                    armor = armorAfterBuff;
-                }
-                else
-                {
-                    armor = armorAfterBuff / 2;
+
+                    temp_time += (float)time.ElapsedGameTime.Milliseconds / 1000;
+                    if (temp_time > 4)
+                    {
+                        this.Model.snr = false;
+
+                        temp_time = 0.0f;
+
+                    }
+
                 }
 
-                if (ifLeader)
+                MyNode = this.getMyNode();
+
+                if (this.foe != null)
                 {
-                    this.goToTarget(time);
+                    if (this.foe.Hp > 0 && this.hasBeenHit)
+                    {
+                        this.target = foe;
+                        //attacking = true;
+                        model.Rotation = new Vector3(model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(model.Position.X, model.Position.Z), new Vector2(this.foe.Model.Position.X, this.foe.Model.Position.Z), model.Rotation.Y, 1.05f), model.Rotation.Z);
+                    }
+                    else
+                    {
+                        this.foe = null;
+                    }
                 }
-                else
+
+                if (this.Model.snr == false && this.attacking == false)
                 {
-                    this.follow(time);
+                    if (ArmorBuff)
+                    {
+                        armor = armorAfterBuff;
+                    }
+                    else
+                    {
+                        armor = armorAfterBuff / 2;
+                    }
+
+                    if (ifLeader)
+                    {
+                        this.goToTarget(time);
+                    }
+                    else
+                    {
+                        this.follow(time);
+                    }
                 }
+                MyNode = this.getMyNode();
             }
-            MyNode = this.getMyNode();
         }
 
         public void follow(GameTime time)
@@ -465,7 +476,7 @@ namespace Logic
             float pullDistance = Vector2.Distance(new Vector2(target.X, target.Z), new Vector2(this.Model.Position.X, this.Model.Position.Y));
 
             //Only do something if we are not already there
-            if (pullDistance > 1)
+            if (this.model.BoundingSphere.Center.Y < 49 || this.transportTarget.Y < 49)
             {
                 Vector3 pull = (target - Model.Position) * (1 / pullDistance); //the target tries to 'pull us in'
                 Vector3 totalPush = Vector3.Zero;
