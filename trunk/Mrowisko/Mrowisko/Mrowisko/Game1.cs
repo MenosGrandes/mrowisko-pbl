@@ -71,6 +71,7 @@ namespace AntHill
         int licznik;
         bool endGame = false;
         public Trigger theEnd;
+        public Texture2D endGamePicture;
 
         int _total_frames = 0;
         float _elapsed_time = 0.0f;
@@ -208,11 +209,11 @@ namespace AntHill
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             StaticHelpers.StaticHelper._spr_font = Content.Load<SpriteFont>("Fonts/FPS");// you have on your project
-
+            
 
             StaticHelpers.StaticHelper.Content = Content;
             StaticHelpers.StaticHelper.Device = device;
-
+            endGamePicture = Content.Load<Texture2D>("Textures/t³okoñcowe");
             #region Tekstury
             List<Texture2D> texture = new List<Texture2D>();
             //alphy do terenu
@@ -480,6 +481,14 @@ GraphicsDevice);
                         Microsoft.Xna.Framework.Media.MediaPlayer.Volume = 0.01f;
                         SoundController.SoundController.playqueue = 0;
                         //etc. etc. etc.;
+                    }
+                }
+
+                if (this.endGame)
+                {
+                    if(keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape) )
+                    {
+                        this.Exit();
                     }
                 }
 
@@ -959,6 +968,14 @@ GraphicsDevice);
             control.Draw(spriteBatch, (FreeCamera)camera);
             gui.Draw(spriteBatch);
             miniMap.Draw(spriteBatch);
+
+            if(this.endGame)
+            {
+                       
+                        spriteBatch.Draw(endGamePicture, new Rectangle(0, 0, 1366, 768), Color.White);
+                 
+            }
+
             spriteBatch.End();
            
             foreach(InteractiveModel model in models)
