@@ -63,7 +63,7 @@ namespace Logic.Building
 
         public void BuildDicentraFarm()
         {
-            this.house = new DicentraFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h2"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius*2, this.model.Position.Z), Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 1000);
+            this.house = new DicentraFarm(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/h4"), new Vector3(this.model.Position.X, this.model.Position.Y - this.model.BoundingSphere.Radius*2, this.model.Position.Z), Vector3.Zero, this.model.Scale, StaticHelpers.StaticHelper.Device, this.model.light), 1000, 100, 10, 10, 1000);
         }
 
         public override void Update(GameTime gameTime)

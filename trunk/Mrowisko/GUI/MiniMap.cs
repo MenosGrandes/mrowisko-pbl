@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Logic.Building.AllieBuilding;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -33,6 +34,10 @@ namespace GUI
 
            models1 = models;
        }
+       public void addObjects(InteractiveModel model)
+       {
+           models1.Add(model);
+       }
        public void UpdateMinimap(GameTime time,Vector2 cameraPos)
        {
               foreach(InteractiveModel m in models1)
@@ -51,7 +56,7 @@ namespace GUI
                   if (m.GetType().BaseType == typeof(Ant)) {
                       sp.Draw(allieTexture, m.miniMapPosition, Color.White);
                   }
-                  else if(m.GetType().BaseType == typeof(Allie))
+                  else if(m.GetType().BaseType == typeof(Allie) || m.GetType().BaseType == typeof(AllieBuilding))
                   {
                       sp.Draw(neutralTexture, m.miniMapPosition, Color.White);
                   }

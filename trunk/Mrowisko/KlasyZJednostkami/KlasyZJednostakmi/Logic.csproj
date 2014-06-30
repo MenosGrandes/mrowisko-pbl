@@ -77,6 +77,9 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Building\AllieBuilding\AllieBuilding.cs" />
+    <Compile Include="Building\AllieBuilding\BeetleBuilding.cs" />
+    <Compile Include="Building\AllieBuilding\GrassHopperBuilding.cs" />
     <Compile Include="Building\AntBuildings\Granary\AntGranary.cs" />
     <Compile Include="Building\AntBuildings\SeedFarm.cs" />
     <Compile Include="Building\AntBuildings\SeedFarms\ChelidoniumFarm.cs" />

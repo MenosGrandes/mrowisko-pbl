@@ -72,6 +72,7 @@ namespace Logic.Building
             this.capacity = _capacity;
             this.cost = _cost;
             this.buildingTime = _buildingTime;
+            this.selectable = false;
         }
         public Building()
         {
@@ -82,7 +83,7 @@ namespace Logic.Building
             : base(model)
         {
             this.model = model;
-
+            this.selectable = false;
         }
         public override void Draw(GameCamera.FreeCamera camera)
         {

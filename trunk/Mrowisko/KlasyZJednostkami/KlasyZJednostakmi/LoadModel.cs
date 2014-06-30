@@ -257,7 +257,22 @@ namespace Logic
             this.boundingSphere = sphere;
             this.spheres = spheres2;
         }
+        public void BuildBoundingSphereGrassHopper()
+        {
+            BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);
+            List<BoundingSphere> spheres2 = new List<BoundingSphere>();
 
+            foreach (ModelMesh mesh in Model.Meshes)
+            {
+                BoundingSphere transformed = mesh.BoundingSphere.Transform(modelTransforms[mesh.ParentBone.Index]);
+
+                spheres2.Add(new BoundingSphere(transformed.Center, transformed.Radius));
+                sphere = BoundingSphere.CreateMerged(sphere, transformed);
+
+            }
+            this.boundingSphere = sphere;
+            this.spheres = spheres2;
+        }
         private void buildBoundingSphere()
         {
             BoundingSphere sphere = new BoundingSphere(Vector3.Zero, 0);

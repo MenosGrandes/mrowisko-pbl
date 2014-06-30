@@ -116,7 +116,7 @@ namespace Controlers
 
                             Logic.Building.AntBuildings.TownCenter ad = new Logic.Building.AntBuildings.TownCenter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//townCenter"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
                             //ad.Model.CreateBoudingBox();
-                            ad.Model.BuildBoundingSphereMaterial();
+                            ad.Model.BuildBoundingSphereMaterial();  
 
                             listOfAllInteractiveModelsFromFile.Add(ad);
 
