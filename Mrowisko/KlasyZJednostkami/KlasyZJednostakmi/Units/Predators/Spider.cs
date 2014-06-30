@@ -108,13 +108,13 @@ namespace Logic.Units.Predators
 
                 if ((Ants[j].Model.snr == true && !(Ants[j] is Predator) )|| Ants[j].Model.spiderTarget)
                  {
-                     if (!(this.Model.BoundingSphere.Intersects(Ants[j].Model.BoundingSphere)))
+                     if (Vector2.Distance(new Vector2(this.Model.BoundingSphere.Center.X, this.Model.BoundingSphere.Center.Z), new Vector2(Ants[j].Model.BoundingSphere.Center.X, Ants[j].Model.BoundingSphere.Center.Z)) > this.Model.BoundingSphere.Radius * 1.5)
                      {
                          this.model.switchAnimation("Walk");
                          this.reachTargetAutonomus(gameTime, Ants[j].Model.Position);
                          this.model.Rotation = new Vector3(this.model.Rotation.X, StaticHelpers.StaticHelper.TurnToFace(new Vector2(this.model.Position.X,this.model.Position.Z), new Vector2(Ants[j].Model.Position.X,Ants[j].Model.Position.Z),this.model.Rotation.Y, 1.05f), model.Rotation.Z);
                      }
-                     else if (this.Model.BoundingSphere.Intersects(Ants[j].Model.BoundingSphere))
+                     else if (Vector2.Distance(new Vector2(this.Model.BoundingSphere.Center.X, this.Model.BoundingSphere.Center.Z), new Vector2(Ants[j].Model.BoundingSphere.Center.X, Ants[j].Model.BoundingSphere.Center.Z)) <= this.Model.BoundingSphere.Radius*1.5)
                      {
                          time += (float)gameTime.ElapsedGameTime.TotalSeconds;
                          this.model.switchAnimation("Atack");

@@ -80,7 +80,7 @@ namespace Logic
               }
             foreach (InteractiveModel unit in SelectedModels)
             {
-                if (unit.target != null && unit.GetType() != typeof(AntSpitter) && Vector2.Distance(new Vector2(unit.Model.Position.X,unit.Model.Position.Z),new Vector2(unit.target.Model.Position.X,unit.target.Model.Position.Z))<= unit.Model.BoundingSphere.Radius) //unit.Model.BoundingSphere.Intersects(unit.target.Model.BoundingSphere))
+                if (unit.target != null && unit.GetType() != typeof(AntSpitter) && Vector2.Distance(new Vector2(unit.Model.BoundingSphere.Center.X, unit.Model.BoundingSphere.Center.Z), new Vector2(unit.target.Model.BoundingSphere.Center.X, unit.target.Model.BoundingSphere.Center.Z)) <= unit.Model.BoundingSphere.Radius * 1.5) //unit.Model.BoundingSphere.Intersects(unit.target.Model.BoundingSphere))
                 {
                     unit.attacking = true;
                     unit.ImMoving = false;
@@ -389,6 +389,7 @@ namespace Logic
                        ((GrassHopper)jumpModel).pointsForJump.Add(new PointInTime(new Vector3(endNode.centerPosition.X,StaticHelpers.StaticHelper.GetHeightAt(endNode.centerPosition.X,endNode.centerPosition.Y)+jumpModel.modelHeight,endNode.centerPosition.Y), 3000));
 
                        ((GrassHopper)jumpModel).jumpPath = new Curve3D(((GrassHopper)jumpModel).pointsForJump,CurveLoopType.Constant);
+                  //     if (jumpModel.MovementPath!=null)
                        jumpModel.MovementPath.Clear();
 
                    }

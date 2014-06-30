@@ -45,12 +45,12 @@ namespace Logic.Units.Predators
                 for (int i = 0; i < Ants.Count; i++)
                 {
                     //float spr = (float)Math.Sqrt(Math.Pow(Ants[i].Model.Position.X - this.Model.Position.X, 2.0) + (float)Math.Pow(Ants[i].Model.Position.Z - this.Model.Position.Z, 2.0));
-                      float spr=Vector2.Distance(new Vector2(model.Position.X,model.Position.Z),new Vector2(Ants[i].Model.Position.X,Ants[i].Model.Position.Z));
+                      float spr=Vector2.Distance(new Vector2(this.Model.BoundingSphere.Center.X, this.Model.BoundingSphere.Center.Z),new Vector2(Ants[i].Model.BoundingSphere.Center.X, Ants[i].Model.BoundingSphere.Center.Z));
                     if (spr <= rgn && this != Ants[i])
                     {
                         if (Ants[i] is Unit && !(Ants[i] is Predator))
                         {
-                            if (!(this.Model.BoundingSphere.Intersects(Ants[i].Model.BoundingSphere)))
+                            if (Vector2.Distance(new Vector2(this.Model.BoundingSphere.Center.X, this.Model.BoundingSphere.Center.Z), new Vector2(Ants[i].Model.BoundingSphere.Center.X, Ants[i].Model.BoundingSphere.Center.Z)) > this.Model.BoundingSphere.Radius * 1.5)
                                 this.reachTargetAutonomus(gameTime, Ants[i].Model.Position);
                             else
                             {
