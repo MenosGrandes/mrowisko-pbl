@@ -107,6 +107,11 @@ namespace Logic.Units.Predators
                     }
                 }
             }
+
+        }
+        public override string ToString()
+        {
+            return "Cancer " + hp + "/" + maxHp;
         }
 
     }

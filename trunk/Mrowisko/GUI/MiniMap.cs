@@ -50,6 +50,8 @@ namespace GUI
        public void Draw(SpriteBatch sp)
        {
            sp.Draw(cameraTexture, cameraPosition, Color.White);
+           //sp.Draw(cameraTexture, new Vector2(x + width * (1375 / 3075), y + height * (2500 / 3075)), Color.White);
+
               foreach(InteractiveModel m in models1)
               {
 

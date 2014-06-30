@@ -37,6 +37,7 @@ namespace Logic.Units.Ants
             this.armorAfterBuff = armor * 2;
             this.modelHeight = 0;
             this.MaxHp = 100;
+            this.strength = 10;
             this.Model.switchAnimation("Idle");
 
         }
