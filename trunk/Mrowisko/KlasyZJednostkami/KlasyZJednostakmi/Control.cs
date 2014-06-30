@@ -352,8 +352,16 @@ namespace Logic
                     bool targetSet = false;
                     foreach (InteractiveModel unit in models)
                     {
-                        if (unit.CheckRayIntersection(mouseRay) && !unit.selectable && unit.GetType() != typeof(Logic.Units.Predators.SunDew))
+                        if (unit.CheckRayIntersection(mouseRay) && !unit.selectable )
                         {
+                            if(unit.GetType() == typeof(Logic.Units.Predators.SunDew))
+                            {
+                                if(unit.Model.Position.Y<StaticHelpers.StaticHelper.GetHeightAt(unit.Model.Position.X,unit.Model.Position.Y))
+                                {
+                                    targetSet = false;
+                                    endNode = PathFinderManagerNamespace.PathFinderManager.getNodeIntersected(mouseRay);
+                                }
+                            }
                             endNode = unit.MyNode;
                             targetSet = true;
                            // Console.WriteLine("weszlo w pajaka");

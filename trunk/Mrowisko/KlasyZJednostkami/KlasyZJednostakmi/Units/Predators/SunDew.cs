@@ -44,6 +44,7 @@ namespace Logic.Units.Predators
                 trawienie += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (trawienie > czas_trawienia)
                 {
+                    this.model.switchAnimation("Relax",1);
                     Console.WriteLine("strawilem");
                     this.Model.Position = new Vector3(this.Model.Position.X, 0.0f, this.Model.Position.Z);
                     trawienie_flaga = false;
@@ -58,6 +59,7 @@ namespace Logic.Units.Predators
                     if (this.Model.BoundingSphere.Contains(Ants[i].Model.BoundingSphere) == ContainmentType.Intersects && this!=Ants[i] && Ants[i] is Unit)
                     // if (this.Model.BoundingSphere.Intersects(model.Model.BoundingSphere))
                     {
+                        this.model.switchAnimation("Kill",1);
                         this.Model.Position = new Vector3(this.Model.Position.X, StaticHelpers.StaticHelper.GetHeightAt(this.Model.Position.X, this.Model.Position.Z) + modelHeight, this.Model.Position.Z);
                         Console.WriteLine("proboje_zjec"+Ants[i].GetType());
                         Ants[i].Hp = -1;

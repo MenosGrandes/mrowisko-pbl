@@ -51,10 +51,14 @@ namespace Logic
                  
         }
          public override void Draw( GameCamera.FreeCamera camera)
-        {  if(canStart==false)
-        { return; }
-            model.Draw(camera);
+        {  
         }
+         public override void DrawOpaque(GameCamera.FreeCamera camera, float Alpha, LoadModel model2)
+         {
+             if (canStart == false)
+             { return; }
+             base.DrawOpaque(camera, Alpha, model2);
+         }
          public override void Update(GameTime _time)
          {
              if (canStart == false)
