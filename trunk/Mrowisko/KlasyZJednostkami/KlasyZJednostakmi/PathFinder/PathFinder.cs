@@ -77,7 +77,7 @@ namespace Logic.PathFinderNamespace
                 getNeighbours(currentNode);
                 currentNode = getMinFromList();
 
-                if(openList.Count==0)
+                if(openList.Count==0 || closedList.Count >1000)
                 {
                     return false;
                 }

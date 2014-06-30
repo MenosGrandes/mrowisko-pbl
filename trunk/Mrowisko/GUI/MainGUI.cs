@@ -633,7 +633,7 @@ namespace GUI
                     else if(selectedModel.GetType()==typeof(BeetleBuilding) && ((BeetleBuilding)selectedModel).hasBeenVisited==true &&Player.chelidonium>=200)
                     {
                         Vector3 modelPos = RandomPointOnCircleBuilding(selectedModel);
-                        modelsFromMain.Add(new Beetle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/beetle"), modelPos, new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light),modelsFromMain));
+                        modelsFromMain.Add(new Beetle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/beetle"), modelPos, new Vector3(0), new Vector3(1f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light),modelsFromMain));
                         Player.removeMaterial(200, typeof(Chelidonium));                                                                                                                                
                     }
                     break;
@@ -646,7 +646,7 @@ namespace GUI
                     else if (selectedModel.GetType() == typeof(GrassHopperBuilding) && ((GrassHopperBuilding)selectedModel).hasBeenVisited == true && Player.dicentra >= 200)
                     {
                         Vector3 modelPos = RandomPointOnCircleBuilding(selectedModel);
-                        modelsFromMain.Add(new GrassHopper(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/grasshopper"), modelPos, new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
+                        modelsFromMain.Add(new GrassHopper(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/grasshopper"), modelPos, new Vector3(0), new Vector3(1), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
                         Player.removeMaterial(200, typeof(Dicentra));
                     }
                     

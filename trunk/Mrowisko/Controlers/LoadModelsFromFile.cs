@@ -70,7 +70,7 @@ namespace Controlers
                           break;
                        case "Log":
 
-                           Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//h3"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
+                          Log g = new Log(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//apple_pack"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Log)model).ClusterSize);
                            g.Model.BuildBoundingSphereMaterial();
                            listOfAllInteractiveModelsFromFile.Add(g);
 
@@ -78,7 +78,7 @@ namespace Controlers
                        case "Rock":
 
 
-                           Rock q = new Rock(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//apple_pack"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Rock)model).ClusterSize);
+                           Rock q = new Rock(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//stone2"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light), ((Rock)model).ClusterSize);
                             q.Model.BuildBoundingSphereMaterial(2)  ;
                            listOfAllInteractiveModelsFromFile.Add(q);
 
@@ -209,7 +209,7 @@ namespace Controlers
                            break;
                        case "BeetleBuilding":
 
-                           BeetleBuilding bb = new BeetleBuilding(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//beetle"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
+                           BeetleBuilding bb = new BeetleBuilding(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//h3"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device, _light));
                            //   beetle.sfereModel.Model.Scale = new Vector3(33);
                            // c1.Model.CreateBoudingBox();
                            listOfAllInteractiveModelsFromFile.Add(bb);
@@ -217,7 +217,7 @@ namespace Controlers
                            break;
                        case "GrassHopperBuilding":
 
-                           GrassHopperBuilding ghb = new GrassHopperBuilding(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//beetle"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,  _light));
+                           GrassHopperBuilding ghb = new GrassHopperBuilding(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models//h4"), model.Model.Position, model.Model.Rotation, model.Model.Scale, StaticHelpers.StaticHelper.Device,  _light));
                            //   beetle.sfereModel.Model.Scale = new Vector3(33);
                            // c1.Model.CreateBoudingBox();
                            listOfAllInteractiveModelsFromFile.Add(ghb);

@@ -20,6 +20,7 @@ using Logic.Building.AntBuildings.Granary;
 using Logic.Units.Predators;
 using Logic.EnviroModel;
 using Logic.Units.Allies;
+using Logic.Building.AllieBuilding;
 namespace AntHill
 {
     public partial class Form1 : Form
@@ -218,7 +219,7 @@ namespace AntHill
                     case "Log":
                        
                            Log g = new Log(null,((Log)model).ClusterSize);
-                     g.Model = new LoadModel(CreatorController.content.Load<Model>("Models/log"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
+                           g.Model = new LoadModel(CreatorController.content.Load<Model>("Models/apple_pack"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
 
                      CreatorController.models.Add(g);
                      _items.Add(g.ToString());
@@ -240,7 +241,7 @@ namespace AntHill
 
 
                         BuildingPlace w = new BuildingPlace(null);
-                        w.Model = new LoadModel(CreatorController.content.Load<Model>("Models/buildingPlace"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
+                        w.Model = new LoadModel(CreatorController.content.Load<Model>("Models/buildRing"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device);
 
                         CreatorController.models.Add(w);
                         _items.Add(w.ToString());
@@ -391,6 +392,26 @@ namespace AntHill
                         CreatorController.models.Add(strongAnt);
                         _items.Add(strongAnt.ToString());
                         break;
+                    case "GrassHopperBuilding":
+
+
+                        GrassHopperBuilding ghb = new GrassHopperBuilding(new LoadModel(CreatorController.content.Load<Model>("Models/h3"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device));
+                        CreatorController.models.Add(ghb);
+                        _items.Add(ghb.ToString());
+
+
+
+                        break;
+                    case "BeetleBuilding":
+
+
+                        BeetleBuilding bb = new BeetleBuilding(new LoadModel(CreatorController.content.Load<Model>("Models/h4"), model.Model.Position, model.Model.Rotation, model.Model.Scale, CreatorController.device));
+                        CreatorController.models.Add(bb);
+                        _items.Add(bb.ToString());
+
+
+
+                        break;
 
                 }
                 
@@ -432,7 +453,7 @@ namespace AntHill
                         }
                     case "Log":
                         {
-                            Log p = new Log(new LoadModel(CreatorController.content.Load<Model>("Models/log"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device), Convert.ToInt16(textBox1.Text));
+                            Log p = new Log(new LoadModel(CreatorController.content.Load<Model>("Models/apple_pack"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device), Convert.ToInt16(textBox1.Text));
                             model = p;
                             break;
                         }
@@ -444,7 +465,7 @@ namespace AntHill
                         }
                     case "BuildingPlace":
                         {
-                            BuildingPlace p = new BuildingPlace(new LoadModel(CreatorController.content.Load<Model>("Models//buildingPlace"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
+                            BuildingPlace p = new BuildingPlace(new LoadModel(CreatorController.content.Load<Model>("Models//buildRing"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
                             model = p;
                             break;
                         }
@@ -533,6 +554,18 @@ namespace AntHill
                             model.Model.switchAnimation("Idle");
                             break;
                         }
+                    case "DomKoników":
+                        {
+                            GrassHopperBuilding p = new GrassHopperBuilding(new LoadModel(CreatorController.content.Load<Model>("Models//h3"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
+                            model = p;
+                            break;
+                        }
+                    case "DomZukow":
+                        {
+                            BeetleBuilding p = new BeetleBuilding(new LoadModel(CreatorController.content.Load<Model>("Models//h4"), CreatorController.MousePosition, Vector3.Zero, Vector3.One, CreatorController.device));
+                            model = p;
+                            break;
+                        }  
                 }
             }
         }

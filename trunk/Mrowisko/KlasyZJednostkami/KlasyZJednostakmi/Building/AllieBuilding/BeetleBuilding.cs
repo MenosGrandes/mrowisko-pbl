@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Logic.Building.AllieBuilding
 {
+    [Serializable]
     public class BeetleBuilding:AllieBuilding
     {
         public BeetleBuilding(LoadModel model):base(model)

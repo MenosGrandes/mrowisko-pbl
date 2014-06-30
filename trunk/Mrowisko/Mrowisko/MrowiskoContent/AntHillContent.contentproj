@@ -519,11 +519,6 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Models\h4_b.FBX">
-      <Name>h4_b</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
     <Compile Include="Models\endNode.FBX">
       <Name>endNode</Name>
       <Importer>FbxImporter</Importer>
@@ -536,6 +531,16 @@
     </Compile>
     <Compile Include="Models\apple_pack.FBX">
       <Name>apple_pack</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\h4.FBX">
+      <Name>h4</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\kopiec_lisci.FBX">
+      <Name>kopiec_lisci</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

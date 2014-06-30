@@ -55,7 +55,7 @@ namespace Logic
         public virtual void Draw(GameCamera.FreeCamera camera)
          {
 
-           //  model.Draw(camera);
+          model.Draw(camera);
 
          }
         public virtual void Draw(GameCamera.FreeCamera camera, float time)
