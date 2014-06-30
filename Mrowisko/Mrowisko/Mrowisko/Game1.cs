@@ -69,6 +69,8 @@ namespace AntHill
         MapRender mapR;
         //FPS COUNTER
         int licznik;
+        bool endGame = false;
+        public Trigger theEnd;
 
         int _total_frames = 0;
         float _elapsed_time = 0.0f;
@@ -194,6 +196,10 @@ namespace AntHill
             #region Laser
 
             #endregion
+
+            
+           
+           
             hiDefShadowEffect = Content.Load<Effect>("Effects/Shadows");
             animHiDefShadowEffect = Content.Load<Effect>("Effects/AnimatedShadow");
             device = GraphicsDevice;
@@ -368,8 +374,8 @@ GraphicsDevice);
             //   models[models.Count - 1].Model.switchAnimation("Idle");
 
 
-            // models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(120, 40, 120), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
-            //models[models.Count - 1].Model.switchAnimation("Idle");
+             models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/rosiczka"), new Vector3(120, 40, 120), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
+            models[models.Count - 1].Model.switchAnimation("Idle");
 
             // models.Add(new Spider(new LoadModel(Content.Load<Model>("Models/spider"), new Vector3(250, 40, 250), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
             // models[models.Count - 1].Model.switchAnimation("Idle");
@@ -397,10 +403,14 @@ GraphicsDevice);
             IModel.Add(new BeetleBuilding(new LoadModel(Content.Load<Model>("Models/log2"), new Vector3(700, 40, 900), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
             IModel.Add(new GrassHopperBuilding(new LoadModel(Content.Load<Model>("Models/h4_b"), new Vector3(900, 40, 1100), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
 
-            IModel.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(1f), GraphicsDevice, light)), curvesForLaser[0]));
+            IModel.Add(new Laser((new LoadModel(Content.Load<Model>("Models/laser"), new Vector3(0, 40, 0), new Vector3(0), new Vector3(2f), GraphicsDevice, light)), curvesForLaser[0]));
             timeTriggers.Add(new LaserTrigger((Laser)IModel[IModel.Count - 1], 1));
             Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
 
+            #region trigger end game
+            theEnd = new Trigger((new LoadModel(Content.Load<Model>("Models/endNode"), new Vector3(2600, 40, 2600), new Vector3(0), new Vector3(4f), GraphicsDevice, light)));
+            IModel.Add(theEnd);
+            #endregion
 
             control = new Logic.Control(texture[11], quadTree[0]);
             gui = new MainGUI(StaticHelpers.StaticHelper.Content, control,models);
@@ -517,6 +527,11 @@ GraphicsDevice);
                 {
                     models[i].Update(gameTime);
                     models[i].Model.Update(gameTime);
+
+                    if (models[i].GetType() == typeof(Queen) && models[i].Model.BoundingSphere.Intersects(theEnd.Model.BoundingSphere))
+                    {
+                        endGame = true;
+                    }
                     //if (models[i].Model.Position.Y < 40)
                     //{
                     //    Console.WriteLine("WODA");
@@ -597,7 +612,16 @@ GraphicsDevice);
                     {
 
                         Console.WriteLine("Zjadl " + models[i].GetType());
-                        models[i].Model.switchAnimation("Death", 1);
+
+                        if (models[i].GetType() == typeof(SunDew))
+                        {
+                            models[i].Model.switchAnimation("Relax", 1);
+                        }
+                        else
+                        {
+                            models[i].Model.switchAnimation("Death", 1);
+                        }
+                        
                         foreach (InteractiveModel unit in control.SelectedModels)
                         {
                             if (models[i] == unit)
@@ -935,12 +959,20 @@ GraphicsDevice);
            
             foreach(InteractiveModel model in models)
             {
-                if(model.GetType()!=typeof(Beetle))
+                if (model.GetType() == typeof(Beetle))
                 {
-                    continue;
-                }
-                model.DrawOpaque((FreeCamera)camera, 0.1f, ((Beetle)model).sfereModel.Model);
+                    model.DrawOpaque((FreeCamera)camera, 0.1f, ((Beetle)model).sfereModel.Model);
+                }         
+               
 
+            }
+
+            foreach (InteractiveModel model in IModel)
+            {
+                if(model.GetType() == typeof(Laser))
+                {
+                    model.DrawOpaque((FreeCamera)camera, 0.4f, model.Model);
+                }
             }
               
             base.Draw(gameTime);

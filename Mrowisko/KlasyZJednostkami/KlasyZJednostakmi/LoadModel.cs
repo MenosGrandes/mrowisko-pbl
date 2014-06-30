@@ -358,9 +358,10 @@ namespace Logic
             Matrix.CreateTranslation(model2.Position);
             foreach (ModelMesh mesh in model2.Model.Meshes)
             {
-                
+                if(!mesh.Name.Contains("BoundingSphere"))
+                {
                     Matrix localWorld = modelTransforms[mesh.ParentBone.Index]
-                   * baseWorld;
+                  * baseWorld;
                     this.localWorld = localWorld;
                     foreach (ModelMeshPart meshPart in mesh.MeshParts)
                     {
@@ -391,6 +392,8 @@ namespace Logic
                     }
 
                     mesh.Draw();
+                }
+                   
                 }
         }
 
