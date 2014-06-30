@@ -314,7 +314,7 @@ namespace Logic
                 {
                     Selected();
                     foreach (InteractiveModel ant in models)
-                        if (ant.Model.Selected)
+                        if (ant.Model.Selected && ant.GetType().IsSubclassOf(typeof(Unit)))
                         {
 
                             ((Unit)ant).IfLeader = false;

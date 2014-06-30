@@ -33,6 +33,7 @@ using System.Diagnostics;
 using Logic.PathFinderManagerNamespace;
 using Logic.PathFinderNamespace;
 using Logic.Units.Predators;
+using Logic.Building.AllieBuilding;
 namespace AntHill
 {
     /// <summary>
@@ -394,8 +395,7 @@ GraphicsDevice);
 
             BBoxRender.InitializeBBoxDebuger(device);
 
-             models.Add(new AntSpitter(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/plujka"), new Vector3(0, 30, 0), Vector3.Zero, new Vector3(0.23f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, light)));
-           models[models.Count - 1].Model.switchAnimation("Idle");
+            IModel.Add(new BeetleBuilding(new LoadModel(Content.Load<Model>("Models/h3"), new Vector3(700, 40, 900), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
 
 
             Console.WriteLine(QuadNodeController.QuadNodeList2.Count);
@@ -416,7 +416,12 @@ GraphicsDevice);
 
 
             miniMap = new MiniMap(models);
+            foreach(InteractiveModel m in IModel) {
+                if (m is Laser || m is GrassHopperBuilding || m is BeetleBuilding)
+                    miniMap.addObjects(m);
+                }
         }
+
 
 
         /// <summary>w
@@ -563,7 +568,7 @@ GraphicsDevice);
                     }
                     foreach(InteractiveModel m in IModel)
                     {
-                        if(m is Laser)
+                        if(m is Laser || m.GetType().IsSubclassOf(typeof(AllieBuilding)))
                         {
                             m.Intersect(models[i]);
                         }

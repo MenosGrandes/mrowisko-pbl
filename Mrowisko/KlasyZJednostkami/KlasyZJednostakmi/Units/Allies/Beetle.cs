@@ -42,6 +42,7 @@ namespace Logic.Units.Allies
             this.modelHeight = 30;
             this.MaxHp = 100;
             this.strength = 10;
+            model.switchAnimation("Idle");
         }
         public Beetle(LoadModel model)
             : base(model)
@@ -57,6 +58,7 @@ namespace Logic.Units.Allies
             this.modelHeight = 30;
             this.MaxHp = this.Hp;
             this.strength = 10;
+            model.switchAnimation("Idle");
         }
         public Beetle():base()
         {

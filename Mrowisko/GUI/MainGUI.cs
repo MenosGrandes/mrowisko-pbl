@@ -16,12 +16,14 @@ using Logic.Building.AntBuildings.Granary;
 using Logic.Building.AntBuildings;
 using Logic.Units.Ants;
 using Logic.Meterials;
+using Logic.Building.AllieBuilding;
+using Logic.Units.Allies;
 
 namespace GUI
 {
     public class MainGUI
     {
-        bool hyacyntFarmOn = false, dicentraFarmOn = false, mainBuildingOn = false;
+        bool hyacyntFarmOn = false, dicentraFarmOn = false, mainBuildingOn = false,grassHopperBuildingOn=false,beetleBuildingOn=false;
         public List<InteractiveModel> modelsFromMain;
         public String description;
         public static bool exit = false;
@@ -371,6 +373,8 @@ namespace GUI
                         mainBuildingOn = false;
                         buildMenuON = false;
                         unitMenuON = false;
+                        beetleBuildingOn=false;
+                        grassHopperBuildingOn=false;
 
                     }
                     else if (selectedModel.GetType() == typeof(DicentraFarm))
@@ -381,16 +385,38 @@ namespace GUI
                         buildMenuON = false;
                         unitMenuON = false;
                     }
+                    else   if (selectedModel.GetType() == typeof(BeetleBuilding))
+                    {
+                        hyacyntFarmOn = false;
+                        dicentraFarmOn = false;
+                        mainBuildingOn = false;
+                        buildMenuON = false;
+                        unitMenuON = false;
+                        beetleBuildingOn = true;
+                        grassHopperBuildingOn = false;
+                    }
+                    else if (selectedModel.GetType() == typeof(GrassHopperBuilding))
+                    {
+                        hyacyntFarmOn = false;
+                        dicentraFarmOn = false;
+                        mainBuildingOn = false;
+                        buildMenuON = false;
+                        unitMenuON = false;
+                        beetleBuildingOn = false;
+                        grassHopperBuildingOn = true;
+                    }
                     else
                     {
                         hyacyntFarmOn = false;
                         dicentraFarmOn = false;
-                        mainBuildingOn = true;
+                        mainBuildingOn = false;
                         buildMenuON = false;
                         unitMenuON = false;
                     }
 
                 }
+
+                
 
             }
             else
@@ -453,7 +479,7 @@ namespace GUI
                 spriteBatch.Draw(button_texture[B2_BUTTON_IDX], button_rectangle[B2_BUTTON_IDX], button_color[B2_BUTTON_IDX]);
                 spriteBatch.Draw(button_texture[B3_BUTTON_IDX], button_rectangle[B3_BUTTON_IDX], button_color[B3_BUTTON_IDX]);
             }
-            else if (dicentraFarmOn == true)//panel ob³ugi jednostek
+            else if (dicentraFarmOn == true|| beetleBuildingOn==true)//panel ob³ugi jednostek
             {
                 spriteBatch.Draw(button_texture[ATTACK_ANT_BUTTON_IDX], button_rectangle[ATTACK_ANT_BUTTON_IDX], button_color[ATTACK_ANT_BUTTON_IDX]);
             }
@@ -465,6 +491,7 @@ namespace GUI
             {
                 spriteBatch.Draw(button_texture[RUN_ANT_BUTTON_IDX], button_rectangle[RUN_ANT_BUTTON_IDX], button_color[RUN_ANT_BUTTON_IDX]);
             }
+
 
 
             //Pause Menu ----------
@@ -493,6 +520,7 @@ namespace GUI
             {
                 description = "";
             }
+
 
         }
 
@@ -601,6 +629,12 @@ namespace GUI
                         modelsFromMain.Add(new AntPeasant(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/ant"), modelPos, new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
 
                         Player.removeMaterial(20, typeof(Dicentra));
+                    }
+                    if(selectedModel.GetType()==typeof(BeetleBuilding) && ((BeetleBuilding)selectedModel).hasBeenVisited==true &&Player.chelidonium>=200)
+                    {
+                        Vector3 modelPos = RandomPointOnCircleBuilding(selectedModel);
+                        modelsFromMain.Add(new Beetle(new LoadModel(StaticHelpers.StaticHelper.Content.Load<Model>("Models/beetle"), modelPos, new Vector3(0), new Vector3(0.4f), StaticHelpers.StaticHelper.Device, StaticHelpers.StaticHelper.Content, modelsFromMain[0].Model.light)));
+                        Player.removeMaterial(200, typeof(Chelidonium));                                                                                                                                
                     }
                     break;
                 case DEFENCE_ANT_BUTTON_IDX:
