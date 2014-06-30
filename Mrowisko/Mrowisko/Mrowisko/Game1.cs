@@ -290,7 +290,7 @@ GraphicsDevice);
             {
 
                 // Console.WriteLine(models.GetType().BaseType.Name);
-                if (i.GetType().BaseType == typeof(Building) || i.GetType().BaseType == typeof(Material) || i.GetType().BaseType == typeof(EnviroModels))
+                if (i.GetType().BaseType == typeof(Building) || i.GetType().BaseType == typeof(Material) || i.GetType().BaseType == typeof(EnviroModels) || i.GetType().BaseType==typeof(AllieBuilding))
                 {
 
                     IModel.Add(i);
@@ -401,10 +401,9 @@ GraphicsDevice);
 
             BBoxRender.InitializeBBoxDebuger(device);
 
-            IModel.Add(new BeetleBuilding(new LoadModel(Content.Load<Model>("Models/apple_pack"), new Vector3(700, 60, 900), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
-            IModel.Add(new GrassHopperBuilding(new LoadModel(Content.Load<Model>("Models/h4_b"), new Vector3(900, 40, 1100), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
+           // IModel.Add(new BeetleBuilding(new LoadModel(Content.Load<Model>("Models/h4"), new Vector3(700, 60, 900), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
+          //  IModel.Add(new GrassHopperBuilding(new LoadModel(Content.Load<Model>("Models/h3"), new Vector3(900, 40, 1100), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
 
-            IModel.Add(new BeetleBuilding(new LoadModel(Content.Load<Model>("Models/h3"), new Vector3(1100, 60,1100), new Vector3(0), new Vector3(0.4f), GraphicsDevice, light)));
 
 
 

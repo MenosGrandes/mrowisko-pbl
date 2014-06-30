@@ -56,8 +56,13 @@ namespace Logic.Building
         public Building(LoadModel model):base(model)
         { }
          public override void Draw(Matrix View, Matrix Projection)
-        {   }
+        {   
+         }
          public override void Update(GameTime gameTime)
          { }
+         public override void Draw(GameCamera.FreeCamera camera)
+         {
+             base.Draw(camera);
+         }
     }
 }

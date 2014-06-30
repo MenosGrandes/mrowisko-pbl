@@ -61,48 +61,7 @@ namespace Logic
             set { movementPath = value; }
         }
 
-        public uint modelHeight = 0;
 
-        protected float armorAfterBuff;
-
-        public float ArmorAfterBuff
-        {
-            get { return armorAfterBuff; }
-            set { armorAfterBuff = value; }
-        }
-
-        protected float armor;
-
-        public float Armor
-        {
-            get { return armor; }
-            set { armor = value; }
-        }
-        protected float strength;
-
-        public float Strength
-        {
-            get { return strength; }
-            set { strength = value; }
-        }
-
-        protected float range;
-
-        public float Range
-        {
-            get { return range; }
-            set { range = value; }
-        }
-
-        
-
-        protected float speed;
-
-        public float Speed
-        {
-            get { return speed; }
-            set { speed = value; }
-        }
 
 
         protected float buildingTime;
