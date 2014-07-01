@@ -512,7 +512,7 @@
     <Compile Include="Models\crab.X">
       <Name>crab</Name>
       <Importer>XImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+      <Processor>AnimatedModelProcessor</Processor>
     </Compile>
     <Compile Include="Models\h3.FBX">
       <Name>h3</Name>
@@ -1075,6 +1075,18 @@
     </Compile>
     <Compile Include="Textures\4.png">
       <Name>4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\crab_Anims.xml">
+      <Name>crab_Anims</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\rak_diffuse.png">
+      <Name>rak_diffuse</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

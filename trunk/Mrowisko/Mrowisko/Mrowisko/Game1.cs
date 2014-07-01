@@ -371,14 +371,11 @@ GraphicsDevice);
 
 
 
-              models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(1375, 40, 2500), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
+              models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/crab"), new Vector3(1375, 40, 2500), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
 
               models[models.Count - 1].Model.switchAnimation("Idle");
 
-              models.Add(new Cancer(new LoadModel(Content.Load<Model>("Models/strongAnt"), new Vector3(1400, 40, 2700), new Vector3(0), new Vector3(0.4f), GraphicsDevice, Content, light), models));
-
-              models[models.Count - 1].Model.switchAnimation("Idle");
-
+             
 
 
              models.Add(new SunDew(new LoadModel(Content.Load<Model>("Models/rosiczka"), new Vector3(1574, 40, 2100), new Vector3(0), new Vector3(0.8f), GraphicsDevice, Content, light), models));
@@ -916,6 +913,10 @@ GraphicsDevice);
             {
                 if (camera.BoundingVolumeIsInView(model.Model.BoundingSphere))
                 {
+                    if (model.GetType()==typeof(Trigger)   )
+                    {
+                        continue;
+                    }
                   //  BoundingSphereRenderer.Render(model.Model.BoundingSphere, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
                   //  BoundingSphereRenderer.Render(model.Model.Spheres, device, camera.View, camera.Projection, new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f), new Color(0.9f, 0.9f, 0.9f));
 
@@ -1021,7 +1022,7 @@ GraphicsDevice);
 
             foreach (InteractiveModel model in IModel)
             {
-                if(model.GetType() == typeof(Laser))
+                if(model.GetType() == typeof(Laser) )
                 {
                     model.DrawOpaque((FreeCamera)camera, 0.4f, model.Model);
                 }

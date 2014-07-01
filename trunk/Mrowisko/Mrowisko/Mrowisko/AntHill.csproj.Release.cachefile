@@ -112,7 +112,6 @@ Content\Models\beetle.xnb
 Content\Models\plujka.xnb
 Content\Models\tea.xnb
 Content\Models\rosiczka.xnb
-Content\Models\crab.xnb
 Content\Fonts\FPS.xnb
 Content\Effects\TexturedEffect.xnb
 Content\Effects\Bilboarding.xnb
@@ -206,6 +205,9 @@ Content\Textures\1.xnb
 Content\Textures\2.xnb
 Content\Textures\3.xnb
 Content\Textures\4.xnb
+Content\Models\crab.xnb
+Content\Models\rak_diffuse.xnb
+Content\Models\crab_Anims.xnb
 Content\Songs\Escape.wma
 Content\Songs\Kwai.wma
 Content\Songs\MarketGarden.wma
