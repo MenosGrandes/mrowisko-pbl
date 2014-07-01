@@ -35,6 +35,8 @@ namespace Logic.Units.Predators
             this.Hp = 100;
             this.MaxHp = 100;
             this.modelHeight = 40;
+            destination = new Vector3(this.model.Position.X-100,this.model.Position.Y,this.model.Position.Z-300);
+
         }
 
 
